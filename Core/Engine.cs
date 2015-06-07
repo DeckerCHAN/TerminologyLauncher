@@ -19,12 +19,17 @@ namespace TerminologyLauncher.Core
 
         public Engine()
         {
+            Logging.Logger.GetLogger().Info("Engine Initializing...");
             this.UiControl = new UiControl();
-            this.UiControl.MainWindow.Dispatcher.Invoke(new Action(() => { this.UiControl.MainWindow.Show(); }));
+            Logging.Logger.GetLogger().Info("Engine Initialized!");
         }
         public void Run()
         {
+            Logging.Logger.GetLogger().Info("Engine running...");
+            this.UiControl.ShowLoginWindow();
+            //Logging.Logger.GetLogger().Info("Start GUI");
             this.UiControl.Run();
+
         }
     }
 }
