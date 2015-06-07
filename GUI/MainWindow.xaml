@@ -2,6 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525"
+        Style="{DynamicResource NativeWindowStyle}"
         >
- 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
+                <ResourceDictionary Source="Themes/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel Background="Transparent">
+        <Canvas DockPanel.Dock="Top" Height="200">
+            <Button Content="Button" Canvas.Left="88" Canvas.Top="55" Width="149" Height="42"/>
+        </Canvas>
+    </DockPanel>
+
 </Window>
