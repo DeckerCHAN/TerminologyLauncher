@@ -7,8 +7,8 @@
     <ProjectGuid>{392827A7-AD9A-4120-B507-1A09465D24ED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logging</RootNamespace>
-    <AssemblyName>Logging</AssemblyName>
+    <RootNamespace>TerminologyLauncher.Logging</RootNamespace>
+    <AssemblyName>TerminologyLauncher.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

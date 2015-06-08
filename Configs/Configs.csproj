@@ -7,8 +7,8 @@
     <ProjectGuid>{B56B5D15-8A5E-4833-83F1-6FC40A4B3B7C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Configs</RootNamespace>
-    <AssemblyName>Configs</AssemblyName>
+    <RootNamespace>TerminologyLauncher.Configs</RootNamespace>
+    <AssemblyName>TerminologyLauncher.Configs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

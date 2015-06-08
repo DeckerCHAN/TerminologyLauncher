@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using log4net;
 
-namespace Logging
+namespace TerminologyLauncher.Logging
 {
 
         public static class Logger
