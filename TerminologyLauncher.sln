@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configs", "Configs\Configs.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminologyLauncher[DEBUG]", "TerminologyLauncher[DEBUG]\TerminologyLauncher[DEBUG].csproj", "{DC8D6B4B-CD4A-40C1-9574-E4FB3AFE8009}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth", "Auth\Auth.csproj", "{8AED705F-6AE6-4E34-9529-D1CD26658DCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{DC8D6B4B-CD4A-40C1-9574-E4FB3AFE8009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC8D6B4B-CD4A-40C1-9574-E4FB3AFE8009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC8D6B4B-CD4A-40C1-9574-E4FB3AFE8009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AED705F-6AE6-4E34-9529-D1CD26658DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AED705F-6AE6-4E34-9529-D1CD26658DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AED705F-6AE6-4E34-9529-D1CD26658DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AED705F-6AE6-4E34-9529-D1CD26658DCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
