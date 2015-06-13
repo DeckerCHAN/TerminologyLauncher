@@ -5,17 +5,39 @@
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource CustomWindowStyle}"
         >
+    <Window.Background>
+        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"></ImageBrush>
+    </Window.Background>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Themes/Styles.xaml"/>
                 <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Canvas>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Height="45" Canvas.Left="232" Canvas.Top="182"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Height="45" Canvas.Left="28" Canvas.Top="182"/>
-        <TextBox Height="23" Canvas.Left="94" TextWrapping="Wrap" Text="TextBox" Canvas.Top="68" Width="120"/>
-    </Canvas>
+    <DockPanel  Width="475" Height="315">
+        <DockPanel DockPanel.Dock="Top" Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
+
+            <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0"  ><Run Text="Terminology Lanucher "/><Run Text="登录"/></TextBlock>
+            <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                <Button  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0"></Button>
+            </StackPanel>
+
+        </DockPanel>
+        <Canvas DockPanel.Dock="Bottom"  >
+            <TextBlock TextWrapping="Wrap" Text="Majong账户:" Canvas.Left="54" Canvas.Top="78" FontSize="15"/>
+            <TextBlock TextWrapping="Wrap" Text="密码:" Canvas.Left="109" Canvas.Top="125" FontSize="15"/>
+            <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TransparentTextBox}"/>
+            <PasswordBox x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}"/>
+            <CheckBox Content="记住密码" Canvas.Left="363" Canvas.Top="175" FontSize="15"/>
+            <Button x:Name="LoginButton" x:FieldModifier="public" Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_OnClick"/>
+            <Button x:Name="CancleButton" x:FieldModifier="public" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28"/>
+            <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Left="79" Canvas.Top="172" FontSize="15"/>
+            <ComboBox Canvas.Left="158" Canvas.Top="172" Width="156">
+                <ComboBoxItem Content="正版登录" HorizontalAlignment="Left" Width="118"/>
+                <ComboBoxItem Content="离线模式" HorizontalAlignment="Left" Width="118"/>
+            </ComboBox>
+
+        </Canvas>
+    </DockPanel>
 </Window>
