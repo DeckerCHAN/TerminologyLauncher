@@ -6,7 +6,7 @@
         Style="{DynamicResource CustomWindowStyle}"
         >
     <Window.Background>
-        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"></ImageBrush>
+        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg_alternate.jpg"></ImageBrush>
     </Window.Background>
     <Window.Resources>
         <ResourceDictionary>

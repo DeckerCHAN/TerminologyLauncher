@@ -233,21 +233,26 @@
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 >
-                            <DockPanel >
-                                
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
                              
-                                <Border DockPanel.Dock="Left" HorizontalAlignment="Stretch">
-                                    <ContentPresenter 
-                                    HorizontalAlignment="Stretch"
+                                <ContentPresenter 
+                                       
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
                                     Content="{TemplateBinding SelectionBoxItem}"
                                     ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                     ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"></ContentPresenter>
-                                </Border>
+                              
                                 <ToggleButton 
-                                   
+                                    Grid.Column="1"
                                     IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                     Style="{StaticResource ComboBoxReadonlyToggleButton}"/>
-                            </DockPanel>
+                            </Grid>
 
                         </Border>
 
