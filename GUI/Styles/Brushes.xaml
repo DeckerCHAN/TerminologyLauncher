@@ -35,6 +35,8 @@
     <SolidColorBrush x:Key="ScrollBarSelectedThumb" Color="#E5E5E5"/>
     <SolidColorBrush x:Key="CornerBorder" Color="{StaticResource DarkBackgroundColor}"/>
 
+    <SolidColorBrush x:Key="CommonElementBackground" Color="#7F000000" />
+    
     <SolidColorBrush x:Key="TextBoxBorder" Color="{StaticResource DarkBackgroundColor}" />
     <SolidColorBrush x:Key="TextBoxBackground" Color="#7F000000" />
     <SolidColorBrush x:Key="TextBoxDisabledForeground" Color="#8C8C8C" />

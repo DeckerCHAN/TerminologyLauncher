@@ -6,7 +6,7 @@
         Style="{DynamicResource CustomWindowStyle}"
         >
     <Window.Background>
-        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg_alternate.jpg"></ImageBrush>
+        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"></ImageBrush>
     </Window.Background>
     <Window.Resources>
         <ResourceDictionary>
@@ -25,7 +25,7 @@
             </Border.Background>
             <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0"  ><Run Text="Terminology Lanucher "/><Run Text="登录"/></TextBlock>
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource CommonTextBlockStyle}" ><Run Text="Terminology Lanucher "/><Run Text="登录" /></TextBlock>
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                     <Button  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0"></Button>
                 </StackPanel>
@@ -34,18 +34,20 @@
 
         </Border>
         <Canvas DockPanel.Dock="Bottom"  >
-            <TextBlock TextWrapping="Wrap" Text="Majong账户:" Canvas.Left="54" Canvas.Top="78" FontSize="15"/>
-            <TextBlock TextWrapping="Wrap" Text="密码:" Canvas.Left="109" Canvas.Top="125" FontSize="15"/>
+            <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Left="54" Canvas.Top="78" FontSize="15" Style="{StaticResource CommonTextBlockStyle}">
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Text="密码:" Canvas.Left="109" Canvas.Top="125" FontSize="15" Style="{StaticResource CommonTextBlockStyle}"/>
             <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TransparentTextBox}"/>
             <PasswordBox x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}"/>
-            <ComboBox Canvas.Left="158" Canvas.Top="172" Width="156" Height="25" SelectedIndex="0" FontSize="15" HorizontalContentAlignment="Center" Style="{DynamicResource TransparentComboBox}">
+            <ComboBox Name="LoginMode"  x:FieldModifier="public" Canvas.Left="158" Canvas.Top="172" Width="156" Height="25" SelectedIndex="0" FontSize="15" HorizontalContentAlignment="Center" Style="{DynamicResource TransparentComboBox}">
                 <ComboBoxItem Content="正版登录" HorizontalAlignment="Left" Width="118"/>
                 <ComboBoxItem Content="离线模式" HorizontalAlignment="Left" Width="118"/>
+             
             </ComboBox>
             <CheckBox Content="记住密码" Canvas.Left="363" Canvas.Top="175" FontSize="15"/>
-            <Button x:Name="LoginButton" x:FieldModifier="public" Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_OnClick"/>
-            <Button x:Name="CancleButton" x:FieldModifier="public" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28"/>
-            <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Left="79" Canvas.Top="173" FontSize="15"/>
+            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_OnClick"/>
+            <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
+            <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Left="79" Canvas.Top="173" FontSize="15" Style="{StaticResource CommonTextBlockStyle}"/>
 
 
         </Canvas>
