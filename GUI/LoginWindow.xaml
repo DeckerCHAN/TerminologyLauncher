@@ -44,7 +44,7 @@
                 <ComboBoxItem Content="离线模式" HorizontalAlignment="Left" Width="118"/>
              
             </ComboBox>
-            <CheckBox Content="记住密码" Canvas.Left="363" Canvas.Top="175" FontSize="15"/>
+            <CheckBox Content="记住密码" Canvas.Left="363" Canvas.Top="175" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
             <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_OnClick"/>
             <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
             <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Left="79" Canvas.Top="173" FontSize="15" Style="{StaticResource CommonTextBlockStyle}"/>
