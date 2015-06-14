@@ -30,6 +30,7 @@ namespace TerminologyLauncher
             finally
             {
                 Console.WriteLine("Programme returned...Press any key to exit.");
+                Console.ReadKey();
                 Environment.Exit(0);
             }
 
