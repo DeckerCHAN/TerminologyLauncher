@@ -14,8 +14,8 @@
                 <ControlTemplate TargetType="{x:Type Window}">
                     <Border Margin="8" Background="{TemplateBinding Background}" BorderThickness="1,1,1,1" CornerRadius="8,8,8,8">
                         <Border.Effect>
-                            <DropShadowEffect BlurRadius="8" Direction="-85" RenderingBias="Quality" ShadowDepth="0"
-                                              Opacity="0.8" />
+                            <DropShadowEffect BlurRadius="10" Direction="-85" RenderingBias="Quality" ShadowDepth="0"
+                                              Opacity="1" />
                         </Border.Effect>
                         <ContentPresenter/>
                     </Border>
@@ -209,7 +209,9 @@
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="1" 
                                             CornerRadius="0,0,8,8">
-                                        <ScrollViewer x:Name="DropDownScrollViewer">
+                                        <ScrollViewer x:Name="DropDownScrollViewer" 
+                                                      VerticalScrollBarVisibility="Hidden" 
+                                                      HorizontalScrollBarVisibility="Hidden">
                                             <Grid RenderOptions.ClearTypeHint="Enabled">
                                                 <Canvas HorizontalAlignment="Left" 
                                                         Height="0" 
@@ -267,7 +269,6 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource TextBoxDisabledForeground}"/>
-                            <Setter Property="Background" Value="{DynamicResource TextBoxDisabledBackground}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>

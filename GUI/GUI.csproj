@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UiControl.xaml.cs">
       <DependentUpon>UiControl.xaml</DependentUpon>
       <SubType>Code</SubType>
