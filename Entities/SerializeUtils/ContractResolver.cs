@@ -12,9 +12,7 @@ namespace TerminologyLauncher.Entities.SerializeUtils
 
         protected override string ResolvePropertyName(string propertyName)
         {
-            string result =
-                string.Concat(propertyName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()));
-            return result.ToLower();
+            return Char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
         }
 
     }
