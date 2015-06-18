@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
 
 namespace TerminologyLauncher.GUI
@@ -40,20 +40,67 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public void DisableAllInputs()
+        public void EnableAllInputs(Boolean isEnable)
         {
-            this.UsernameBox.IsEnabled = false;
-            this.PasswordBox.IsEnabled = false;
-            this.LoginModeComboBox.IsEnabled = false;
-            this.IsPerservePasswordCheckBox.IsEnabled = false;
+            this.UsernameBox.IsEnabled = isEnable;
+            this.PasswordBox.IsEnabled = isEnable;
+            this.LoginModeComboBox.IsEnabled = isEnable;
+            this.IsPerservePasswordCheckBox.IsEnabled = isEnable;
         }
 
-        public void EnableAllInputs()
+        public Login GetLogin()
         {
-            this.UsernameBox.IsEnabled = true;
-            this.PasswordBox.IsEnabled = true;
-            this.LoginModeComboBox.IsEnabled = true;
-            this.IsPerservePasswordCheckBox.IsEnabled = true;
+            return new Login()
+            {
+                UserName = this.UsernameBox.Text,
+                Password = this.PasswordBox.Password,
+                LoginMode = (LoginMode)this.LoginModeComboBox.SelectedIndex
+            };
+        }
+
+        public void SetLogin(Login login)
+        {
+            this.UsernameBox.Text = login.UserName;
+            this.PasswordBox.Password = login.Password;
+            this.LoginModeComboBox.SelectedIndex = (int)login.LoginMode;
+        }
+
+        public void LoginResult(LoginResult result)
+        {
+            this.EnableAllInputs(true);
+            switch (result)
+            {
+                case Entities.Account.LoginResult.Success:
+                    {
+                        this.Hide();
+                        break;
+                    }
+                case Entities.Account.LoginResult.InsufficiencyOfArguments:
+                    {
+                        new PopupWindow(this, "失败", "参数不完整").ShowDialog();
+                        break;
+                    }
+                case Entities.Account.LoginResult.WrongPassword:
+                    {
+                        new PopupWindow(this, "失败", "密码错误").ShowDialog();
+                        break;
+                    }
+                case Entities.Account.LoginResult.UserNotExists:
+                    {
+                        new PopupWindow(this, "失败", "用户不存在").ShowDialog();
+                        break;
+                    }
+                case Entities.Account.LoginResult.NetworkTimedOut:
+                    {
+                        new PopupWindow(this, "失败", "网络超时").ShowDialog();
+                        break;
+                    }
+                default:
+                    {
+                        new PopupWindow(this, "失败", "未知错误").ShowDialog();
+                        break;
+                    }
+            }
         }
 
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
