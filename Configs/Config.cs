@@ -30,8 +30,17 @@ namespace TerminologyLauncher.Configs
 
         public void SetConfig(String key, String value)
         {
-            this.ConfigJObject.SelectToken(key).Replace(new JValue(value));
-            this.SaveConfig();
+            if (this.ConfigJObject.SelectToken(key) != null)
+            {
+                this.ConfigJObject.SelectToken(key).Replace(new JValue(value));
+                this.SaveConfig();
+            }
+            else
+            {
+                throw new KeyNotFoundException(String.Format("Can not find exist key:{0}. Thus, unable to set that value.", key));
+            }
+
+
         }
 
         private void SaveConfig()
