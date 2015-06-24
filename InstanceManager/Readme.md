@@ -6,7 +6,7 @@ InstanceManager is here to manage a single minecraft pack as instance. An exampl
    "icon":"https://example.com/packs/ExamplePack/icon.png",
    "background":"https://example.com/packs/ExamplePack/bg.png",
    "version":"2.3.3",
-   "author":"Team Infinity Studio"
+   "author":"Team Infinity Studio",
    "instanceName":"Example Pack",
    "description":"Fully power!",
    "fileSystem":{
