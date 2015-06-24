@@ -15,6 +15,10 @@ namespace TerminologyLauncher.Configs
         public JObject ConfigJObject { get; protected set; }
         public Config(FileInfo jsonConfigFile)
         {
+            if (!jsonConfigFile.Exists)
+            {
+                throw new FileNotFoundException(String.Format("Config file {0} not exists!", jsonConfigFile));
+            }
             this.JsonFileInfo = jsonConfigFile;
         }
 
