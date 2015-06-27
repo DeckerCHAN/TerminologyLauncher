@@ -36,7 +36,7 @@ namespace TerminologyLauncher.FileRepository
             //Try to find file at file repo 
             if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFile.Id))
             {
-                Logger.GetLogger().Warn(String.Format("Can not find official file:{0} with id:{1} at current repo. Try to change repo or contact instance author to correct provide info."));
+                throw new Exception(String.Format("Can not find official file:{0} with id:{1} at current repo. Try to change repo or contact instance author to correct provide info."));
                 return;
             }
 
