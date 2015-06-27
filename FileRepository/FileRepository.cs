@@ -31,26 +31,26 @@ namespace TerminologyLauncher.FileRepository
 
         }
 
-        public void GetOfficialFile(String rootPath, OfficialFile officialFile)
+        public void GetOfficialFile(String rootPath, OfficialFileBase officialFileBase)
         {
             //Try to find file at file repo 
-            if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFile.Id))
+            if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFileBase.Id))
             {
                 throw new Exception(String.Format("Can not find official file:{0} with id:{1} at current repo. Try to change repo or contact instance author to correct provide info."));
                 return;
             }
 
-            var officialRemoteFile = this.OfficialProviRdeFilesRepo[officialFile.Id];
+            var officialRemoteFile = this.OfficialProviRdeFilesRepo[officialFileBase.Id];
 
-            DownloadUtils.DownloadFile(officialRemoteFile.DownloadPath, officialFile.LocalPath, officialRemoteFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", officialRemoteFile.DownloadPath, rootPath + officialFile.LocalPath));
+            DownloadUtils.DownloadFile(officialRemoteFile.DownloadPath, officialFileBase.LocalPath, officialRemoteFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", officialRemoteFile.DownloadPath, rootPath + officialFileBase.LocalPath));
 
         }
 
-        public void GetCustomFile(String rootPath, CustomFile customFile)
+        public void GetCustomFile(String rootPath, CustomFileBase customFileBase)
         {
-            DownloadUtils.DownloadFile(customFile.DownloadPath, customFile.LocalPath, customFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", customFile.DownloadPath, rootPath + customFile.LocalPath));
+            DownloadUtils.DownloadFile(customFileBase.DownloadPath, customFileBase.LocalPath, customFileBase.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", customFileBase.DownloadPath, rootPath + customFileBase.LocalPath));
         }
 
         public void GetEntirePackage(DirectoryInfo packRootFolder, EntirePackageFile entirePackageFile)

@@ -47,10 +47,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Authentication\Authenticate\Agent.cs" />
+    <Compile Include="Account\Authentication\Authenticate\AuthenticatePayload.cs" />
+    <Compile Include="Account\Authentication\Authenticate\AuthenticateResponse.cs" />
+    <Compile Include="Account\Authentication\AuthenticationFault.cs" />
+    <Compile Include="Account\Authentication\Invalidate\InvalidatePayload.cs" />
+    <Compile Include="Account\Authentication\Profile.cs" />
+    <Compile Include="Account\Authentication\Refresh\RefreshPayload.cs" />
+    <Compile Include="Account\Authentication\Refresh\RefreshResponse.cs" />
+    <Compile Include="Account\Authentication\Signout\SignoutPayload.cs" />
+    <Compile Include="Account\Authentication\Validate\ValidatePayload.cs" />
     <Compile Include="Account\Login.cs" />
     <Compile Include="Account\LoginResult.cs" />
     <Compile Include="Account\LoginMode.cs" />
     <Compile Include="Account\Player.cs" />
+    <Compile Include="FileRepository\FileRepo.cs" />
+    <Compile Include="FileRepository\OfficialProvideFile.cs" />
+    <Compile Include="InstanceManagement\CustomFileBase.cs" />
+    <Compile Include="InstanceManagement\EntirePackageFile.cs" />
+    <Compile Include="InstanceManagement\FileBase.cs" />
+    <Compile Include="InstanceManagement\OfficialFileBase.cs" />
+    <Compile Include="InstanceManagement\Instance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeUtils\ContractResolver.cs" />
     <Compile Include="SerializeUtils\JsonConverter.cs" />
