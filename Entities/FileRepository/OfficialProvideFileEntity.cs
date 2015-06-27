@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.FileRepository
 {
-    public class OfficialProvideFile
+    public class OfficialProvideFileEntity
     {
         public String Id { get; set; }
         public String FileName { get; set; }

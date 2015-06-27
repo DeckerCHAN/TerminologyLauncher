@@ -7,7 +7,7 @@ namespace TerminologyLauncher.Entities.Account.Authentication.Authenticate
     {
         public String AccessToken { get; set; }
         public String ClientToken { get; set; }
-        public List<Profile> AvailableProfiles { get; set; }
-        public List<Profile> SelectedProfile { get; set; }
+        public List<ProfileEntity> AvailableProfiles { get; set; }
+        public List<ProfileEntity> SelectedProfile { get; set; }
     }
 }

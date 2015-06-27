@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public class Instance
+    public class InstanceEntity
     {
         public String InstanceName { get; set; }
         public String Description { get; set; }

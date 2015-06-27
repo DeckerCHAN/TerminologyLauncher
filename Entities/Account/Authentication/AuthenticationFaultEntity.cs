@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.Account.Authentication
 {
-    public class AuthenticationFault
+    public class AuthenticationFaultEntity
     {
         public String Error { get; set; }
         public String ErrorMessage { get; set; }

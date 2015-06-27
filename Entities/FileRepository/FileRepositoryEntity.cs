@@ -2,8 +2,8 @@
 
 namespace TerminologyLauncher.Entities.FileRepository
 {
-    public class FileRepo
+    public class FileRepositoryEntity
     {
-        public List<OfficialProvideFile> Files { get; set; }
+        public List<OfficialProvideFileEntity> Files { get; set; }
     }
 }

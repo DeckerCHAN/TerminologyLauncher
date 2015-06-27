@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public class FileBase
+    public class FileBaseEntity
     {
         public String FileName { get; set; }
         public String LocalPath { get; set; }

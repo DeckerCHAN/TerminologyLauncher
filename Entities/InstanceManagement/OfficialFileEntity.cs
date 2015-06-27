@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public class OfficialFileBase : FileBase
+    public class OfficialFileEntity : FileBaseEntity
     {
         public String Id { get; set; }
     }

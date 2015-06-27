@@ -1,6 +1,6 @@
 ﻿namespace TerminologyLauncher.Entities.Account
 {
-    public enum LoginMode
+    public enum LoginModeEnum
     {
         OfflineMode = 0,
         OfficialMode = 1
