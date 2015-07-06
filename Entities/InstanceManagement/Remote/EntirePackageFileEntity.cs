@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TerminologyLauncher.Entities.InstanceManagement
+namespace TerminologyLauncher.Entities.InstanceManagement.Remote
 {
     public class EntirePackageFileEntity
     {

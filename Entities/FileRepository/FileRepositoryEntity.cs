@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using TerminologyLauncher.Entities.InstanceManagement.Remote;
 
 namespace TerminologyLauncher.Entities.FileRepository
 {
     public class FileRepositoryEntity
     {
-        public List<OfficialProvideFileEntity> Files { get; set; }
+        public List<OfficialFileEntity> Files { get; set; }
     }
 }

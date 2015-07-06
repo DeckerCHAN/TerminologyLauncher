@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public abstract class FileBaseEntity
+    public abstract class RemoteFileEntity : FileBaseEntity
     {
-        public String Md5 { get; set; }
-        public String LocalPath { get; set; }
+        public String DownloadLink { get; set; }
+  
     }
 }

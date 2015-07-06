@@ -62,12 +62,17 @@
     <Compile Include="Account\LoginModeEnum.cs" />
     <Compile Include="Account\PlayerEntity.cs" />
     <Compile Include="FileRepository\FileRepositoryEntity.cs" />
-    <Compile Include="FileRepository\OfficialProvideFileEntity.cs" />
-    <Compile Include="InstanceManagement\CustomFileEntity.cs" />
-    <Compile Include="InstanceManagement\EntirePackageFileEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\CustomFileEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\EntirePackageFile.cs" />
     <Compile Include="InstanceManagement\FileBaseEntity.cs" />
-    <Compile Include="InstanceManagement\OfficialFileEntity.cs" />
-    <Compile Include="InstanceManagement\InstanceEntity.cs" />
+    <Compile Include="InstanceManagement\Local\LocalInstanceEntity.cs" />
+    <Compile Include="InstanceManagement\RemoteFileEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\EntirePackageFileEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\InstanceFileSystemEntity.cs" />
+    <Compile Include="InstanceManagement\InstanceListEntity.cs" />
+    <Compile Include="InstanceManagement\InstanceBaseEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\OfficialFileEntity.cs" />
+    <Compile Include="InstanceManagement\Remote\RemoteInstanceEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeUtils\ContractResolver.cs" />
     <Compile Include="SerializeUtils\JsonConverter.cs" />
@@ -76,6 +81,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
