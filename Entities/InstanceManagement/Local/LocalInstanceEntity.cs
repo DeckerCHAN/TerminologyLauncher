@@ -9,6 +9,6 @@ namespace TerminologyLauncher.Entities.InstanceManagement.Local
 {
     public class LocalInstanceEntity : InstanceBaseEntity
     {
-
+        public String InstanceUpdateUrl { get; set; }
     }
 }
