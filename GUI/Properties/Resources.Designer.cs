@@ -63,6 +63,16 @@ namespace TerminologyLauncher.GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap default_avatar {
+            get {
+                object obj = ResourceManager.GetObject("default_avatar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_close_default {
             get {
                 object obj = ResourceManager.GetObject("icon_close_default", resourceCulture);
@@ -96,6 +106,16 @@ namespace TerminologyLauncher.GUI.Properties {
         internal static System.Drawing.Bitmap login_bg_alternate {
             get {
                 object obj = ResourceManager.GetObject("login_bg_alternate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap main_bg {
+            get {
+                object obj = ResourceManager.GetObject("main_bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

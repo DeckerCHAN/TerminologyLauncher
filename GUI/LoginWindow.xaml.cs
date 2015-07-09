@@ -48,49 +48,49 @@ namespace TerminologyLauncher.GUI
             this.IsPerservePasswordCheckBox.IsEnabled = isEnable;
         }
 
-        public Login GetLogin()
+        public LoginEntity GetLogin()
         {
-            return new Login()
+            return new LoginEntity()
             {
                 UserName = this.UsernameBox.Text,
                 Password = this.PasswordBox.Password,
-                LoginMode = (LoginMode)this.LoginModeComboBox.SelectedIndex
+                LoginMode = (LoginModeEnum)this.LoginModeComboBox.SelectedIndex
             };
         }
 
-        public void SetLogin(Login login)
+        public void SetLogin(LoginEntity login)
         {
             this.UsernameBox.Text = login.UserName;
             this.PasswordBox.Password = login.Password;
             this.LoginModeComboBox.SelectedIndex = (int)login.LoginMode;
         }
 
-        public void LoginResult(LoginResult result)
+        public void LoginResult(LoginResultEntity result)
         {
-            this.EnableAllInputs(true);
+
             switch (result)
             {
-                case Entities.Account.LoginResult.Success:
+                case Entities.Account.LoginResultEntity.Success:
                     {
                         this.Hide();
                         break;
                     }
-                case Entities.Account.LoginResult.InsufficiencyOfArguments:
+                case Entities.Account.LoginResultEntity.IncompleteOfArguments:
                     {
                         new PopupWindow(this, "失败", "参数不完整").ShowDialog();
                         break;
                     }
-                case Entities.Account.LoginResult.WrongPassword:
+                case Entities.Account.LoginResultEntity.WrongPassword:
                     {
                         new PopupWindow(this, "失败", "密码错误").ShowDialog();
                         break;
                     }
-                case Entities.Account.LoginResult.UserNotExists:
+                case Entities.Account.LoginResultEntity.UserNotExists:
                     {
                         new PopupWindow(this, "失败", "用户不存在").ShowDialog();
                         break;
                     }
-                case Entities.Account.LoginResult.NetworkTimedOut:
+                case Entities.Account.LoginResultEntity.NetworkTimedOut:
                     {
                         new PopupWindow(this, "失败", "网络超时").ShowDialog();
                         break;
@@ -101,6 +101,7 @@ namespace TerminologyLauncher.GUI
                         break;
                     }
             }
+            this.EnableAllInputs(true);
         }
 
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
