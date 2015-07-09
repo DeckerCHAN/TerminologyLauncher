@@ -16,15 +16,14 @@ InstanceManager is here to manage a single minecraft pack as instance. An exampl
       },
       "officialFiles":[
          {
-            "fileName":"1.7.10.jar",
-            "path":"/1.7.10.jar",
+            "localPath":"/1.7.10.jar",
+            "md5":"0102030405060708",            
             "provideId":"9EB84A4A0BE74317940D05B32935738F"
          }
       ],
       "customFiles":[
          {
-            "fileName":"GregTech.lang",
-            "path":"/GregTech.lang",
+            "localPath":"/GregTech.lang",
             "md5":"0102030405060708",
             "downloadPath":"https://example.com/GregTech.lang"
          }
