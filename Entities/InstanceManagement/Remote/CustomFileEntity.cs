@@ -8,6 +8,6 @@ namespace TerminologyLauncher.Entities.InstanceManagement.Remote
 {
     public class CustomFileEntity:RemoteFileEntity
     {
-        public String DownloadLink { get; set; }
+
     }
 }
