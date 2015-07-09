@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
+using TerminologyLauncher.Core;
+
 namespace TerminologyLauncher
 {
     static class Program
@@ -17,7 +17,7 @@ namespace TerminologyLauncher
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Core.Engine.GetEngine().Run();
+                Engine.GetEngine().Run();
             }
             catch (Exception ex)
             {
