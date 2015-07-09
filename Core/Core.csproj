@@ -49,19 +49,48 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine.cs" />
-    <Compile Include="LogicHandler.cs" />
+    <Compile Include="Handlers\CloseHandler.cs" />
+    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Handlers\LoginHandlers\LoginHandler.cs" />
+    <Compile Include="Handlers\LoginHandlers\LoginWindowVisibilityChangedHandler.cs" />
+    <Compile Include="Handlers\MainHandlers\MainWindowVisibilityChangedHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Auth\Auth.csproj">
+      <Project>{8aed705f-6ae6-4e34-9529-d1cd26658dcb}</Project>
+      <Name>Auth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configs\Configs.csproj">
+      <Project>{b56b5d15-8a5e-4833-83f1-6fc40a4b3b7c}</Project>
+      <Name>Configs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{D7137ADB-46BA-4E01-B550-060411DFE671}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileRepository\FileRepository.csproj">
+      <Project>{f24cd191-1f75-4c4a-8a40-78914c801148}</Project>
+      <Name>FileRepository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GUI\GUI.csproj">
       <Project>{93928797-0422-4f4e-8d6a-9a2cb04b81f8}</Project>
       <Name>GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InstanceManager\InstanceManager.csproj">
+      <Project>{810902d1-4781-4882-b234-212ab101ee20}</Project>
+      <Name>InstanceManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logging\Logging.csproj">
       <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
       <Name>Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{e0e44a8e-6a01-4e68-acd6-3c1d0d166e85}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
