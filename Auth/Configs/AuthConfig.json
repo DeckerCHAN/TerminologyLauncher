@@ -1,0 +1,9 @@
+﻿{
+	"profileFolder":"Profiles", 
+	"authServer":" https://authserver.mojang.com",
+	"authUrls":{
+		"authenticate": " https://authserver.mojang.com/authenticate"
+	  } ,
+	  "refreshInterval":"600000" 
+	 
+}
