@@ -34,7 +34,7 @@ namespace TerminologyLauncher.UnitTest
         public void DownloadZipTest()
         {
             DownloadUtils.DownloadZippedFile("http://www.colorado.edu/conflict/peace/download/peace.zip",
-                Path.Combine(new[] { Environment.CurrentDirectory, "ZIPFOLDER" }));
+                Path.Combine(new[] { Environment.CurrentDirectory, Path.Combine("ZIPFOLDER","Zepped") }));
             Assert.IsTrue(new DirectoryInfo(Path.Combine(new[] { Environment.CurrentDirectory, "ZIPFOLDER" })).Exists);
         }
 

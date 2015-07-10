@@ -15,7 +15,7 @@ namespace TerminologyLauncher.FileRepository
     {
         public String RepoUrl { get; set; }
         public Config Config { get; set; }
-        public Dictionary<String, OfficialFileEntity> OfficialProviRdeFilesRepo { get; set; }
+        private Dictionary<String, OfficialFileEntity> OfficialProviRdeFilesRepo { get; set; }
         public FileRepository()
         {
             Logger.GetLogger().Info("Initializing file repo...");
@@ -36,32 +36,40 @@ namespace TerminologyLauncher.FileRepository
             }
         }
 
-        public void GetOfficialFile(String rootPath, OfficialFileEntity officialFileBase)
+        public void ReceiveOfficialFile(DirectoryInfo packRootFolder, OfficialFileEntity officialFile)
         {
+
+
             //Try to find file at file repo 
-            if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFileBase.ProvideId))
+            if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFile.ProvideId))
             {
                 throw new Exception(String.Format("Can not find official file:{0} with id:{1} at current repo. Try to change repo or contact instance author to correct provide info."));
-                return;
             }
 
-            var officialRemoteFile = this.OfficialProviRdeFilesRepo[officialFileBase.ProvideId];
+            var officialRemoteFile = this.OfficialProviRdeFilesRepo[officialFile.ProvideId];
 
-            DownloadUtils.DownloadFile(officialRemoteFile.DownloadLink, officialFileBase.LocalPath, officialRemoteFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", officialRemoteFile.DownloadLink, rootPath + officialFileBase.LocalPath));
+            var downloadLink = officialRemoteFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, officialRemoteFile.LocalPath);
+
+            DownloadUtils.DownloadFile(downloadLink, downloadTargetPositon, officialRemoteFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
 
         }
 
-        public void GetCustomFile(String rootPath, CustomFileEntity customFileBase)
+        public void ReceiveCustomFile(DirectoryInfo packRootFolder, CustomFileEntity customFile)
         {
-            DownloadUtils.DownloadFile(customFileBase.DownloadLink, customFileBase.LocalPath, customFileBase.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", customFileBase.DownloadLink, rootPath + customFileBase.LocalPath));
+            var downloadLink = customFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, customFile.LocalPath);
+            DownloadUtils.DownloadFile(downloadLink, downloadTargetPositon, customFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
         }
 
-        public void GetEntirePackage(DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
+        public void ReceiveEntirePackage(DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
         {
-            DownloadUtils.DownloadZippedFile(entirePackageFile.DownloadPath, packRootFolder.FullName, entirePackageFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", entirePackageFile.DownloadPath, packRootFolder.FullName));
+            var downloadLink = entirePackageFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, entirePackageFile.LocalPath);
+            DownloadUtils.DownloadZippedFile(downloadLink, downloadTargetPositon, entirePackageFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
     }
 }

@@ -63,7 +63,6 @@
     <Compile Include="Account\PlayerEntity.cs" />
     <Compile Include="FileRepository\FileRepositoryEntity.cs" />
     <Compile Include="InstanceManagement\Remote\CustomFileEntity.cs" />
-    <Compile Include="InstanceManagement\Remote\EntirePackageFile.cs" />
     <Compile Include="InstanceManagement\FileBaseEntity.cs" />
     <Compile Include="InstanceManagement\Local\LocalInstanceEntity.cs" />
     <Compile Include="InstanceManagement\RemoteFileEntity.cs" />

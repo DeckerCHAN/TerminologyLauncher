@@ -17,7 +17,7 @@ namespace TerminologyLauncher.InstanceManager
         public Config Config { get; set; }
         public DirectoryInfo InstancesFolder { get; set; }
         public List<LocalInstanceEntity> Instances { get; set; }
-
+        public Process CurrentInstanceProcess { get; set; }
         public InstanceManager()
         {
             this.Config = new Config(new FileInfo("Configs/InstanceManagerConfig.json"));
@@ -37,8 +37,10 @@ namespace TerminologyLauncher.InstanceManager
             foreach (var singleInstanceFolder in folders)
             {
                 String instanceFileContent = null;
+
                 var commonInstanceFile = new FileInfo(Path.Combine(singleInstanceFolder.FullName, "Instance.json"));
                 var encryptedInstanceFile = new FileInfo(Path.Combine(singleInstanceFolder.FullName, "Instance.bin"));
+
                 if (commonInstanceFile.Exists)
                 {
                     instanceFileContent = File.ReadAllText(commonInstanceFile.FullName);
@@ -53,6 +55,8 @@ namespace TerminologyLauncher.InstanceManager
                     //This is not an instance folder, ignore this.
                     continue;
                 }
+
+                //Then add this instance to instance collection.
                 try
                 {
                     this.Instances.Add(JsonConverter.Parse<LocalInstanceEntity>(instanceFileContent));
@@ -130,12 +134,40 @@ namespace TerminologyLauncher.InstanceManager
             return local;
         }
 
-        public void LaunchAnInstance(Int32 index)
+        public Process LaunchAnInstance(Int32 index, FileRepository.FileRepository usingFileRepository)
         {
             var instance = this.Instances[index];
+            var rootFolder = this.GetInstanceRootFolder(instance.InstanceName);
+            //Buding environment
+            usingFileRepository.ReceiveEntirePackage(rootFolder, instance.FileSystem.EntirePackageFile);
+            foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
+            {
+                usingFileRepository.ReceiveOfficialFile(rootFolder, officialFileEntity);
+            }
+            foreach (var customFileEntity in instance.FileSystem.CustomFiles)
+            {
+                usingFileRepository.ReceiveCustomFile(rootFolder, customFileEntity);
+            }
 
-            Process a =new Process();
+            //Launch minecraft
+            var instanceStartInfo = new ProcessStartInfo();
+            var instanceProcess = new Process();
+            instanceStartInfo.FileName
+            instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
 
+
+            return this.CurrentInstanceProcess;
+
+        }
+
+        public DirectoryInfo GetInstanceRootFolder(String instanceName)
+        {
+            var folder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
+            if (!folder.Exists)
+            {
+                throw new DirectoryNotFoundException();
+            }
+            return folder;
         }
     }
 }
