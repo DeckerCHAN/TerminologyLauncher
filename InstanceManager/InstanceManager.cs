@@ -152,7 +152,7 @@ namespace TerminologyLauncher.InstanceManager
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo();
             var instanceProcess = new Process();
-            instanceStartInfo.FileName
+            instanceStartInfo.FileName = "java.exe";
             instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
 
 
