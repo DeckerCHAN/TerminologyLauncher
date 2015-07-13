@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GuiTest.cs" />
     <Compile Include="InstanceManagerTest.cs" />
+    <Compile Include="ProgressUnitTests.cs" />
     <Compile Include="UtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
