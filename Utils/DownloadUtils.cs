@@ -7,7 +7,7 @@ namespace TerminologyLauncher.Utils
 {
     public static class DownloadUtils
     {
-        private static readonly DirectoryInfo SystemTempFolder = new DirectoryInfo(Path.GetTempPath());
+        public static readonly DirectoryInfo SystemTempFolder = new DirectoryInfo(Path.GetTempPath());
         public static void DownloadFile(String url, String path)
         {
             var tempFileInfo = new FileInfo(Path.Combine(SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
@@ -51,5 +51,6 @@ namespace TerminologyLauncher.Utils
                 return client.DownloadString(url);
             }
         }
+
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="ProgressService\LeafNodeProgress.cs" />
     <Compile Include="ProgressService\Progress.cs" />
     <Compile Include="ProgressService\InternalNodeProgress.cs" />
+    <Compile Include="ProgressSupportedDownloadUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceUtils.cs" />
   </ItemGroup>
