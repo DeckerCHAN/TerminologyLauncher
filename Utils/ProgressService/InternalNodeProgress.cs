@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TerminologyLauncher.Utils.ProgressService
 {
@@ -20,12 +18,9 @@ namespace TerminologyLauncher.Utils.ProgressService
                 }
                 var sum = this.SubProgresses.Sum(subProgress => (subProgress.Value / 100) * subProgress.Key.Percent);
                 this.CheckPercentage(sum);
-                return sum;
+                return Math.Max(sum, base.Percent);
             }
-            set
-            {
-                throw new InvalidOperationException("Internal Node Progress calculated by sub-progress, it's not allowed to set.");
-            }
+            set { base.Percent = value; }
         }
 
         public InternalNodeProgress()
