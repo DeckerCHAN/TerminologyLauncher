@@ -129,7 +129,7 @@ namespace TerminologyLauncher.InstanceManager
                 Logger.GetLogger().Warn("Can not download background file.Using default instead.");
                 ResourceUtils.CopyEmbedFileResource("TerminologyLauncher.InstanceManager.Resources.default_bg.png", new FileInfo(local.Background));
             }
-            //TODO:encrypt instance file if request.
+            //TODO:encrypt instance file if request(next version).
             var instanceFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "Instance.json"));
             File.WriteAllText(instanceFile.FullName, JsonConverter.ConvertToJson(local));
             return local;
