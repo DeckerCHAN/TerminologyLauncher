@@ -9,6 +9,7 @@ using TerminologyLauncher.Entities.InstanceManagement.Remote;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.InstanceManager
 {
@@ -134,27 +135,55 @@ namespace TerminologyLauncher.InstanceManager
             return local;
         }
 
-        public Process LaunchAnInstance(Int32 index, FileRepository.FileRepository usingFileRepository)
+        public Process LaunchAnInstance(InternalNodeProgress progress, Int32 index, FileRepository.FileRepository usingFileRepository)
         {
             var instance = this.Instances[index];
             var rootFolder = this.GetInstanceRootFolder(instance.InstanceName);
+            var placer = new PlaceHolderReplacer();
+            placer.AddToDictionary("{root}", rootFolder.FullName);
+            placer.AddToDictionary("{java}", new Config(new FileInfo("Configs/InstanceManagerConfig.json")).GetConfig("javaPath"));
+
+
             //Buding environment
-            usingFileRepository.ReceiveEntirePackage(rootFolder, instance.FileSystem.EntirePackageFile);
-            foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
+            //Try to extract entire file.
+            usingFileRepository.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(30D), rootFolder, instance.FileSystem.EntirePackageFile);
+
+            //Try to check all official files.
+            if (instance.FileSystem.OfficialFiles.Count != 0)
             {
-                usingFileRepository.ReceiveOfficialFile(rootFolder, officialFileEntity);
+                var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
+                foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
+                {
+                    usingFileRepository.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), rootFolder, officialFileEntity);
+                }
             }
-            foreach (var customFileEntity in instance.FileSystem.CustomFiles)
+            progress.Percent = 60D;
+
+
+            //Try to check all custom files.
+            if (instance.FileSystem.CustomFiles.Count != 0)
             {
-                usingFileRepository.ReceiveCustomFile(rootFolder, customFileEntity);
+                var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
+                foreach (var customFileEntity in instance.FileSystem.CustomFiles)
+                {
+                    usingFileRepository.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), rootFolder, customFileEntity);
+                }
             }
 
+            progress.Percent = 90D;
+            //TODO:Build start argument.
+
+
+            progress.Percent = 100D;
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo();
             var instanceProcess = new Process();
-            instanceStartInfo.FileName = "java.exe";
+            instanceStartInfo.FileName = placer.ReplaceArgument(instance.StartupScript);
             instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            instanceProcess.StartInfo = instanceStartInfo;
+            instanceProcess.Start();
 
+            this.CurrentInstanceProcess = instanceProcess;
 
             return this.CurrentInstanceProcess;
 

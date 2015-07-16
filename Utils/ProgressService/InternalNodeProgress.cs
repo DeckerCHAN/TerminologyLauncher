@@ -14,7 +14,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             {
                 if (this.SubProgresses.Count == 0)
                 {
-                    return 0D;
+                    return base.Percent;
                 }
                 var sum = this.SubProgresses.Sum(subProgress => (subProgress.Value / 100) * subProgress.Key.Percent);
                 this.CheckPercentage(sum);
@@ -45,5 +45,13 @@ namespace TerminologyLauncher.Utils.ProgressService
             return progress;
         }
 
+        protected override void CheckPercentage(double percent)
+        {
+            base.CheckPercentage(percent);
+            if (this.SubProgresses.Sum(x => (x.Value)) > 100)
+            {
+                throw new InvalidOperationException(String.Format("Add {0}% will over 100%.", percent));
+            }
+        }
     }
 }

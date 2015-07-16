@@ -1,3 +1,4 @@
-﻿{ 
-	"instancesFolderPath":"Instances" 
+﻿{
+    "instancesFolderPath": "Instances",
+    "javaPath": "" 
 }

@@ -8,6 +8,7 @@ using TerminologyLauncher.Entities.InstanceManagement.Remote;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.FileRepository
 {
@@ -36,7 +37,7 @@ namespace TerminologyLauncher.FileRepository
             }
         }
 
-        public void ReceiveOfficialFile(DirectoryInfo packRootFolder, OfficialFileEntity officialFile)
+        public void ReceiveOfficialFile(LeafNodeProgress progress, DirectoryInfo packRootFolder, OfficialFileEntity officialFile)
         {
 
 
@@ -51,20 +52,20 @@ namespace TerminologyLauncher.FileRepository
             var downloadLink = officialRemoteFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(packRootFolder.FullName, officialRemoteFile.LocalPath);
 
-            DownloadUtils.DownloadFile(downloadLink, downloadTargetPositon, officialRemoteFile.Md5);
+            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialRemoteFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
 
         }
 
-        public void ReceiveCustomFile(DirectoryInfo packRootFolder, CustomFileEntity customFile)
+        public void ReceiveCustomFile(LeafNodeProgress progress, DirectoryInfo packRootFolder, CustomFileEntity customFile)
         {
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(packRootFolder.FullName, customFile.LocalPath);
-            DownloadUtils.DownloadFile(downloadLink, downloadTargetPositon, customFile.Md5);
+            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
         }
 
-        public void ReceiveEntirePackage(DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
+        public void ReceiveEntirePackage(InternalNodeProgress progress, DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
         {
             var downloadLink = entirePackageFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(packRootFolder.FullName, entirePackageFile.LocalPath);
