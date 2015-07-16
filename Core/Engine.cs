@@ -1,4 +1,5 @@
-﻿using TerminologyLauncher.Auth;
+﻿using System.Collections.Generic;
+using TerminologyLauncher.Auth;
 using TerminologyLauncher.Core.Handlers;
 using TerminologyLauncher.Core.Handlers.LoginHandlers;
 using TerminologyLauncher.Core.Handlers.MainHandlers;
@@ -27,6 +28,7 @@ namespace TerminologyLauncher.Core
         public FileRepository.FileRepository FileRepo { get; set; }
         public InstanceManager.InstanceManager InstanceManager { get; set; }
         public PlayerEntity CurrentPlayer { get; set; }
+        public List<HandlerBase> Handlers { get; set; }
         public Engine()
         {
             Logger.GetLogger().Info("Engine Initializing...");
@@ -36,7 +38,7 @@ namespace TerminologyLauncher.Core
         }
         public void Run()
         {
-            this.RegisterEvents();
+            this.RegisterFixedEvents();
             Logger.GetLogger().Info("Engine running...");
             this.UiControl.ShowLoginWindow();
             Logger.GetLogger().Info("Starting GUI...");
@@ -49,15 +51,14 @@ namespace TerminologyLauncher.Core
             Logger.GetLogger().Info("Engine shutting down...");
         }
 
-        public void RegisterEvents()
+        public void RegisterFixedEvents()
         {
             Logger.GetLogger().Debug("Engine Register events.");
             //TODO:Using IHandler interface, let handlers register their events duding ctor.
-            this.UiControl.LoginWindow.CloseButton.Click += new CloseHandler().HandleEvent;
-            this.UiControl.LoginWindow.CancleButton.Click += new CloseHandler().HandleEvent;
-            this.UiControl.LoginWindow.LoginButton.Click += new LoginHandler().HandleEvent;
-            this.UiControl.LoginWindow.IsVisibleChanged += new LoginWindowVisibilityChangedHandler().HandleEvent;
-            this.UiControl.MainWindow.IsVisibleChanged += new MainWindowVisibilityChangedHandler().HandleEvent;
+            this.Handlers.Add(new CloseHandler(this));
+            this.Handlers.Add(new LoginHandlerBase(this));
+            this.Handlers.Add(new LoginWindowVisibilityChangedHandler(this));
+            this.Handlers.Add(new MainWindowVisibilityChangedHandler(this));
         }
 
         public void InitializeComponents()

@@ -4,7 +4,7 @@ using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 {
-    public class LoginWindowVisibilityChangedHandler : IHandler
+    public class LoginWindowVisibilityChangedHandler : HandlerBase
     {
         public void HandleEvent(Object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -14,9 +14,14 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
             
         }
 
-        public void HandleEvent(object sender, EventArgs e)
+        public override void HandleEvent(object sender, EventArgs e)
         {
             throw new NotSupportedException();
+        }
+
+        public LoginWindowVisibilityChangedHandler(Engine engine) : base(engine)
+        {
+            this.Engine.UiControl.LoginWindow.IsVisibleChanged += this.HandleEvent;
         }
     }
 }
