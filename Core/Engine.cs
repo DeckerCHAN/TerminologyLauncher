@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TerminologyLauncher.Auth;
 using TerminologyLauncher.Core.Handlers;
 using TerminologyLauncher.Core.Handlers.LoginHandlers;
@@ -28,12 +29,13 @@ namespace TerminologyLauncher.Core
         public FileRepository.FileRepository FileRepo { get; set; }
         public InstanceManager.InstanceManager InstanceManager { get; set; }
         public PlayerEntity CurrentPlayer { get; set; }
-        public List<HandlerBase> Handlers { get; set; }
+        public Dictionary<String,HandlerBase> Handlers { get; set; }
         public Engine()
         {
             Logger.GetLogger().Info("Engine Initializing...");
             this.UiControl = new UiControl();
             this.AuthServer = new AuthServer();
+            this.Handlers=new Dictionary<string, HandlerBase>();
             Logger.GetLogger().Info("Engine Initialized!");
         }
         public void Run()
@@ -55,10 +57,10 @@ namespace TerminologyLauncher.Core
         {
             Logger.GetLogger().Debug("Engine Register events.");
             //TODO:Using IHandler interface, let handlers register their events duding ctor.
-            this.Handlers.Add(new CloseHandler(this));
-            this.Handlers.Add(new LoginHandlerBase(this));
-            this.Handlers.Add(new LoginWindowVisibilityChangedHandler(this));
-            this.Handlers.Add(new MainWindowVisibilityChangedHandler(this));
+            this.Handlers.Add("WINDOWS_CLOSE",new CloseHandler(this));
+            this.Handlers.Add("LOGIN",new LoginHandlerBase(this));
+            this.Handlers.Add("LOGIN_WINDOW_VISIBILITY_CHANGED",new LoginWindowVisibilityChangedHandler(this));
+            this.Handlers.Add("MAIN_WINDOW_VISIBILITY_CHANGED", new MainWindowVisibilityChangedHandler(this));
         }
 
         public void InitializeComponents()
