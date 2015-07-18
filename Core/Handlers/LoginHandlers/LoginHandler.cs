@@ -4,14 +4,14 @@ using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 {
-    public class LoginHandler : IHandler
+    public class LoginHandlerBase : HandlerBase
     {
-        private readonly Engine Engine;
-        public LoginHandler()
+        public LoginHandlerBase(Engine engine)
+            : base(engine)
         {
-            this.Engine = Engine.GetEngine();
+            this.Engine.UiControl.LoginWindow.LoginButton.Click += this.HandleEvent;
         }
-        public void HandleEvent(Object sender, EventArgs e)
+        public override void HandleEvent(Object sender, EventArgs e)
         {
             this.Engine.UiControl.LoginWindow.EnableAllInputs(false);
             var login = this.Engine.UiControl.LoginWindow.GetLogin();

@@ -4,9 +4,9 @@ using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
-    public class MainWindowVisibilityChangedHandler : IHandler
+    public class MainWindowVisibilityChangedHandler : HandlerBase
     {
-        public void HandleEvent(Object sender, EventArgs e)
+        public override void HandleEvent(Object sender, EventArgs e)
         {
             throw new NotSupportedException();
         }
@@ -30,11 +30,16 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     }
                 default:
                     {
-                        Logger.GetLogger().Error(String.Format("Handler could not handle {0} status.", window.Visibility));
+                        Logger.GetLogger().Error(String.Format("HandlerBase could not handle {0} status.", window.Visibility));
                         break;
                     }
             }
             return;
+        }
+
+        public MainWindowVisibilityChangedHandler(Engine engine) : base(engine)
+        {
+            this.Engine.UiControl.MainWindow.IsVisibleChanged += this.HandleEvent;
         }
     }
 }

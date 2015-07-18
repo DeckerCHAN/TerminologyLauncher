@@ -2,8 +2,13 @@
 
 namespace TerminologyLauncher.Core.Handlers
 {
-    public interface IHandler
+    public abstract class HandlerBase
     {
-        void HandleEvent(Object sender, EventArgs e);
+        protected Engine Engine { get; set; }
+        public HandlerBase(Engine engine)
+        {
+            this.Engine = engine;
+        }
+        public abstract void HandleEvent(Object sender, EventArgs e);
     }
 }
