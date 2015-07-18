@@ -56,6 +56,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultEntity.Success);
             this.Engine.UiControl.MainWindow.Show();
+            this.Engine.InitializeComponents();
         }
 
         private void LoginFault(LoginResultEntity reason)
