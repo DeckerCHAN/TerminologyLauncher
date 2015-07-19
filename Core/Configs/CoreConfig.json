@@ -1,0 +1,5 @@
+﻿{
+    "authConfig": "Configs/AuthConfig.json", 
+    "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
+    "fileRepositoryConfig": "Configs/FileRepositoryConfig.json"
+}

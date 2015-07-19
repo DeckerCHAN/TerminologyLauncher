@@ -17,11 +17,11 @@ namespace TerminologyLauncher.FileRepository
         public String RepoUrl { get; set; }
         public Config Config { get; set; }
         private Dictionary<String, OfficialFileEntity> OfficialProviRdeFilesRepo { get; set; }
-        public FileRepository()
+        public FileRepository(String configPath)
         {
             Logger.GetLogger().Info("Initializing file repo...");
-            this.Config = new Config(new FileInfo("Configs/FileRepositoryConfig.json"));
-            this.RepoUrl = this.Config.GetConfig("FileRepositoryUrl");
+            this.Config = new Config(new FileInfo(configPath));
+            this.RepoUrl = this.Config.GetConfig("fileRepositoryUrl");
             this.OfficialProviRdeFilesRepo = new Dictionary<string, OfficialFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
 
@@ -29,8 +29,8 @@ namespace TerminologyLauncher.FileRepository
 
         public void LoadRepo()
         {
-            DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("RepoFilePath"));
-            var repo = JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("RepoFilePath")));
+            DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
+            var repo = JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
             foreach (var officialProvideFile in repo.Files)
             {
                 this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);

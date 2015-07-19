@@ -15,10 +15,10 @@ namespace TerminologyLauncher.Auth
         public Timer RefreshTimer { get; set; }
         public PlayerEntity CurrentPlayer { get; private set; }
         public DirectoryInfo ProfileDirectoryInfo { get; set; }
-        public AuthServer()
+        public AuthServer(String authConfigPath)
         {
             Logger.GetLogger().Info("Initializing auth server.");
-            this.Config = new Config(new FileInfo("Configs/AuthConfig.json"));
+            this.Config = new Config(new FileInfo(authConfigPath));
             //Create profile folder if not exists.
             this.ProfileDirectoryInfo = new DirectoryInfo(this.Config.GetConfig("profileFolder"));
             FolderUtils.RecreateFolder(this.ProfileDirectoryInfo);
@@ -52,7 +52,7 @@ namespace TerminologyLauncher.Auth
             var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, username));
 
 
-            var myStream =TerminologyLauncher.Utils.ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.default_large.png");
+            var myStream = TerminologyLauncher.Utils.ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.default_large.png");
 
 
             var image = new FileStream(userAvatarFileInfo.FullName, FileMode.CreateNew);

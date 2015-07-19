@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.UnitTest
 {
@@ -16,7 +17,8 @@ namespace TerminologyLauncher.UnitTest
             this.Initialize();
             this.LoadInstance();
             this.AddInstance();
-           // this.RemoveInstance();
+            this.LaunchInstance();
+            // this.RemoveInstance();
         }
 
 
@@ -46,7 +48,14 @@ namespace TerminologyLauncher.UnitTest
 
         public void LaunchInstance()
         {
-            
+            var fileRepo = new FileRepository.FileRepository("Configs/FileRepositoryConfig.json");
+
+            var progress = new InternalNodeProgress();
+            progress.ProgressChanged += (i) =>
+            {
+                Console.WriteLine(progress.Percent);
+            };
+            InstanceManager.LaunchAnInstance(progress.CreateNewInternalSubProgress(100D), 0, fileRepo);
         }
     }
 }

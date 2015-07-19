@@ -1,4 +1,4 @@
 ﻿{ 
-	"FileRepositoryUrl":"http://example.com/query.json",
-	"RepoFilePath": "Repo.list" 
+	"fileRepositoryUrl":"http://example.com/query.json",
+	"repoFilePath": "Repo.list" 
 }
