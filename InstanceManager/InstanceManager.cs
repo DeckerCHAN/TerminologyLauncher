@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.InstanceManagement.Local;
@@ -76,7 +77,11 @@ namespace TerminologyLauncher.InstanceManager
         {
             var rowInstanceContent = DownloadUtils.GetFileContent(instanceUrl);
             var instance = JsonConverter.Parse<RemoteInstanceEntity>(rowInstanceContent);
-            var localInstance = this.RemoteEntityLocalize(instance, instanceUrl);
+            if (this.Instances.Any(x => (x.InstanceName.Equals(instance.InstanceName))))
+            {
+                throw new InvalidOperationException(String.Format("Instance {0} already exists!", instance.InstanceName));
+            }
+            this.RemoteEntityLocalize(instance, instanceUrl);
             //this.Instances.Add(localInstance);
             Logger.GetLogger().Debug(String.Format("Added instance:{0}", instance.InstanceName));
             this.LoadInstancesFromInstanceFolder();
