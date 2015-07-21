@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.FileRepositorySystem;
+using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.UnitTest
@@ -8,7 +10,7 @@ namespace TerminologyLauncher.UnitTest
     [TestClass]
     public class InstanceManagerTest
     {
-        private static InstanceManager.InstanceManager InstanceManager { get; set; }
+        private static InstanceManager InstanceManager { get; set; }
 
         [TestMethod]
         public void MainTest()
@@ -24,7 +26,7 @@ namespace TerminologyLauncher.UnitTest
 
         public void Initialize()
         {
-            InstanceManager = new InstanceManager.InstanceManager();
+            InstanceManager = new InstanceManager();
             Assert.IsTrue(new DirectoryInfo("Instances").Exists);
         }
 
@@ -35,7 +37,7 @@ namespace TerminologyLauncher.UnitTest
 
         public void AddInstance()
         {
-            InstanceManager.AddNewInstance("http://deckerchan.github.io/TerminologyResource/TestInstance.json");
+            InstanceManager.AddNewInstance("http://terminology.b0.upaiyun.com/PureMC.json");
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length != 0);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories()[0].GetFiles("*.png").Length == 2);
         }
@@ -48,14 +50,16 @@ namespace TerminologyLauncher.UnitTest
 
         public void LaunchInstance()
         {
-            var fileRepo = new FileRepository.FileRepository("Configs/FileRepositoryConfig.json");
+            if (InstanceManager.Config != null)
+                InstanceManager.Config.SetConfig("javaPath", "C:\\jdk1.7.0_51\\bin\\java.exe");
+            var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
 
             var progress = new InternalNodeProgress();
             progress.ProgressChanged += (i) =>
             {
                 Console.WriteLine(progress.Percent);
             };
-            InstanceManager.LaunchAnInstance(progress.CreateNewInternalSubProgress(100D), 0, fileRepo);
+            TerminologyLauncher.UnitTest.InstanceManagerTest.InstanceManager.LaunchAnInstance(progress.CreateNewInternalSubProgress(100D), 0, fileRepo);
         }
     }
 }

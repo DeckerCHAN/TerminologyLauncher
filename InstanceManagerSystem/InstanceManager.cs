@@ -8,11 +8,12 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.InstanceManagement.Local;
 using TerminologyLauncher.Entities.InstanceManagement.Remote;
 using TerminologyLauncher.Entities.SerializeUtils;
+using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
 
-namespace TerminologyLauncher.InstanceManager
+namespace TerminologyLauncher.InstanceManagerSystem
 {
     public class InstanceManager
     {
@@ -140,7 +141,7 @@ namespace TerminologyLauncher.InstanceManager
             return local;
         }
 
-        public Process LaunchAnInstance(InternalNodeProgress progress, Int32 index, FileRepository.FileRepository usingFileRepository)
+        public Process LaunchAnInstance(InternalNodeProgress progress, Int32 index, FileRepository usingFileRepository)
         {
             var instance = this.Instances[index];
             var rootFolder = this.GetInstanceRootFolder(instance.InstanceName);

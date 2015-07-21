@@ -8,8 +8,9 @@ using TerminologyLauncher.Core.Handlers.LoginHandlers;
 using TerminologyLauncher.Core.Handlers.MainHandlers;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.FileRepository;
-using TerminologyLauncher.FileRepository;
+using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core
@@ -29,8 +30,8 @@ namespace TerminologyLauncher.Core
         public Config CoreConfig { get; set; }
         public UiControl UiControl { get; set; }
         public AuthServer AuthServer { get; set; }
-        public FileRepository.FileRepository FileRepo { get; set; }
-        public InstanceManager.InstanceManager InstanceManager { get; set; }
+        public FileRepository FileRepo { get; set; }
+        public InstanceManager InstanceManager { get; set; }
         public PlayerEntity CurrentPlayer { get; set; }
         public Dictionary<String, HandlerBase> Handlers { get; set; }
         public Engine()
@@ -71,8 +72,8 @@ namespace TerminologyLauncher.Core
         public void InitializeComponents()
         {
             Logger.GetLogger().Info("Engine extra component initializing...");
-            this.FileRepo = new FileRepository.FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
-            this.InstanceManager = new InstanceManager.InstanceManager();
+            this.FileRepo = new FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
+            this.InstanceManager = new InstanceManager();
             Logger.GetLogger().Info("Engine extra component initialized...");
         }
     }

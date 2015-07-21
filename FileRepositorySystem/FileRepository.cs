@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.FileRepository;
-using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.Remote;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
 
-namespace TerminologyLauncher.FileRepository
+namespace TerminologyLauncher.FileRepositorySystem
 {
     public class FileRepository
     {

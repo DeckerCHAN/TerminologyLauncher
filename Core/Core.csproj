@@ -69,17 +69,17 @@
       <Project>{D7137ADB-46BA-4E01-B550-060411DFE671}</Project>
       <Name>Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileRepository\FileRepository.csproj">
+    <ProjectReference Include="..\FileRepositorySystem\FileRepositorySystem.csproj">
       <Project>{f24cd191-1f75-4c4a-8a40-78914c801148}</Project>
-      <Name>FileRepository</Name>
+      <Name>FileRepositorySystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\GUI\GUI.csproj">
       <Project>{93928797-0422-4f4e-8d6a-9a2cb04b81f8}</Project>
       <Name>GUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InstanceManager\InstanceManager.csproj">
+    <ProjectReference Include="..\InstanceManagerSystem\InstanceManagerSystem.csproj">
       <Project>{810902d1-4781-4882-b234-212ab101ee20}</Project>
-      <Name>InstanceManager</Name>
+      <Name>InstanceManagerSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logging\Logging.csproj">
       <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
