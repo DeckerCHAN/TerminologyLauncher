@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminologyLauncher", "TerminologyLauncher\TerminologyLauncher.csproj", "{5184F7B0-EFFC-42AD-A885-6F75660CD1B7}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{1F33BC47-34A9-41BD-B64C-A81FC8E4B110}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{E0E44A8E-6A01-4E68-ACD6-3C1D0D166E85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1D59207B-3D05-4071-89F3-7AD8A45451BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{E0E44A8E-6A01-4E68-ACD6-3C1D0D166E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0E44A8E-6A01-4E68-ACD6-3C1D0D166E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0E44A8E-6A01-4E68-ACD6-3C1D0D166E85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
