@@ -146,7 +146,7 @@ namespace TerminologyLauncher.InstanceManager
             var rootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
             placer.AddToDictionary("{root}", rootFolder.FullName);
-            placer.AddToDictionary("{java}", new Config(new FileInfo("Configs/InstanceManagerConfig.json")).GetConfig("javaPath"));
+            placer.AddToDictionary("{java}", this.Config.GetConfig("javaPath"));
 
 
             //Buding environment
@@ -177,13 +177,13 @@ namespace TerminologyLauncher.InstanceManager
 
             progress.Percent = 90D;
             //TODO:Build start argument.
-
+            var startArgument = placer.ReplaceArgument(instance.StartupScript);
 
             progress.Percent = 100D;
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo();
             var instanceProcess = new Process();
-            instanceStartInfo.FileName = placer.ReplaceArgument(instance.StartupScript);
+            instanceStartInfo.FileName = startArgument;
             instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
             instanceProcess.StartInfo = instanceStartInfo;
             instanceProcess.Start();
