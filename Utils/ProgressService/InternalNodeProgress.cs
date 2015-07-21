@@ -20,7 +20,11 @@ namespace TerminologyLauncher.Utils.ProgressService
                 this.CheckPercentage(sum);
                 return Math.Max(sum, base.Percent);
             }
-            set { base.Percent = value; }
+            set
+            {
+                base.Percent = value; 
+                this.OnProgressChanged();
+            }
         }
 
         public InternalNodeProgress()
