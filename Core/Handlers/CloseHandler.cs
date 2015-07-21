@@ -17,6 +17,7 @@ namespace TerminologyLauncher.Core.Handlers
         {
             this.Engine.UiControl.LoginWindow.CloseButton.Click += this.HandleEvent;
             this.Engine.UiControl.LoginWindow.CancleButton.Click += this.HandleEvent;
+            //TODO:Add close button to main window
         }
     }
 }
