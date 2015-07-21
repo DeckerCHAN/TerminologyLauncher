@@ -2,10 +2,10 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using TerminologyLauncher.Auth.Utils;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Logging;
+using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Auth
 {
