@@ -25,7 +25,12 @@ namespace TerminologyLauncher.Configs
                 throw new ArgumentException("Empty key is not allowed!");
             }
             this.ReadConfigsFromFile();
-            return this.ConfigJObject.SelectToken(key).ToString();
+            var value = this.ConfigJObject.SelectToken(key).ToString();
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new KeyNotFoundException(String.Format("Can not find certain value for key \"{0}\" from config file {1}.", key, this.JsonFileInfo.FullName));
+            }
+            return value;
         }
 
 
