@@ -12,7 +12,7 @@ namespace TerminologyLauncher.InstanceManager
 
         public PlaceHolderReplacer()
         {
-
+            this.Dictionary=new Dictionary<string, string>();
         }
 
         public void AddToDictionary(String key, String value)
