@@ -68,8 +68,8 @@ namespace TerminologyLauncher.FileRepository
         public void ReceiveEntirePackage(InternalNodeProgress progress, DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
         {
             var downloadLink = entirePackageFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, entirePackageFile.LocalPath);
-            DownloadUtils.DownloadZippedFile(downloadLink, downloadTargetPositon, entirePackageFile.Md5);
+            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, entirePackageFile.LocalPath ?? String.Empty);
+            ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
     }
