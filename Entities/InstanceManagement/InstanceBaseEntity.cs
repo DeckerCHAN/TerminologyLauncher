@@ -12,6 +12,6 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public String Description { get; set; }
         public String Author { get; set; }
         public InstanceFileSystemEntity FileSystem { get; set; }
-        public String StartupScript { get; set; }
+        public String StartupArguments { get; set; }
     }
 }

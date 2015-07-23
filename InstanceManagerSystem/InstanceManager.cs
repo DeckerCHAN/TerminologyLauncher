@@ -109,7 +109,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             local.Author = remote.Author;
             local.Description = remote.Description;
             local.FileSystem = remote.FileSystem;
-            local.StartupScript = remote.StartupScript;
+            local.StartupArguments = remote.StartupArguments;
             local.Version = remote.Version;
             local.InstanceUpdateUrl = instanceUrl;
             //Download icon
@@ -144,15 +144,14 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public Process LaunchAnInstance(InternalNodeProgress progress, Int32 index, FileRepository usingFileRepository)
         {
             var instance = this.Instances[index];
-            var rootFolder = this.GetInstanceRootFolder(instance.InstanceName);
+            var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
-            placer.AddToDictionary("{root}", rootFolder.FullName.Replace(" ", "\" \""));
-            placer.AddToDictionary("{java}", this.Config.GetConfig("javaPath"));
+            placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
 
 
             //Buding environment
             //Try to extract entire file.
-            usingFileRepository.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(30D), rootFolder, instance.FileSystem.EntirePackageFile);
+            usingFileRepository.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(30D), instanceRootFolder, instance.FileSystem.EntirePackageFile);
 
             //Try to check all official files.
             if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
@@ -160,7 +159,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
                 foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                 {
-                    usingFileRepository.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), rootFolder, officialFileEntity);
+                    usingFileRepository.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), instanceRootFolder, officialFileEntity);
                 }
             }
             progress.Percent = 60D;
@@ -172,20 +171,24 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
                 foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                 {
-                    usingFileRepository.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), rootFolder, customFileEntity);
+                    usingFileRepository.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), instanceRootFolder, customFileEntity);
                 }
             }
 
             progress.Percent = 90D;
             //TODO:Build start argument.
-            var startArgument = placer.ReplaceArgument(instance.StartupScript);
+            var startArgument = placer.ReplaceArgument(instance.StartupArguments);
 
             progress.Percent = 100D;
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo();
             var instanceProcess = new Process();
-            instanceStartInfo.FileName = startArgument;
+            instanceStartInfo.FileName = this.Config.GetConfig("javaPath");
+            instanceStartInfo.Arguments = startArgument;
+            instanceStartInfo.WorkingDirectory = instanceRootFolder.FullName;
             instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            instanceStartInfo.UseShellExecute = false;
+            instanceStartInfo.RedirectStandardOutput = true;
             instanceProcess.StartInfo = instanceStartInfo;
             instanceProcess.Start();
 
@@ -193,9 +196,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             return this.CurrentInstanceProcess;
 
+
         }
 
-        public DirectoryInfo GetInstanceRootFolder(String instanceName)
+        private DirectoryInfo GetInstanceRootFolder(String instanceName)
         {
             var folder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
             if (!folder.Exists)
