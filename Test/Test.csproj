@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,11 +42,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstanceMangeTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Auth\Auth.csproj">
+      <Project>{8aed705f-6ae6-4e34-9529-d1cd26658dcb}</Project>
+      <Name>Auth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configs\Configs.csproj">
+      <Project>{b56b5d15-8a5e-4833-83f1-6fc40a4b3b7c}</Project>
+      <Name>Configs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{344a31c3-d60f-4cef-819a-f49b0c93aaa8}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{d7137adb-46ba-4e01-b550-060411dfe671}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileRepositorySystem\FileRepositorySystem.csproj">
+      <Project>{f24cd191-1f75-4c4a-8a40-78914c801148}</Project>
+      <Name>FileRepositorySystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GUI\GUI.csproj">
+      <Project>{93928797-0422-4f4e-8d6a-9a2cb04b81f8}</Project>
+      <Name>GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\I18n\I18n.csproj">
+      <Project>{79fd9a83-caa1-451a-a128-da30f723c45f}</Project>
+      <Name>I18n</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InstanceManagerSystem\InstanceManagerSystem.csproj">
+      <Project>{810902d1-4781-4882-b234-212ab101ee20}</Project>
+      <Name>InstanceManagerSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TerminologyLauncher[DEBUG]\TerminologyLauncher[DEBUG].csproj">
+      <Project>{dc8d6b4b-cd4a-40c1-9574-e4fb3afe8009}</Project>
+      <Name>TerminologyLauncher[DEBUG]</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TerminologyLauncher\TerminologyLauncher.csproj">
+      <Project>{5184f7b0-effc-42ad-a885-6f75660cd1b7}</Project>
+      <Name>TerminologyLauncher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{e0e44a8e-6a01-4e68-acd6-3c1d0d166e85}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
