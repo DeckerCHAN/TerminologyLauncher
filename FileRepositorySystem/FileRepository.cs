@@ -7,7 +7,6 @@ using TerminologyLauncher.Entities.InstanceManagement.Remote;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
-using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.FileRepositorySystem
 {
@@ -24,6 +23,7 @@ namespace TerminologyLauncher.FileRepositorySystem
             this.OfficialProviRdeFilesRepo = new Dictionary<string, OfficialFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
 
+            Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
             DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
             var repo = JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
             foreach (var officialProvideFile in repo.Files)

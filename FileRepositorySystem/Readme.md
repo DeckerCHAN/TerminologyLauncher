@@ -4,13 +4,13 @@ In order to simplify instance pack delivery procedure. We design this mechanism 
 {
    "files":[
       {
-         "id":"789871A39278B871239B32",
+         "provideId":"789871A39278B871239B32",
          "fileName":"GregTech.lang",
          "md5":"0102030405060708",
          "downloadPath":"https://OfficialRepo.com/GregTech.lang"
       },
       {
-         "id":"789871A39278B871239B32",
+         "provideId":"789871A39278B871239B32",
          "fileName":"Railcraft.jar",
          "md5":"0102030405060708",
          "downloadPath":"https://OfficialRepo.com/Railcraft.jar"
