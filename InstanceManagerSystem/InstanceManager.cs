@@ -149,7 +149,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
             }
             this.Instances.RemoveAt(index);
-            Logger.GetLogger().Debug(String.Format("Removed instance by index:{0}", index));
+            Logger.GetLogger().Debug(String.Format("Removed instance by instanceIndex:{0}", index));
             this.LoadInstancesFromInstanceFolder();
         }
 
@@ -158,9 +158,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
-        public Process LaunchInstance(InternalNodeProgress progress, Int32 index)
+        public Process LaunchInstance(InternalNodeProgress progress, Int32 instanceIndex)
         {
-            var instance = this.Instances[index];
+            var instance = this.Instances[instanceIndex];
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
