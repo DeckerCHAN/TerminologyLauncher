@@ -21,9 +21,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public DirectoryInfo InstancesFolder { get; set; }
         public List<LocalInstanceEntity> Instances { get; set; }
         public Process CurrentInstanceProcess { get; set; }
-        public InstanceManager()
+        public FileRepository UsingFileRepository { get; protected set; }
+        public InstanceManager(String configPath, FileRepository usingFileRepository)
         {
-            this.Config = new Config(new FileInfo("Configs/InstanceManagerConfig.json"));
+            this.Config = new Config(new FileInfo(configPath));
+            this.UsingFileRepository = usingFileRepository;
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
             this.Instances = new List<LocalInstanceEntity>();
 
@@ -74,49 +76,38 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
         }
 
-        public void AddNewInstance(String instanceUrl)
+        public void AddInstance(String instanceUrl)
         {
+            //Download instance content
             var rowInstanceContent = DownloadUtils.GetFileContent(instanceUrl);
-            var instance = JsonConverter.Parse<RemoteInstanceEntity>(rowInstanceContent);
-            if (this.Instances.Any(x => (x.InstanceName.Equals(instance.InstanceName))))
+            var remoteInstance = JsonConverter.Parse<RemoteInstanceEntity>(rowInstanceContent);
+            //Check instance already exists
+            if (this.Instances.Any(x => (x.InstanceName.Equals(remoteInstance.InstanceName))))
             {
-                throw new InvalidOperationException(String.Format("Instance {0} already exists!", instance.InstanceName));
+                throw new InvalidOperationException(String.Format("Instance {0} already exists!", remoteInstance.InstanceName));
             }
-            this.RemoteEntityLocalize(instance, instanceUrl);
-            //this.Instances.Add(localInstance);
-            Logger.GetLogger().Debug(String.Format("Added instance:{0}", instance.InstanceName));
-            this.LoadInstancesFromInstanceFolder();
-        }
 
-        public void RemoveInstance(Int32 index)
-        {
-            Directory.Delete(Path.Combine(this.InstancesFolder.FullName, this.Instances[index].InstanceName), true);
-            this.Instances.RemoveAt(index);
-            Logger.GetLogger().Debug(String.Format("Removed instance by index:{0}", index));
-            this.LoadInstancesFromInstanceFolder();
-        }
 
-        private LocalInstanceEntity RemoteEntityLocalize(RemoteInstanceEntity remote, String instanceUrl)
-        {
+            //Localize instance
             var local = new LocalInstanceEntity();
-            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, remote.InstanceName));
+            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, remoteInstance.InstanceName));
             if (thisInstanceFolder.Exists)
             {
-                thisInstanceFolder.Delete(true);
+                FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
             }
             thisInstanceFolder.Create();
-            local.InstanceName = remote.InstanceName;
-            local.Author = remote.Author;
-            local.Description = remote.Description;
-            local.FileSystem = remote.FileSystem;
-            local.StartupArguments = remote.StartupArguments;
-            local.Version = remote.Version;
+            local.InstanceName = remoteInstance.InstanceName;
+            local.Author = remoteInstance.Author;
+            local.Description = remoteInstance.Description;
+            local.FileSystem = remoteInstance.FileSystem;
+            local.StartupArguments = remoteInstance.StartupArguments;
+            local.Version = remoteInstance.Version;
             local.InstanceUpdateUrl = instanceUrl;
             //Download icon
             local.Icon = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "icon.png")).FullName;
             try
             {
-                DownloadUtils.DownloadFile(remote.Icon, local.Icon);
+                DownloadUtils.DownloadFile(remoteInstance.Icon, local.Icon);
             }
             catch (WebException)
             {
@@ -127,7 +118,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             local.Background = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "background.png")).FullName;
             try
             {
-                DownloadUtils.DownloadFile(remote.Background, local.Background);
+                DownloadUtils.DownloadFile(remoteInstance.Background, local.Background);
 
             }
             catch (WebException)
@@ -138,10 +129,36 @@ namespace TerminologyLauncher.InstanceManagerSystem
             //TODO:encrypt instance file if request(next version).
             var instanceFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "Instance.json"));
             File.WriteAllText(instanceFile.FullName, JsonConverter.ConvertToJson(local));
-            return local;
+
+
+
+
+
+            this.Instances.Add(local);
+            Logger.GetLogger().Debug(String.Format("Added instance:{0}", remoteInstance.InstanceName));
+
         }
 
-        public Process LaunchAnInstance(InternalNodeProgress progress, Int32 index, FileRepository usingFileRepository)
+        public void RemoveInstance(Int32 index)
+        {
+            Directory.Delete(Path.Combine(this.InstancesFolder.FullName, this.Instances[index].InstanceName), true);
+
+            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, this.Instances[index].InstanceName));
+            if (thisInstanceFolder.Exists)
+            {
+                FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
+            }
+            this.Instances.RemoveAt(index);
+            Logger.GetLogger().Debug(String.Format("Removed instance by index:{0}", index));
+            this.LoadInstancesFromInstanceFolder();
+        }
+
+        public void UpdateInstance(Int32 index)
+        {
+
+        }
+
+        public Process LaunchInstance(InternalNodeProgress progress, Int32 index)
         {
             var instance = this.Instances[index];
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
@@ -151,7 +168,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             //Buding environment
             //Try to extract entire file.
-            usingFileRepository.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(30D), instanceRootFolder, instance.FileSystem.EntirePackageFile);
+            this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(30D), instance.InstanceName, instance.FileSystem.EntirePackageFile);
 
             //Try to check all official files.
             if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
@@ -159,7 +176,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
                 foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                 {
-                    usingFileRepository.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), instanceRootFolder, officialFileEntity);
+                    this.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                 }
             }
             progress.Percent = 60D;
@@ -171,7 +188,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
                 foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                 {
-                    usingFileRepository.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), instanceRootFolder, customFileEntity);
+                    this.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), instance.InstanceName, customFileEntity);
                 }
             }
 
@@ -204,9 +221,38 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var folder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
             if (!folder.Exists)
             {
-                throw new DirectoryNotFoundException();
+                throw new DirectoryNotFoundException(String.Format("Root folder for {0} not exists.", instanceName));
             }
             return folder;
+        }
+
+        private void ReceiveOfficialFile(LeafNodeProgress progress, String instanceName, OfficialFileEntity officialFile, FileRepository usingRepo)
+        {
+            //Try to find file at file repo 
+            var officialRemoteFile = usingRepo.GetOfficialFile(officialFile.ProvideId);
+
+            var downloadLink = officialRemoteFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialRemoteFile.LocalPath);
+
+            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialRemoteFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+
+        }
+
+        private void ReceiveCustomFile(LeafNodeProgress progress, String instanceName, CustomFileEntity customFile)
+        {
+            var downloadLink = customFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
+            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+        }
+
+        private void ReceiveEntirePackage(InternalNodeProgress progress, String instanceName, EntirePackageFileEntity entirePackageFile)
+        {
+            var downloadLink = entirePackageFile.DownloadLink;
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? String.Empty);
+            ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
+            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
     }
 }

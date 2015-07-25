@@ -24,52 +24,23 @@ namespace TerminologyLauncher.FileRepositorySystem
             this.OfficialProviRdeFilesRepo = new Dictionary<string, OfficialFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
 
-        }
-
-        public void LoadRepo()
-        {
             DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
             var repo = JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
             foreach (var officialProvideFile in repo.Files)
             {
                 this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
             }
+
         }
 
-        public void ReceiveOfficialFile(LeafNodeProgress progress, DirectoryInfo packRootFolder, OfficialFileEntity officialFile)
+        public OfficialFileEntity GetOfficialFile(String id)
         {
-
-
-            //Try to find file at file repo 
-            if (!this.OfficialProviRdeFilesRepo.ContainsKey(officialFile.ProvideId))
+            if (!this.OfficialProviRdeFilesRepo.ContainsKey(id))
             {
-                throw new Exception(String.Format("Can not find official file:{0} with id:{1} at current repo. Try to change repo or contact instance author to correct provide info."));
+                throw new Exception(String.Format("Can not find official file with id:{0} at current repo. Try to change repo or contact instance author to correct provide info.", id));
             }
-
-            var officialRemoteFile = this.OfficialProviRdeFilesRepo[officialFile.ProvideId];
-
-            var downloadLink = officialRemoteFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, officialRemoteFile.LocalPath);
-
-            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialRemoteFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-
+            return this.OfficialProviRdeFilesRepo[id];
         }
 
-        public void ReceiveCustomFile(LeafNodeProgress progress, DirectoryInfo packRootFolder, CustomFileEntity customFile)
-        {
-            var downloadLink = customFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, customFile.LocalPath);
-            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-        }
-
-        public void ReceiveEntirePackage(InternalNodeProgress progress, DirectoryInfo packRootFolder, EntirePackageFileEntity entirePackageFile)
-        {
-            var downloadLink = entirePackageFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(packRootFolder.FullName, entirePackageFile.LocalPath ?? String.Empty);
-            ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
-        }
     }
 }

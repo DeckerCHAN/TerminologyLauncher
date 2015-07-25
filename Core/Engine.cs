@@ -73,7 +73,7 @@ namespace TerminologyLauncher.Core
         {
             Logger.GetLogger().Info("Engine extra component initializing...");
             this.FileRepo = new FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
-            this.InstanceManager = new InstanceManager();
+            this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfig("instanceManagerConfig"), this.FileRepo);
             Logger.GetLogger().Info("Engine extra component initialized...");
         }
     }
