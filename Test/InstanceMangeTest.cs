@@ -39,19 +39,19 @@ namespace Test
 
         public static void LoadInstance()
         {
-            InstanceManager.LoadInstancesFromInstanceFolder();
+            InstanceManager.LoadInstancesFromBankFile();
         }
 
         public static void AddInstance()
         {
-            InstanceManager.AddNewInstance("http://192.168.1.103/PureMC.json");
+            InstanceManager.AddInstance("http://127.0.0.1/PureMC.json");
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length != 0);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories()[0].GetFiles("*.png").Length == 2);
         }
 
         public static void RemoveInstance()
         {
-            InstanceManager.RemoveInstance(0);
+            InstanceManager.RemoveInstance(InstanceManager.Instances[0].InstanceName);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length == 0);
         }
 
@@ -66,7 +66,7 @@ namespace Test
             {
                 Console.WriteLine(progress.Percent);
             };
-            var process = InstanceManager.LaunchAnInstance(progress.CreateNewInternalSubProgress(100D), 0);
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName);
             process.WaitForExit();
         }
     }

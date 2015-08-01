@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TerminologyLauncher.Entities.InstanceManagement.Remote
+﻿namespace TerminologyLauncher.Entities.InstanceManagement.FileSystem
 {
     public class EntirePackageFileEntity : RemoteFileEntity
     {

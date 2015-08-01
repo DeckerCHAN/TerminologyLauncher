@@ -1,4 +1,5 @@
 ﻿{
     "instancesFolderPath": "Instances",
+    "instanceBankFilePath": "Instances/Instances.json", 
     "javaPath": "" 
 }

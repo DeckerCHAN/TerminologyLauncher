@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TerminologyLauncher.Entities.InstanceManagement.Remote
+namespace TerminologyLauncher.Entities.FileRepository
 {
-    public class OfficialFileEntity : RemoteFileEntity
+    public class RepositoryFileEntity
     {
         public String ProvideId { get; set; }
+        public String Name { get; set; }
+        public String DownloadPath { get; set; }
     }
 }

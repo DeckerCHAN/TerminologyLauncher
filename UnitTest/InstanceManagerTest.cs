@@ -33,19 +33,19 @@ namespace TerminologyLauncher.UnitTest
 
         public void LoadInstance()
         {
-            InstanceManager.LoadInstancesFromInstanceFolder();
+            InstanceManager.LoadInstancesFromBankFile();
         }
 
         public void AddInstance()
         {
-            InstanceManager.AddNewInstance("http://terminology.b0.upaiyun.com/PureMC.json");
+            InstanceManager.AddInstance("http://terminology.b0.upaiyun.com/PureMC.json");
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length != 0);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories()[0].GetFiles("*.png").Length == 2);
         }
 
         public void RemoveInstance()
         {
-            InstanceManager.RemoveInstance(0);
+            InstanceManager.RemoveInstance(InstanceManager.Instances[0].InstanceName);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length == 0);
         }
 
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 Console.WriteLine(progress.Percent);
             };
-            InstanceManager.LaunchAnInstance(progress.CreateNewInternalSubProgress(100D), 0);
+            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName);
         }
     }
 }

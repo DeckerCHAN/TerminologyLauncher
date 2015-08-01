@@ -15,7 +15,7 @@ namespace TerminologyLauncher.Utils
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, tempFileInfo.FullName);
-                File.Copy(tempFileInfo.FullName, path);
+                File.Copy(tempFileInfo.FullName, path, true);
             }
         }
 

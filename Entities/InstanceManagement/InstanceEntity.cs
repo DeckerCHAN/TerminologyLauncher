@@ -1,12 +1,12 @@
 ﻿using System;
-using TerminologyLauncher.Entities.InstanceManagement.Remote;
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public abstract class InstanceBaseEntity
+    public class InstanceEntity
     {
         public String Icon { get; set; }
         public String Background { get; set; }
+        public String UpdatePath { get; set; }
         public String Version { get; set; }
         public String InstanceName { get; set; }
         public String Description { get; set; }

@@ -22,23 +22,24 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static void DeleteDirectory(string directory)
+        public static void DeleteDirectory(string path)
         {
-            string[] files = Directory.GetFiles(directory);
-            string[] dirs = Directory.GetDirectories(directory);
-
-            foreach (string file in files)
+            foreach (var directory in Directory.GetDirectories(path))
             {
-                File.SetAttributes(file, FileAttributes.Normal);
-                File.Delete(file);
+                DeleteDirectory(directory);
             }
-
-            foreach (string dir in dirs)
+            try
             {
-                DeleteDirectory(dir);
+                Directory.Delete(path, true);
             }
-
-            Directory.Delete(directory, false);
+            catch (IOException)
+            {
+                Directory.Delete(path, true);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Directory.Delete(path, true);
+            }
         }
     }
 }

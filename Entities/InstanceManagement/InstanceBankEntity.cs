@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace TerminologyLauncher.Entities.InstanceManagement
 {
-    public abstract class RemoteFileEntity : FileBaseEntity
+    public class InstanceBankEntity
     {
-        public String DownloadLink { get; set; }
-  
+        public List<InstanceInfoEntity> InstancesInfoList { get; set; }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TerminologyLauncher.Entities.InstanceManagement
+namespace TerminologyLauncher.Entities.InstanceManagement.FileSystem
 {
     public abstract class FileBaseEntity
     {
+        public String Name { get; set; }
         public String Md5 { get; set; }
         public String LocalPath { get; set; }
     }

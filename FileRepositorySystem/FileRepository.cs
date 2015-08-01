@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.FileRepository;
-using TerminologyLauncher.Entities.InstanceManagement.Remote;
+using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
@@ -14,13 +14,13 @@ namespace TerminologyLauncher.FileRepositorySystem
     {
         public String RepoUrl { get; set; }
         public Config Config { get; set; }
-        private Dictionary<String, OfficialFileEntity> OfficialProviRdeFilesRepo { get; set; }
+        private Dictionary<String, RepositoryFileEntity> OfficialProviRdeFilesRepo { get; set; }
         public FileRepository(String configPath)
         {
             Logger.GetLogger().Info("Initializing file repo...");
             this.Config = new Config(new FileInfo(configPath));
             this.RepoUrl = this.Config.GetConfig("fileRepositoryUrl");
-            this.OfficialProviRdeFilesRepo = new Dictionary<string, OfficialFileEntity>();
+            this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
 
             Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
@@ -33,7 +33,7 @@ namespace TerminologyLauncher.FileRepositorySystem
 
         }
 
-        public OfficialFileEntity GetOfficialFile(String id)
+        public RepositoryFileEntity GetOfficialFile(String id)
         {
             if (!this.OfficialProviRdeFilesRepo.ContainsKey(id))
             {

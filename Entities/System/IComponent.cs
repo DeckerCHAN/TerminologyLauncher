@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TerminologyLauncher.Entities.InstanceManagement.Remote
+namespace TerminologyLauncher.Entities.System
 {
-    public class CustomFileEntity:RemoteFileEntity
+    public interface IComponent
     {
-
+        void Standby();
+        void Shutdown();
     }
 }
