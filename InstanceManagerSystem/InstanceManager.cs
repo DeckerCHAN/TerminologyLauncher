@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using TerminologyLauncher.Configs;
+using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
@@ -165,7 +166,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             //TODO:Update instance
         }
 
-        public Process LaunchInstance(InternalNodeProgress progress, String instanceName)
+        public Process LaunchInstance(InternalNodeProgress progress, String instanceName, PlayerEntity player)
         {
             var instance =
                 JsonConverter.Parse<InstanceEntity>(
@@ -174,8 +175,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
-
-
+            placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
+            placer.AddToDictionary("{userId}", (player.PlayerId != Guid.Empty ? player.PlayerId : Guid.NewGuid()).ToString("N"));
+            placer.AddToDictionary("{token}", player.AccessToken);
             //Buding environment
             //Try to extract entire file.
             if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
@@ -183,6 +185,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
                 foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                 {
+                    entirePackageFile.LocalPath = placer.ReplaceArgument(entirePackageFile.LocalPath);
                     this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress),
                         instance.InstanceName, entirePackageFile);
                 }
@@ -194,6 +197,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
                 foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                 {
+                    officialFileEntity.LocalPath = placer.ReplaceArgument(officialFileEntity.LocalPath);
                     this.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                 }
             }
@@ -206,6 +210,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
                 foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                 {
+                    customFileEntity.LocalPath = placer.ReplaceArgument(customFileEntity.LocalPath);
                     this.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), instance.InstanceName, customFileEntity);
                 }
             }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Utils;
@@ -66,7 +67,7 @@ namespace Test
             {
                 Console.WriteLine(progress.Percent);
             };
-            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName);
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName,new PlayerEntity(){PlayerName = "DeckerCHAN"});
             process.WaitForExit();
         }
     }

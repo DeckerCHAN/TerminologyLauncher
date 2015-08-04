@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Utils.ProgressService;
@@ -60,7 +61,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 Console.WriteLine(progress.Percent);
             };
-            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName);
+            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
         }
     }
 }
