@@ -5,6 +5,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type Window}" x:Key="CustomWindowStyle">
+        <Setter Property="Background" Value="Black"></Setter>
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="ResizeMode" Value="NoResize" />
@@ -516,7 +517,7 @@
                                 Background="{TemplateBinding Background}"
                                 Padding="1"
                                 SnapsToDevicePixels="true">
-                        <ScrollViewer Style="{DynamicResource TransparendScrollBarStyle}" Focusable="false" Padding="{TemplateBinding Padding}">
+                        <ScrollViewer Style="{DynamicResource TerminologyScrollBarStyle}" Focusable="false" Padding="{TemplateBinding Padding}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>
                     </Border>
@@ -581,7 +582,7 @@
 
 
     <!-- ScrollBar -->
-    <Style x:Key="TransparendScrollBarStyle" TargetType="{x:Type ScrollViewer}">
+    <Style x:Key="TerminologyScrollBarStyle" TargetType="{x:Type ScrollViewer}">
         <Setter Property="Background" Value="{DynamicResource ScrollViewerBackground}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -960,6 +961,29 @@
                             <Setter Property="Fill" TargetName="TrianglePath" Value="{StaticResource ScrollBarSelectedThumb}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ProgressBar -->
+    <Style x:Key="TerminologyProgressBar" TargetType="{x:Type ProgressBar}">
+        <Setter Property="MinHeight" Value="15" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid>
+                        <Border Name="PART_Track" CornerRadius="1" Background="Transparent" BorderThickness="1" BorderBrush="DeepSkyBlue"></Border>
+                        <Grid Name="PART_Indicator" HorizontalAlignment="Left" >
+                            <Rectangle x:Name="prgBackground" Margin="0" RadiusX="1" RadiusY="1" Fill="Blue" >
+                            </Rectangle>
+                            <Rectangle x:Name="Highlight1" Margin="1" RadiusX="1" RadiusY="1" Opacity="1" Fill="Red">
+                            </Rectangle>
+                            <Rectangle x:Name="Highlight2" Margin="0" RadiusX="1" RadiusY="1" Opacity="1" Fill="LightBlue">
+                            </Rectangle>
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

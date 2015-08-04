@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TerminologyLauncher.UnitTest
@@ -16,6 +17,19 @@ namespace TerminologyLauncher.UnitTest
         public void MainWindowTest()
         {
             new GUI.MainWindow().ShowDialog();
+        }
+
+        [TestMethod]
+        public void ProgressWindowTest()
+        {
+            var progressWindow = new GUI.ProgressWindow();
+            progressWindow.Show();
+
+            while (true)
+            {
+                Thread.Sleep(3000);
+                progressWindow.Progress += 15D;
+            }
         }
     }
 }
