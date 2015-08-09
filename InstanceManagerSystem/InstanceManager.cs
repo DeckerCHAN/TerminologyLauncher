@@ -29,13 +29,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.Config = new Config(new FileInfo(configPath));
             this.UsingFileRepository = usingFileRepository;
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
-
-
-
             if (!this.InstancesFolder.Exists)
             {
                 this.InstancesFolder.Create();
             }
+            this.LoadInstancesFromBankFile();
         }
 
         public List<InstanceEntity> Instances
@@ -177,7 +175,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
             placer.AddToDictionary("{userId}", (player.PlayerId != Guid.Empty ? player.PlayerId : Guid.NewGuid()).ToString("N"));
-            placer.AddToDictionary("{token}", player.AccessToken);
+            placer.AddToDictionary("{token}", String.IsNullOrEmpty(player.AccessToken) ? String.Empty : player.AccessToken);
             //Buding environment
             //Try to extract entire file.
             if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
