@@ -184,7 +184,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                 {
                     entirePackageFile.LocalPath = placer.ReplaceArgument(entirePackageFile.LocalPath);
-                    this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress),
+                    this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress, String.Format("Receiving entire package {0}", entirePackageFile.Name)),
                         instance.InstanceName, entirePackageFile);
                 }
             }
@@ -196,7 +196,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                 {
                     officialFileEntity.LocalPath = placer.ReplaceArgument(officialFileEntity.LocalPath);
-                    this.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress), instance.InstanceName, officialFileEntity, this.UsingFileRepository);
+                    this.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress, String.Format("Downloading official file: {0}", officialFileEntity.Name)), instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                 }
             }
             progress.Percent = 60D;
@@ -209,7 +209,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                 {
                     customFileEntity.LocalPath = placer.ReplaceArgument(customFileEntity.LocalPath);
-                    this.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress), instance.InstanceName, customFileEntity);
+                    this.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress, String.Format("Downloading custom file: {0}", customFileEntity.Name)), instance.InstanceName, customFileEntity);
                 }
             }
 

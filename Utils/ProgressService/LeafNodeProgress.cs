@@ -1,10 +1,13 @@
-﻿namespace TerminologyLauncher.Utils.ProgressService
+﻿using System;
+
+namespace TerminologyLauncher.Utils.ProgressService
 {
     public class LeafNodeProgress : Progress
     {
-        public LeafNodeProgress()
+        public LeafNodeProgress(String taskName)
+            : base(taskName)
         {
-            this.Percent = 0;
+            base.Percent = 0;
         }
         public override double Percent
         {

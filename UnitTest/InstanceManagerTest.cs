@@ -56,12 +56,12 @@ namespace TerminologyLauncher.UnitTest
                 InstanceManager.Config.SetConfig("javaPath", "C:\\jdk1.7.0_51\\bin\\java.exe");
 
 
-            var progress = new InternalNodeProgress();
+            var progress = new InternalNodeProgress("");
             progress.ProgressChanged += (i) =>
             {
                 Console.WriteLine(progress.Percent);
             };
-            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
+            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D,""), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
         }
     }
 }

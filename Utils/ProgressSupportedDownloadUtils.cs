@@ -25,7 +25,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadZippedFile(InternalNodeProgress progress, String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress(90D), url, tempFileInfo.FullName, md5);
+            DownloadFile(progress.CreateNewLeafSubProgress(90D,"Downloading entire package."), url, tempFileInfo.FullName, md5);
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;

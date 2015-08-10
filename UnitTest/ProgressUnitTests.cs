@@ -13,20 +13,20 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void TopLevel()
         {
-            var progress = new InternalNodeProgress();
+            var progress = new InternalNodeProgress("Main task");
             progress.ProgressChanged += sender =>
             {
-                Console.WriteLine(progress.Percent);
+                Console.WriteLine("Woring on {0}:{1}", progress.TaskName, progress.Percent);
             };
             Console.WriteLine(progress.Percent);
-            this.MidLevel(progress.CreateNewInternalSubProgress(100));
+            this.MidLevel(progress.CreateNewInternalSubProgress(100D,"MidLevel"));
             Console.WriteLine("All tasks finished!");
         }
 
         public void MidLevel(InternalNodeProgress progress)
         {
-            this.BottomLevelA(progress.CreateNewLeafSubProgress(50));
-            this.BottomLevelB(progress.CreateNewLeafSubProgress(50));
+            this.BottomLevelA(progress.CreateNewLeafSubProgress(50D, "MidLevel A"));
+            this.BottomLevelB(progress.CreateNewLeafSubProgress(50, "MidLevel B"));
         }
 
         public void BottomLevelA(LeafNodeProgress progress)
@@ -61,20 +61,20 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void DownloadText()
         {
-            var progress = new InternalNodeProgress();
+            var progress = new InternalNodeProgress("Download text main task");
             progress.ProgressChanged += sender =>
             {
                 Console.WriteLine(progress.Percent);
             };
             var content =
-                ProgressSupportedDownloadUtils.GetFileContent(progress.CreateNewLeafSubProgress(100D), "http://baidu.com");
-           // Console.WriteLine(content);
+                ProgressSupportedDownloadUtils.GetFileContent(progress.CreateNewLeafSubProgress(100D, String.Format("Downloading Text")), "http://baidu.com");
+            // Console.WriteLine(content);
         }
 
         [TestMethod]
         public void DownloadFileWithProgress()
         {
-            var progress = new InternalNodeProgress();
+            var progress = new InternalNodeProgress("Download File Main Task");
             progress.ProgressChanged += sender =>
             {
                 Console.WriteLine(progress.Percent);
@@ -84,7 +84,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 downloadFile.Delete();
             }
-            ProgressSupportedDownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress(100D),
+            ProgressSupportedDownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress(100D, "Downloading test file"),
                 "http://dldir1.qq.com/qqfile/qq/QQ7.4/15197/QQ7.4.exe", downloadFile.FullName);
             downloadFile.Refresh();
             Assert.IsTrue(downloadFile.Exists);

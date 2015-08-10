@@ -62,12 +62,12 @@ namespace Test
                 InstanceManager.Config.SetConfig("javaPath", "C:\\jdk1.7.0_51\\bin\\java.exe");
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
 
-            var progress = new InternalNodeProgress();
+            var progress = new InternalNodeProgress("");
             progress.ProgressChanged += (i) =>
             {
                 Console.WriteLine(progress.Percent);
             };
-            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D), InstanceManager.Instances[0].InstanceName,new PlayerEntity(){PlayerName = "DeckerCHAN"});
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D,""), InstanceManager.Instances[0].InstanceName,new PlayerEntity(){PlayerName = "DeckerCHAN"});
             process.WaitForExit();
         }
     }
