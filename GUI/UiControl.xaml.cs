@@ -8,9 +8,11 @@ namespace TerminologyLauncher.GUI
     public partial class UiControl
     {
         public LoginWindow LoginWindow { get; set; }
+        public MainWindow MajorWindow { get; set; }
         public UiControl()
         {
-            this.MainWindow = new MainWindow();
+            this.MajorWindow = new MainWindow();
+            this.MainWindow = this.MajorWindow;
             this.LoginWindow = new LoginWindow();
         }
 

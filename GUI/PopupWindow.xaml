@@ -1,9 +1,39 @@
 ﻿<Window x:Class="TerminologyLauncher.GUI.PopupWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PopupWindow" Height="300" Width="300"
-        WindowStartupLocation="CenterOwner">
-    <Grid>
-        
-    </Grid>
+        Title="Notice" Height="230" Width="430"
+         Style="{DynamicResource CustomWindowStyle}"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+     >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#4C4EE8E8" Offset="0"/>
+                    <GradientStop Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
+
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0" ></Button>
+                </StackPanel>
+
+            </DockPanel>
+
+        </Border>
+        <Canvas DockPanel.Dock="Bottom"  >
+            <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding ContentString}" FontSize="20" Canvas.Left="21" Canvas.Top="40" TextWrapping="Wrap" Width="366" Height="83" TextAlignment="Center"></TextBlock>
+            <Button Content="确定" Style="{DynamicResource TerminologyConfigButtonStyle}" Canvas.Left="285" Canvas.Top="128" Height="30" Width="102" FontSize="16" Background="#FF77FF77"></Button>
+        </Canvas>
+    </DockPanel>
 </Window>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 
 namespace TerminologyLauncher.GUI
@@ -11,11 +12,23 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class PopupWindow : Window, INotifyPropertyChanged
     {
-        public String content { get; set; }
+        private string ContentStringValue;
+
+        public String ContentString
+        {
+            get { return this.ContentStringValue; }
+            set
+            {
+                this.ContentStringValue = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public PopupWindow(Window owner, String title, String content)
         {
             this.Owner = owner;
             this.Title = title;
+            this.ContentString = content;
             InitializeComponent();
         }
 
@@ -26,6 +39,11 @@ namespace TerminologyLauncher.GUI
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }

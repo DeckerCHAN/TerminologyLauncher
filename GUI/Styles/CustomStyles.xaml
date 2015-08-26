@@ -25,12 +25,12 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CommonTextBlockStyle" TargetType="{x:Type TextBlock}">
+    <Style x:Key="TerminologyTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
         <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
     </Style>
 
-    <Style x:Key="CommonCheckBoxStyle" TargetType="{x:Type CheckBox}">
+    <Style x:Key="TerminologyCheckBoxStyle" TargetType="{x:Type CheckBox}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
     </Style>
 
@@ -305,7 +305,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="TransparentButtonStyle">
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyButtonStyle">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
         <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
@@ -352,11 +352,21 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ConfirmTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TransparentButtonStyle}">
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyConfigButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
+        <Setter Property="Background" Value="LightGreen"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyCancelButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
+        <Setter Property="Background" Value="Tomato"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+
+    <Style x:Key="ConfirmTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="DarkSeaGreen"></Setter>
     </Style>
 
-    <Style x:Key="CancelTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TransparentButtonStyle}">
+    <Style x:Key="CancelTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="Tomato"></Setter>
     </Style>
 
@@ -388,7 +398,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TransparentCkeckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CommonCheckBoxStyle}">
+    <Style x:Key="TransparentCkeckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource TerminologyCheckBoxStyle}">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"></Setter>
         <Setter Property="Background" Value="{StaticResource CommonElementBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource CheckBoxStroke}"/>
