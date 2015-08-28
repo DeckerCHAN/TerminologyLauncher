@@ -21,8 +21,8 @@ namespace TerminologyLauncher
             }
             catch (Exception ex)
             {
-                Directory.CreateDirectory("crash-report");
-                FileInfo report =new FileInfo(String.Format("crash-report\\crash-report-{0}.report",DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")));
+                Directory.CreateDirectory("Crash-report");
+                var report =new FileInfo(String.Format("Crash-report\\crash-report-{0}.report",DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")));
                 File.WriteAllText(report.FullName, ex.ToString());
                 Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
                 Console.WriteLine("!!!CRASH!!!More detail at {0}", report.FullName);
