@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using TerminologyLauncher.GUI;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
@@ -14,7 +15,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
             Logger.GetLogger().Debug("Handle main show or hide at here.");
-            var window = (Window)sender;
+            var window = (MainWindow)this.Engine.UiControl.MainWindow;
             Logger.GetLogger().Debug(String.Format("Main window changed status to {0}", window.Visibility));
             //TODO:clear or load data at here.
             switch (window.Visibility)
@@ -26,6 +27,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     }
                 case Visibility.Visible:
                     {
+                        this.Engine.UiControl.MajorWindow.InstanceList = this.Engine.InstanceManager.InstancesWithLocalImageSource.ToArray();
                         break;
                     }
                 default:
@@ -37,7 +39,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             return;
         }
 
-        public MainWindowVisibilityChangedHandler(Engine engine) : base(engine)
+        public MainWindowVisibilityChangedHandler(Engine engine)
+            : base(engine)
         {
             this.Engine.UiControl.MainWindow.IsVisibleChanged += this.HandleEvent;
         }

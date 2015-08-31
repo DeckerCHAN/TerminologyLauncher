@@ -55,8 +55,8 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         private void LoginSuccess()
         {
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultEntity.Success);
+            this.Engine.PostInitializeComponents();
             this.Engine.UiControl.MainWindow.Show();
-            this.Engine.InitializeComponents();
         }
 
         private void LoginFault(LoginResultEntity reason)

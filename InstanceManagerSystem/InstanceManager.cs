@@ -44,6 +44,25 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
         }
 
+        public List<InstanceEntity> InstancesWithLocalImageSource
+        {
+            get
+            {
+                var instances = this.Instances;
+                foreach (var instanceEntity in instances)
+                {
+                    instanceEntity.Icon = this.GetIconImage(instanceEntity.InstanceName);
+                    instanceEntity.Background = this.GetBackgroundImage(instanceEntity.InstanceName);
+                }
+                return instances;
+            }
+        }
+
+        public InstanceEntity[] InstancesArray
+        {
+            get { return this.Instances.ToArray(); }
+        }
+
         public void LoadInstancesFromBankFile()
         {
 
@@ -131,32 +150,30 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public void RemoveInstance(String instanceName)
         {
             this.LoadInstancesFromBankFile();
-            var targetInstance = this.Instances.First(x => (x.InstanceName.Equals(instanceName)));
 
-            Directory.Delete(Path.Combine(this.InstancesFolder.FullName, targetInstance.InstanceName), true);
-
-            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, targetInstance.InstanceName));
+            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
             if (thisInstanceFolder.Exists)
             {
                 FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
             }
-            this.Instances.Remove(targetInstance);
-            Logger.GetLogger().Debug(String.Format("Removed instance by instance name:{0}", targetInstance.InstanceName));
+            this.InstanceBank.InstancesInfoList.Remove(
+                this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName))));
+            Logger.GetLogger().Debug(String.Format("Removed instance by instance name:{0}", instanceName));
             this.SaveInstancesToBankFile();
         }
 
-        public FileStream GetIconImage(String instanceName)
+        public String GetIconImage(String instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
             var imagePath = Path.Combine(folderPath, "icon.png");
-            return File.OpenRead(new FileInfo(imagePath).FullName);
+            return new FileInfo(imagePath).FullName;
         }
 
-        public FileStream GetBackgourndImage(String instanceName)
+        public String GetBackgroundImage(String instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
             var imagePath = Path.Combine(folderPath, "background.png");
-            return File.OpenRead(new FileInfo(imagePath).FullName);
+            return new FileInfo(imagePath).FullName;
         }
 
         public void UpdateInstance(String instanceName)

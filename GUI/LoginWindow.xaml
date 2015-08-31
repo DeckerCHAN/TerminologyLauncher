@@ -35,8 +35,7 @@
 
         </Border>
         <Canvas DockPanel.Dock="Bottom"  >
-            <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right">
-            </TextBlock>
+            <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBlock Name="AccountPasswordTitle" TextWrapping="Wrap" Text="密码:" Canvas.Right="330" Canvas.Top="125" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TransparentTextBox}"/>
             <PasswordBox  x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}"/>

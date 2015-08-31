@@ -50,10 +50,13 @@
   <ItemGroup>
     <Compile Include="Engine.cs" />
     <Compile Include="Handlers\CloseHandler.cs" />
-    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Handlers\HandlerBase.cs" />
     <Compile Include="Handlers\LoginHandlers\LoginHandler.cs" />
     <Compile Include="Handlers\LoginHandlers\LoginWindowVisibilityChangedHandler.cs" />
+    <Compile Include="Handlers\MainHandlers\AddInstanceHandler.cs" />
+    <Compile Include="Handlers\MainHandlers\LaunchInstanceHandler.cs" />
     <Compile Include="Handlers\MainHandlers\MainWindowVisibilityChangedHandler.cs" />
+    <Compile Include="Handlers\MainHandlers\RemoveInstanceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

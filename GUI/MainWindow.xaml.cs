@@ -18,22 +18,12 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public sealed partial class MainWindow : INotifyPropertyChanged
     {
-        private ImageSource BackgroundImageSourceValue;
-        private ImageSource PlayerAvatarImageSourceValue;
-        private Instances[] InstanceListValue;
+        private String BackgroundImageSourceValue;
+        private String PlayerAvatarImageSourceValue;
+        private InstanceEntity[] InstanceListValue;
+        private InstanceEntity SelectInstanceValue;
 
-
-        public ImageSource BackgroundImageSource
-        {
-            get { return this.BackgroundImageSourceValue; }
-            set
-            {
-                this.BackgroundImageSourceValue = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public ImageSource PlayerAvatarImageSource
+        public String PlayerAvatarImageSource
         {
             get { return this.PlayerAvatarImageSourceValue; }
             set
@@ -43,7 +33,17 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public Instances[] InstanceList
+        public InstanceEntity SelectInstance
+        {
+            get { return this.SelectInstanceValue; }
+            set
+            {
+                this.SelectInstanceValue = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public InstanceEntity[] InstanceList
         {
             get { return this.InstanceListValue; }
             set
@@ -56,8 +56,8 @@ namespace TerminologyLauncher.GUI
         public MainWindow()
         {
             this.InitializeComponent();
-            this.PlayerAvatarImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/default_avatar.png"));
-            this.BackgroundImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"));
+            //this.PlayerAvatarImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/default_avatar.png"));
+            //this.BackgroundImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"));
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -77,7 +77,15 @@ namespace TerminologyLauncher.GUI
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Logging.Logger.GetLogger().Debug(e.AddedItems[0].ToString());
+            try
+            {
+                var instance = (InstanceEntity)e.AddedItems[0];
+              //  this.BackgroundImageSource
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
         }
 
         private void InstanceAddButton_Click(object sender, RoutedEventArgs e)

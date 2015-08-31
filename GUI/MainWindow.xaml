@@ -1,6 +1,7 @@
 ﻿<Window x:Class="TerminologyLauncher.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cc="TerminologyLauncher.GUI"
         Title="MainWindow" Width="1194" Height="718" 
         Style="{DynamicResource CustomWindowStyle}"
         WindowStartupLocation="CenterScreen"
@@ -14,9 +15,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
     <DockPanel>
         <DockPanel.Background>
-            <ImageBrush Opacity="0.5" ImageSource="{Binding BackgroundImageSource}" Stretch="UniformToFill"></ImageBrush>
+            <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay}" Stretch="UniformToFill"></ImageBrush>
         </DockPanel.Background>
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
@@ -65,6 +67,7 @@
                     Style="{DynamicResource TransparentListBox}" 
                     ItemContainerStyle="{DynamicResource TransparentListBoxItem}" 
                     SelectionMode="Single"
+                    SelectedItem="{Binding SelectInstance,Mode=OneWayToSource}"
                     Background="Transparent" 
                     FontSize="16" 
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
@@ -72,11 +75,11 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel  Height="60">
-                                    <Image Height="50" DockPanel.Dock="Left" Source="pack://application:,,,/TerminologyLauncher.GUI;component/Resources/default_avatar.png" Margin="10,0,0,0"></Image>
-                                    <Border Margin="15,0,0,0">
+                                    <Image Height="50" DockPanel.Dock="Left" Source="{Binding Icon}"></Image>
+                                    <Border Margin="5,0,0,0">
                                         <DockPanel>
-                                            <TextBlock  DockPanel.Dock="Top" FontFamily="SimHei" FontSize="20" FontWeight="Bold" Margin="0,8,0,0">asdadsaasdsdsad</TextBlock>
-                                            <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="18">asdadsa</TextBlock>
+                                            <TextBlock  DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18" FontWeight="Bold" Margin="0,8,0,0" Text="{Binding Path=InstanceName,Mode=OneWay}"></TextBlock>
+                                            <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="16" Text="{Binding Path=Author,Mode=OneWay}"></TextBlock>
                                         </DockPanel>
                                     </Border>
                                 </DockPanel>
@@ -95,7 +98,7 @@
                 </Canvas>
             </Border>
             <Border Background="#333333" Width="866" Height="478"  Canvas.Left="285" Canvas.Top="164"/>
-            <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding ElementName=InstanceListBox,Path=SelectedItem,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
+            <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
 
             </TextBlock>
 

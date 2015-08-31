@@ -45,5 +45,10 @@ namespace TerminologyLauncher.GUI
         {
             this.DragMove();
         }
+
+        private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

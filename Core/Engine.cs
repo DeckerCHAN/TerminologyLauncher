@@ -46,7 +46,7 @@ namespace TerminologyLauncher.Core
         }
         public void Run()
         {
-            this.RegisterFixedEvents();
+            this.RegisterHandlers();
             Logger.GetLogger().Info("Engine running...");
             this.UiControl.ShowLoginWindow();
             Logger.GetLogger().Info("Starting GUI...");
@@ -59,7 +59,7 @@ namespace TerminologyLauncher.Core
             Logger.GetLogger().Info("Engine shutting down...");
         }
 
-        public void RegisterFixedEvents()
+        public void RegisterHandlers()
         {
             Logger.GetLogger().Debug("Engine Register events.");
             //DONE:Using IHandler interface, let handlers register their events duding ctor.
@@ -67,9 +67,11 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("LOGIN", new LoginHandlerBase(this));
             this.Handlers.Add("LOGIN_WINDOW_VISIBILITY_CHANGED", new LoginWindowVisibilityChangedHandler(this));
             this.Handlers.Add("MAIN_WINDOW_VISIBILITY_CHANGED", new MainWindowVisibilityChangedHandler(this));
+            this.Handlers.Add("ADD_NEW_INSTANCE", new AddInstanceHandler(this));
+            this.Handlers.Add("REMOVE_AN_INSTANCE",new RemoveInstanceHandler(this));
         }
 
-        public void InitializeComponents()
+        public void PostInitializeComponents()
         {
             Logger.GetLogger().Info("Engine extra component initializing...");
             this.FileRepo = new FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
