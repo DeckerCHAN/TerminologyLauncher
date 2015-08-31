@@ -15,52 +15,52 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <DockPanel>
-        <DockPanel.Background>
+    <Border CornerRadius="8,8,0,0">
+        <Border.Background>
             <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay}" Stretch="UniformToFill"></ImageBrush>
-        </DockPanel.Background>
-        <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
-            <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#4C4EE8E8" Offset="0"/>
-                    <GradientStop Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-            <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
+        </Border.Background>
+        <DockPanel>
+            <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#4C4EE8E8" Offset="0"/>
+                        <GradientStop Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" ><Run Text="Terminology Lanucher "/></TextBlock>
-                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
-                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0" ></Button>
-                </StackPanel>
+                    <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" ><Run Text="Terminology Lanucher "/></TextBlock>
+                    <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0" ></Button>
+                    </StackPanel>
 
-            </DockPanel>
+                </DockPanel>
 
-        </Border>
-        <Canvas DockPanel.Dock="Bottom" Opacity="0.95">
-            <Border Background="#333333" Width="230" Height="578" CornerRadius="12" Canvas.Left="24" Canvas.Top="64" >
-                <Border.Padding>
-                    <Thickness>5,9</Thickness>
-                </Border.Padding>
-                
-                <DockPanel>
-                    <Grid DockPanel.Dock="Bottom" Height="80" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="5*"/>
-                        </Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                            <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Click="InstanceAddButton_Click"></Button>
-                        </Border>
-                        <Border Grid.Column="0" Grid.Row="1" Padding="4">
-                            <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" ></Button>
-                        </Border>
-                    </Grid>
+            </Border>
+            <Canvas DockPanel.Dock="Bottom" Opacity="0.95">
+                <Border Background="#333333" Width="230" Height="578" CornerRadius="12" Canvas.Left="24" Canvas.Top="64" >
+                    <Border.Padding>
+                        <Thickness>5,9</Thickness>
+                    </Border.Padding>
 
-                    <ListBox
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Bottom" Height="80" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height="5*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Column="0" Grid.Row="0" Padding="4">
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Click="InstanceAddButton_Click"></Button>
+                            </Border>
+                            <Border Grid.Column="0" Grid.Row="1" Padding="4">
+                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" ></Button>
+                            </Border>
+                        </Grid>
+
+                        <ListBox
                     DockPanel.Dock="Top"
                     Name="InstanceListBox"
                     SelectionChanged="Selector_OnSelectionChanged" 
@@ -72,37 +72,39 @@
                     FontSize="16" 
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                     ItemsSource="{Binding InstanceList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel  Height="60">
-                                    <Image Height="50" DockPanel.Dock="Left" Source="{Binding Icon}"></Image>
-                                    <Border Margin="5,0,0,0">
-                                        <DockPanel>
-                                            <TextBlock  DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18" FontWeight="Bold" Margin="0,8,0,0" Text="{Binding Path=InstanceName,Mode=OneWay}"></TextBlock>
-                                            <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="16" Text="{Binding Path=Author,Mode=OneWay}"></TextBlock>
-                                        </DockPanel>
-                                    </Border>
-                                </DockPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-             
-                </DockPanel>
-                 </Border>
-            <Border Background="#333333" Width="262" Height="70"  Canvas.Left="889" Canvas.Top="64">
-                <Canvas>
-                    <Image Source="{Binding PlayerAvatarImageSource}" Width="86" Height="50" Canvas.Left="10" Canvas.Top="10"></Image>
-                    <TextBlock Text="DeckerCHAN" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="17" Canvas.Left="105" Canvas.Top="10" FontWeight="Bold"></TextBlock>
-                    <TextBlock Text="离线模式" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="13" Canvas.Left="105" Canvas.Top="37"></TextBlock>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel  Height="60">
+                                        <Image Height="50" DockPanel.Dock="Left" Source="{Binding Icon}"></Image>
+                                        <Border Margin="5,0,0,0">
+                                            <DockPanel>
+                                                <TextBlock  DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18" FontWeight="Bold" Margin="0,8,0,0" Text="{Binding Path=InstanceName,Mode=OneWay}"></TextBlock>
+                                                <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="16" Text="{Binding Path=Author,Mode=OneWay}"></TextBlock>
+                                            </DockPanel>
+                                        </Border>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
-                </Canvas>
-            </Border>
-            <Border Background="#333333" Width="866" Height="478"  Canvas.Left="285" Canvas.Top="164"/>
-            <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
+                    </DockPanel>
+                </Border>
+                <Border Background="#333333" Width="262" Height="70"  Canvas.Left="889" Canvas.Top="64">
+                    <Canvas>
+                        <Image Source="{Binding PlayerAvatarImageSource}" Width="86" Height="50" Canvas.Left="10" Canvas.Top="10"></Image>
+                        <TextBlock Text="DeckerCHAN" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="17" Canvas.Left="105" Canvas.Top="10" FontWeight="Bold"></TextBlock>
+                        <TextBlock Text="离线模式" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="13" Canvas.Left="105" Canvas.Top="37"></TextBlock>
 
-            </TextBlock>
+                    </Canvas>
+                </Border>
+                <Border Background="#333333" Width="866" Height="478"  Canvas.Left="285" Canvas.Top="164"/>
+                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
 
-        </Canvas>
-    </DockPanel>
+                </TextBlock>
+
+            </Canvas>
+        </DockPanel>
+    </Border>
+
 
 </Window>
