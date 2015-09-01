@@ -67,7 +67,7 @@
     <Content Include="Configs\AuthConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\default_large.png" />
+    <EmbeddedResource Include="Resources\Avatar.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

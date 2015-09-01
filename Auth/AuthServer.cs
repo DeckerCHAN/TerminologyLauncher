@@ -49,10 +49,10 @@ namespace TerminologyLauncher.Auth
                 new DirectoryInfo(Path.Combine(this.ProfileDirectoryInfo.FullName, username));
 
             FolderUtils.RecreateFolder(userProfileFolder);
-            var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, username));
+            var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, username + ".png"));
 
 
-            var myStream = TerminologyLauncher.Utils.ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.default_large.png");
+            var myStream = ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.Avatar.png");
 
 
             var image = new FileStream(userAvatarFileInfo.FullName, FileMode.CreateNew);
@@ -63,7 +63,7 @@ namespace TerminologyLauncher.Auth
             this.CurrentPlayer = new PlayerEntity()
             {
                 PlayerName = username,
-                LoginMode = LoginModeEnum.OfficialMode,
+                LoginMode = LoginModeEnum.OfflineMode,
                 PlayerAvatarImagePath = userAvatarFileInfo.FullName
 
             };

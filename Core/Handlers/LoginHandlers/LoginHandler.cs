@@ -56,6 +56,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultEntity.Success);
             this.Engine.PostInitializeComponents();
+            this.Engine.UiControl.MajorWindow.Player = this.Engine.AuthServer.CurrentPlayer;
             this.Engine.UiControl.MainWindow.Show();
         }
 

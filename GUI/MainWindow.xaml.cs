@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Annotations;
 
@@ -18,20 +21,21 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public sealed partial class MainWindow : INotifyPropertyChanged
     {
-        private String BackgroundImageSourceValue;
-        private String PlayerAvatarImageSourceValue;
         private InstanceEntity[] InstanceListValue;
         private InstanceEntity SelectInstanceValue;
+        private PlayerEntity PlayerValue;
 
-        public String PlayerAvatarImageSource
+
+        public PlayerEntity Player
         {
-            get { return this.PlayerAvatarImageSourceValue; }
+            get { return this.PlayerValue; }
             set
             {
-                this.PlayerAvatarImageSourceValue = value;
+                this.PlayerValue = value;
                 this.OnPropertyChanged();
             }
         }
+
 
         public InstanceEntity SelectInstance
         {
@@ -56,8 +60,6 @@ namespace TerminologyLauncher.GUI
         public MainWindow()
         {
             this.InitializeComponent();
-            //this.PlayerAvatarImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/default_avatar.png"));
-            //this.BackgroundImageSource = new BitmapImage(new Uri(@"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"));
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -80,7 +82,7 @@ namespace TerminologyLauncher.GUI
             try
             {
                 var instance = (InstanceEntity)e.AddedItems[0];
-              //  this.BackgroundImageSource
+                //  this.BackgroundImageSource
             }
             catch (Exception)
             {
@@ -91,6 +93,27 @@ namespace TerminologyLauncher.GUI
         private void InstanceAddButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+    }
+
+    public class LoginModeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            switch ((LoginModeEnum)value)
+            {
+                case LoginModeEnum.OfficialMode:
+                    return "正版模式";
+                case LoginModeEnum.OfflineMode:
+                    return "离线模式";
+                default:
+                    throw new Exception(String.Format("Converter not support {0}", value));
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
