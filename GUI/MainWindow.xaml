@@ -15,7 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Border CornerRadius="8,8,0,0">
+    <Border CornerRadius="8">
         <Border.Background>
             <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay}" Stretch="UniformToFill"></ImageBrush>
         </Border.Background>
