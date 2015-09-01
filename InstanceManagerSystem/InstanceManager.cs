@@ -87,11 +87,25 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public void AddInstance(String instanceUrl)
         {
+            Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
             this.LoadInstancesFromBankFile();
             //Download instance content
             var rowInstanceContent = DownloadUtils.GetFileContent(instanceUrl);
 
             var instance = JsonConverter.Parse<InstanceEntity>(rowInstanceContent);
+
+            if (String.IsNullOrEmpty(instance.InstanceName))
+            {
+                Logger.GetLogger().Error("Missing instance name");
+                throw new MissingFieldException();
+            }
+
+            if (String.IsNullOrEmpty(instance.UpdatePath))
+            {
+                Logger.GetLogger().Error("Missing instance update path");
+                throw new MissingFieldException();
+            }
+
             var instanceInfo = new InstanceInfoEntity();
 
             //Check instance already exists
@@ -187,8 +201,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(
                         this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName))).FilePath));
+           
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
+           
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
             placer.AddToDictionary("{userId}", (player.PlayerId != Guid.Empty ? player.PlayerId : Guid.NewGuid()).ToString("N"));
