@@ -45,9 +45,6 @@
 
                     <DockPanel>
                         <Grid DockPanel.Dock="Bottom" Height="80" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="5*"/>
                                 <RowDefinition Height="5*"/>
