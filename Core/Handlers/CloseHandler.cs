@@ -3,7 +3,7 @@ using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers
 {
-    public class CloseHandler:HandlerBase
+    public class CloseHandler : HandlerBase
     {
         public override void HandleEvent(object sender, EventArgs e)
         {
@@ -13,11 +13,12 @@ namespace TerminologyLauncher.Core.Handlers
             Engine.GetEngine().Exit();
         }
 
-        public CloseHandler(Engine engine) : base(engine)
+        public CloseHandler(Engine engine)
+            : base(engine)
         {
             this.Engine.UiControl.LoginWindow.CloseButton.Click += this.HandleEvent;
             this.Engine.UiControl.LoginWindow.CancleButton.Click += this.HandleEvent;
-            //TODO:Add close button to main window
+            this.Engine.UiControl.MajorWindow.CloseButton.Click += this.HandleEvent;
         }
     }
 }
