@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -21,7 +22,7 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public sealed partial class MainWindow : INotifyPropertyChanged
     {
-        private InstanceEntity[] InstanceListValue;
+        private ObservableCollection<InstanceEntity> InstanceListValue;
         private InstanceEntity SelectInstanceValue;
         private PlayerEntity PlayerValue;
 
@@ -47,7 +48,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public InstanceEntity[] InstanceList
+        public ObservableCollection<InstanceEntity> InstanceList
         {
             get { return this.InstanceListValue; }
             set
@@ -94,21 +95,25 @@ namespace TerminologyLauncher.GUI
         {
 
         }
+
+        private void InstanceRemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
-    public class LoginModeConverter : IValueConverter
+    public class ImageInMemoryConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((LoginModeEnum)value)
-            {
-                case LoginModeEnum.OfficialMode:
-                    return "正版模式";
-                case LoginModeEnum.OfflineMode:
-                    return "离线模式";
-                default:
-                    throw new Exception(String.Format("Converter not support {0}", value));
-            }
+            var imagePath = (String) value;
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(imagePath);
+            image.EndInit();
+            return image;
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

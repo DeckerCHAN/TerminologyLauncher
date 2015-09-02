@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
+using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.Logging;
 
@@ -26,8 +28,10 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         break;
                     }
                 case Visibility.Visible:
-                    {
-                        this.Engine.UiControl.MajorWindow.InstanceList = this.Engine.InstanceManager.InstancesWithLocalImageSource.ToArray();
+                {
+                    this.Engine.UiControl.MajorWindow.InstanceList =
+                                  new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+
                         break;
                     }
                 default:

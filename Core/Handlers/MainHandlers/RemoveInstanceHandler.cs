@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TerminologyLauncher.Entities.InstanceManagement;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
@@ -17,8 +19,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         public override void HandleEvent(object sender, EventArgs e)
         {
             var instanceName = this.Engine.UiControl.MajorWindow.SelectInstance.InstanceName;
+            //Initially, remove from UI to prevent cross thread 
             this.Engine.InstanceManager.RemoveInstance(instanceName);
-            this.Engine.UiControl.MajorWindow.InstanceList = this.Engine.InstanceManager.InstancesWithLocalImageSource.ToArray();
+            this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
         }
     }
 }

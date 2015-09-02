@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -42,12 +43,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             catch (FormatException)
             {
-                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Wrong instance format!").ShowDialog();
+                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Wrong instance json format!").ShowDialog();
                 return;
+            }
+            catch (MissingFieldException)
+            {
+                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Some critical field is missing. Unable to add this instance.!").ShowDialog();
+                return;
+         
             }
             finally
             {
-                this.Engine.UiControl.MajorWindow.InstanceList = this.Engine.InstanceManager.InstancesWithLocalImageSource.ToArray();
+                this.Engine.UiControl.MajorWindow.InstanceList =
+                    new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
 
             }
 

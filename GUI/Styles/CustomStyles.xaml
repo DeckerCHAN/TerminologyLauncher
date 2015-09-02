@@ -527,7 +527,7 @@
                                 Background="{TemplateBinding Background}"
                                 Padding="1"
                                 SnapsToDevicePixels="true">
-                        <ScrollViewer Style="{DynamicResource TerminologyScrollBarStyle}" Focusable="false" Padding="{TemplateBinding Padding}">
+                        <ScrollViewer Style="{DynamicResource TerminologyScrollViewerStyle}" Focusable="false" Padding="{TemplateBinding Padding}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>
                     </Border>
@@ -592,7 +592,7 @@
 
 
     <!-- ScrollBar -->
-    <Style x:Key="TerminologyScrollBarStyle" TargetType="{x:Type ScrollViewer}">
+    <Style x:Key="TerminologyScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
         <Setter Property="Background" Value="{DynamicResource ScrollViewerBackground}"/>
         <Setter Property="Template">
             <Setter.Value>
