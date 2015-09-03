@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-         </Window.Resources>
+    </Window.Resources>
     <Border CornerRadius="8">
         <Border.Resources>
             <gui:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
@@ -54,7 +54,7 @@
                                 <RowDefinition Height="5*"/>
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Foreground="DarkSlateGray" Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
                                 <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>
@@ -123,25 +123,79 @@
                     </Canvas>
                 </Border>
                 <Border Background="#333333" Width="866" Height="478"  Canvas.Left="285" Canvas.Top="164">
-                    <ScrollViewer Style="{DynamicResource TerminologyScrollViewerStyle}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                        <StackPanel Orientation="Vertical" Width="auto" Height="auto">
-                            <StackPanel.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectInstance}">
-                                            <DataTrigger.Value>
-                                                <x:Null></x:Null>
-                                            </DataTrigger.Value>
-                                            <DataTrigger.Setters><Setter Property="ScrollViewer.Visibility" Value="Hidden"></Setter></DataTrigger.Setters>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                                <TextBlock FontSize="20" Text="Pack Name:" Style="{DynamicResource TerminologyTextBlockStyle}"></TextBlock>
-                               <TextBlock FontSize="20" Text="Describe:" Style="{DynamicResource TerminologyTextBlockStyle}"></TextBlock>
+                    <Grid>
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectInstance}">
+                                        <DataTrigger.Value>
+                                            <x:Null></x:Null>
+                                        </DataTrigger.Value>
+                                        <DataTrigger.Setters>
+                                            <Setter Property="ScrollViewer.Visibility" Value="Hidden"></Setter>
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <ScrollViewer VerticalAlignment="Stretch"
+                                      Grid.Column="0"
+                                      Grid.Row="0"
+                                      Style="{DynamicResource TerminologyScrollViewerStyle}"
+                                      HorizontalScrollBarVisibility="Disabled" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel Orientation="Vertical">
+                       
+                                <StackPanel.Resources>
+                                    <Style x:Key="DetailTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
+                                        <Setter Property="Margin" Value="15,10,0,20"></Setter>
+                                        <Setter Property="FontSize" Value="22"></Setter>
+                                    </Style>
+
+                                    <Style x:Key="DetailContentTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
+                                        <Setter Property="Margin" Value="30,0,0,5"></Setter>
+                                        <Setter Property="FontSize" Value="16"></Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="Pack Name:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock 
+                                    Text="{Binding SelectInstance.InstanceName}" 
+                                    Style="{DynamicResource DetailContentTextBlockStyle}" 
+                                    ></TextBlock>
+
+                                <TextBlock FontSize="20" Text="Author:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock 
+                                    TextWrapping="Wrap"
+                                    Text="{Binding SelectInstance.Author}" 
+                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+
+
+                                <TextBlock FontSize="20" Text="Describe:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock 
+                                    TextWrapping="Wrap"
+                                    Text="{Binding SelectInstance.Description}" 
+                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+
+
+                                <TextBlock FontSize="20" Text="Version:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock 
+                                    TextWrapping="Wrap"
+                                    Text="{Binding SelectInstance.Version}" 
+                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="UpdateInstanceButtonButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" Click="InstanceAddButton_Click"></Button>
+                            <Button x:Name="LaunchInstanceButtonButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" Click="InstanceAddButton_Click"></Button>
+
 
                         </StackPanel>
-                    </ScrollViewer>
+                    </Grid>   
                 </Border>
                 <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
 
