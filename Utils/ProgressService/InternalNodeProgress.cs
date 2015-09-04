@@ -34,7 +34,7 @@ namespace TerminologyLauncher.Utils.ProgressService
                     return base.Percent;
                 }
                 var sum = this.SubProgressesAndPercentage.Sum(subProgress => (subProgress.Value / 100) * subProgress.Key.Percent);
-                this.CheckPercentage(sum);
+                sum = this.CheckPercentage(sum);
                 return Math.Max(sum, base.Percent);
             }
             set
@@ -49,9 +49,9 @@ namespace TerminologyLauncher.Utils.ProgressService
         {
             this.SubProgressesAndPercentage = new Dictionary<Progress, Double>();
         }
-        public InternalNodeProgress CreateNewInternalSubProgress(Double taskPercentage,String taskName)
+        public InternalNodeProgress CreateNewInternalSubProgress(Double taskPercentage, String taskName)
         {
-            this.CheckPercentage(taskPercentage);
+            taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new InternalNodeProgress(taskName);
             this.SubProgressesAndPercentage.Add(progress, taskPercentage);
             progress.ProgressChanged += sender => { this.OnProgressChanged(); };
@@ -60,20 +60,21 @@ namespace TerminologyLauncher.Utils.ProgressService
 
         public LeafNodeProgress CreateNewLeafSubProgress(Double taskPercentage, String taskName)
         {
-            this.CheckPercentage(taskPercentage);
+            taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new LeafNodeProgress(taskName);
             this.SubProgressesAndPercentage.Add(progress, taskPercentage);
             progress.ProgressChanged += sender => { this.OnProgressChanged(); };
             return progress;
         }
 
-        protected override void CheckPercentage(double percent)
+        protected override Double CheckPercentage(Double percent)
         {
-            base.CheckPercentage(percent);
+            percent = base.CheckPercentage(percent);
             if (this.SubProgressesAndPercentage.Sum(x => (x.Value)) > 100)
             {
                 throw new InvalidOperationException(String.Format("Add {0}% will over 100%.", percent));
             }
+            return percent;
         }
     }
 }

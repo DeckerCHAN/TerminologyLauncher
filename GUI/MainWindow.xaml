@@ -190,8 +190,8 @@
                             </StackPanel>
                         </ScrollViewer>
                         <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="UpdateInstanceButtonButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" Click="InstanceAddButton_Click"></Button>
-                            <Button x:Name="LaunchInstanceButtonButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" Click="InstanceAddButton_Click"></Button>
+                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" Click="InstanceAddButton_Click"></Button>
+                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" Click="InstanceAddButton_Click"></Button>
 
 
                         </StackPanel>

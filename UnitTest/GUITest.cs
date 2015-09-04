@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.UnitTest
 {
@@ -22,14 +24,20 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void ProgressWindowTest()
         {
-            var progressWindow = new GUI.ProgressWindow();
-            progressWindow.Show();
-
-            while (true)
+            var progress = new LeafNodeProgress("Common");
+            var progressWindow = new GUI.ProgressWindow(progress);
+           
+            var t=new Task(() =>
+            {
+                progressWindow.ShowDialog();
+            });
+            t.Start();
+            while (progress.Percent<100D)
             {
                 Thread.Sleep(3000);
-                progressWindow.Progress += 15D;
+                progress.Percent += 1.5D;
             }
+            t.Wait();
         }
     }
 }

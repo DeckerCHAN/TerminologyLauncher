@@ -12,5 +12,6 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public String FilePath { get; set; }
         public String UpdateUrl { get; set; }
         public String UpdateDate { get; set; }
+        public InstanceState InstanceState { get; set; }
     }
 }

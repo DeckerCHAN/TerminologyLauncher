@@ -14,13 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
     /// <summary>
     /// Interaction logic for ProgressWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : Window, INotifyPropertyChanged
+    public partial class ProgressWindow : INotifyPropertyChanged
     {
         private double ProgressValue;
 
@@ -29,14 +30,27 @@ namespace TerminologyLauncher.GUI
             get { return this.ProgressValue; }
             set
             {
-                this.ProgressValue = this.ProgressValue >= 100D ? 100D : value;
+                if (value >= 100D)
+                {
+                    this.Dispatcher.Invoke(this.Close);
+                }
+                this.ProgressValue = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public ProgressWindow()
+        private Progress ProgressObj { get; set; }
+
+        public ProgressWindow(Progress progress)
         {
-            InitializeComponent();
+            this.ProgressObj = progress;
+            progress.ProgressChanged += this.progress_ProgressChanged;
+            this.InitializeComponent();
+        }
+
+        void progress_ProgressChanged(object sender)
+        {
+            this.Progress = this.ProgressObj.Percent;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using TerminologyLauncher.Auth;
 using TerminologyLauncher.Configs;
@@ -32,8 +33,8 @@ namespace TerminologyLauncher.Core
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
         public InstanceManager InstanceManager { get; set; }
-        public PlayerEntity CurrentPlayer { get; set; }
         public Dictionary<String, HandlerBase> Handlers { get; set; }
+        public Process GameProcess { get; set; }
         public Engine()
         {
             Logger.GetLogger().Info("Engine Initializing...");
@@ -68,7 +69,9 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("LOGIN_WINDOW_VISIBILITY_CHANGED", new LoginWindowVisibilityChangedHandler(this));
             this.Handlers.Add("MAIN_WINDOW_VISIBILITY_CHANGED", new MainWindowVisibilityChangedHandler(this));
             this.Handlers.Add("ADD_NEW_INSTANCE", new AddInstanceHandler(this));
-            this.Handlers.Add("REMOVE_AN_INSTANCE",new RemoveInstanceHandler(this));
+            this.Handlers.Add("REMOVE_AN_INSTANCE", new RemoveInstanceHandler(this));
+            this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
+
         }
 
         public void PostInitializeComponents()

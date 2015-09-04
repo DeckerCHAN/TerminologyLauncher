@@ -124,6 +124,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             thisInstanceFolder.Create();
 
             instanceInfo.Name = instance.InstanceName;
+            instanceInfo.InstanceState = InstanceState.Initialize;
             instanceInfo.FilePath = Path.Combine(this.GetInstanceRootFolder(instance.InstanceName).FullName,
                 "Instance.json");
             instanceInfo.UpdateUrl = instance.UpdatePath;
@@ -197,57 +198,75 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public Process LaunchInstance(InternalNodeProgress progress, String instanceName, PlayerEntity player)
         {
+            Logger.GetLogger().Info(String.Format("Start to launch {0} by player {1}...", instanceName, player.PlayerName));
+            var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
             var instance =
                 JsonConverter.Parse<InstanceEntity>(
-                    File.ReadAllText(
-                        this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName))).FilePath));
-           
+                    File.ReadAllText(instanceInfo.FilePath));
+
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
             var placer = new PlaceHolderReplacer();
-           
+
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
             placer.AddToDictionary("{userId}", (player.PlayerId != Guid.Empty ? player.PlayerId : Guid.NewGuid()).ToString("N"));
-            placer.AddToDictionary("{token}", String.IsNullOrEmpty(player.AccessToken) ? String.Empty : player.AccessToken);
+            placer.AddToDictionary("{token}", String.IsNullOrEmpty(player.AccessToken) ? Guid.Empty.ToString("N") : player.AccessToken);
             //Buding environment
             //Try to extract entire file.
-            if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
+            if (instanceInfo.InstanceState == InstanceState.Initialize || instanceInfo.InstanceState == InstanceState.Update)
             {
-                var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
-                foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
+                if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
                 {
-                    entirePackageFile.LocalPath = placer.ReplaceArgument(entirePackageFile.LocalPath);
-                    this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress, String.Format("Receiving entire package {0}", entirePackageFile.Name)),
-                        instance.InstanceName, entirePackageFile);
+                    var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
+                    foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
+                    {
+                        entirePackageFile.LocalPath = placer.ReplaceArgument(entirePackageFile.LocalPath);
+                        this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress, String.Format("Receiving entire package {0}", entirePackageFile.Name)),
+                            instance.InstanceName, entirePackageFile);
+                    }
                 }
             }
+
             progress.Percent = 30D;
             //Try to check all official files.
-            if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
+            if (instanceInfo.InstanceState == InstanceState.Initialize || instanceInfo.InstanceState == InstanceState.Update)
             {
-                var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
-                foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
+                if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
                 {
-                    officialFileEntity.LocalPath = placer.ReplaceArgument(officialFileEntity.LocalPath);
-                    this.ReceiveOfficialFile(progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress, String.Format("Downloading official file: {0}", officialFileEntity.Name)), instance.InstanceName, officialFileEntity, this.UsingFileRepository);
+                    var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
+                    foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
+                    {
+                        officialFileEntity.LocalPath = placer.ReplaceArgument(officialFileEntity.LocalPath);
+                        this.ReceiveOfficialFile(
+                            progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress,
+                                String.Format("Downloading official file: {0}", officialFileEntity.Name)),
+                            instance.InstanceName, officialFileEntity, this.UsingFileRepository);
+                    }
                 }
             }
             progress.Percent = 60D;
 
 
             //Try to check all custom files.
-            if (instance.FileSystem.CustomFiles != null && instance.FileSystem.CustomFiles.Count != 0)
+            if (instanceInfo.InstanceState == InstanceState.Initialize || instanceInfo.InstanceState == InstanceState.Update)
             {
-                var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
-                foreach (var customFileEntity in instance.FileSystem.CustomFiles)
+                if (instance.FileSystem.CustomFiles != null && instance.FileSystem.CustomFiles.Count != 0)
                 {
-                    customFileEntity.LocalPath = placer.ReplaceArgument(customFileEntity.LocalPath);
-                    this.ReceiveCustomFile(progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress, String.Format("Downloading custom file: {0}", customFileEntity.Name)), instance.InstanceName, customFileEntity);
+                    var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
+                    foreach (var customFileEntity in instance.FileSystem.CustomFiles)
+                    {
+                        customFileEntity.LocalPath = placer.ReplaceArgument(customFileEntity.LocalPath);
+                        this.ReceiveCustomFile(
+                            progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress,
+                                String.Format("Downloading custom file: {0}", customFileEntity.Name)),
+                            instance.InstanceName, customFileEntity);
+                    }
                 }
             }
-
+            instanceInfo.InstanceState = InstanceState.Ok;
+            this.SaveInstancesToBankFile();
             progress.Percent = 90D;
-            //TODO:Build start argument.
+            //DONE:Build start argument.
             var startArgument = placer.ReplaceArgument(instance.StartupArguments);
 
             progress.Percent = 100D;
@@ -261,9 +280,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
             instanceStartInfo.UseShellExecute = false;
             instanceStartInfo.RedirectStandardOutput = true;
             instanceProcess.StartInfo = instanceStartInfo;
+            instanceProcess.EnableRaisingEvents = true;
             instanceProcess.Start();
 
             this.CurrentInstanceProcess = instanceProcess;
+            Logger.GetLogger().Info(String.Format("Instance {0} launched!", instanceName));
 
             return this.CurrentInstanceProcess;
 

@@ -12,12 +12,17 @@ namespace TerminologyLauncher.Utils.ProgressService
         public event ProgressChangedEventHandler ProgressChanged;
         public virtual Double Percent { get; set; }
         public virtual String TaskName { get; set; }
-        protected virtual void CheckPercentage(Double percent)
+        protected virtual Double CheckPercentage(Double percent)
         {
-            if (percent > 100D || percent < 0D)
+            if (percent > 100D)
             {
-                throw new InvalidOperationException("Can not set percent value over 100.");
+                percent = 100D;
             }
+            if (percent < 0D)
+            {
+                percent = 0D;
+            }
+            return percent;
         }
 
         protected void OnProgressChanged()

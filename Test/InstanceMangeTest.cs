@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TerminologyLauncher.Entities.Account;
@@ -19,15 +20,29 @@ namespace Test
 
         public static void MainTest()
         {
-            if (Directory.Exists("Instances"))
+            try
             {
-                FolderUtils.DeleteDirectory("Instances");
+                if (Directory.Exists("Instances"))
+                {
+                    FolderUtils.DeleteDirectory("Instances");
+                }
+                Initialize();
+                LoadInstance();
+                AddInstance();
+                LaunchInstance();
+                // this.RemoveInstance();
+
             }
-            Initialize();
-            LoadInstance();
-            AddInstance();
-            LaunchInstance();
-            // this.RemoveInstance();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                Console.ReadKey();
+            }
+
+
         }
 
 
@@ -45,7 +60,7 @@ namespace Test
 
         public static void AddInstance()
         {
-            InstanceManager.AddInstance("http://127.0.0.1/PureMC.json");
+            InstanceManager.AddInstance("http://terminology.b0.upaiyun.com/PureMC.json");
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories().Length != 0);
             Assert.IsTrue(new DirectoryInfo("Instances").GetDirectories()[0].GetFiles("*.png").Length == 2);
         }
@@ -63,11 +78,16 @@ namespace Test
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
 
             var progress = new InternalNodeProgress("");
-            progress.ProgressChanged += (i) =>
+            var t = Task.Run(() =>
             {
-                Console.WriteLine(progress.Percent);
-            };
-            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D,""), InstanceManager.Instances[0].InstanceName,new PlayerEntity(){PlayerName = "DeckerCHAN"});
+                while (progress.Percent <= 100D)
+                {
+                    Console.WriteLine(progress.Percent);
+                    Thread.Sleep(1000);
+                }
+
+            });
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D, ""), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
             process.WaitForExit();
         }
     }

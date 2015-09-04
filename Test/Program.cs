@@ -8,9 +8,10 @@ namespace Test
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            InstanceMangeTest.MainTest();
+            ProgressWindowTest.MainTest();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             get { return base.Percent; }
             set
             {
-                this.CheckPercentage(value);
+                value = this.CheckPercentage(value);
                 base.Percent = value;
                 this.OnProgressChanged();
             }

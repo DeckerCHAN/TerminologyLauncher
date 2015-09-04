@@ -72,6 +72,7 @@
     <Compile Include="InstanceManagement\InstanceFileSystemEntity.cs" />
     <Compile Include="InstanceManagement\InstanceEntity.cs" />
     <Compile Include="InstanceManagement\FileSystem\OfficialFileEntity.cs" />
+    <Compile Include="InstanceManagement\InstanceState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeUtils\ContractResolver.cs" />
     <Compile Include="SerializeUtils\JsonConverter.cs" />

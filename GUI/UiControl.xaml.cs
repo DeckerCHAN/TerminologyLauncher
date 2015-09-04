@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace TerminologyLauncher.GUI
 {
@@ -28,12 +29,21 @@ namespace TerminologyLauncher.GUI
 
         public void ShowMainWindow()
         {
-            this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+            this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
         }
         public void HideMainWindow()
         {
-            this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
-        }
+            try
+            {
+                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
+    
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {

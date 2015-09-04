@@ -160,6 +160,10 @@
       <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
       <Name>Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{e0e44a8e-6a01-4e68-acd6-3c1d0d166e85}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\login_bg.jpg" />

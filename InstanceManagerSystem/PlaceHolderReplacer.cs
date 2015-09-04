@@ -15,9 +15,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public void AddToDictionary(String key, String value)
         {
-            if (String.IsNullOrEmpty(key) || String.IsNullOrEmpty(value))
+            if (String.IsNullOrEmpty(key))
             {
-                throw new ArgumentNullException("Key or value should not be null or empty!");
+                throw new ArgumentNullException("Key should not be null or empty!");
             }
             this.Dictionary.Add(key, value);
         }
