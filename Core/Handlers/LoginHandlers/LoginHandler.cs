@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using TerminologyLauncher.Entities.Account;
+using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.SingleLineInputWindow;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
@@ -57,6 +60,24 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultEntity.Success);
             this.Engine.PostInitializeComponents();
             this.Engine.UiControl.MajorWindow.Player = this.Engine.AuthServer.CurrentPlayer;
+            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
+            {
+                Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
+
+                var result = new SingleLineInputWindow("Request Java path", "Java Path").ReceiveUserinput();
+                if (result.Type == SingleLineInputResultType.CommonFinished)
+                {
+                    if (String.IsNullOrEmpty(result.InputLine) || !new FileInfo(result.InputLine).Exists || (new FileInfo(result.InputLine).Name.ToLower() != "java.exe"))
+                    {
+                        //try again.
+                    }
+                    else
+                    {
+                        this.Engine.InstanceManager.Config.SetConfig("javaPath", result.InputLine);
+                        Logger.GetLogger().Info("Received java path from user. Pass.");
+                    }
+                }
+            }
             this.Engine.UiControl.MainWindow.Show();
         }
 
