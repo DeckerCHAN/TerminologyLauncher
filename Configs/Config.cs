@@ -28,7 +28,7 @@ namespace TerminologyLauncher.Configs
             var value = this.ConfigJObject.SelectToken(key).ToString();
             if (String.IsNullOrEmpty(value))
             {
-                throw new KeyNotFoundException(String.Format("Can not find certain value for key \"{0}\" from config file {1}.", key, this.JsonFileInfo.FullName));
+                return null;
             }
             return value;
         }
