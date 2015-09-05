@@ -49,8 +49,8 @@ namespace TerminologyLauncher.Core
         {
             this.RegisterHandlers();
             Logger.GetLogger().Info("Engine running...");
-            this.UiControl.ShowLoginWindow();
             Logger.GetLogger().Info("Starting GUI...");
+            this.UiControl.ShowLoginWindow();
             this.UiControl.Run();
             Logger.GetLogger().Info("Exit running.");
         }
