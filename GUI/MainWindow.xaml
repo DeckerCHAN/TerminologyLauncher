@@ -98,17 +98,17 @@
                             <TextBlock.Style >
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource TerminologyTextBlockStyle}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Player.LoginMode}">
+                                        <DataTrigger Binding="{Binding Path=Player.LoginType}">
                                             <DataTrigger.Value>
-                                                <account:LoginModeEnum>OfficialMode</account:LoginModeEnum>
+                                                <account:LoginType>OfficialMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
                                                 <Setter  Property="TextBlock.Text" Value="Official Mode"></Setter>
                                             </DataTrigger.Setters>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Path=Player.LoginMode}">
+                                        <DataTrigger Binding="{Binding Path=Player.LoginType}">
                                             <DataTrigger.Value>
-                                                <account:LoginModeEnum>OfflineMode</account:LoginModeEnum>
+                                                <account:LoginType>OfflineMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
                                                 <Setter  Property="TextBlock.Text" Value="Offline Mode"></Setter>

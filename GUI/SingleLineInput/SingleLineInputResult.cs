@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TerminologyLauncher.GUI.SingleLineInputWindow
+namespace TerminologyLauncher.GUI.SingleLineInput
 {
     public class SingleLineInputResult
     {

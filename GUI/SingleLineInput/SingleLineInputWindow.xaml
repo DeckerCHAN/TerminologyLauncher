@@ -1,4 +1,4 @@
-﻿<Window x:Class="TerminologyLauncher.GUI.SingleLineInputWindow.SingleLineInputWindow"
+﻿<Window x:Class="TerminologyLauncher.GUI.SingleLineInput.SingleLineInputWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Notice" Height="187" Width="494"
