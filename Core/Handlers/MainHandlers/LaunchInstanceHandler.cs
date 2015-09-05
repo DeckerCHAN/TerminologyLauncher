@@ -23,7 +23,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             InstanceEntity instance = this.Engine.UiControl.MajorWindow.SelectInstance;
             var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
             var progressWindow = new ProgressWindow(progress);
-            var t = Task.Run(() =>
+            Task.Run(() =>
             {
                 try
                 {
