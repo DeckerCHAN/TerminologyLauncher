@@ -1,6 +1,6 @@
 ﻿namespace TerminologyLauncher.Entities.Account
 {
-    public enum LoginResultEntity
+    public enum LoginResultType
     {
         UnknownError = 0,
         Success = 1,

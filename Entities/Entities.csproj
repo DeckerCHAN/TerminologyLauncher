@@ -50,7 +50,7 @@
     <Compile Include="Account\Authentication\Authenticate\AgentEntity.cs" />
     <Compile Include="Account\Authentication\Authenticate\AuthenticatePayload.cs" />
     <Compile Include="Account\Authentication\Authenticate\AuthenticateResponse.cs" />
-    <Compile Include="Account\Authentication\AuthenticationFaultEntity.cs" />
+    <Compile Include="Account\Authentication\AuthenticationResponseEntity.cs" />
     <Compile Include="Account\Authentication\Invalidate\InvalidatePayload.cs" />
     <Compile Include="Account\Authentication\ProfileEntity.cs" />
     <Compile Include="Account\Authentication\Refresh\RefreshPayload.cs" />
@@ -58,8 +58,8 @@
     <Compile Include="Account\Authentication\Signout\SignoutPayload.cs" />
     <Compile Include="Account\Authentication\Validate\ValidatePayload.cs" />
     <Compile Include="Account\LoginEntity.cs" />
-    <Compile Include="Account\LoginResultEntity.cs" />
-    <Compile Include="Account\LoginModeEnum.cs" />
+    <Compile Include="Account\LoginResultType.cs" />
+    <Compile Include="Account\LoginType.cs" />
     <Compile Include="Account\PlayerEntity.cs" />
     <Compile Include="FileRepository\FileRepositoryEntity.cs" />
     <Compile Include="FileRepository\RepositoryFileEntity.cs" />

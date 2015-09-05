@@ -6,6 +6,6 @@ namespace TerminologyLauncher.Entities.Account
     {
         public String UserName { get; set; }
         public String Password { get; set; }
-        public LoginModeEnum LoginMode { get; set; }
+        public LoginType LoginType { get; set; }
     }
 }

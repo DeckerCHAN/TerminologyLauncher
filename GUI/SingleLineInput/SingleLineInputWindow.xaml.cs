@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 
-namespace TerminologyLauncher.GUI.SingleLineInputWindow
+namespace TerminologyLauncher.GUI.SingleLineInput
 {
     /// <summary>
     /// Interaction logic for SingleLineInputWindow.xaml

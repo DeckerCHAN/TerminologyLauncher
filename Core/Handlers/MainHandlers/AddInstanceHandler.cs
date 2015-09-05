@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.SingleLineInputWindow;
+using TerminologyLauncher.GUI.SingleLineInput;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {

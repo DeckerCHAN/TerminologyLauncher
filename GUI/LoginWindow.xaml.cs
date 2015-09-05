@@ -16,7 +16,7 @@ namespace TerminologyLauncher.GUI
     {
         public LoginWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -42,10 +42,15 @@ namespace TerminologyLauncher.GUI
 
         public void EnableAllInputs(Boolean isEnable)
         {
-            this.UsernameBox.IsEnabled = isEnable;
-            this.PasswordBox.IsEnabled = isEnable;
-            this.LoginModeComboBox.IsEnabled = isEnable;
-            this.IsPerservePasswordCheckBox.IsEnabled = isEnable;
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                this.UsernameBox.IsEnabled = isEnable;
+                this.PasswordBox.IsEnabled = isEnable;
+                this.LoginModeComboBox.IsEnabled = isEnable;
+                this.IsPerservePasswordCheckBox.IsEnabled = isEnable;
+                this.CancleButton.IsEnabled = isEnable;
+                this.LoginButton.IsEnabled = isEnable;
+            });
         }
 
         public LoginEntity GetLogin()
@@ -54,7 +59,7 @@ namespace TerminologyLauncher.GUI
             {
                 UserName = this.UsernameBox.Text,
                 Password = this.PasswordBox.Password,
-                LoginMode = (LoginModeEnum)this.LoginModeComboBox.SelectedIndex
+                LoginType = (LoginType)this.LoginModeComboBox.SelectedIndex
             };
         }
 
@@ -62,46 +67,49 @@ namespace TerminologyLauncher.GUI
         {
             this.UsernameBox.Text = login.UserName;
             this.PasswordBox.Password = login.Password;
-            this.LoginModeComboBox.SelectedIndex = (int)login.LoginMode;
+            this.LoginModeComboBox.SelectedIndex = (int)login.LoginType;
         }
 
-        public void LoginResult(LoginResultEntity result)
+        public void LoginResult(LoginResultType result)
         {
-
-            switch (result)
+            this.Dispatcher.Invoke(() =>
             {
-                case Entities.Account.LoginResultEntity.Success:
-                    {
-                        this.Hide();
-                        break;
-                    }
-                case Entities.Account.LoginResultEntity.IncompleteOfArguments:
-                    {
-                        new PopupWindow(this, "失败", "参数不完整").ShowDialog();
-                        break;
-                    }
-                case Entities.Account.LoginResultEntity.WrongPassword:
-                    {
-                        new PopupWindow(this, "失败", "密码错误").ShowDialog();
-                        break;
-                    }
-                case Entities.Account.LoginResultEntity.UserNotExists:
-                    {
-                        new PopupWindow(this, "失败", "用户不存在").ShowDialog();
-                        break;
-                    }
-                case Entities.Account.LoginResultEntity.NetworkTimedOut:
-                    {
-                        new PopupWindow(this, "失败", "网络超时").ShowDialog();
-                        break;
-                    }
-                default:
-                    {
-                        new PopupWindow(this, "失败", "未知错误").ShowDialog();
-                        break;
-                    }
-            }
-            this.EnableAllInputs(true);
+                switch (result)
+                {
+                    case LoginResultType.Success:
+                        {
+                            this.Hide();
+                            break;
+                        }
+                    case LoginResultType.IncompleteOfArguments:
+                        {
+                            new PopupWindow(this, "失败", "参数不完整").ShowDialog();
+                            break;
+                        }
+                    case LoginResultType.WrongPassword:
+                        {
+                            new PopupWindow(this, "失败", "密码错误").ShowDialog();
+                            break;
+                        }
+                    case LoginResultType.UserNotExists:
+                        {
+                            new PopupWindow(this, "失败", "用户不存在").ShowDialog();
+                            break;
+                        }
+                    case LoginResultType.NetworkTimedOut:
+                        {
+                            new PopupWindow(this, "失败", "网络超时").ShowDialog();
+                            break;
+                        }
+                    default:
+                        {
+                            new PopupWindow(this, "失败", "未知错误").ShowDialog();
+                            break;
+                        }
+                }
+                this.EnableAllInputs(true);
+            });
+
         }
 
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

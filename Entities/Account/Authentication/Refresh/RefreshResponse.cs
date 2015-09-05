@@ -2,7 +2,7 @@
 
 namespace TerminologyLauncher.Entities.Account.Authentication.Refresh
 {
-    public class RefreshResponse
+    public class RefreshResponse : AuthenticationResponseEntity
     {
         public String AccessToken { get; set; }
         public String ClientToken { get; set; }

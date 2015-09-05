@@ -209,7 +209,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
-            placer.AddToDictionary("{userId}", (player.PlayerId != Guid.Empty ? player.PlayerId : Guid.NewGuid()).ToString("N"));
+            placer.AddToDictionary("{userId}", (!String.IsNullOrEmpty(player.PlayerId) ? player.PlayerId : Guid.NewGuid().ToString("N")));
             placer.AddToDictionary("{token}", String.IsNullOrEmpty(player.AccessToken) ? Guid.Empty.ToString("N") : player.AccessToken);
             //Buding environment
             //Try to extract entire file.

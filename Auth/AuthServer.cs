@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
+using TerminologyLauncher.Entities.Account.Authentication.Authenticate;
+using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 
@@ -28,9 +31,59 @@ namespace TerminologyLauncher.Auth
         }
 
 
-        public LoginResultEntity Auth(String username, String password)
+        public LoginResultType Auth(String username, String password)
         {
-            return LoginResultEntity.UnknownError;
+            var sendPayload = new AuthenticatePayload()
+            {
+                Agent = new AgentEntity()
+                {
+                    Name = "Minecraft",
+                    Version = 1
+                },
+                Username = username,
+                Password = password
+            };
+
+            String authResponse;
+            using (var client = new WebClient())
+            {
+                authResponse = client.UploadString(this.Config.GetConfig("authUrls.authenticate"),
+                    JsonConverter.ConvertToJson(sendPayload));
+            }
+
+
+
+            var responseObj = JsonConverter.Parse<AuthenticateResponse>(authResponse);
+
+            if (!String.IsNullOrEmpty(responseObj.ErrorMessage))
+            {
+                return LoginResultType.UnknownError;
+            }
+
+            var userProfileFolder =
+          new DirectoryInfo(Path.Combine(this.ProfileDirectoryInfo.FullName, username));
+            FolderUtils.RecreateFolder(userProfileFolder);
+
+            var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, username + ".png"));
+            var myStream = ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.Avatar.png");
+            var image = new FileStream(userAvatarFileInfo.FullName, FileMode.CreateNew);
+            myStream.CopyTo(image);
+            image.Flush();
+            image.Close();
+
+
+            this.CurrentPlayer = new PlayerEntity()
+            {
+                AccessToken = responseObj.AccessToken,
+                ClientToken = responseObj.ClientToken,
+                LoginType = LoginType.OfficialMode,
+                PlayerAvatarImagePath = userAvatarFileInfo.FullName,
+                PlayerName = responseObj.SelectedProfile.Name,
+                PlayerId = responseObj.SelectedProfile.Id
+
+            };
+
+            return LoginResultType.Success;
         }
 
         /// <summary>
@@ -38,23 +91,19 @@ namespace TerminologyLauncher.Auth
         /// </summary>
         /// <param name="username">Username would be used in startup.</param>
         /// <returns>Login status(Should always be successful at offline mode.)</returns>
-        public LoginResultEntity Auth(String username)
+        public LoginResultType Auth(String username)
         {
             Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
             if (String.IsNullOrEmpty(username))
             {
-                return LoginResultEntity.IncompleteOfArguments;
+                return LoginResultType.IncompleteOfArguments;
             }
             var userProfileFolder =
                 new DirectoryInfo(Path.Combine(this.ProfileDirectoryInfo.FullName, username));
 
             FolderUtils.RecreateFolder(userProfileFolder);
             var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, username + ".png"));
-
-
             var myStream = ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Auth.Resources.Avatar.png");
-
-
             var image = new FileStream(userAvatarFileInfo.FullName, FileMode.CreateNew);
             myStream.CopyTo(image);
             image.Flush();
@@ -63,11 +112,11 @@ namespace TerminologyLauncher.Auth
             this.CurrentPlayer = new PlayerEntity()
             {
                 PlayerName = username,
-                LoginMode = LoginModeEnum.OfflineMode,
+                LoginType = LoginType.OfflineMode,
                 PlayerAvatarImagePath = userAvatarFileInfo.FullName
 
             };
-            return LoginResultEntity.Success;
+            return LoginResultType.Success;
         }
 
         public void ShutDown()

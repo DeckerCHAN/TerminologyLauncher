@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using TerminologyLauncher.GUI.SingleLineInput;
 
 namespace TerminologyLauncher.GUI
 {
@@ -36,14 +37,25 @@ namespace TerminologyLauncher.GUI
             try
             {
                 this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
-    
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 throw;
             }
-         }
+        }
+
+        public SingleLineInputResult StartSingleLineInput(String title, String field)
+        {
+            SingleLineInputResult result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                result = new SingleLineInputWindow(title, field).ReceiveUserinput();
+            });
+            return result;
+        }
+
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
