@@ -28,18 +28,28 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static void DownloadZippedFile(String url, String path, String md5)
+        public static void DownloadAndExtractZippedFile(String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName, md5);
 
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
 
-        public static void DownloadZippedFile(String url, String path)
+        public static void DownloadAndExtractZippedFile(String url, String path)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
