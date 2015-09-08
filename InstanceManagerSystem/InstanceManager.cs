@@ -94,6 +94,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var instance = JsonConverter.Parse<InstanceEntity>(rowInstanceContent);
 
+            if (!instance.Generation.Equals(this.Config.GetConfig("supportInstanceGeneration")))
+            {
+                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
+            }
+
             if (String.IsNullOrEmpty(instance.InstanceName))
             {
                 Logger.GetLogger().Error("Missing instance name");
