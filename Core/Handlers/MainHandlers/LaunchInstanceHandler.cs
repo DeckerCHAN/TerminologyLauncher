@@ -38,8 +38,6 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 catch (Exception ex)
                 {
                     Logging.Logger.GetLogger().Error(String.Format("Can not launch this instance cause {0}", ex.ToString()));
-                    new PopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch",
-                        "Caused by an internal error, we can not launch this instance right now.").ShowDialog();
                     try
                     {
                         progressWindow.Close();
@@ -48,6 +46,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     {
                         //ignore
                     }
+                    new PopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch",
+                        "Caused by an internal error, we can not launch this instance right now.").ShowDialog();
+
 
                 }
             });
