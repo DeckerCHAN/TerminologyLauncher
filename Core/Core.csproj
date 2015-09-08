@@ -57,6 +57,7 @@
     <Compile Include="Handlers\MainHandlers\LaunchInstanceHandler.cs" />
     <Compile Include="Handlers\MainHandlers\MainWindowVisibilityChangedHandler.cs" />
     <Compile Include="Handlers\MainHandlers\RemoveInstanceHandler.cs" />
+    <Compile Include="Handlers\MainHandlers\UpdateInstanceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
