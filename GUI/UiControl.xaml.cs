@@ -56,6 +56,14 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
+        public void StartPopupWindow(Window owner, String title, String content)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                new PopupWindow(owner, title, content).ShowDialog();
+            });
+        }
+
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
