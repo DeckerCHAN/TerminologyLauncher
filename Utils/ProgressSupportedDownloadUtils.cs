@@ -26,6 +26,11 @@ namespace TerminologyLauncher.Utils
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(progress.CreateNewLeafSubProgress(90D,"Downloading entire package."), url, tempFileInfo.FullName, md5);
+            
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
