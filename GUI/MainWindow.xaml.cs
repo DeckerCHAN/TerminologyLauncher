@@ -63,6 +63,11 @@ namespace TerminologyLauncher.GUI
             this.InitializeComponent();
         }
 
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
+
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();

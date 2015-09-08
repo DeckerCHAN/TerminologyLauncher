@@ -24,6 +24,11 @@ namespace TerminologyLauncher.GUI
             }
         }
 
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
+
         public PopupWindow(Window owner, String title, String content)
         {
             this.Owner = owner;

@@ -11,5 +11,10 @@ namespace TerminologyLauncher.GUI
         {
             InitializeComponent();
         }
+
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
     }
 }
