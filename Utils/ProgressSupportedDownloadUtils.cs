@@ -25,8 +25,8 @@ namespace TerminologyLauncher.Utils
         public static void DownloadZippedFile(InternalNodeProgress progress, String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress(90D,"Downloading entire package."), url, tempFileInfo.FullName, md5);
-            
+            DownloadFile(progress.CreateNewLeafSubProgress(90D, "Downloading entire package."), url, tempFileInfo.FullName, md5);
+
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -40,7 +40,6 @@ namespace TerminologyLauncher.Utils
         {
 
             var tempFileInfo = new FileInfo(Path.Combine(DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
-
             using (var client = new WebClient())
             {
                 client.DownloadProgressChanged += (i, o) =>
@@ -55,7 +54,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadFile(LeafNodeProgress progress, String url, String path, String md5)
         {
             DownloadFile(progress, url, path);
-            if (!Md5Utils.CalculateFileMd5(path).Equals(md5))
+            if (!Md5Utils.CalculateFileMd5(path).ToUpper().Equals(md5.ToUpper()))
             {
                 throw new Exception("Md5 not equivalent!");
             }
