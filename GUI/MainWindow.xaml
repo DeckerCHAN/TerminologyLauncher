@@ -149,7 +149,7 @@
                                       HorizontalScrollBarVisibility="Disabled" 
                                       VerticalScrollBarVisibility="Auto">
                             <StackPanel Orientation="Vertical">
-                       
+
                                 <StackPanel.Resources>
                                     <Style x:Key="DetailTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
                                         <Setter Property="Margin" Value="15,10,0,20"></Setter>
@@ -195,9 +195,9 @@
 
 
                         </StackPanel>
-                    </Grid>   
+                    </Grid>
                 </Border>
-                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
+                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="64" Height="70" Width="581" FontSize="48">
 
                 </TextBlock>
 
