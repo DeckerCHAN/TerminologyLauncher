@@ -28,9 +28,12 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         break;
                     }
                 case Visibility.Visible:
-                {
-                    this.Engine.UiControl.MajorWindow.InstanceList =
-                                  new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                    {
+                        if (this.Engine.UiControl.MajorWindow.SelectInstance == null)
+                        {
+                            this.Engine.UiControl.MajorWindow.InstanceList =
+                                         new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                        }
 
                         break;
                     }
