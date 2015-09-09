@@ -11,6 +11,7 @@ using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.FileRepositorySystem;
+using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
@@ -83,6 +84,20 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             var content = JsonConverter.ConvertToJson(this.InstanceBank);
             File.WriteAllText(this.Config.GetConfig("instanceBankFilePath"), content);
+        }
+
+        public String GetIconImage(String instanceName)
+        {
+            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
+            var imagePath = Path.Combine(folderPath, "icon.png");
+            return new FileInfo(imagePath).FullName;
+        }
+
+        public String GetBackgroundImage(String instanceName)
+        {
+            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
+            var imagePath = Path.Combine(folderPath, "background.png");
+            return new FileInfo(imagePath).FullName;
         }
 
         public void AddInstance(String instanceUrl)
@@ -182,18 +197,137 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
         }
 
-        public String GetIconImage(String instanceName)
+        public String UpdateInstance(InternalNodeProgress progress, String instanceName)
         {
-            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
-            var imagePath = Path.Combine(folderPath, "icon.png");
-            return new FileInfo(imagePath).FullName;
-        }
+            Logger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
+            var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
+            if (instanceInfo.InstanceState != InstanceState.Ok)
+            {
+                throw new WrongStateException("Wrong instance state! Just instance which in OK state could update.");
+            }
+          
+            var oldInstanceEntity =
+                JsonConverter.Parse<InstanceEntity>(
+                    File.ReadAllText(instanceInfo.FilePath));
 
-        public String GetBackgroundImage(String instanceName)
-        {
-            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
-            var imagePath = Path.Combine(folderPath, "background.png");
-            return new FileInfo(imagePath).FullName;
+            if (String.IsNullOrEmpty(instanceInfo.UpdateUrl))
+            {
+                throw new Exception("Empty update url is not allowed.");
+            }
+
+            var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
+            var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
+
+            //Check instance is allowed to update
+            if (newInstanceEntity.Version == oldInstanceEntity.Version)
+            {
+                throw new NoAvailableUpdateException(String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
+            }
+
+            //TODO:I'll support instance name change at feature version.
+            if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
+            {
+                throw new Exception("Old instance name not equal with new instance name.");
+            }
+
+            var instanceRootFolder = this.GetInstanceRootFolder(oldInstanceEntity.InstanceName);
+
+            #region Update files
+
+            #region Entire package
+            //Difference entire package will cause whole package target folder been delete
+
+            instanceInfo.InstanceState = InstanceState.Update;
+
+            var newEntirePackages = newInstanceEntity.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
+            var oldEntirePackages = oldInstanceEntity.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
+            //Delete old entire package
+            foreach (var oldEntirePackageFileEntity in oldEntirePackages)
+            {
+                if (!newEntirePackages.Exists
+                        (
+                            x => x.Name.Equals(oldEntirePackageFileEntity.Name) &&
+                                x.Md5.Equals(oldEntirePackageFileEntity.Md5)
+                        )
+                    )
+                {
+                    FolderUtils.DeleteDirectory(Path.Combine(instanceRootFolder.FullName, oldEntirePackageFileEntity.LocalPath));
+                }
+            }
+            //Download new entire package
+            foreach (var newEntirePackageFileEntity in newEntirePackages)
+            {
+                if (!oldEntirePackages.Exists
+                    (
+                        x =>
+                            x.Name.Equals(newEntirePackageFileEntity.Name) &&
+                            x.Md5.Equals(newEntirePackageFileEntity.Md5)
+                    )
+                    )
+                {
+                    //TODO:Support progress
+                    this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                        newEntirePackageFileEntity);
+                }
+            }
+            #endregion
+            progress.Percent = 30D;
+            #region Official files
+
+            var newOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
+            var oldOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
+            //Delete old official files
+            foreach (var oldOfficialFileEntity in oldOfficialFiles)
+            {
+                if (!newOfficialFiles.Exists(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
+                {
+                    File.Delete(Path.Combine(instanceRootFolder.FullName, oldOfficialFileEntity.LocalPath));
+                }
+            }
+            //Receive new official files
+            foreach (var newOfficialFileEntity in newOfficialFiles)
+            {
+                if (!oldOfficialFiles.Exists(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
+                {
+                    this.ReceiveOfficialFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                        newOfficialFileEntity, this.UsingFileRepository);
+                }
+            }
+            #endregion
+
+            progress.Percent = 60D;
+            #region Custom files
+
+            var newCustomFiles = newInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
+            var oldCustomFiles = oldInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
+            foreach (var oldCustomFileEntity in oldCustomFiles)
+            {
+                if (
+                    !newCustomFiles.Exists(
+                        x => x.Name.Equals(oldCustomFileEntity.Name) && x.Md5.Equals(oldCustomFileEntity.Md5)))
+                {
+                    File.Delete(Path.Combine(instanceRootFolder.FullName, oldCustomFileEntity.LocalPath));
+                }
+            }
+            foreach (var newCustomFileEntity in newCustomFiles)
+            {
+                if (!oldCustomFiles.Exists(x => x.Name.Equals(newCustomFileEntity.Name) && x.Md5.Equals(newCustomFileEntity.Md5)))
+                {
+                    this.ReceiveCustomFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                        newCustomFileEntity);
+                }
+            }
+            #endregion
+            progress.Percent = 90D;
+            #endregion
+
+            instanceInfo.InstanceState = InstanceState.Ok;
+            instanceInfo.UpdateDate = DateTime.Now.ToString("O");
+            this.SaveInstancesBankToFile();
+            File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(newInstanceEntity));
+            progress.Percent = 100D;
+            return String.Format("Successful update instance {0} from version {1} to {2}!",
+                newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
         }
 
         public Process LaunchInstance(InternalNodeProgress progress, String instanceName, PlayerEntity player)
@@ -204,9 +338,14 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(instanceInfo.FilePath));
 
-            var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
-            var placer = new PlaceHolderReplacer();
+            if (!(instanceInfo.InstanceState == InstanceState.Ok || instanceInfo.InstanceState == InstanceState.Initialize))
+            {
+                throw new WrongStateException("Wrong instance state! Just instance which in OK or Initialize state could launch.");
+            }
 
+            var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
+
+            var placer = new PlaceHolderReplacer();
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
             placer.AddToDictionary("{userId}", (!String.IsNullOrEmpty(player.PlayerId) ? player.PlayerId : Guid.NewGuid().ToString("N")));
@@ -278,6 +417,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
             instanceStartInfo.UseShellExecute = false;
             instanceStartInfo.RedirectStandardOutput = true;
+            instanceStartInfo.UseShellExecute = false;
             instanceProcess.StartInfo = instanceStartInfo;
             instanceProcess.EnableRaisingEvents = true;
             instanceProcess.Start();
@@ -289,132 +429,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return this.CurrentInstanceProcess;
 
 
-        }
-
-        public void UpdateInstance(InternalNodeProgress progress, String instanceName)
-        {
-            Logger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
-            var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
-            instanceInfo.InstanceState = InstanceState.Update;
-            var oldInstanceEntity =
-                JsonConverter.Parse<InstanceEntity>(
-                    File.ReadAllText(instanceInfo.FilePath));
-
-            if (String.IsNullOrEmpty(instanceInfo.UpdateUrl))
-            {
-                throw new Exception("Empty update url is not allowed.");
-            }
-
-            var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
-            var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
-
-            //Check instance is allowed to update
-            if (newInstanceEntity.Version == oldInstanceEntity.Version)
-            {
-                Logger.GetLogger().Info(String.Format("Instance now in latest version:{0}. Ignore update!", newInstanceEntity.Version));
-                return;
-            }
-
-            //TODO:I'll support instance name change at feature version.
-            if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
-            {
-                throw new Exception("Old instance name not equal with new instance name.");
-            }
-
-            var instanceRootFolder = this.GetInstanceRootFolder(oldInstanceEntity.InstanceName);
-
-            #region Update files
-
-            #region Entire package
-            //Difference entire package will cause whole package target folder been delete
-
-
-            var newEntirePackages = newInstanceEntity.FileSystem.EntirePackageFiles;
-            var oldEntirePackages = oldInstanceEntity.FileSystem.EntirePackageFiles;
-            //Delete old entire package
-            foreach (var oldEntirePackageFileEntity in oldEntirePackages)
-            {
-                if (!newEntirePackages.Exists
-                        (
-                            x => x.Name.Equals(oldEntirePackageFileEntity.Name) &&
-                                x.Md5.Equals(oldEntirePackageFileEntity.Md5)
-                        )
-                    )
-                {
-                    FolderUtils.DeleteDirectory(Path.Combine(instanceRootFolder.FullName, oldEntirePackageFileEntity.LocalPath));
-                }
-            }
-            //Download new entire package
-            foreach (var newEntirePackageFileEntity in newEntirePackages)
-            {
-                if (!oldEntirePackages.Exists
-                    (
-                        x =>
-                            x.Name.Equals(newEntirePackageFileEntity.Name) &&
-                            x.Md5.Equals(newEntirePackageFileEntity.Md5)
-                    )
-                    )
-                {
-                    //TODO:Support progress
-                    this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                        newEntirePackageFileEntity);
-                }
-            }
-            #endregion
-            progress.Percent = 30D;
-            #region Official files
-
-            var newOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles;
-            var oldOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles;
-            //Delete old official files
-            foreach (var oldOfficialFileEntity in oldOfficialFiles)
-            {
-                if (!newOfficialFiles.Exists(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
-                {
-                    File.Delete(Path.Combine(instanceRootFolder.FullName, oldOfficialFileEntity.LocalPath));
-                }
-            }
-            //Receive new official files
-            foreach (var newOfficialFileEntity in newOfficialFiles)
-            {
-                if (!oldOfficialFiles.Exists(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
-                {
-                    this.ReceiveOfficialFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                        newOfficialFileEntity, this.UsingFileRepository);
-                }
-            }
-            #endregion
-
-            progress.Percent = 60D;
-            #region Custom files
-
-            var newCustomFiles = newInstanceEntity.FileSystem.CustomFiles;
-            var oldCustomFiles = oldInstanceEntity.FileSystem.CustomFiles;
-            foreach (var oldCustomFileEntity in oldCustomFiles)
-            {
-                if (
-                    !newCustomFiles.Exists(
-                        x => x.Name.Equals(oldCustomFileEntity.Name) && x.Md5.Equals(oldCustomFileEntity.Md5)))
-                {
-                    File.Delete(Path.Combine(instanceRootFolder.FullName, oldCustomFileEntity.LocalPath));
-                }
-            }
-            foreach (var newCustomFileEntity in newCustomFiles)
-            {
-                if (!oldCustomFiles.Exists(x => x.Name.Equals(newCustomFileEntity.Name) && x.Md5.Equals(newCustomFileEntity.Md5)))
-                {
-                    this.ReceiveCustomFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                        newCustomFileEntity);
-                }
-            }
-            #endregion
-            progress.Percent = 90D;
-            #endregion
-
-            instanceInfo.InstanceState = InstanceState.Ok;
-            instanceInfo.UpdateDate = DateTime.Now.ToString("O");
-            this.SaveInstancesBankToFile();
-            progress.Percent = 100D;
         }
 
         private DirectoryInfo GetInstanceRootFolder(String instanceName)
