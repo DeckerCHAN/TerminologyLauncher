@@ -71,6 +71,7 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("ADD_NEW_INSTANCE", new AddInstanceHandler(this));
             this.Handlers.Add("REMOVE_AN_INSTANCE", new RemoveInstanceHandler(this));
             this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
+            this.Handlers.Add("UPDATE_AN_INSTANCE", new UpdateInstanceHandler(this));
 
         }
 
