@@ -22,6 +22,19 @@ namespace TerminologyLauncher.Utils
                 }
             }
         }
+
+        public static String CalculateStringMd5(String content)
+        {
+            if (String.IsNullOrEmpty(content))
+            {
+                throw new Exception("Empty string is not allowed!");
+            }
+            using (var md5 = MD5.Create())
+            {
+                return ToHex(md5.ComputeHash(Encoding.Default.GetBytes(content)), true);
+            }
+        }
+
         public static String ToHex(this byte[] bytes, bool upperCase)
         {
             var result = new StringBuilder(bytes.Length * 2);

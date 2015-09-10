@@ -350,8 +350,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var placer = new PlaceHolderReplacer();
             placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
             placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
-            placer.AddToDictionary("{userId}", (!String.IsNullOrEmpty(player.PlayerId) ? player.PlayerId : Guid.NewGuid().ToString("N")));
-            placer.AddToDictionary("{token}", String.IsNullOrEmpty(player.AccessToken) ? Guid.Empty.ToString("N") : player.AccessToken);
+            placer.AddToDictionary("{userId}", player.PlayerId);
+            placer.AddToDictionary("{token}", player.AccessToken);
 
             #region Buding environment
 

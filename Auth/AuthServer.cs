@@ -134,6 +134,9 @@ namespace TerminologyLauncher.Auth
             this.CurrentPlayer = new PlayerEntity()
             {
                 PlayerName = username,
+                PlayerId = Md5Utils.CalculateStringMd5(username),
+                AccessToken = Guid.NewGuid().ToString("N"),
+                ClientToken = Guid.NewGuid().ToString("N"),
                 LoginType = LoginType.OfflineMode,
                 PlayerAvatarImagePath = userAvatarFileInfo.FullName
 
