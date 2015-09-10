@@ -16,10 +16,10 @@ namespace TerminologyLauncher
         {
             try
             {
-                if ((Process.GetProcessesByName("TerminologyLauncher").Length != 0) ||
-                    (Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length != 0))
+                if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
                 {
                     Console.WriteLine("You can not run nore than one Terminology Launcher at same time!");
+                    return;
                 }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -32,12 +32,6 @@ namespace TerminologyLauncher
                 File.WriteAllText(report.FullName, ex.ToString());
                 Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
                 Console.WriteLine("!!!CRASH!!!More detail at {0}", report.FullName);
-
-            }
-            finally
-            {
-                Console.WriteLine("Programme returned...Press any key to exit.");
-               
             }
         }
     }

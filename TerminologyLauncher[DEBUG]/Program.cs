@@ -15,6 +15,7 @@ namespace TerminologyLauncher
         static void Main()
         {
             Beginner.Start();
+            Console.WriteLine("Programme returned...Press any key to exit.");
             Console.ReadKey();
             Environment.Exit(0);
 
