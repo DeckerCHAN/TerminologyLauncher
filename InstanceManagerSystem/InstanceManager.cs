@@ -100,7 +100,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return new FileInfo(imagePath).FullName;
         }
 
-        public void AddInstance(String instanceUrl)
+        public String AddInstance(String instanceUrl)
         {
             Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
             this.LoadInstancesFromBankFile();
@@ -178,7 +178,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
             this.SaveInstancesBankToFile();
-            Logger.GetLogger().Debug(String.Format("Added instance:{0}", instance.InstanceName));
+            return String.Format("Added instance:{0}", instance.InstanceName);
 
         }
 
@@ -205,7 +205,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 throw new WrongStateException("Wrong instance state! Just instance which in OK state could update.");
             }
-          
+
             var oldInstanceEntity =
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(instanceInfo.FilePath));
@@ -448,7 +448,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var downloadLink = repositoryFile.DownloadPath;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
-
+            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
             ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
 
@@ -458,6 +458,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
+            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
             ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
         }
@@ -466,6 +467,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             var downloadLink = entirePackageFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? String.Empty);
+            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
             ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
