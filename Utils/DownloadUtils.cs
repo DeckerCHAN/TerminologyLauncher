@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace TerminologyLauncher.Utils
@@ -58,6 +59,7 @@ namespace TerminologyLauncher.Utils
         {
             using (var client = new WebClient())
             {
+                client.Encoding = Encoding.UTF8;
                 return client.DownloadString(url);
             }
         }

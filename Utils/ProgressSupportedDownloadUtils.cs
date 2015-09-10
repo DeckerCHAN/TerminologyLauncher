@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -12,6 +13,7 @@ namespace TerminologyLauncher.Utils
         {
             using (var client = new WebClient())
             {
+                client.Encoding = Encoding.UTF8;
                 client.DownloadProgressChanged += (i, o) =>
                 {
                     progress.Percent = o.ProgressPercentage;
