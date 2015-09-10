@@ -56,9 +56,9 @@ namespace TerminologyLauncher.Utils
         public static void DownloadFile(LeafNodeProgress progress, String url, String path, String md5)
         {
             DownloadFile(progress, url, path);
-            if (!Md5Utils.CalculateFileMd5(path).ToUpper().Equals(md5.ToUpper()))
+            if (!Md5Utils.CheckFileMd5(path, md5))
             {
-                throw new Exception("Md5 not equivalent!");
+                throw new Exception(String.Format("Md5 check for {0} refused!", path));
             }
         }
     }
