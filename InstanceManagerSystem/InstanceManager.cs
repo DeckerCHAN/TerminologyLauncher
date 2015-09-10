@@ -182,7 +182,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
-        public void RemoveInstance(String instanceName)
+        public String RemoveInstance(String instanceName)
         {
             this.LoadInstancesFromBankFile();
 
@@ -193,8 +193,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             this.InstanceBank.InstancesInfoList.Remove(
                 this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName))));
-            Logger.GetLogger().Debug(String.Format("Removed instance by instance name:{0}", instanceName));
             this.SaveInstancesBankToFile();
+
+            return String.Format("Removed instance by instance name:{0}", instanceName);
+
         }
 
         public String UpdateInstance(InternalNodeProgress progress, String instanceName)

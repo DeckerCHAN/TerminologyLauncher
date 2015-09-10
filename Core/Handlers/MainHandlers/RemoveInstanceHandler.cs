@@ -19,9 +19,18 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         public override void HandleEvent(object sender, EventArgs e)
         {
             var instanceName = this.Engine.UiControl.MajorWindow.SelectInstance.InstanceName;
-            //Initially, remove from UI to prevent cross thread 
-            this.Engine.InstanceManager.RemoveInstance(instanceName);
-            this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+            try
+            {
+                var message = this.Engine.InstanceManager.RemoveInstance(instanceName);
+
+                this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
