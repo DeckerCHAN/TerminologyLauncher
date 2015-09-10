@@ -116,7 +116,7 @@ namespace TerminologyLauncher.Auth
         public LoginResultType Auth(String username)
         {
             Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
-            if (String.IsNullOrEmpty(username))
+            if (String.IsNullOrEmpty(username) || username.Length < 4)
             {
                 return LoginResultType.IncompleteOfArguments;
             }
