@@ -16,10 +16,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Logger.GetLogger().Debug("Handle main show or hide at here.");
-            var window = (MainWindow)this.Engine.UiControl.MainWindow;
-            Logger.GetLogger().Debug(String.Format("Main window changed status to {0}", window.Visibility));
-            //TODO:clear or load data at here.
+            var window = sender as Window;
+            Logger.GetLogger().InfoFormat("Main window is going to {0}!", window.Visibility);
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
