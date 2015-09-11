@@ -78,6 +78,8 @@
     <Compile Include="SerializeUtils\JsonConverter.cs" />
     <Compile Include="SerializeUtils\SerializeSettings.cs" />
     <Compile Include="System\IComponent.cs" />
+    <Compile Include="UpdateManagement\UpdateEntity.cs" />
+    <Compile Include="UpdateManagement\VersionEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -23,15 +23,17 @@
             </Border.Background>
             <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left"  Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"/>
 
             </DockPanel>
 
         </Border>
         <Canvas DockPanel.Dock="Bottom"  >
-            <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding ContentString}" FontSize="20" Canvas.Left="21" Canvas.Top="40" TextWrapping="Wrap" Width="366" Height="83" TextAlignment="Center"></TextBlock>
-            <Button x:Name="ConfirmButton" Content="确定" Style="{DynamicResource TerminologyConfigButtonStyle}" Canvas.Left="285" Canvas.Top="128" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_OnClick"></Button>
+            <Border Canvas.Left="21" Canvas.Top="10" Width="366" Height="113">
+                <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding ContentString}" FontSize="20" Height="auto" Width="auto"  TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
+              <Button x:Name="ConfirmButton" Content="确定" Style="{DynamicResource TerminologyConfigButtonStyle}" Canvas.Left="285" Canvas.Top="128" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_OnClick"></Button>
         </Canvas>
     </DockPanel>
 </Window>

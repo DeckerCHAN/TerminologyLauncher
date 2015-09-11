@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -12,6 +13,7 @@ namespace TerminologyLauncher.Utils
         {
             using (var client = new WebClient())
             {
+                client.Encoding = Encoding.UTF8;
                 client.DownloadProgressChanged += (i, o) =>
                 {
                     progress.Percent = o.ProgressPercentage;
@@ -25,7 +27,12 @@ namespace TerminologyLauncher.Utils
         public static void DownloadZippedFile(InternalNodeProgress progress, String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress(90D,"Downloading entire package."), url, tempFileInfo.FullName, md5);
+            DownloadFile(progress.CreateNewLeafSubProgress(90D, "Downloading entire package."), url, tempFileInfo.FullName, md5);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
@@ -35,7 +42,6 @@ namespace TerminologyLauncher.Utils
         {
 
             var tempFileInfo = new FileInfo(Path.Combine(DownloadUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
-
             using (var client = new WebClient())
             {
                 client.DownloadProgressChanged += (i, o) =>
@@ -43,16 +49,16 @@ namespace TerminologyLauncher.Utils
                     progress.Percent = o.ProgressPercentage;
                 };
                 client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
-                File.Copy(tempFileInfo.FullName, path);
+                File.Copy(tempFileInfo.FullName, path, true);
             }
         }
 
         public static void DownloadFile(LeafNodeProgress progress, String url, String path, String md5)
         {
             DownloadFile(progress, url, path);
-            if (!Md5Utils.CalculateFileMd5(path).Equals(md5))
+            if (!Md5Utils.CheckFileMd5(path, md5))
             {
-                throw new Exception("Md5 not equivalent!");
+                throw new Exception(String.Format("Md5 check for {0} refused!", path));
             }
         }
     }

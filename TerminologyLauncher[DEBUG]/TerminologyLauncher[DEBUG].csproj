@@ -26,7 +26,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\BuildTarget\Release\</OutputPath>
+    <OutputPath>..\BuildTarget\Debug\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,6 +51,10 @@
       <Project>{344a31c3-d60f-4cef-819a-f49b0c93aaa8}</Project>
       <Name>Core</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TerminologyLauncher\TerminologyLauncher.csproj">
+      <Project>{5184f7b0-effc-42ad-a885-6f75660cd1b7}</Project>
+      <Name>TerminologyLauncher</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

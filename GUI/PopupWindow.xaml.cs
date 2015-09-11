@@ -10,7 +10,7 @@ namespace TerminologyLauncher.GUI
     /// <summary>
     /// Interaction logic for PopupWindow.xaml
     /// </summary>
-    public partial class PopupWindow : Window, INotifyPropertyChanged
+    public sealed partial class PopupWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
 
@@ -24,18 +24,24 @@ namespace TerminologyLauncher.GUI
             }
         }
 
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
+
         public PopupWindow(Window owner, String title, String content)
         {
             this.Owner = owner;
-            this.Title = title;
             this.ContentString = content;
             InitializeComponent();
+            this.Title = title;
+            this.OnPropertyChanged();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

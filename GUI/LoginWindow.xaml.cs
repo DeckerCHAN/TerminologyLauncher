@@ -53,6 +53,11 @@ namespace TerminologyLauncher.GUI
             });
         }
 
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
+
         public LoginEntity GetLogin()
         {
             return new LoginEntity()

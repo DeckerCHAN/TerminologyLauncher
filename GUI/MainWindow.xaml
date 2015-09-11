@@ -33,9 +33,10 @@
                 </Border.Background>
                 <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                    <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" ><Run Text="Terminology Lanucher "/></TextBlock>
-                    <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
-                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0" ></Button>
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="Terminology Lanucher "></TextBlock>
+                    <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" ></Button>
+                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" ></Button>
                     </StackPanel>
 
                 </DockPanel>
@@ -149,7 +150,7 @@
                                       HorizontalScrollBarVisibility="Disabled" 
                                       VerticalScrollBarVisibility="Auto">
                             <StackPanel Orientation="Vertical">
-                       
+
                                 <StackPanel.Resources>
                                     <Style x:Key="DetailTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
                                         <Setter Property="Margin" Value="15,10,0,20"></Setter>
@@ -190,14 +191,14 @@
                             </StackPanel>
                         </ScrollViewer>
                         <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" Click="InstanceAddButton_Click"></Button>
-                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" Click="InstanceAddButton_Click"></Button>
+                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" ></Button>
+                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" ></Button>
 
 
                         </StackPanel>
-                    </Grid>   
+                    </Grid>
                 </Border>
-                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="77" Height="57" Width="349" FontSize="48">
+                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="64" Height="70" Width="581" FontSize="48">
 
                 </TextBlock>
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
@@ -44,13 +45,39 @@ namespace TerminologyLauncher.Auth
                 Password = password
             };
 
-            String authResponse;
-            using (var client = new WebClient())
+            String authResponse = String.Empty;
+
+            var request = WebRequest.Create(this.Config.GetConfig("authUrls.authenticate"));
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = "application/json";
+            var postData = JsonConverter.ConvertToJson(sendPayload);
+            var postByteArray = Encoding.UTF8.GetBytes(postData);
+            request.ContentLength = postByteArray.Length;
+            using (var requestStream = request.GetRequestStream())
             {
-                authResponse = client.UploadString(this.Config.GetConfig("authUrls.authenticate"),
-                    JsonConverter.ConvertToJson(sendPayload));
+                requestStream.Write(postByteArray, 0, postByteArray.Length);
+
+            }
+            WebResponse response;
+            try
+            {
+                response = request.GetResponse();
+            }
+            catch (WebException)
+            {
+                //TODO: Distinguish different of error
+                return LoginResultType.UnknownError;
             }
 
+
+            using (var responseStream = response.GetResponseStream())
+            {
+                if (responseStream != null)
+                    using (var responseReader = new StreamReader(responseStream))
+                    {
+                        authResponse = responseReader.ReadToEnd();
+                    }
+            }
 
 
             var responseObj = JsonConverter.Parse<AuthenticateResponse>(authResponse);
@@ -86,15 +113,10 @@ namespace TerminologyLauncher.Auth
             return LoginResultType.Success;
         }
 
-        /// <summary>
-        /// Support offline login.
-        /// </summary>
-        /// <param name="username">Username would be used in startup.</param>
-        /// <returns>Login status(Should always be successful at offline mode.)</returns>
         public LoginResultType Auth(String username)
         {
             Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
-            if (String.IsNullOrEmpty(username))
+            if (String.IsNullOrEmpty(username) || username.Length < 4)
             {
                 return LoginResultType.IncompleteOfArguments;
             }
@@ -112,6 +134,9 @@ namespace TerminologyLauncher.Auth
             this.CurrentPlayer = new PlayerEntity()
             {
                 PlayerName = username,
+                PlayerId = Md5Utils.CalculateStringMd5(username),
+                AccessToken = Guid.NewGuid().ToString("N"),
+                ClientToken = Guid.NewGuid().ToString("N"),
                 LoginType = LoginType.OfflineMode,
                 PlayerAvatarImagePath = userAvatarFileInfo.FullName
 

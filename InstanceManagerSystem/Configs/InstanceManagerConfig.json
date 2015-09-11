@@ -1,5 +1,6 @@
 ﻿{
     "instancesFolderPath": "Instances",
-    "instanceBankFilePath": "Instances/Instances.json", 
-    "javaPath": "" 
+    "instanceBankFilePath": "Instances/Instances.json",
+    "supportInstanceGeneration": "1",
+    "javaPath": ""
 }

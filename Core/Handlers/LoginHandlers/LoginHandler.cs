@@ -102,6 +102,14 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                         Logger.GetLogger().Info("Received java path from user. Pass.");
                     }
                 }
+                else if (result.Type == SingleLineInputResultType.Canceled)
+                {
+                    Logger.GetLogger().Info("Handling close event.");
+                    Engine.GetEngine().UiControl.Shutdown();
+                    Logger.GetLogger().Info("UiControl shutdown.");
+                    Engine.GetEngine().Exit();
+                    return;
+                }
             }
             this.Engine.UiControl.ShowMainWindow();
         }

@@ -34,21 +34,26 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         this.Engine.UiControl.ShowMainWindow();
                     };
                     this.Engine.UiControl.HideMainWindow();
+                    this.Engine.GameProcess.BeginOutputReadLine();
+                    this.Engine.GameProcess.OutputDataReceived += (s, ea) =>
+                    {
+
+                        if (!String.IsNullOrEmpty(ea.Data))
+                        {
+                            Logging.Logger.GetLogger().InfoFormat(">>>GAME<<<: {0}", ea.Data);
+                        }
+                    };
                 }
                 catch (Exception ex)
                 {
-                    Logging.Logger.GetLogger().Error(String.Format("Can not launch this instance cause {0}", ex.ToString()));
-                    new PopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch",
-                        "Caused by an internal error, we can not launch this instance right now.").ShowDialog();
-                    try
-                    {
-                        progressWindow.Close();
-                    }
-                    catch (Exception)
-                    {
-                        //ignore
-                    }
-
+                    Logging.Logger.GetLogger()
+                        .Error(String.Format("Can not launch this instance because {0}", ex.Message));
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch", String.Format(
+                        "Caused by an internal error, we can not launch this instance right now. Detail: {0}", ex.Message));
+                }
+                finally
+                {
+                    progressWindow.CrossThreadClose();
                 }
             });
             progressWindow.ShowDialog();

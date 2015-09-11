@@ -8,6 +8,7 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public String Background { get; set; }
         public String UpdatePath { get; set; }
         public String Version { get; set; }
+        public Int32 Generation { get; set; }
         public String InstanceName { get; set; }
         public String Description { get; set; }
         public String Author { get; set; }

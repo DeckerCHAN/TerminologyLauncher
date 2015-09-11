@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminologyLauncher", "TerminologyLauncher\TerminologyLauncher.csproj", "{5184F7B0-EFFC-42AD-A885-6F75660CD1B7}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{E0E44A8E-6A01-4E68-ACD6-3C1D0D166E85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1D59207B-3D05-4071-89F3-7AD8A45451BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{D6535EAD-E180-4F61-87DC-744F1FC46080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D59207B-3D05-4071-89F3-7AD8A45451BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6535EAD-E180-4F61-87DC-744F1FC46080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6535EAD-E180-4F61-87DC-744F1FC46080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6535EAD-E180-4F61-87DC-744F1FC46080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6535EAD-E180-4F61-87DC-744F1FC46080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

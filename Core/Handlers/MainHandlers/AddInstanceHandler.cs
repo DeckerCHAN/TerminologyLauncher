@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.GUI;
@@ -24,7 +25,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
 
 
-            var result = new SingleLineInputWindow("Input url pls!", "url").ReceiveUserinput();
+            var result = new SingleLineInputWindow("Input instance url", "URL:").ReceiveUserinput();
             if (result.Type == SingleLineInputResultType.Canceled)
             {
                 Logging.Logger.GetLogger().Info("Empty input or user canceled. Ignore!");
@@ -32,25 +33,38 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             try
             {
-                this.Engine.InstanceManager.AddInstance(result.InputLine);
-
+                var message = this.Engine.InstanceManager.AddInstance(result.InputLine);
+                this.Engine.UiControl.MajorWindow.InstanceList =
+                new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Successful", message);
             }
-            catch (WebException)
+            catch (WebException ex)
             {
-
-                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Network not accessible!").ShowDialog();
-                return;
+                Logging.Logger.GetLogger()
+                       .ErrorFormat("Network is not accessable! Detail: {0}", ex.Message);
+                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Error", String.Format("Network is not accessable! Detail: {0}", ex.Message));
             }
-            catch (FormatException)
+            catch (JsonReaderException ex)
             {
-                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Wrong instance json format!").ShowDialog();
-                return;
+                Logging.Logger.GetLogger()
+                    .ErrorFormat("Wrong instance json format! {0}", ex.Message);
+                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Error", String.Format("Wrong instance json format! {0}", ex.Message));
             }
             catch (MissingFieldException)
             {
-                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error", "Some critical field is missing. Unable to add this instance.!").ShowDialog();
-                return;
-         
+                new PopupWindow(this.Engine.UiControl.MajorWindow, "Error",
+                    "Some critical field is missing. Unable to add this instance.!").ShowDialog();
+
+
+            }
+
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger()
+                    .ErrorFormat("Can not add this instance because {0}", ex.Message);
+                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch", String.Format(
+                    "Caused by an internal error, we can not launch this instance right now. Detail: {0}", ex.Message));
+
             }
             finally
             {

@@ -48,6 +48,11 @@ namespace TerminologyLauncher.GUI
             this.InitializeComponent();
         }
 
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
+        }
+
         void progress_ProgressChanged(object sender)
         {
             this.Progress = this.ProgressObj.Percent;
