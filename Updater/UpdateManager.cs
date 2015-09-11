@@ -73,9 +73,10 @@ namespace TerminologyLauncher.Updater
             };
             var updateProcess = new Process { StartInfo = updateProcessInfo };
             updateProcess.Start();
-            return String.Format("Updating from {0} to {1}! Please close current launcher to continue.", this.Version,
-                update.LatestVersion.VersionNumber);
+
             progress.Percent = 100D;
+            return String.Format("Updating from {0} to {1}! Please close current launcher to continue.", this.Version,
+    update.LatestVersion.VersionNumber);
         }
 
     }

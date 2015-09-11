@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -17,6 +18,17 @@ namespace TerminologyLauncher.Updater
             if (!(Directory.Exists(args[0]) && Directory.Exists(args[1])))
             {
                 Console.WriteLine("Source folder or target folder not exists! Exit...");
+            }
+            Console.WriteLine("Searching for TerminologyLauncher process and wait for close!");
+            foreach (var process in Process.GetProcessesByName("TerminologyLauncher"))
+            {
+                process.WaitForExit();
+            }
+
+            if ((+ Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
+            {
+                Console.WriteLine("You can not run nore than one Terminology Launcher at same time!");
+                return;
             }
 
             var sourceFolder = new DirectoryInfo(args[0]);
