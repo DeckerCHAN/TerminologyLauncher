@@ -30,13 +30,21 @@
         <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
     </Style>
 
+    <Style x:Key="TerminologyTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
+        <Setter Property="FontSize" Value="17"></Setter>
+    </Style>
+
     <Style x:Key="TerminologyCheckBoxStyle" TargetType="{x:Type CheckBox}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="CustomCloseButtonStyle">
+    <Style x:Key="TerminologyHeadControlButtonStyle" TargetType="{x:Type  Button}">
         <Setter Property="Width" Value="17"></Setter>
         <Setter Property="Height" Value="17"></Setter>
+        <Setter Property="Margin" Value="0,10,15,0"></Setter>
+    </Style>
+
+    <Style  x:Key="TerminologyHeadCloseButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -57,6 +65,36 @@
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_close_hover.png"></ImageBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style  x:Key="TerminologyHeadUpdateButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border"
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_update_default.png"></ImageBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_update_hover.png"></ImageBrush>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>

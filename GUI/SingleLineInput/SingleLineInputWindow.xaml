@@ -24,7 +24,7 @@
 
                 <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding Title}"></TextBlock>
                 <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
-                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource CustomCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
+                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
                 </StackPanel>
 
             </DockPanel>
