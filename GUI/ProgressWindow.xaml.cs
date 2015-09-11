@@ -23,28 +23,25 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class ProgressWindow : INotifyPropertyChanged
     {
-        private double ProgressValue;
+        private Progress ProgressValue;
 
-        public Double Progress
+        public Progress Progress
         {
             get { return this.ProgressValue; }
             set
             {
-                if (value >= 100D)
-                {
-                    this.Dispatcher.Invoke(this.Close);
-                }
                 this.ProgressValue = value;
                 this.OnPropertyChanged();
             }
         }
 
-        private Progress ProgressObj { get; set; }
-
         public ProgressWindow(Progress progress)
         {
-            this.ProgressObj = progress;
-            progress.ProgressChanged += this.progress_ProgressChanged;
+            this.Progress = progress;
+            this.Progress.ProgressChanged += s =>
+            {
+                this.OnPropertyChanged("Progress");
+            };
             this.InitializeComponent();
         }
 
@@ -53,10 +50,6 @@ namespace TerminologyLauncher.GUI
             this.Dispatcher.Invoke(this.Close);
         }
 
-        void progress_ProgressChanged(object sender)
-        {
-            this.Progress = this.ProgressObj.Percent;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
