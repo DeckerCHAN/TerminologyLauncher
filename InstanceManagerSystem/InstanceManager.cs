@@ -20,14 +20,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
 {
     public class InstanceManager
     {
-        public Config Config { get; set; }
-        public DirectoryInfo InstancesFolder { get; set; }
-        public InstanceBankEntity InstanceBank { get; set; }
-        public Process CurrentInstanceProcess { get; set; }
-        public FileRepository UsingFileRepository { get; protected set; }
         public InstanceManager(String configPath, FileRepository usingFileRepository)
         {
             this.Config = new Config(new FileInfo(configPath));
+            this.SupportGeneration = this.Config.GetConfig("supportInstanceGeneration");
             this.UsingFileRepository = usingFileRepository;
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
             if (!this.InstancesFolder.Exists)
@@ -36,6 +32,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             this.LoadInstancesFromBankFile();
         }
+        public Config Config { get; set; }
+        public String SupportGeneration { get; set; }
+        public DirectoryInfo InstancesFolder { get; set; }
+        public InstanceBankEntity InstanceBank { get; set; }
+        public Process CurrentInstanceProcess { get; set; }
+        public FileRepository UsingFileRepository { get; protected set; }
 
         public List<InstanceEntity> Instances
         {
@@ -86,19 +88,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             File.WriteAllText(this.Config.GetConfig("instanceBankFilePath"), content);
         }
 
-        public String GetIconImage(String instanceName)
-        {
-            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
-            var imagePath = Path.Combine(folderPath, "icon.png");
-            return new FileInfo(imagePath).FullName;
-        }
 
-        public String GetBackgroundImage(String instanceName)
-        {
-            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
-            var imagePath = Path.Combine(folderPath, "background.png");
-            return new FileInfo(imagePath).FullName;
-        }
 
         public String AddInstance(String instanceUrl)
         {
@@ -109,7 +99,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var instance = JsonConverter.Parse<InstanceEntity>(rowInstanceContent);
 
-            if (!instance.Generation.ToString().Equals(this.Config.GetConfig("supportInstanceGeneration")))
+            if (!instance.Generation.ToString().Equals(this.SupportGeneration))
             {
                 throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
             }
@@ -215,6 +205,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (String.IsNullOrEmpty(instanceInfo.UpdateUrl))
             {
                 throw new Exception("Empty update url is not allowed.");
+            }
+            if (!oldInstanceEntity.Generation.ToString().Equals(this.SupportGeneration))
+            {
+                throw new PlatformNotSupportedException(String.Format("Can not update generation {0} instance!", oldInstanceEntity.Generation));
             }
 
             var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
@@ -345,6 +339,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 throw new WrongStateException("Wrong instance state! Just instance which in OK or Initialize state could launch.");
             }
 
+            if (!instance.Generation.ToString().Equals(this.SupportGeneration))
+            {
+                throw new PlatformNotSupportedException(String.Format("Launcher not support generation {0} instance!", instance.Generation));
+            }
+
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
 
             var placer = new PlaceHolderReplacer();
@@ -433,6 +432,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
+        #region Toolkits
+
         private DirectoryInfo GetInstanceRootFolder(String instanceName)
         {
             var folder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
@@ -473,5 +474,20 @@ namespace TerminologyLauncher.InstanceManagerSystem
             ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
+
+        private String GetIconImage(String instanceName)
+        {
+            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
+            var imagePath = Path.Combine(folderPath, "icon.png");
+            return new FileInfo(imagePath).FullName;
+        }
+
+        private String GetBackgroundImage(String instanceName)
+        {
+            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
+            var imagePath = Path.Combine(folderPath, "background.png");
+            return new FileInfo(imagePath).FullName;
+        }
+        #endregion
     }
 }
