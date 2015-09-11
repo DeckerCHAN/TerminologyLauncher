@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TerminologyLauncher.Updater
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
