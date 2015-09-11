@@ -1,4 +1,4 @@
-# Terminology Minecraft Lanucher(ALPHA)
+# Terminology Minecraft Lanucher(BETA)
 
 A Minecraft game lanucher that just focusing on Minecraft Modpack. Bring large amount of mechanism and functions to simplify Modpack develop and distribute.
 

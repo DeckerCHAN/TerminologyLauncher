@@ -18,8 +18,9 @@ namespace TerminologyLauncher.Updater
     {
         public String Version { get; private set; }
         public Config Config { get; set; }
-        public UpdateManager(String versionNumber)
+        public UpdateManager(String configPath, String versionNumber)
         {
+            this.Config = new Config(new FileInfo(configPath));
             this.Version = versionNumber;
         }
 
@@ -54,6 +55,11 @@ namespace TerminologyLauncher.Updater
                 Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Updater.exe");
             var updaterRealExecutorFile = Path.Combine(updateTempFolder, "Updater.exe");
 
+            if (Directory.Exists(updateTempFolder))
+            {
+                FolderUtils.DeleteDirectory(updateTempFolder);
+            }
+
             progress.Percent = 10D;
             ProgressSupportedDownloadUtils.DownloadZippedFile(
                 progress.CreateNewInternalSubProgress(80D, "Fetching update pack"), update.LatestVersion.DownloadLink,
@@ -67,15 +73,16 @@ namespace TerminologyLauncher.Updater
             var updateProcessInfo = new ProcessStartInfo(updaterRealExecutorFile)
             {
                 Arguments =
-                    String.Format("{0} {1}", updateBinaryFolder,
-                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)),
-                CreateNoWindow = false
+                    String.Format("{0} {1} {2}", updateBinaryFolder,
+                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), Assembly.GetEntryAssembly().Location),
+                CreateNoWindow = false,
+                UseShellExecute = true
             };
             var updateProcess = new Process { StartInfo = updateProcessInfo };
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return String.Format("Updating from {0} to {1}! Please close current launcher to continue.", this.Version,
+            return String.Format("Updating from {0} to {1}! Close launcher to continue.", this.Version,
     update.LatestVersion.VersionNumber);
         }
 

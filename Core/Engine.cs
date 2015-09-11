@@ -13,6 +13,7 @@ using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Logging;
+using TerminologyLauncher.Updater;
 
 namespace TerminologyLauncher.Core
 {
@@ -28,11 +29,18 @@ namespace TerminologyLauncher.Core
         }
 
         #endregion
+
+        public String CoreVersion
+        {
+            get { return "A1"; }
+        }
+
         public Config CoreConfig { get; set; }
         public UiControl UiControl { get; set; }
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
         public InstanceManager InstanceManager { get; set; }
+        public UpdateManager UpdateManager { get; set; }
         public Dictionary<String, HandlerBase> Handlers { get; set; }
         public Process GameProcess { get; set; }
         public Engine()
@@ -72,6 +80,7 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("REMOVE_AN_INSTANCE", new RemoveInstanceHandler(this));
             this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
             this.Handlers.Add("UPDATE_AN_INSTANCE", new UpdateInstanceHandler(this));
+            this.Handlers.Add("UPDATE_APPLICATION", new UpdateApplicationHandler(this));
 
         }
 
@@ -80,6 +89,7 @@ namespace TerminologyLauncher.Core
             Logger.GetLogger().Info("Engine extra component initializing...");
             this.FileRepo = new FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
             this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfig("instanceManagerConfig"), this.FileRepo);
+            this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfig("updateManagerConfig"), this.CoreVersion);
             Logger.GetLogger().Info("Engine extra component initialized...");
         }
     }
