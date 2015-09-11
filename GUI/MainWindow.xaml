@@ -33,7 +33,7 @@
                 </Border.Background>
                 <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                    <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="Terminology Lanucher "></TextBlock>
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="Terminology Lanucher "></TextBlock>
                     <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                         <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" ></Button>
                         <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" ></Button>
