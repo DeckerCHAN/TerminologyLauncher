@@ -12,15 +12,11 @@ namespace TerminologyLauncher.Utils
         public static void DownloadFile(String url, String path)
         {
             var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
-            var targetFolderInfo = new DirectoryInfo(path);
+            var targetFileInfo = new FileInfo(path);
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, tempFileInfo.FullName);
-                if (!targetFolderInfo.Exists)
-                {
-                    targetFolderInfo.Create();
-                }
-                File.Copy(tempFileInfo.FullName, path, true);
+                File.Copy(tempFileInfo.FullName, targetFileInfo.FullName, true);
             }
         }
 
@@ -37,7 +33,7 @@ namespace TerminologyLauncher.Utils
         {
 
             var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
-            var targetFolderInfo = new DirectoryInfo(path);
+            var targetFileInfo = new FileInfo(path);
             using (var client = new WebClient())
             {
                 client.DownloadProgressChanged += (i, o) =>
@@ -45,11 +41,7 @@ namespace TerminologyLauncher.Utils
                     progress.Percent = o.ProgressPercentage;
                 };
                 client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
-                if (!targetFolderInfo.Exists)
-                {
-                    targetFolderInfo.Create();
-                }
-                File.Copy(tempFileInfo.FullName, targetFolderInfo.FullName, true);
+                File.Copy(tempFileInfo.FullName, targetFileInfo.FullName, true);
             }
         }
 
@@ -64,7 +56,7 @@ namespace TerminologyLauncher.Utils
 
         public static void DownloadAndExtractZippedFile(String url, String path, String md5)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
@@ -77,7 +69,7 @@ namespace TerminologyLauncher.Utils
 
         public static void DownloadAndExtractZippedFile(String url, String path)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName);
 
             if (!Directory.Exists(path))
