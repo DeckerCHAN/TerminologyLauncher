@@ -48,7 +48,7 @@ namespace TerminologyLauncher.Updater
 
 
 
-            var updateTempFolder = Path.Combine(DownloadUtils.SystemTempFolder.FullName,
+            var updateTempFolder = Path.Combine(FolderUtils.SystemTempFolder.FullName,
                 String.Format("TerminologyLauncher-{0}", update.LatestVersion.VersionNumber));
             var updateBinaryFolder = Path.Combine(updateTempFolder, "Binary");
             var updaterExecutorFile = Path.Combine(
@@ -61,7 +61,7 @@ namespace TerminologyLauncher.Updater
             }
 
             progress.Percent = 10D;
-            ProgressSupportedDownloadUtils.DownloadZippedFile(
+            DownloadUtils.DownloadZippedFile(
                 progress.CreateNewInternalSubProgress(80D, "Fetching update pack"), update.LatestVersion.DownloadLink,
                 updateBinaryFolder,
                 update.LatestVersion.Md5);

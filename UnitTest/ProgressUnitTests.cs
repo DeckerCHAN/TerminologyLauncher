@@ -67,7 +67,7 @@ namespace TerminologyLauncher.UnitTest
                 Console.WriteLine(progress.Percent);
             };
             var content =
-                ProgressSupportedDownloadUtils.GetFileContent(progress.CreateNewLeafSubProgress(100D, String.Format("Downloading Text")), "http://baidu.com");
+                DownloadUtils.GetFileContent(progress.CreateNewLeafSubProgress(100D, String.Format("Downloading Text")), "http://baidu.com");
             // Console.WriteLine(content);
         }
 
@@ -84,7 +84,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 downloadFile.Delete();
             }
-            ProgressSupportedDownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress(100D, "Downloading test file"),
+            DownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress(100D, "Downloading test file"),
                 "http://dldir1.qq.com/qqfile/qq/QQ7.4/15197/QQ7.4.exe", downloadFile.FullName);
             downloadFile.Refresh();
             Assert.IsTrue(downloadFile.Exists);

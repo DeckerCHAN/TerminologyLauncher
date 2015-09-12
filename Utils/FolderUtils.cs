@@ -1,10 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace TerminologyLauncher.Utils
 {
     public static class FolderUtils
     {
+        public static readonly DirectoryInfo SystemTempFolder = new DirectoryInfo(Path.GetTempPath());
+        public static readonly DirectoryInfo ExecutorFolder = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
         public static void RecreateFolder(String path)
         {
             RecreateFolder(new DirectoryInfo(path));
