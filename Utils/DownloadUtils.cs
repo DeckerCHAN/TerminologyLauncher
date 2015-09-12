@@ -16,6 +16,10 @@ namespace TerminologyLauncher.Utils
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, tempFileInfo.FullName);
+                if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
+                {
+                    targetFileInfo.Directory.Create();
+                }
                 File.Copy(tempFileInfo.FullName, targetFileInfo.FullName, true);
             }
         }
@@ -41,6 +45,10 @@ namespace TerminologyLauncher.Utils
                     progress.Percent = o.ProgressPercentage;
                 };
                 client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
+                if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
+                {
+                    targetFileInfo.Directory.Create();
+                }
                 File.Copy(tempFileInfo.FullName, targetFileInfo.FullName, true);
             }
         }
