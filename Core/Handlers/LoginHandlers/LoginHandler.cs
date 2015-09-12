@@ -92,14 +92,20 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                 var result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
                 if (result.Type == SingleLineInputResultType.CommonFinished)
                 {
-                    if (String.IsNullOrEmpty(result.InputLine) || !new FileInfo(result.InputLine).Exists || (new FileInfo(result.InputLine).Name.ToLower() != "java.exe"))
+
+                    try
                     {
-                        //try again.
+                        var javaExe = new FileInfo(result.InputLine);
+                        if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
+                        {
+                            this.Engine.InstanceManager.Config.SetConfig("javaPath", result.InputLine);
+                            Logger.GetLogger().Info("Received java path from user. Pass.");
+                        }
                     }
-                    else
+                    catch (Exception)
                     {
-                        this.Engine.InstanceManager.Config.SetConfig("javaPath", result.InputLine);
-                        Logger.GetLogger().Info("Received java path from user. Pass.");
+
+                        //ignore.
                     }
                 }
                 else if (result.Type == SingleLineInputResultType.Canceled)
