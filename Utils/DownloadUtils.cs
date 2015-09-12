@@ -44,7 +44,14 @@ namespace TerminologyLauncher.Utils
                 {
                     progress.Percent = o.ProgressPercentage;
                 };
-                client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
+                try
+                {
+                    client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
+                }
+                catch (AggregateException ex)
+                {
+                    throw ex.GetBaseException();
+                }
                 if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
                 {
                     targetFileInfo.Directory.Create();
