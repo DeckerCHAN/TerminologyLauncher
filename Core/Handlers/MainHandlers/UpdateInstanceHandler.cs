@@ -59,7 +59,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
                         String.Format(
                             "Caused by an internal error, we can not update this instance right now.Detail:{0}",
-                            ex.Message));
+                            ex));
 
                 }
                 finally

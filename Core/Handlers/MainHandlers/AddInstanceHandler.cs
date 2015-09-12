@@ -63,7 +63,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 Logging.Logger.GetLogger()
                     .ErrorFormat("Can not add this instance because {0}", ex.Message);
                 this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch", String.Format(
-                    "Caused by an internal error, we can not launch this instance right now. Detail: {0}", ex.Message));
+                    "Caused by an internal error, we can not launch this instance right now. Detail: {0}", ex));
 
             }
             finally
