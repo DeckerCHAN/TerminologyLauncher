@@ -16,6 +16,10 @@ namespace TerminologyLauncher.Utils
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, tempFileInfo.FullName);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
                 File.Copy(tempFileInfo.FullName, path, true);
             }
         }
