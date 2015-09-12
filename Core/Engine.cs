@@ -45,7 +45,7 @@ namespace TerminologyLauncher.Core
         public Process GameProcess { get; set; }
         public Engine()
         {
-            Logger.GetLogger().Info("Engine Initializing...");
+            Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.UiControl = new UiControl();
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfig("authConfig"));
