@@ -55,11 +55,11 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (Exception ex)
                 {
-                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex.Message);
+                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
                         String.Format(
                             "Caused by an internal error, we can not update this instance right now.Detail:{0}",
-                            ex));
+                            ex.Message));
 
                 }
                 finally
