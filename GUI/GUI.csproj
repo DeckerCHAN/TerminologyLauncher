@@ -74,7 +74,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SingleLineInput\SingleLineInputWindow.xaml">
+    <Page Include="ToolkitWindows\SingleLineInput\SingleLineInputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolkitWindows\SingleSelect\SingleSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -104,6 +108,7 @@
     <Compile Include="ConsoleWindow.xaml.cs">
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Toolkits\ObservableDictionary.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
@@ -111,10 +116,13 @@
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="SingleLineInput\SingleLineInputResult.cs" />
-    <Compile Include="SingleLineInput\SingleLineInputResultType.cs" />
-    <Compile Include="SingleLineInput\SingleLineInputWindow.xaml.cs">
+    <Compile Include="ToolkitWindows\WindowResult.cs" />
+    <Compile Include="ToolkitWindows\WindowResultType.cs" />
+    <Compile Include="ToolkitWindows\SingleLineInput\SingleLineInputWindow.xaml.cs">
       <DependentUpon>SingleLineInputWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolkitWindows\SingleSelect\SingleSelectWindow.xaml.cs">
+      <DependentUpon>SingleSelectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UiControl.xaml.cs">
       <DependentUpon>UiControl.xaml</DependentUpon>

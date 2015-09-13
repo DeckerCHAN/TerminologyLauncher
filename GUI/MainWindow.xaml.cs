@@ -25,6 +25,7 @@ namespace TerminologyLauncher.GUI
         private ObservableCollection<InstanceEntity> InstanceListValue;
         private InstanceEntity SelectInstanceValue;
         private PlayerEntity PlayerValue;
+        private string CoreVersionValue;
 
 
         public PlayerEntity Player
@@ -37,6 +38,15 @@ namespace TerminologyLauncher.GUI
             }
         }
 
+        public String CoreVersion
+        {
+            get { return this.CoreVersionValue; }
+            set
+            {
+                this.CoreVersionValue = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public InstanceEntity SelectInstance
         {
