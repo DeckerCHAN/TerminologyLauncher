@@ -20,6 +20,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
+            Logging.Logger.GetLogger().Info("Handling update instance event!");
+
             var instance = this.Engine.UiControl.MajorWindow.SelectInstance;
             if (instance == null)
             {

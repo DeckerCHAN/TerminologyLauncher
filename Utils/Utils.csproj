@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="DownloadUtils.cs" />
     <Compile Include="FolderUtils.cs" />
+    <Compile Include="JavaUtils.cs" />
     <Compile Include="Md5Utils.cs" />
     <Compile Include="ProgressService\LeafNodeProgress.cs" />
     <Compile Include="ProgressService\Progress.cs" />
@@ -54,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{d7137adb-46ba-4e01-b550-060411dfe671}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

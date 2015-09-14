@@ -89,7 +89,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         }
 
 
-
+        #region Operation
         public String AddInstance(String instanceUrl)
         {
             Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
@@ -410,17 +410,16 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
 
             //Launch minecraft
-            var instanceStartInfo = new ProcessStartInfo();
-            var instanceProcess = new Process();
-            instanceStartInfo.FileName = this.Config.GetConfig("javaPath");
-            instanceStartInfo.Arguments = startArgument;
-            instanceStartInfo.WorkingDirectory = instanceRootFolder.FullName;
-            instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
-            instanceStartInfo.UseShellExecute = false;
-            instanceStartInfo.RedirectStandardOutput = true;
-            instanceStartInfo.UseShellExecute = false;
-            instanceProcess.StartInfo = instanceStartInfo;
-            instanceProcess.EnableRaisingEvents = true;
+            var instanceStartInfo = new ProcessStartInfo
+            {
+                FileName = this.Config.GetConfig("javaPath"),
+                Arguments = startArgument,
+                WorkingDirectory = instanceRootFolder.FullName,
+                WindowStyle = ProcessWindowStyle.Normal,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            var instanceProcess = new Process {StartInfo = instanceStartInfo, EnableRaisingEvents = true};
             instanceProcess.Start();
             progress.Percent = 100D;
 
@@ -431,7 +430,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
 
         }
-
+        #endregion
         #region Toolkits
 
         private DirectoryInfo GetInstanceRootFolder(String instanceName)

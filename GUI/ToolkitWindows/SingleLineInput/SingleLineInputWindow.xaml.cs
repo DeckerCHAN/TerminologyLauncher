@@ -38,7 +38,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
             };
             if (result.Type == WindowResultType.CommonFinished)
             {
-                result.InputLine = this.InputContent;
+                result.Result = this.InputContent;
             }
             return result;
         }

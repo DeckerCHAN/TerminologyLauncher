@@ -9,7 +9,8 @@ using Newtonsoft.Json;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
@@ -23,17 +24,17 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
+            Logging.Logger.GetLogger().Info("Handling add instance event!");
 
-
-            var result = new SingleLineInputWindow("Input instance url", "URL:").ReceiveUserinput();
-            if (result.Type == SingleLineInputResultType.Canceled)
+            var result = new SingleLineInputWindow("Input instance url", "URL:").ReceiveUserInput();
+            if (result.Type == WindowResultType.Canceled)
             {
                 Logging.Logger.GetLogger().Info("Empty input or user canceled. Ignore!");
                 return;
             }
             try
             {
-                var message = this.Engine.InstanceManager.AddInstance(result.InputLine);
+                var message = this.Engine.InstanceManager.AddInstance(result.Result.ToString());
                 this.Engine.UiControl.MajorWindow.InstanceList =
                 new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
                 this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Successful", message);

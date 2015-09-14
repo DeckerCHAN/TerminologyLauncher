@@ -1,23 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using TerminologyLauncher.Entities.InstanceManagement;
+using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.Logging;
+using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
     public class MainWindowVisibilityChangedHandler : HandlerBase
     {
-        public override void HandleEvent(Object sender, EventArgs e)
+        private Boolean FirstStart;
+
+        public MainWindowVisibilityChangedHandler(Engine engine)
+            : base(engine)
         {
-            throw new NotSupportedException();
+            this.FirstStart = true;
+            this.Engine.UiControl.MainWindow.IsVisibleChanged += this.HandleEvent;
         }
 
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
             var window = sender as Window;
             Logger.GetLogger().InfoFormat("Main window is going to {0}!", window.Visibility);
+
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -27,12 +39,28 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     }
                 case Visibility.Visible:
                     {
-                        if (this.Engine.UiControl.MajorWindow.SelectInstance == null)
+                        if (this.FirstStart)
                         {
-                            this.Engine.UiControl.MajorWindow.InstanceList =
-                                         new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-                        }
+                            this.FirstStart = false;
 
+                            if (!this.CheckJavaPath())
+                            {
+                                this.Engine.Exit();
+                                return;
+                            }
+
+                            this.Engine.UiControl.MajorWindow.InstanceList =
+                                  new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                            if (this.Engine.UiControl.MajorWindow.InstanceList.Count == 0)
+                            {
+                                var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
+                                if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
+                            }
+
+
+
+                            this.Engine.UiControl.MajorWindow.CoreVersion = this.Engine.CoreVersion;
+                        }
                         break;
                     }
                 default:
@@ -43,11 +71,100 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             return;
         }
-
-        public MainWindowVisibilityChangedHandler(Engine engine)
-            : base(engine)
+        public override void HandleEvent(Object sender, EventArgs e)
         {
-            this.Engine.UiControl.MainWindow.IsVisibleChanged += this.HandleEvent;
+            throw new NotSupportedException();
+        }
+
+        private Boolean CheckJavaPath()
+        {
+            //Check config 
+            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
+            {
+                try
+                {
+                    var javaBinFile = new FileInfo(this.Engine.InstanceManager.Config.GetConfig("javaPath"));
+                    if (javaBinFile.Exists && (javaBinFile.Name.Equals("java.exe") || javaBinFile.Name.Equals("javaw.exe")))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+
+            }
+            //Search java from default path
+            var searchPaths = this.Engine.CoreConfig.GetConfigs("javaSearchPaths");
+
+            var javaPaths = searchPaths.Where(Directory.Exists)
+                .SelectMany(
+                path => Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly),
+                (path, folder) => Path.Combine(folder, "bin/java.exe")
+                ).Where(File.Exists)
+                .ToList();
+
+
+
+
+            var javaRuntimeEntitiesKP = new Dictionary<String, JavaRuntimeEntity>();
+            foreach (var javaPath in javaPaths)
+            {
+                try
+                {
+                    var runtimeEntity = new JavaRuntimeEntity()
+                    {
+                        JavaPath = javaPath,
+                        JavaWPath = Path.Combine(Path.GetDirectoryName(javaPath), "javaw.exe"),
+                        JavaDetails = JavaUtils.GetJavaDetails(javaPath)
+                    };
+                    javaRuntimeEntitiesKP.Add(String.Format("{0}:{1}", runtimeEntity.JavaDetails.JavaVersion, runtimeEntity.JavaDetails.JavaType), runtimeEntity);
+                }
+                catch (Exception)
+                {
+                    //Ignore
+                }
+            }
+
+            var result = this.Engine.UiControl.StartSingleSelect("Select available java", "Java Runtime:", javaRuntimeEntitiesKP.Keys);
+            if (result.Type == WindowResultType.Canceled)
+            {
+                return false;
+            }
+
+            this.Engine.InstanceManager.Config.SetConfig("javaPath", javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath);
+
+
+            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
+            {
+                Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
+
+                result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
+                if (result.Type == WindowResultType.CommonFinished)
+                {
+
+                    try
+                    {
+                        var javaExe = new FileInfo(result.Result.ToString());
+                        if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
+                        {
+                            this.Engine.InstanceManager.Config.SetConfig("javaPath", result.Result.ToString());
+                            Logger.GetLogger().Info("Received java path from user. Pass.");
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        //ignore.
+                    }
+                }
+                else if (result.Type == WindowResultType.Canceled)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

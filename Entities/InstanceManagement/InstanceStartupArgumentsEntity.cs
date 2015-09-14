@@ -17,7 +17,7 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public String AssetIndex { get; set; }
         public String UserProperties { get; set; }
         public String UserType { get; set; }
-        public List<String> TweakClass { get; set; }
+        public List<String> TweakClasses { get; set; }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.InstanceManagement;
@@ -19,6 +20,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
+            Logging.Logger.GetLogger().Info("Handling launch instance event!");
 
             InstanceEntity instance = this.Engine.UiControl.MajorWindow.SelectInstance;
             var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
@@ -43,6 +45,42 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             Logging.Logger.GetLogger().InfoFormat(">>>GAME<<<: {0}", ea.Data);
                         }
                     };
+                }
+                catch (WebException ex)
+                {
+                    var response = ((HttpWebResponse) ex.Response);
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                        {
+                            Logging.Logger.GetLogger()
+                                .ErrorFormat("Can not find file on server when donloading:{0}", response.ResponseUri);
+                            this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch",
+                                String.Format(
+                                    "Can not find file on server when donloading:{0}", response.ResponseUri));
+                            break;
+                        }
+                        case HttpStatusCode.Forbidden:
+                        {
+                            Logging.Logger.GetLogger()
+                             .ErrorFormat("You have no right to access this server when downloading: {0}", response.ResponseUri);
+                            this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch",
+                                String.Format(
+                                    "You have no right to access this server when downloading: {0}", response.ResponseUri));
+                 
+                            break;
+                        }
+                        default:
+                        {
+
+                            Logging.Logger.GetLogger()
+             .Error(String.Format("Encounter an network error during build environment: {0}", ex));
+                            this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch", String.Format(
+                                "Encounter an network error during build environment: {0}", ex.Message));
+      
+                            break;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

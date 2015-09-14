@@ -7,6 +7,7 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Core.Handlers;
 using TerminologyLauncher.Core.Handlers.LoginHandlers;
 using TerminologyLauncher.Core.Handlers.MainHandlers;
+using TerminologyLauncher.Core.Handlers.SystemHandlers;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.FileRepositorySystem;
@@ -66,6 +67,8 @@ namespace TerminologyLauncher.Core
         public void Exit()
         {
             Logger.GetLogger().Info("Engine shutting down...");
+            Engine.GetEngine().UiControl.Shutdown();
+            Logger.GetLogger().Info("UiControl shutdown.");
         }
 
         public void RegisterHandlers()

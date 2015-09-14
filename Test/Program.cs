@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 
 namespace TerminologyLauncher.Test
 {
@@ -7,7 +10,8 @@ namespace TerminologyLauncher.Test
         [STAThread]
         static void Main(string[] args)
         {
-            ProgressWindowTest.MainTest();
+            var result = new UiControl().StartSingleSelect("Test", "TestField", new List<String> { "asdasd", "dasdddd" });
+            
         }
     }
 }

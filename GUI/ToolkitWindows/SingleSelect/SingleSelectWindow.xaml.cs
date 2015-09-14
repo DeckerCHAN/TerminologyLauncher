@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -11,10 +13,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
     /// <summary>
     /// Interaction logic for SingleSelectWindow.xaml
     /// </summary>
-    public partial class SingleSelectWindow : INotifyPropertyChanged
+    public sealed partial class SingleSelectWindow : INotifyPropertyChanged
     {
         private String FieldNameValue;
-        private ObservableDictionary<string, object> SelectItemsValue;
+        private ObservableCollection<String> SelectItemsValue;
+        private string SelectItemValue;
         private Boolean IsCanceled { get; set; }
         public String FieldName
         {
@@ -26,7 +29,13 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public ObservableDictionary<String, Object> SelectItems
+        public String SelectItem
+        {
+            get { return this.SelectItemValue; }
+            set { this.SelectItemValue = value; }
+        }
+
+        public ObservableCollection<String> SelectItems
         {
             get { return this.SelectItemsValue; }
             set
@@ -36,12 +45,38 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public SingleSelectWindow()
+        public SingleSelectWindow(String title, String selectFieldName, IEnumerable<string> items)
         {
-            this.SelectItems = new ObservableDictionary<string, object>();
+            this.SelectItems = new ObservableCollection<String>();
             this.InitializeComponent();
-            this.SelectItems.Add("Hello", "Hi");
-            this.SelectItems.Add("PPP", "asdasdHi");
+            this.Title = title;
+            this.FieldName = selectFieldName;
+            this.SelectItems = new ObservableCollection<string>(items);
+            this.OnPropertyChanged();
+        }
+
+        internal WindowResult ReceiveUserSelect()
+        {
+            base.ShowDialog();
+            var result = new WindowResult()
+            {
+                Type = this.IsCanceled ? WindowResultType.Canceled : WindowResultType.CommonFinished
+            };
+            if (result.Type == WindowResultType.CommonFinished)
+            {
+                result.Result = this.SelectItem;
+            }
+            return result;
+        }
+
+        new public Boolean? ShowDialog()
+        {
+            throw new InvalidOperationException("Do not directly show dialog by your self. Try use toolkit functions in UiControl!");
+        }
+
+       new  public void Show()
+        {
+            throw new InvalidOperationException("Do not directly show by your self. Try use toolkit functions in UiControl!");
         }
 
         private void HeadBarPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -58,7 +93,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

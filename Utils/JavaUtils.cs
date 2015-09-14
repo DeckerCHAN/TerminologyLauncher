@@ -12,7 +12,7 @@ namespace TerminologyLauncher.Utils
 {
     public static class JavaUtils
     {
-        public static JavaDetails GetJavaType(String javaExePath)
+        public static JavaDetails GetJavaDetails(String javaExePath)
         {
             var javaExeFile = new FileInfo(javaExePath);
             if (!javaExeFile.Exists || !javaExeFile.Name.ToLower().Equals("java.exe"))

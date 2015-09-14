@@ -22,7 +22,7 @@
             </Border.Background>
             <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Height="30" Background="Transparent" >
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
                 <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                     <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
                 </StackPanel>
@@ -31,7 +31,7 @@
 
         </Border>
         <Canvas>
-            <TextBlock Name="FieldTextBlock"  Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="55" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
+            <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
             <TextBox  x:Name="UserInput"  Height="25" Canvas.Left="149" Canvas.Top="50" Width="282" Text="{Binding InputContent,Mode=TwoWay}" TextWrapping="Wrap"  FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}"/>
             <Button x:Name="ConfirmButton" Content="确定" Style="{DynamicResource TerminologyConfigButtonStyle}" Canvas.Left="364" Canvas.Top="99" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 

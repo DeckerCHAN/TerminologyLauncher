@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 
 namespace TerminologyLauncher.GUI
 {
@@ -24,13 +26,13 @@ namespace TerminologyLauncher.GUI
             try
             {
                 this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
-  
+
             }
             catch (Exception ex)
             {
                 Logging.Logger.GetLogger().ErrorFormat("Can not show login window right now! Cause:{0}", ex.Message);
             }
-          }
+        }
 
         public void HideLoginWindow()
         {
@@ -42,7 +44,7 @@ namespace TerminologyLauncher.GUI
             {
                 Logging.Logger.GetLogger().ErrorFormat("Can not hide login window right now! Cause:{0}", ex.Message);
             }
-         }
+        }
 
         public void ShowMainWindow()
         {
@@ -55,7 +57,7 @@ namespace TerminologyLauncher.GUI
 
                 Logging.Logger.GetLogger().ErrorFormat("Can not show main window right now! Cause:{0}", ex.Message);
             }
-          
+
         }
         public void HideMainWindow()
         {
@@ -70,12 +72,22 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public WindowResult StartSingleLineInput(String title, String field)
+        public WindowResult StartSingleLineInput(String title, String fieldName)
         {
             WindowResult result = null;
             this.Dispatcher.Invoke(() =>
             {
-                result = new SingleLineInputWindow(title, field).ReceiveUserInput();
+                result = new SingleLineInputWindow(title, fieldName).ReceiveUserInput();
+            });
+            return result;
+        }
+
+        public WindowResult StartSingleSelect(String title, String fieldName, IEnumerable<String> selectItems)
+        {
+            WindowResult result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                result = new SingleSelectWindow(title, fieldName, selectItems).ReceiveUserSelect();
             });
             return result;
         }

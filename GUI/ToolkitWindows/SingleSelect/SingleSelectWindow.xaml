@@ -22,37 +22,33 @@
             </Border.Background>
             <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown"    Height="30" Background="Transparent" >
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
                 <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                     <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
         </Border>
         <Canvas  DockPanel.Dock="Bottom">
-            <TextBlock Name="FieldTextBlock"  Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="55" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
+            <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
             <ComboBox Name="SelectComboBox" 
                       x:FieldModifier="public" 
                       Height="25"
                       Canvas.Left="149" 
                       Canvas.Top="50" 
+                      SelectedIndex="0"
                       Width="282"
-                      SelectedIndex="1" 
                       FontSize="15" 
                       HorizontalContentAlignment="Center" 
                       ItemsSource="{Binding SelectItems}"
+                      SelectedItem="{Binding SelectItem,Mode=OneWayToSource}"
                       Style="{DynamicResource TerminologyComboBoxStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding Key}"></TextBlock>
-                            <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding Value}"></TextBlock>
+                            <TextBlock  Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding}" ></TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
-                <!--<ComboBoxItem Content="离线模式" HorizontalAlignment="Stretch" Width="118"/>
-                <ComboBoxItem Content="正版登录" HorizontalAlignment="Stretch" Width="118"/>-->
-
-
             </ComboBox>
             <Button x:Name="ConfirmButton" Content="确定" Style="{DynamicResource TerminologyConfigButtonStyle}" Canvas.Left="364" Canvas.Top="99" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 

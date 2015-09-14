@@ -1,6 +1,14 @@
 ﻿{
-    "authConfig": "Configs/AuthConfig.json", 
+    "authConfig": "Configs/AuthConfig.json",
     "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
     "fileRepositoryConfig": "Configs/FileRepositoryConfig.json",
-    "updateManagerConfig": "Configs/UpdaterConifg.json"
+    "updateManagerConfig": "Configs/UpdaterConifg.json",
+    "javaSearchPaths": [
+        "C:\\Program Files\\Java\\",
+        "C:\\Program Files (x86)\\Java\\",
+        "D:\\Program Files\\Java\\",
+        "D:\\Program Files (x86)\\Java\\",
+        "Java\\"
+
+    ]  
 }

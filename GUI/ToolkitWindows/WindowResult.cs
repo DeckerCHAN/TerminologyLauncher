@@ -6,6 +6,6 @@ namespace TerminologyLauncher.GUI.ToolkitWindows
     public class WindowResult
     {
         public WindowResultType Type { get; set; }
-        public String InputLine { get; set; }
+        public Object Result { get; set; }
     }
 }

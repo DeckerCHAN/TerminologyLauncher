@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace TerminologyLauncher.Entities.System.Java
 {
-    public class JavaRuntimeEntity
+    public enum JavaType
     {
+        Unknown = 0,
+        ServerX86 = 1,
+        ServerX64 = 2,
+        ClientX86 = 3,
+        ClientX64 = 4
 
-        public JavaDetails JavaDetails { get; set; }
-        public String JavaPath { get; set; }
-        public String JavaWPath { get; set; }
     }
 }

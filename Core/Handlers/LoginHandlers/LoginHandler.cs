@@ -4,7 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
@@ -85,38 +86,6 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultType.Success);
             this.Engine.PostInitializeComponents();
             this.Engine.UiControl.MajorWindow.Player = this.Engine.AuthServer.CurrentPlayer;
-            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
-            {
-                Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
-
-                var result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
-                if (result.Type == SingleLineInputResultType.CommonFinished)
-                {
-
-                    try
-                    {
-                        var javaExe = new FileInfo(result.InputLine);
-                        if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
-                        {
-                            this.Engine.InstanceManager.Config.SetConfig("javaPath", result.InputLine);
-                            Logger.GetLogger().Info("Received java path from user. Pass.");
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                        //ignore.
-                    }
-                }
-                else if (result.Type == SingleLineInputResultType.Canceled)
-                {
-                    Logger.GetLogger().Info("Handling close event.");
-                    Engine.GetEngine().UiControl.Shutdown();
-                    Logger.GetLogger().Info("UiControl shutdown.");
-                    Engine.GetEngine().Exit();
-                    return;
-                }
-            }
             this.Engine.UiControl.ShowMainWindow();
         }
 
@@ -124,5 +93,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.LoginResult(reason);
         }
+
+
     }
 }

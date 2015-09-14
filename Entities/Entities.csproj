@@ -79,6 +79,9 @@
     <Compile Include="SerializeUtils\JsonConverter.cs" />
     <Compile Include="SerializeUtils\SerializeSettings.cs" />
     <Compile Include="System\IComponent.cs" />
+    <Compile Include="System\Java\JavaDetails.cs" />
+    <Compile Include="System\Java\JavaRuntimeEntity.cs" />
+    <Compile Include="System\Java\JavaType.cs" />
     <Compile Include="UpdateManagement\UpdateEntity.cs" />
     <Compile Include="UpdateManagement\VersionEntity.cs" />
   </ItemGroup>
