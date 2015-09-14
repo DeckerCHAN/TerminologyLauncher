@@ -21,17 +21,41 @@ namespace TerminologyLauncher.GUI
 
         public void ShowLoginWindow()
         {
-            this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
-        }
+            try
+            {
+                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
+  
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not show login window right now! Cause:{0}", ex.Message);
+            }
+          }
 
         public void HideLoginWindow()
         {
-            this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Hide(); });
-        }
+            try
+            {
+                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Hide(); });
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide login window right now! Cause:{0}", ex.Message);
+            }
+         }
 
         public void ShowMainWindow()
         {
-            this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+            try
+            {
+                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+            }
+            catch (Exception ex)
+            {
+
+                Logging.Logger.GetLogger().ErrorFormat("Can not show main window right now! Cause:{0}", ex.Message);
+            }
+          
         }
         public void HideMainWindow()
         {
@@ -42,8 +66,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                throw;
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide main window right now! Cause:{0}", ex.Message);
             }
         }
 
