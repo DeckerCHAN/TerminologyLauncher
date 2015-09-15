@@ -27,7 +27,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadFile(String url, String path, String md5)
         {
             DownloadFile(url, path);
-            if (!Md5Utils.CheckFileMd5(path, md5))
+            if (!EncodeUtils.CheckFileMd5(path, md5))
             {
                 throw new Exception(String.Format("Md5 check for {0} refused!", path));
             }
@@ -63,7 +63,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadFile(LeafNodeProgress progress, String url, String path, String md5)
         {
             DownloadFile(progress, url, path);
-            if (!Md5Utils.CheckFileMd5(path, md5))
+            if (!EncodeUtils.CheckFileMd5(path, md5))
             {
                 throw new Exception(String.Format("Md5 check for {0} refused!", path));
             }

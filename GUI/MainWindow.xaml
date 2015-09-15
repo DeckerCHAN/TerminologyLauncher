@@ -35,8 +35,9 @@
 
                     <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"><Run  Text="Terminology Launcher "/><Run Text="{Binding CoreVersion}"/></TextBlock>
                     <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
-                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" ></Button>
-                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" ></Button>
+                        <Button x:Name="ConfigButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadConfigButtonStyle}"/>
+                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}"/>
+                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}"/>
                     </StackPanel>
 
                 </DockPanel>

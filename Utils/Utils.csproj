@@ -46,7 +46,7 @@
     <Compile Include="DownloadUtils.cs" />
     <Compile Include="FolderUtils.cs" />
     <Compile Include="JavaUtils.cs" />
-    <Compile Include="Md5Utils.cs" />
+    <Compile Include="EncodeUtils.cs" />
     <Compile Include="ProgressService\LeafNodeProgress.cs" />
     <Compile Include="ProgressService\Progress.cs" />
     <Compile Include="ProgressService\InternalNodeProgress.cs" />

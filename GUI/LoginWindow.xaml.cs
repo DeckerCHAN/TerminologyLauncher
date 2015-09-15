@@ -4,16 +4,24 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
 
 namespace TerminologyLauncher.GUI
 {
+
+
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window, INotifyPropertyChanged
+    public partial class LoginWindow : INotifyPropertyChanged
     {
+        private bool IsPerservePasswordValue;
+
+        public delegate void LogingHandler(Object serder, EventArgs e);
+
+        public event LogingHandler Logining;
         public LoginWindow()
         {
             this.InitializeComponent();
@@ -58,21 +66,52 @@ namespace TerminologyLauncher.GUI
             this.Dispatcher.Invoke(this.Close);
         }
 
+        public RelayCommand KeyPressCommand
+        {
+            get { return new RelayCommand(() => { this.OnLogining(this); }); }
+        }
+
+        public Boolean IsPerservePassword
+        {
+            get { return this.IsPerservePasswordValue; }
+            set
+            {
+                this.IsPerservePasswordValue = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public LoginEntity GetLogin()
         {
-            return new LoginEntity()
+            LoginEntity login = null;
+            this.Dispatcher.Invoke(() =>
             {
-                UserName = this.UsernameBox.Text,
-                Password = this.PasswordBox.Password,
-                LoginType = (LoginType)this.LoginModeComboBox.SelectedIndex
-            };
+                login = new LoginEntity()
+                {
+                    UserName = this.UsernameBox.Text,
+                    Password = this.PasswordBox.Password,
+                    LoginType = (LoginType)this.LoginModeComboBox.SelectedIndex,
+                    PerserveLogin = this.IsPerservePassword
+                };
+            });
+            if (login == null)
+            {
+                throw new Exception("Can not get valid login entity");
+            }
+            return login;
+
         }
 
         public void SetLogin(LoginEntity login)
         {
-            this.UsernameBox.Text = login.UserName;
-            this.PasswordBox.Password = login.Password;
-            this.LoginModeComboBox.SelectedIndex = (int)login.LoginType;
+            this.Dispatcher.Invoke(() =>
+            {
+                this.UsernameBox.Text = login.UserName;
+                this.PasswordBox.Password = login.Password;
+                this.LoginModeComboBox.SelectedIndex = (int)login.LoginType;
+                this.IsPerservePassword = login.PerserveLogin;
+            });
+
         }
 
         public void LoginResult(LoginResultType result)
@@ -144,6 +183,17 @@ namespace TerminologyLauncher.GUI
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnLogining(object serder)
+        {
+            var handler = this.Logining;
+            if (handler != null) handler(serder, EventArgs.Empty);
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnLogining(this);
         }
     }
 }

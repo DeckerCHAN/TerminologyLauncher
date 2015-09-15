@@ -55,8 +55,6 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 new PopupWindow(this.Engine.UiControl.MajorWindow, "Error",
                     "Some critical field is missing. Unable to add this instance.!").ShowDialog();
-
-
             }
 
             catch (Exception ex)
@@ -69,9 +67,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             finally
             {
-                this.Engine.UiControl.MajorWindow.InstanceList =
-                    new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-
+         
             }
 
 

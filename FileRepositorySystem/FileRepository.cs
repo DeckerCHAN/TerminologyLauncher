@@ -36,7 +36,7 @@ namespace TerminologyLauncher.FileRepositorySystem
                 }
 
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 Logger.GetLogger().Error("Unable to receive repo right now. Trying to using local repo list.");
                 if (!File.Exists(this.Config.GetConfig("repoFilePath")))

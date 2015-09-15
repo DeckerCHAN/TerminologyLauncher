@@ -121,7 +121,7 @@ namespace TerminologyLauncher.GUI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var imagePath = (String) value;
+            var imagePath = (String)value;
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;

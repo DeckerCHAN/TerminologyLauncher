@@ -37,16 +37,24 @@
         <Canvas DockPanel.Dock="Bottom"  >
             <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBlock Name="AccountPasswordTitle" TextWrapping="Wrap" Text="密码:" Canvas.Right="330" Canvas.Top="125" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
-            <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}"/>
-            <PasswordBox  x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}"/>
+            <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding KeyPressCommand}" Key="Enter"></KeyBinding>
+                </TextBox.InputBindings>
+            </TextBox>
+            <PasswordBox  x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}">
+                <PasswordBox.InputBindings>
+                    <KeyBinding Command="{Binding KeyPressCommand}" Key="Enter"></KeyBinding>
+                </PasswordBox.InputBindings>
+            </PasswordBox>
             <ComboBox Name="LoginModeComboBox"  x:FieldModifier="public" Canvas.Left="158" Canvas.Top="172" Width="156" Height="25" SelectedIndex="1" FontSize="15" HorizontalContentAlignment="Center" Style="{DynamicResource TerminologyComboBoxStyle}" SelectionChanged="LoginMode_OnSelectionChanged">
                 <ComboBoxItem Content="离线模式" HorizontalAlignment="Stretch" Width="118"/>
                 <ComboBoxItem Content="正版登录" HorizontalAlignment="Stretch" Width="118"/>
 
 
             </ComboBox>
-            <CheckBox x:Name="IsPerservePasswordCheckBox" x:FieldModifier="public" Content="记住密码" Canvas.Left="348" Canvas.Top="175" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
-            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" />
+            <CheckBox x:Name="IsPerservePasswordCheckBox" IsChecked="{Binding IsPerservePassword,Mode=TwoWay}" x:FieldModifier="public" Content="记住账户" Canvas.Left="348" Canvas.Top="175" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
+            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_Click" />
             <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
             <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Right="330" Canvas.Top="173" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
 

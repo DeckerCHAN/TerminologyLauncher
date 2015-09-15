@@ -7,5 +7,6 @@ namespace TerminologyLauncher.Entities.Account
         public String UserName { get; set; }
         public String Password { get; set; }
         public LoginType LoginType { get; set; }
+        public Boolean PerserveLogin { get; set; }
     }
 }

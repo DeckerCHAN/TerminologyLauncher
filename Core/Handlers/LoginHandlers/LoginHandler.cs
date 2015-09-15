@@ -15,7 +15,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         public LoginHandlerBase(Engine engine)
             : base(engine)
         {
-            this.Engine.UiControl.LoginWindow.LoginButton.Click += this.HandleEvent;
+            this.Engine.UiControl.LoginWindow.Logining += this.HandleEvent;
         }
         public override void HandleEvent(Object sender, EventArgs e)
         {
