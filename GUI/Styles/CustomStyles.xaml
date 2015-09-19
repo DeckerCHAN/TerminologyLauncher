@@ -608,7 +608,7 @@
 							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
 							Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
 							ViewportSize="{TemplateBinding ViewportWidth}"
-							Style="{DynamicResource HorisontalScrollBarStyle}"
+							Style="{DynamicResource HorizontalScrollBarStyle}"
                             Background="Transparent"/>
                     </Grid>
                 </ControlTemplate>
@@ -698,10 +698,65 @@
         </Setter>
     </Style>
 
+    <!-- ListView -->
 
+    <Style x:Key="TerminologyListViewStyle" TargetType="{x:Type ListView}">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource TerminologyListViewItemStyle}"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Name="Border"
+                BorderThickness="1"
+                CornerRadius="2">
+                        <Border.Background>
+                            <SolidColorBrush Color="{TemplateBinding Background}" />
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{TemplateBinding Foreground}" />
+                        </Border.BorderBrush>
+                        <ScrollViewer Margin="0" Style="{DynamicResource TerminologyScrollViewerStyle}"
+                        Focusable="false">
+                            <StackPanel Margin="2"
+                        IsItemsHost="True" />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                   Value="false">
+                            <Setter TargetName="Border"
+                    Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource DisabledBackgroundColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Border"
+                    Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource DisabledForegroundColor}" />
+                                </Setter.Value>
+
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsGrouping"
+                   Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="false" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TerminologyListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="Focusable" Value="false"/>
+    </Style>
+    
     <!-- ScrollBar -->
     <Style x:Key="TerminologyScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
-        <Setter Property="Background" Value="{DynamicResource ScrollViewerBackground}"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
@@ -749,7 +804,7 @@
 							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
 							Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
 							ViewportSize="{TemplateBinding ViewportWidth}"
-							Style="{DynamicResource HorisontalScrollBarStyle}"/>
+							Style="{DynamicResource HorizontalScrollBarStyle}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -942,7 +997,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="HorisontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
+    <Style x:Key="HorizontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
@@ -955,7 +1010,7 @@
                 <Setter Property="MinWidth" Value="0"/>
                 <Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
                 <Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
-                <Setter Property="Background" Value="{StaticResource HorizontalScrollBarBackground}"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
