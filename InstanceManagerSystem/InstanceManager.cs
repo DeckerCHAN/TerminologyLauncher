@@ -34,7 +34,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.LoadInstancesFromBankFile();
         }
         public Config Config { get; set; }
-        public Int32 SupportGeneration { get { return 1; } }
+        public Int32 SupportGeneration { get { return 2; } }
         public DirectoryInfo InstancesFolder { get; set; }
         public InstanceBankEntity InstanceBank { get; set; }
         public Process CurrentInstanceProcess { get; set; }
@@ -349,8 +349,77 @@ namespace TerminologyLauncher.InstanceManagerSystem
             //DONE:Build start argument.
             var startArgument = new StringBuilder();// placer.ReplaceArgument(instance.StartupArguments);
             startArgument.Append(instance.StartupArguments.JvmArguments + " ");
-            startArgument.Append(String.Format("-Xmx:{0}M -Xms:{1}M", this.Config.GetConfig("maxMemorySizeMega") != null ? Convert.ToInt32(this.Config.GetConfig("maxMemorySizeMega")) : instance.StartupArguments.MaxiumMemoryMegaSize,
-                this.Config.GetConfig("minMemorySizeMega") != null ? Convert.ToInt32(this.Config.GetConfig("minMemorySizeMega")) : instance.StartupArguments.MiniumMemoryMegaSize));
+            startArgument.AppendFormat("-Xmx:{0}M -Xms:{1}M" + " ", Convert.ToInt64(this.Config.GetConfig("maxMemorySizeMega")),instance.StartupArguments.MiniumMemoryMegaSize);
+
+            var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
+            if (nativeFolder.Exists)
+            {
+                startArgument.AppendFormat("-Djava.library.path={0}" + " ", nativeFolder.FullName);
+
+            }
+            else
+            {
+                throw new DirectoryNotFoundException(String.Format("Native folder is not valid!"));
+            }
+
+            startArgument.Append("-cp" + " ");
+
+            foreach (var libraryPath in instance.StartupArguments.LibraryPaths)
+            {
+                var libFile = new FileInfo(Path.Combine(instanceRootFolder.FullName, libraryPath));
+                if (libFile.Exists)
+                {
+                    startArgument.Append(libFile.FullName + ";");
+                }
+                else
+                {
+                    throw new FileNotFoundException(String.Format("Instance {0} is missing lib file {1}", instance.InstanceName, libraryPath));
+                }
+            }
+
+            var mainJarFile =
+                new FileInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.MainJarPath));
+
+            if (mainJarFile.Exists)
+            {
+                startArgument.Append(mainJarFile.FullName + " ");
+            }
+            else
+            {
+                throw new FileNotFoundException(String.Format("Instance {0} is missing main jar file {1}", instance.InstanceName, mainJarFile.Name));
+            }
+
+            startArgument.Append(instance.StartupArguments.MainClass + " ");
+
+            startArgument.AppendFormat("--username {0} ", player.PlayerName);
+            startArgument.AppendFormat("--version {0} ", instance.StartupArguments.Version);
+            startArgument.AppendFormat("--gameDir {0} ", instanceRootFolder.FullName);
+
+
+
+            var assetsDir =
+                new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.AssetsDir));
+            if (assetsDir.Exists)
+            {
+                startArgument.AppendFormat("--assetsDir {0} ", assetsDir.FullName);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException("Assets folder not found!");
+            }
+
+
+            startArgument.AppendFormat("--assetIndex {0} ", instance.StartupArguments.AssetIndex);
+            startArgument.AppendFormat("--uuid {0} ", player.PlayerId);
+            startArgument.AppendFormat("--accessToken {0} ", player.AccessToken);
+            startArgument.AppendFormat("--userProperties {{{0}}} ", instance.StartupArguments.UserProperties);
+            startArgument.AppendFormat("--userType {0} ", instance.StartupArguments.UserType);
+
+            foreach (var tweakClass in instance.StartupArguments.TweakClasses)
+            {
+                startArgument.AppendFormat("--tweakClass {0} ", tweakClass);
+            }
+
 
 
 
@@ -456,7 +525,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
             {
-                throw new Exception("Missing valid Jvm arguments!");
+                throw new Exception(String.Format("Instance {0} is missing valid Jvm arguments!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.Nativespath))
+            {
+                throw new Exception(String.Format("Instance {0} is missing valid native path arguments!", instance.InstanceName));
             }
 
             if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
@@ -467,15 +541,15 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var javaDetail = JavaUtils.GetJavaDetails(this.Config.GetConfig("javaPath"));
             if (javaDetail.JavaType == JavaType.ClientX86 || javaDetail.JavaType == JavaType.ServerX86)
             {
-                if (instance.StartupArguments.MiniumMemoryMegaSize <= 1800)
+                if (instance.StartupArguments.MiniumMemoryMegaSize <= 1600)
                 {
-                    throw new Exception("X86 Java may not allocate memory more then 1.8G!");
+                    throw new Exception("X86 Java may not allocate memory more then 1.6G!");
                 }
             }
 
-            if (instance.StartupArguments.LibraryPathes == null || instance.StartupArguments.LibraryPathes.Count == 0)
+            if (instance.StartupArguments.LibraryPaths == null || instance.StartupArguments.LibraryPaths.Count == 0)
             {
-                throw new Exception(String.Format("Empty libraries path for instance {0} does not make sciene!"));
+                throw new Exception(String.Format("Empty libraries path for instance {0} does not make sense!", instance.InstanceName));
             }
 
             if (String.IsNullOrEmpty(instance.StartupArguments.MainClass))
