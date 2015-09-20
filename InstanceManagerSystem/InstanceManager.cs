@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
+using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Logging;
@@ -100,6 +102,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             this.CriticalInstanceFieldCheck(instance);
 
+            this.PerinitializeInstance(instance);
+
             var instanceInfo = new InstanceInfoEntity
             {
                 Name = instance.InstanceName,
@@ -110,7 +114,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 UpdateDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
 
-            this.PerinitializeInstance(instance);
+
 
             File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
@@ -343,14 +347,19 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
 
             //DONE:Build start argument.
-            var startArgument = placer.ReplaceArgument(instance.StartupArguments);
+            var startArgument = new StringBuilder();// placer.ReplaceArgument(instance.StartupArguments);
+            startArgument.Append(instance.StartupArguments.JvmArguments + " ");
+            startArgument.Append(String.Format("-Xmx:{0}M -Xms:{1}M", this.Config.GetConfig("maxMemorySizeMega") != null ? Convert.ToInt32(this.Config.GetConfig("maxMemorySizeMega")) : instance.StartupArguments.MaxiumMemoryMegaSize,
+                this.Config.GetConfig("minMemorySizeMega") != null ? Convert.ToInt32(this.Config.GetConfig("minMemorySizeMega")) : instance.StartupArguments.MiniumMemoryMegaSize));
+
+
 
 
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo
             {
                 FileName = this.Config.GetConfig("javaPath"),
-                Arguments = startArgument,
+                Arguments = startArgument.ToString(),
                 WorkingDirectory = instanceRootFolder.FullName,
                 WindowStyle = ProcessWindowStyle.Normal,
                 UseShellExecute = false,
@@ -425,21 +434,16 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return new FileInfo(imagePath).FullName;
         }
 
-        private void GenerationCheck(InstanceEntity instance)
-        {
-            if (!instance.Generation.Equals(this.SupportGeneration))
-            {
-                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
-            }
-        }
-
         private void CriticalInstanceFieldCheck(InstanceEntity instance)
         {
             if (String.IsNullOrEmpty(instance.InstanceName))
             {
                 throw new MissingFieldException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
             }
-            this.GenerationCheck(instance);
+            if (!instance.Generation.Equals(this.SupportGeneration))
+            {
+                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
+            }
             if (String.IsNullOrEmpty(instance.UpdatePath))
             {
                 throw new MissingFieldException(String.Format("Instance {0} is missing update url, this may caused unable to update. Try to connect author for more information.", instance.UpdatePath));
@@ -450,7 +454,46 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 throw new MissingFieldException(String.Format("Instance {0} is missing version number, this may caused unable to update. Try to connect author for more information.", instance.Version));
             }
 
-            //TODO:Check start up argument null or empty!!!
+            if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
+            {
+                throw new Exception("Missing valid Jvm arguments!");
+            }
+
+            if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
+            {
+                throw new Exception("Instance require memory over maxium machine memory!");
+            }
+
+            var javaDetail = JavaUtils.GetJavaDetails(this.Config.GetConfig("javaPath"));
+            if (javaDetail.JavaType == JavaType.ClientX86 || javaDetail.JavaType == JavaType.ServerX86)
+            {
+                if (instance.StartupArguments.MiniumMemoryMegaSize <= 1800)
+                {
+                    throw new Exception("X86 Java may not allocate memory more then 1.8G!");
+                }
+            }
+
+            if (instance.StartupArguments.LibraryPathes == null || instance.StartupArguments.LibraryPathes.Count == 0)
+            {
+                throw new Exception(String.Format("Empty libraries path for instance {0} does not make sciene!"));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.MainClass))
+            {
+                throw new Exception(String.Format("Empty main class for instance {0} is not allowed!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.MainJarPath))
+            {
+                throw new Exception(String.Format("Empty main jar path for instance {0} is not allowed!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.AssetsDir) ||
+                String.IsNullOrEmpty(instance.StartupArguments.AssetIndex))
+            {
+                throw new Exception(String.Format("Empty assets arguments for instance {0} is not allowed!", instance.InstanceName));
+
+            }
 
             var cmf = instance.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
             var omf = instance.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
@@ -504,6 +547,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             //TODO:encrypt instance file if request(next version).
         }
+
         #endregion
     }
 }

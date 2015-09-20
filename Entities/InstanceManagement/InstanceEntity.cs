@@ -13,6 +13,6 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public String Description { get; set; }
         public String Author { get; set; }
         public InstanceFileSystemEntity FileSystem { get; set; }
-        public String StartupArguments { get; set; }
+        public InstanceStartupArgumentsEntity StartupArguments { get; set; }
     }
 }

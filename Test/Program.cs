@@ -10,8 +10,8 @@ namespace TerminologyLauncher.Test
         [STAThread]
         static void Main(string[] args)
         {
-            var result = new UiControl().StartSingleSelect("Test", "TestField", new List<String> { "asdasd", "dasdddd" });
-            
+            Console.WriteLine(Utils.MachineUtils.GetTotalMemoryInMiB());
+            Console.ReadKey();
         }
     }
 }

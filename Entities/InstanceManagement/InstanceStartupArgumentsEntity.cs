@@ -9,6 +9,8 @@ namespace TerminologyLauncher.Entities.InstanceManagement
     public class InstanceStartupArgumentsEntity
     {
         public List<String> JvmArguments { get; set; }
+        public int MiniumMemoryMegaSize { get; set; }
+        public int MaxiumMemoryMegaSize { get; set; }
         public List<String> LibraryPathes { get; set; }
         public String MainJarPath { get; set; }
         public String MainClass { get; set; }
