@@ -34,10 +34,6 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -72,17 +68,15 @@
     <Compile Include="InstanceManagement\InstanceFileSystemEntity.cs" />
     <Compile Include="InstanceManagement\InstanceEntity.cs" />
     <Compile Include="InstanceManagement\FileSystem\OfficialFileEntity.cs" />
+    <Compile Include="InstanceManagement\InstanceStartupArgumentsEntity.cs" />
     <Compile Include="InstanceManagement\InstanceState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializeUtils\ContractResolver.cs" />
-    <Compile Include="SerializeUtils\JsonConverter.cs" />
-    <Compile Include="SerializeUtils\SerializeSettings.cs" />
     <Compile Include="System\IComponent.cs" />
+    <Compile Include="System\Java\JavaDetails.cs" />
+    <Compile Include="System\Java\JavaRuntimeEntity.cs" />
+    <Compile Include="System\Java\JavaType.cs" />
     <Compile Include="UpdateManagement\UpdateEntity.cs" />
     <Compile Include="UpdateManagement\VersionEntity.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

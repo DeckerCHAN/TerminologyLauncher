@@ -20,6 +20,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
+            Logging.Logger.GetLogger().Info("Handling update instance event!");
+
             var instance = this.Engine.UiControl.MajorWindow.SelectInstance;
             if (instance == null)
             {
@@ -46,7 +48,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (WrongStateException ex)
                 {
-                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex.Message);
+                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
                         String.Format(
                             "Encounter an wrong state error. Detail:{0}",
@@ -55,7 +57,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (Exception ex)
                 {
-                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex.Message);
+                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
                         String.Format(
                             "Caused by an internal error, we can not update this instance right now.Detail:{0}",

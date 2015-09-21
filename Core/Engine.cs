@@ -7,6 +7,7 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Core.Handlers;
 using TerminologyLauncher.Core.Handlers.LoginHandlers;
 using TerminologyLauncher.Core.Handlers.MainHandlers;
+using TerminologyLauncher.Core.Handlers.SystemHandlers;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.FileRepositorySystem;
@@ -32,7 +33,7 @@ namespace TerminologyLauncher.Core
 
         public String CoreVersion
         {
-            get { return "A1"; }
+            get { return "A2"; }
         }
 
         public Config CoreConfig { get; set; }
@@ -45,7 +46,7 @@ namespace TerminologyLauncher.Core
         public Process GameProcess { get; set; }
         public Engine()
         {
-            Logger.GetLogger().Info("Engine Initializing...");
+            Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.UiControl = new UiControl();
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfig("authConfig"));
@@ -66,6 +67,8 @@ namespace TerminologyLauncher.Core
         public void Exit()
         {
             Logger.GetLogger().Info("Engine shutting down...");
+            Engine.GetEngine().UiControl.Shutdown();
+            Logger.GetLogger().Info("UiControl shutdown.");
         }
 
         public void RegisterHandlers()
@@ -81,7 +84,7 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
             this.Handlers.Add("UPDATE_AN_INSTANCE", new UpdateInstanceHandler(this));
             this.Handlers.Add("UPDATE_APPLICATION", new UpdateApplicationHandler(this));
-
+            this.Handlers.Add("CONFIG", new ConfigHandler(this));
         }
 
         public void PostInitializeComponents()

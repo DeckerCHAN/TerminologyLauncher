@@ -35,11 +35,12 @@ namespace TerminologyLauncher.Utils.ProgressService
                 }
                 var sum = this.SubProgressesAndPercentage.Sum(subProgress => (subProgress.Value / 100) * subProgress.Key.Percent);
                 sum = this.CheckPercentage(sum);
-                return Math.Max(sum, base.Percent);
+                return base.Percent + sum;
             }
             set
             {
                 base.Percent = value;
+                this.SubProgressesAndPercentage.Clear();
                 this.OnProgressChanged();
             }
         }
@@ -48,6 +49,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             : base(taskName)
         {
             this.SubProgressesAndPercentage = new Dictionary<Progress, Double>();
+            base.Percent = 0D;
         }
         public InternalNodeProgress CreateNewInternalSubProgress(Double taskPercentage, String taskName)
         {

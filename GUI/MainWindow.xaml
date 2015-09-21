@@ -4,7 +4,7 @@
         xmlns:account="clr-namespace:TerminologyLauncher.Entities.Account;assembly=TerminologyLauncher.Entities"
         xmlns:gui="clr-namespace:TerminologyLauncher.GUI"
         Title="MainWindow" Width="1194" Height="718" 
-        Style="{DynamicResource CustomWindowStyle}"
+        Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         >
@@ -33,10 +33,11 @@
                 </Border.Background>
                 <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="Terminology Lanucher "></TextBlock>
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"><Run  Text="Terminology Launcher "/><Run Text="{Binding CoreVersion}"/></TextBlock>
                     <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
-                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" ></Button>
-                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" ></Button>
+                        <Button x:Name="ConfigButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadConfigButtonStyle}"/>
+                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}"/>
+                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}"/>
                     </StackPanel>
 
                 </DockPanel>
@@ -55,7 +56,7 @@
                                 <RowDefinition Height="5*"/>
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Foreground="DarkSlateGray" Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
                                 <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>
@@ -66,11 +67,10 @@
                             DockPanel.Dock="Top"
                             Name="InstanceListBox"
                             SelectionChanged="Selector_OnSelectionChanged" 
-                            Style="{DynamicResource TransparentListBox}" 
+                            Style="{DynamicResource TerminologyListBox}" 
                             ItemContainerStyle="{DynamicResource TransparentListBoxItem}" 
                             SelectionMode="Single"
                             SelectedItem="{Binding SelectInstance,Mode=OneWayToSource}"
-                            Background="Transparent" 
                             FontSize="16" 
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                             ItemsSource="{Binding InstanceList}">

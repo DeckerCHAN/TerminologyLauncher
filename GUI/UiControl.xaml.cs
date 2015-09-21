@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using TerminologyLauncher.GUI.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 
 namespace TerminologyLauncher.GUI
 {
@@ -20,17 +23,41 @@ namespace TerminologyLauncher.GUI
 
         public void ShowLoginWindow()
         {
-            this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
+            try
+            {
+                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
+
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not show login window right now! Cause:{0}", ex.Message);
+            }
         }
 
         public void HideLoginWindow()
         {
-            this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Hide(); });
+            try
+            {
+                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Hide(); });
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide login window right now! Cause:{0}", ex.Message);
+            }
         }
 
         public void ShowMainWindow()
         {
-            this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+            try
+            {
+                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+            }
+            catch (Exception ex)
+            {
+
+                Logging.Logger.GetLogger().ErrorFormat("Can not show main window right now! Cause:{0}", ex.Message);
+            }
+
         }
         public void HideMainWindow()
         {
@@ -41,17 +68,26 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                throw;
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide main window right now! Cause:{0}", ex.Message);
             }
         }
 
-        public SingleLineInputResult StartSingleLineInput(String title, String field)
+        public WindowResult StartSingleLineInput(String title, String fieldName)
         {
-            SingleLineInputResult result = null;
+            WindowResult result = null;
             this.Dispatcher.Invoke(() =>
             {
-                result = new SingleLineInputWindow(title, field).ReceiveUserinput();
+                result = new SingleLineInputWindow(title, fieldName).ReceiveUserInput();
+            });
+            return result;
+        }
+
+        public WindowResult StartSingleSelect(String title, String fieldName, IEnumerable<String> selectItems)
+        {
+            WindowResult result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                result = new SingleSelectWindow(title, fieldName, selectItems).ReceiveUserSelect();
             });
             return result;
         }
@@ -64,6 +100,15 @@ namespace TerminologyLauncher.GUI
             });
         }
 
+        public WindowResult StartMultiConfigWindo(String title, Dictionary<String, String> configs)
+        {
+            WindowResult result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                result = new ConfigWindow(title, configs).ReceiveUserConfigs();
+            });
+            return result;
+        }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {

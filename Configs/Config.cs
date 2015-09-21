@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace TerminologyLauncher.Configs
@@ -26,11 +27,19 @@ namespace TerminologyLauncher.Configs
             }
             this.ReadConfigsFromFile();
             var value = this.ConfigJObject.SelectToken(key).ToString();
-            if (String.IsNullOrEmpty(value))
+            return String.IsNullOrEmpty(value) ? null : value;
+        }
+
+        public List<String> GetConfigs(String key)
+        {
+            if (String.IsNullOrEmpty(key))
             {
-                return null;
+                throw new ArgumentException("Empty key is not allowed!");
             }
-            return value;
+            this.ReadConfigsFromFile();
+            var value = this.ConfigJObject.SelectToken(key).ToObject<List<String>>();
+      
+            return value.Count == 0 ? new List<string>() : value;
         }
 
 

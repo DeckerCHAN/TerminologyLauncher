@@ -18,6 +18,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
+            Logging.Logger.GetLogger().Info("Handling remove instance event!");
+
             var instanceName = this.Engine.UiControl.MajorWindow.SelectInstance.InstanceName;
             try
             {

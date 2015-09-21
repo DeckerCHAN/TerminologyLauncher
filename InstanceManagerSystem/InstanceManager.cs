@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
+using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Logging;
@@ -23,9 +25,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public InstanceManager(String configPath, FileRepository usingFileRepository)
         {
             this.Config = new Config(new FileInfo(configPath));
-            this.SupportGeneration = this.Config.GetConfig("supportInstanceGeneration");
             this.UsingFileRepository = usingFileRepository;
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
+
+
+
             if (!this.InstancesFolder.Exists)
             {
                 this.InstancesFolder.Create();
@@ -33,9 +37,25 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.LoadInstancesFromBankFile();
         }
         public Config Config { get; set; }
-        public String SupportGeneration { get; set; }
+        public Int32 SupportGeneration { get { return 2; } }
         public DirectoryInfo InstancesFolder { get; set; }
         public InstanceBankEntity InstanceBank { get; set; }
+
+        public JavaRuntimeEntity JavaRuntime
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this.Config.GetConfig("javaBinPath"))) return null;
+                var javaRuntime = new JavaRuntimeEntity()
+                {
+                    JavaPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "java.exe"),
+                    JavaWPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "javaw.exe")
+                };
+                javaRuntime.JavaDetails = JavaUtils.GetJavaDetails(javaRuntime.JavaPath);
+                return javaRuntime;
+            }
+        }
+
         public Process CurrentInstanceProcess { get; set; }
         public FileRepository UsingFileRepository { get; protected set; }
 
@@ -43,7 +63,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             get
             {
-                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(instanceInfo.FilePath))).ToList();
+                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(instanceInfo.FilePath))).Where(instance => instance.Generation.Equals(this.SupportGeneration)).ToList();
             }
         }
 
@@ -89,7 +109,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         }
 
 
-
+        #region Operation
         public String AddInstance(String instanceUrl)
         {
             Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
@@ -99,72 +119,22 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var instance = JsonConverter.Parse<InstanceEntity>(rowInstanceContent);
 
-            if (!instance.Generation.ToString().Equals(this.SupportGeneration))
-            {
-                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
-            }
+            this.CriticalInstanceFieldCheck(instance);
 
-            if (String.IsNullOrEmpty(instance.InstanceName))
-            {
-                Logger.GetLogger().Error("Missing instance name");
-                throw new MissingFieldException();
-            }
+            this.PerinitializeInstance(instance);
 
-            if (String.IsNullOrEmpty(instance.UpdatePath))
+            var instanceInfo = new InstanceInfoEntity
             {
-                Logger.GetLogger().Error("Missing instance update path");
-                throw new MissingFieldException();
-            }
-
-            var instanceInfo = new InstanceInfoEntity();
-
-            //Check instance already exists
-            if (this.Instances.Any(x => (x.InstanceName.Equals(instance.InstanceName))))
-            {
-                throw new InvalidOperationException(String.Format("Instance {0} already exists!", instance.InstanceName));
-            }
+                Name = instance.InstanceName,
+                InstanceState = InstanceState.PerInitialized,
+                FilePath = Path.Combine(this.GetInstanceRootFolder(instance.InstanceName).FullName,
+                    "Instance.json"),
+                UpdateUrl = instance.UpdatePath,
+                UpdateDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+            };
 
 
-            //Localize instance
-            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instance.InstanceName));
-            if (thisInstanceFolder.Exists)
-            {
-                FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
-            }
-            thisInstanceFolder.Create();
 
-            instanceInfo.Name = instance.InstanceName;
-            instanceInfo.InstanceState = InstanceState.Initialize;
-            instanceInfo.FilePath = Path.Combine(this.GetInstanceRootFolder(instance.InstanceName).FullName,
-                "Instance.json");
-            instanceInfo.UpdateUrl = instance.UpdatePath;
-            instanceInfo.UpdateDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            //Download icon
-            var iconFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "icon.png")).FullName;
-            try
-            {
-                DownloadUtils.DownloadFile(instance.Icon, iconFile);
-            }
-            catch (WebException)
-            {
-                Logger.GetLogger().Warn("Can not download icon file.Using default instead.");
-                ResourceUtils.CopyEmbedFileResource(
-                    "TerminologyLauncher.InstanceManagerSystem.Resources.default_icon.png", new FileInfo(iconFile));
-            }
-            //Download bg
-            var bgFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "background.png")).FullName;
-            try
-            {
-                DownloadUtils.DownloadFile(instance.Background, bgFile);
-
-            }
-            catch (WebException)
-            {
-                Logger.GetLogger().Warn("Can not download background file.Using default instead.");
-                ResourceUtils.CopyEmbedFileResource(
-                    "TerminologyLauncher.InstanceManagerSystem.Resources.default_bg.png", new FileInfo(bgFile));
-            }
-            //TODO:encrypt instance file if request(next version).
             File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
             this.SaveInstancesBankToFile();
@@ -202,19 +172,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(instanceInfo.FilePath));
 
-            if (String.IsNullOrEmpty(instanceInfo.UpdateUrl))
-            {
-                throw new Exception("Empty update url is not allowed.");
-            }
-            if (!oldInstanceEntity.Generation.ToString().Equals(this.SupportGeneration))
-            {
-                throw new PlatformNotSupportedException(String.Format("Can not update generation {0} instance!", oldInstanceEntity.Generation));
-            }
+            this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
             var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
             var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
 
-            //Check instance is allowed to update
+            //Check instance is available to update
             if (newInstanceEntity.Version == oldInstanceEntity.Version)
             {
                 throw new NoAvailableUpdateException(String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
@@ -334,27 +297,18 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(instanceInfo.FilePath));
 
-            if (!(instanceInfo.InstanceState == InstanceState.Ok || instanceInfo.InstanceState == InstanceState.Initialize))
+            if (!(instanceInfo.InstanceState == InstanceState.Ok || instanceInfo.InstanceState == InstanceState.PerInitialized))
             {
-                throw new WrongStateException("Wrong instance state! Just instance which in OK or Initialize state could launch.");
+                throw new WrongStateException("Wrong instance state! Just instance which in OK or PerInitialized state could launch.");
             }
 
-            if (!instance.Generation.ToString().Equals(this.SupportGeneration))
-            {
-                throw new PlatformNotSupportedException(String.Format("Launcher not support generation {0} instance!", instance.Generation));
-            }
+            this.CriticalInstanceFieldCheck(instance);
 
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
 
-            var placer = new PlaceHolderReplacer();
-            placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
-            placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
-            placer.AddToDictionary("{userId}", player.PlayerId);
-            placer.AddToDictionary("{token}", player.AccessToken);
-
             #region Buding environment
 
-            if (instanceInfo.InstanceState == InstanceState.Initialize)
+            if (instanceInfo.InstanceState == InstanceState.PerInitialized)
             {
                 #region entire file.
                 if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
@@ -406,21 +360,100 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
 
             //DONE:Build start argument.
-            var startArgument = placer.ReplaceArgument(instance.StartupArguments);
+            var startArgument = new StringBuilder();// placer.ReplaceArgument(instance.StartupArguments);
+            foreach (var jvmArgument in instance.StartupArguments.JvmArguments)
+            {
+                startArgument.Append(jvmArgument + " ");
+            }
+
+            startArgument.Append(this.Config.GetConfig("extraJvmArguments") ?? String.Empty).Append(" ");
+
+            startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfig("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
+
+            var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
+            if (nativeFolder.Exists)
+            {
+                startArgument.AppendFormat("-Djava.library.path=\"{0}\"" + " ", nativeFolder.FullName);
+
+            }
+            else
+            {
+                throw new DirectoryNotFoundException(String.Format("Native folder is not valid!"));
+            }
+
+            startArgument.Append("-cp" + " ");
+
+            foreach (var libraryPath in instance.StartupArguments.LibraryPaths)
+            {
+                var libFile = new FileInfo(Path.Combine(instanceRootFolder.FullName, libraryPath));
+                if (libFile.Exists)
+                {
+                    startArgument.Append("\"" + libFile.FullName + "\"" + ";");
+                }
+                else
+                {
+                    throw new FileNotFoundException(String.Format("Instance {0} is missing lib file {1}", instance.InstanceName, libraryPath));
+                }
+            }
+
+            var mainJarFile =
+                new FileInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.MainJarPath));
+
+            if (mainJarFile.Exists)
+            {
+                startArgument.Append("\"" + mainJarFile.FullName + "\"" + " ");
+            }
+            else
+            {
+                throw new FileNotFoundException(String.Format("Instance {0} is missing main jar file {1}", instance.InstanceName, mainJarFile.Name));
+            }
+
+            startArgument.Append(instance.StartupArguments.MainClass + " ");
+
+            startArgument.AppendFormat("--username {0} ", player.PlayerName);
+            startArgument.AppendFormat("--version {0} ", instance.StartupArguments.Version);
+            startArgument.AppendFormat("--gameDir \"{0}\" ", instanceRootFolder.FullName);
+
+
+
+            var assetsDir =
+                new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.AssetsDir));
+            if (assetsDir.Exists)
+            {
+                startArgument.AppendFormat("--assetsDir \"{0}\" ", assetsDir.FullName);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException("Assets folder not found!");
+            }
+
+
+            startArgument.AppendFormat("--assetIndex {0} ", instance.StartupArguments.AssetIndex);
+            startArgument.AppendFormat("--uuid {0} ", player.PlayerId);
+            startArgument.AppendFormat("--accessToken {0} ", player.AccessToken);
+            startArgument.AppendFormat("--userProperties {{{0}}} ", instance.StartupArguments.UserProperties);
+            startArgument.AppendFormat("--userType {0} ", instance.StartupArguments.UserType);
+
+            foreach (var tweakClass in instance.StartupArguments.TweakClasses)
+            {
+                startArgument.AppendFormat("--tweakClass {0} ", tweakClass);
+            }
+
+
+
 
 
             //Launch minecraft
-            var instanceStartInfo = new ProcessStartInfo();
-            var instanceProcess = new Process();
-            instanceStartInfo.FileName = this.Config.GetConfig("javaPath");
-            instanceStartInfo.Arguments = startArgument;
-            instanceStartInfo.WorkingDirectory = instanceRootFolder.FullName;
-            instanceStartInfo.WindowStyle = ProcessWindowStyle.Normal;
-            instanceStartInfo.UseShellExecute = false;
-            instanceStartInfo.RedirectStandardOutput = true;
-            instanceStartInfo.UseShellExecute = false;
-            instanceProcess.StartInfo = instanceStartInfo;
-            instanceProcess.EnableRaisingEvents = true;
+            var instanceStartInfo = new ProcessStartInfo
+            {
+                FileName = this.JavaRuntime.JavaWPath,
+                Arguments = startArgument.ToString(),
+                WorkingDirectory = instanceRootFolder.FullName,
+                WindowStyle = ProcessWindowStyle.Normal,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            var instanceProcess = new Process { StartInfo = instanceStartInfo, EnableRaisingEvents = true };
             instanceProcess.Start();
             progress.Percent = 100D;
 
@@ -431,7 +464,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
 
         }
-
+        #endregion
         #region Toolkits
 
         private DirectoryInfo GetInstanceRootFolder(String instanceName)
@@ -452,7 +485,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var downloadLink = repositoryFile.DownloadPath;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
             Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialFile.Md5);
+            DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, officialFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
 
         }
@@ -462,7 +495,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
             Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-            ProgressSupportedDownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
+            DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
         }
 
@@ -471,7 +504,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var downloadLink = entirePackageFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? String.Empty);
             Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-            ProgressSupportedDownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
+            DownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
             Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
 
@@ -488,6 +521,126 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var imagePath = Path.Combine(folderPath, "background.png");
             return new FileInfo(imagePath).FullName;
         }
+
+        private void CriticalInstanceFieldCheck(InstanceEntity instance)
+        {
+            if (String.IsNullOrEmpty(instance.InstanceName))
+            {
+                throw new MissingFieldException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
+            }
+            if (!instance.Generation.Equals(this.SupportGeneration))
+            {
+                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
+            }
+            if (String.IsNullOrEmpty(instance.UpdatePath))
+            {
+                throw new MissingFieldException(String.Format("Instance {0} is missing update url, this may caused unable to update. Try to connect author for more information.", instance.UpdatePath));
+            }
+
+            if (String.IsNullOrEmpty(instance.Version))
+            {
+                throw new MissingFieldException(String.Format("Instance {0} is missing version number, this may caused unable to update. Try to connect author for more information.", instance.Version));
+            }
+
+            if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
+            {
+                throw new Exception(String.Format("Instance {0} is missing valid Jvm arguments!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.Nativespath))
+            {
+                throw new Exception(String.Format("Instance {0} is missing valid native path arguments!", instance.InstanceName));
+            }
+
+            if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
+            {
+                throw new Exception("Instance require memory over maxium machine memory!");
+            }
+
+            var javaDetail = this.JavaRuntime.JavaDetails;
+            if (javaDetail.JavaType == JavaType.ClientX86 || javaDetail.JavaType == JavaType.ServerX86)
+            {
+                if (instance.StartupArguments.MiniumMemoryMegaSize <= 1600)
+                {
+                    throw new Exception("X86 Java may not allocate memory more then 1.6G!");
+                }
+            }
+
+            if (instance.StartupArguments.LibraryPaths == null || instance.StartupArguments.LibraryPaths.Count == 0)
+            {
+                throw new Exception(String.Format("Empty libraries path for instance {0} does not make sense!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.MainClass))
+            {
+                throw new Exception(String.Format("Empty main class for instance {0} is not allowed!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.MainJarPath))
+            {
+                throw new Exception(String.Format("Empty main jar path for instance {0} is not allowed!", instance.InstanceName));
+            }
+
+            if (String.IsNullOrEmpty(instance.StartupArguments.AssetsDir) ||
+                String.IsNullOrEmpty(instance.StartupArguments.AssetIndex))
+            {
+                throw new Exception(String.Format("Empty assets arguments for instance {0} is not allowed!", instance.InstanceName));
+
+            }
+
+            var cmf = instance.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
+            var omf = instance.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
+            var etp = instance.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
+            if ((cmf.Count + omf.Count + etp.Count) == 0)
+            {
+                throw new Exception(String.Format("Instance {0} do not have any file! This should not happen and may cause divesting error!", instance.InstanceName));
+            }
+        }
+
+        private void PerinitializeInstance(InstanceEntity instance)
+        {
+            //Check instance already exists
+            if (this.Instances.Any(x => (x.InstanceName.Equals(instance.InstanceName))))
+            {
+                throw new InvalidOperationException(String.Format("Instance {0} already exists!", instance.InstanceName));
+            }
+            //Localize instance
+            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instance.InstanceName));
+            if (thisInstanceFolder.Exists)
+            {
+                FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
+            }
+            thisInstanceFolder.Create();
+
+
+            //Download icon
+            var iconFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "icon.png")).FullName;
+            try
+            {
+                DownloadUtils.DownloadFile(instance.Icon, iconFile);
+            }
+            catch (WebException)
+            {
+                Logger.GetLogger().Warn("Can not download icon file.Using default instead.");
+                ResourceUtils.CopyEmbedFileResource(
+                    "TerminologyLauncher.InstanceManagerSystem.Resources.default_icon.png", new FileInfo(iconFile));
+            }
+            //Download background
+            var bgFile = new FileInfo(Path.Combine(thisInstanceFolder.FullName, "background.png")).FullName;
+            try
+            {
+                DownloadUtils.DownloadFile(instance.Background, bgFile);
+
+            }
+            catch (WebException)
+            {
+                Logger.GetLogger().Warn("Can not download background file.Using default instead.");
+                ResourceUtils.CopyEmbedFileResource(
+                    "TerminologyLauncher.InstanceManagerSystem.Resources.default_bg.png", new FileInfo(bgFile));
+            }
+            //TODO:encrypt instance file if request(next version).
+        }
+
         #endregion
     }
 }

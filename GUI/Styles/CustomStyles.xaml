@@ -4,7 +4,7 @@
         <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/Brushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="{x:Type Window}" x:Key="CustomWindowStyle">
+    <Style TargetType="{x:Type Window}" x:Key="TerminologyWindowStyle">
         <Setter Property="Background" Value="Black"></Setter>
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="AllowsTransparency" Value="True" />
@@ -40,8 +40,8 @@
     </Style>
 
     <Style x:Key="TerminologyHeadControlButtonStyle" TargetType="{x:Type  Button}">
-        <Setter Property="Width" Value="17"></Setter>
-        <Setter Property="Height" Value="17"></Setter>
+        <Setter Property="Width" Value="20"></Setter>
+        <Setter Property="Height" Value="20"></Setter>
         <Setter Property="Margin" Value="0,10,15,0"></Setter>
     </Style>
 
@@ -66,6 +66,36 @@
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_close_hover.png"></ImageBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style  x:Key="TerminologyHeadConfigButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border"
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_config_default.png"></ImageBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_config_hover.png"></ImageBrush>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -105,10 +135,10 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type TextBox}" x:Key="TransparentTextBox">
+    <Style TargetType="{x:Type TextBox}" x:Key="TerminologyTextBoxStyle">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="{StaticResource CommonElementBackground}"/>
+        <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
         <Setter Property="Padding" Value="2,2,2,1"/>
         <Setter Property="Template">
@@ -137,7 +167,7 @@
     <Style TargetType="{x:Type PasswordBox}" x:Key="TransparentPasswordBox">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="{StaticResource CommonElementBackground}"/>
+        <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
         <Setter Property="Padding" Value="2,2,2,1"/>
         <Setter Property="Template">
@@ -162,7 +192,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <!-- Combox-->
     <Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="IsTabStop" Value="false"/>
@@ -215,12 +245,14 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ComboBox}" x:Key="TransparentComboBox" >
+    <Style x:Key="TerminologyComboBoxStyle" TargetType="{x:Type ComboBox}"  >
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"></Setter>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="{StaticResource CommonElementBackground}"/>
+        <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
         <Setter Property="Padding" Value="2,2,2,1"/>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource TerminologyComboBoxItemStyle}"></Setter>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -229,30 +261,34 @@
                         BorderThickness="{TemplateBinding BorderThickness}" 
                         Background="{TemplateBinding Background}" 
                         CornerRadius="3">
-                        <Grid x:Name="Placement" SnapsToDevicePixels="true">
+                        <Grid x:Name="Placement" SnapsToDevicePixels="true" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Popup x:Name="PART_Popup"
-                                   AllowsTransparency="true" 
+                                   AllowsTransparency="True" 
+                                   Grid.Column="0"
                                    Grid.ColumnSpan="2"
                                    IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
                                    Margin="1" 
-                                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+                                   
+                                   PopupAnimation="Slide" 
                                    Placement="Bottom">
                                 <Border x:Name="Shdw"
-                                        Background="Transparent" 
+                                        CornerRadius="0,0,8,8"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}" 
                                         MinWidth="{Binding ActualWidth, ElementName=Placement}">
                                     <Border x:Name="DropDownBorder" 
+                                            
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="1" 
-                                            CornerRadius="0,0,8,8">
+                                            CornerRadius="0,0,8,8"
+                                            >
                                         <ScrollViewer x:Name="DropDownScrollViewer" 
                                                       VerticalScrollBarVisibility="Hidden" 
                                                       HorizontalScrollBarVisibility="Hidden">
-                                            <Grid RenderOptions.ClearTypeHint="Enabled">
+                                            <Grid RenderOptions.ClearTypeHint="Enabled" Background="Transparent">
                                                 <Canvas HorizontalAlignment="Left" 
                                                         Height="0" 
                                                         VerticalAlignment="Top" 
@@ -270,12 +306,9 @@
                                     </Border>
                                 </Border>
                             </Popup>
-
                             <Border x:Name="Border" 
-
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
-                                    >
+                                    Grid.ColumnSpan="2">
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -286,6 +319,7 @@
                                        
                                         Grid.Column="0"
                                         HorizontalAlignment="Center"
+                                        
                                         VerticalAlignment="Center"
                                         Content="{TemplateBinding SelectionBoxItem}"
                                         ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
@@ -318,7 +352,7 @@
                         </MultiTrigger>
                         <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
                             <Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
-                            <Setter Property="Background" TargetName="Shdw" Value="#71000000"/>
+                            <Setter Property="Background" TargetName="Shdw" Value="{DynamicResource HalfOpaqueBackground}"/>
                         </Trigger>
                         <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
                             <Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
@@ -329,7 +363,41 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
+    <Style x:Key="TerminologyComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="true">
+                            <Setter Property="Background" TargetName="Bd" >
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="1,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" SpreadMethod="Reflect">
+                                        <GradientStop Color="#002B4978"/>
+                                        <GradientStop Color="#001A2C49" Offset="1"/>
+                                        <GradientStop Color="#003E7DEC"/>
+                                        <GradientStop Color="#FF93A1B9" Offset="1"/>
+                                        <GradientStop Color="#00FF3333" Offset="1"/>
+                                        <GradientStop Color="#FF5291FF" Offset="0.524"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!-- Button-->
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -393,7 +461,7 @@
 
     <Style TargetType="{x:Type Button}" x:Key="TerminologyConfigButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="LightGreen"></Setter>
-        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Foreground" Value="DarkSlateGray"></Setter>
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="TerminologyCancelButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
@@ -401,7 +469,7 @@
         <Setter Property="Foreground" Value="White"></Setter>
     </Style>
 
-    <Style x:Key="ConfirmTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyButtonStyle}">
+    <Style TargetType="{x:Type Button}" x:Key="ConfirmTransparentButtonStyle"  BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="DarkSeaGreen"></Setter>
     </Style>
 
@@ -439,7 +507,7 @@
 
     <Style x:Key="TransparentCkeckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource TerminologyCheckBoxStyle}">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"></Setter>
-        <Setter Property="Background" Value="{StaticResource CommonElementBackground}"/>
+        <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource CheckBoxStroke}"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource EmptyCheckBoxFocusVisual}"/>
         <Setter Property="Template">
@@ -540,7 +608,7 @@
 							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
 							Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
 							ViewportSize="{TemplateBinding ViewportWidth}"
-							Style="{DynamicResource HorisontalScrollBarStyle}"
+							Style="{DynamicResource HorizontalScrollBarStyle}"
                             Background="Transparent"/>
                     </Grid>
                 </ControlTemplate>
@@ -549,7 +617,7 @@
     </Style>
 
     <!-- ListBox -->
-    <Style  x:Key="TransparentListBox"  TargetType="{x:Type ListBox}">
+    <Style  x:Key="TerminologyListBox"  TargetType="{x:Type ListBox}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -557,6 +625,7 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -629,10 +698,65 @@
         </Setter>
     </Style>
 
+    <!-- ListView -->
 
+    <Style x:Key="TerminologyListViewStyle" TargetType="{x:Type ListView}">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource TerminologyListViewItemStyle}"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Name="Border"
+                BorderThickness="1"
+                CornerRadius="2">
+                        <Border.Background>
+                            <SolidColorBrush Color="{TemplateBinding Background}" />
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{TemplateBinding Foreground}" />
+                        </Border.BorderBrush>
+                        <ScrollViewer Margin="0" Style="{DynamicResource TerminologyScrollViewerStyle}"
+                        Focusable="false">
+                            <StackPanel Margin="2"
+                        IsItemsHost="True" />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                   Value="false">
+                            <Setter TargetName="Border"
+                    Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource DisabledBackgroundColor}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Border"
+                    Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource DisabledForegroundColor}" />
+                                </Setter.Value>
+
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsGrouping"
+                   Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="false" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TerminologyListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="Focusable" Value="false"/>
+    </Style>
+    
     <!-- ScrollBar -->
     <Style x:Key="TerminologyScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
-        <Setter Property="Background" Value="{DynamicResource ScrollViewerBackground}"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
@@ -680,7 +804,7 @@
 							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
 							Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
 							ViewportSize="{TemplateBinding ViewportWidth}"
-							Style="{DynamicResource HorisontalScrollBarStyle}"/>
+							Style="{DynamicResource HorizontalScrollBarStyle}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -873,7 +997,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="HorisontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
+    <Style x:Key="HorizontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
@@ -886,7 +1010,7 @@
                 <Setter Property="MinWidth" Value="0"/>
                 <Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
                 <Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
-                <Setter Property="Background" Value="{StaticResource HorizontalScrollBarBackground}"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">

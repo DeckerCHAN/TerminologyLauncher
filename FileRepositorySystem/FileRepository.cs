@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
@@ -24,11 +25,36 @@ namespace TerminologyLauncher.FileRepositorySystem
             Logger.GetLogger().Info("Initialized file repo!");
 
             Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
-            DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
-            var repo = JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
-            foreach (var officialProvideFile in repo.Files)
+            try
             {
-                this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
+                DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
+                var repo =
+                    JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
+                foreach (var officialProvideFile in repo.Files)
+                {
+                    this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
+                }
+
+            }
+            catch (WebException)
+            {
+                Logger.GetLogger().Error("Unable to receive repo right now. Trying to using local repo list.");
+                if (!File.Exists(this.Config.GetConfig("repoFilePath")))
+                {
+                    Logger.GetLogger().Error("No local repo list available.");
+                    return;
+                }
+                var repo =
+                   JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
+                foreach (var officialProvideFile in repo.Files)
+                {
+                    this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
+                }
+                Logger.GetLogger().Info("Used local repo list.");
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
         }

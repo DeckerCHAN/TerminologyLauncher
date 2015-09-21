@@ -25,7 +25,7 @@ namespace TerminologyLauncher.UnitTest
         public void Md5Test()
         {
             var downloadFile = new FileInfo("QQ.exe");
-            var md5 = Md5Utils.CalculateFileMd5(downloadFile.FullName);
+            var md5 = EncodeUtils.CalculateFileMd5(downloadFile.FullName);
             Console.WriteLine(md5);
             Assert.IsNotNull(md5);
         }

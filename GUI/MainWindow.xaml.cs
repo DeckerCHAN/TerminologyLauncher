@@ -25,6 +25,7 @@ namespace TerminologyLauncher.GUI
         private ObservableCollection<InstanceEntity> InstanceListValue;
         private InstanceEntity SelectInstanceValue;
         private PlayerEntity PlayerValue;
+        private string CoreVersionValue;
 
 
         public PlayerEntity Player
@@ -37,6 +38,15 @@ namespace TerminologyLauncher.GUI
             }
         }
 
+        public String CoreVersion
+        {
+            get { return this.CoreVersionValue; }
+            set
+            {
+                this.CoreVersionValue = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public InstanceEntity SelectInstance
         {
@@ -111,7 +121,7 @@ namespace TerminologyLauncher.GUI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var imagePath = (String) value;
+            var imagePath = (String)value;
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;

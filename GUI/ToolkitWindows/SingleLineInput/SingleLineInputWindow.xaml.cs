@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 
-namespace TerminologyLauncher.GUI.SingleLineInput
+namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 {
     /// <summary>
     /// Interaction logic for SingleLineInputWindow.xaml
@@ -14,7 +14,7 @@ namespace TerminologyLauncher.GUI.SingleLineInput
     {
         private string InputContentValue;
         private string FieldNameValue;
-        private bool IsCanceled;
+        private Boolean IsCanceled { get; set; }
 
         public SingleLineInputWindow(String title, String inputFieldName)
         {
@@ -29,16 +29,16 @@ namespace TerminologyLauncher.GUI.SingleLineInput
             throw new InvalidOperationException();
         }
 
-        public SingleLineInputResult ReceiveUserinput()
+        public WindowResult ReceiveUserInput()
         {
             base.ShowDialog();
-            var result = new SingleLineInputResult()
+            var result = new WindowResult()
             {
-                Type = this.IsCanceled ? SingleLineInputResultType.Canceled : SingleLineInputResultType.CommonFinished
+                Type = this.IsCanceled ? WindowResultType.Canceled : WindowResultType.CommonFinished
             };
-            if (result.Type == SingleLineInputResultType.CommonFinished)
+            if (result.Type == WindowResultType.CommonFinished)
             {
-                result.InputLine = this.InputContent;
+                result.Result = this.InputContent;
             }
             return result;
         }

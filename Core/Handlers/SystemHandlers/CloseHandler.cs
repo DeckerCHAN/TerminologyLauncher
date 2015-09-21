@@ -1,16 +1,15 @@
 ﻿using System;
 using TerminologyLauncher.Logging;
 
-namespace TerminologyLauncher.Core.Handlers
+namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 {
     public class CloseHandler : HandlerBase
     {
         public override void HandleEvent(object sender, EventArgs e)
         {
             Logger.GetLogger().Info("Handling close event.");
-            Engine.GetEngine().UiControl.Shutdown();
-            Logger.GetLogger().Info("UiControl shutdown.");
-            Engine.GetEngine().Exit();
+            
+            Engine.GetEngine().Exit(); 
         }
 
         public CloseHandler(Engine engine)

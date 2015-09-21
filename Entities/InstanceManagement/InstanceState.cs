@@ -9,7 +9,7 @@ namespace TerminologyLauncher.Entities.InstanceManagement
     public enum InstanceState
     {
         Ok = 1,
-        Initialize = 2,
+        PerInitialized = 2,
         Update = 3
     }
 }

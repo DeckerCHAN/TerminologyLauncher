@@ -11,6 +11,12 @@ namespace TerminologyLauncher.Utils.ProgressService
         }
         public event ProgressChangedEventHandler ProgressChanged;
         public virtual Double Percent { get; set; }
+
+        public virtual String ReadablePercent
+        {
+            get { return String.Format("{0:0.00}%", this.Percent); }
+        }
+
         public virtual String TaskName { get; set; }
         protected virtual Double CheckPercentage(Double percent)
         {
