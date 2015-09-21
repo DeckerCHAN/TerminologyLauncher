@@ -43,7 +43,6 @@
     <Compile Include="Exceptions\NoAvailableUpdateException.cs" />
     <Compile Include="Exceptions\WrongStateException.cs" />
     <Compile Include="InstanceManager.cs" />
-    <Compile Include="PlaceHolderReplacer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

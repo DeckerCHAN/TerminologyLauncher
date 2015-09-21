@@ -27,6 +27,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.Config = new Config(new FileInfo(configPath));
             this.UsingFileRepository = usingFileRepository;
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
+
+
+
             if (!this.InstancesFolder.Exists)
             {
                 this.InstancesFolder.Create();
@@ -37,6 +40,22 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public Int32 SupportGeneration { get { return 2; } }
         public DirectoryInfo InstancesFolder { get; set; }
         public InstanceBankEntity InstanceBank { get; set; }
+
+        public JavaRuntimeEntity JavaRuntime
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this.Config.GetConfig("javaBinPath"))) return null;
+                var javaRuntime = new JavaRuntimeEntity()
+                {
+                    JavaPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "java.exe"),
+                    JavaWPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "javaw.exe")
+                };
+                javaRuntime.JavaDetails = JavaUtils.GetJavaDetails(javaRuntime.JavaPath);
+                return javaRuntime;
+            }
+        }
+
         public Process CurrentInstanceProcess { get; set; }
         public FileRepository UsingFileRepository { get; protected set; }
 
@@ -44,7 +63,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             get
             {
-                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(instanceInfo.FilePath))).Where(instance => instance.Generation.ToString().Equals(this.SupportGeneration)).ToList();
+                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(instanceInfo.FilePath))).Where(instance => instance.Generation.Equals(this.SupportGeneration)).ToList();
             }
         }
 
@@ -287,12 +306,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var instanceRootFolder = this.GetInstanceRootFolder(instance.InstanceName);
 
-            var placer = new PlaceHolderReplacer();
-            placer.AddToDictionary("{root}", instanceRootFolder.FullName.Replace(" ", "\" \""));
-            placer.AddToDictionary("{username}", player.PlayerName ?? "Player");
-            placer.AddToDictionary("{userId}", player.PlayerId);
-            placer.AddToDictionary("{token}", player.AccessToken);
-
             #region Buding environment
 
             if (instanceInfo.InstanceState == InstanceState.PerInitialized)
@@ -348,13 +361,19 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             //DONE:Build start argument.
             var startArgument = new StringBuilder();// placer.ReplaceArgument(instance.StartupArguments);
-            startArgument.Append(instance.StartupArguments.JvmArguments + " ");
-            startArgument.AppendFormat("-Xmx:{0}M -Xms:{1}M" + " ", Convert.ToInt64(this.Config.GetConfig("maxMemorySizeMega")),instance.StartupArguments.MiniumMemoryMegaSize);
+            foreach (var jvmArgument in instance.StartupArguments.JvmArguments)
+            {
+                startArgument.Append(jvmArgument + " ");
+            }
+
+            startArgument.Append(this.Config.GetConfig("extraJvmArguments") ?? String.Empty).Append(" ");
+
+            startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfig("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
 
             var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
             if (nativeFolder.Exists)
             {
-                startArgument.AppendFormat("-Djava.library.path={0}" + " ", nativeFolder.FullName);
+                startArgument.AppendFormat("-Djava.library.path=\"{0}\"" + " ", nativeFolder.FullName);
 
             }
             else
@@ -369,7 +388,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 var libFile = new FileInfo(Path.Combine(instanceRootFolder.FullName, libraryPath));
                 if (libFile.Exists)
                 {
-                    startArgument.Append(libFile.FullName + ";");
+                    startArgument.Append("\"" + libFile.FullName + "\"" + ";");
                 }
                 else
                 {
@@ -382,7 +401,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             if (mainJarFile.Exists)
             {
-                startArgument.Append(mainJarFile.FullName + " ");
+                startArgument.Append("\"" + mainJarFile.FullName + "\"" + " ");
             }
             else
             {
@@ -393,7 +412,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             startArgument.AppendFormat("--username {0} ", player.PlayerName);
             startArgument.AppendFormat("--version {0} ", instance.StartupArguments.Version);
-            startArgument.AppendFormat("--gameDir {0} ", instanceRootFolder.FullName);
+            startArgument.AppendFormat("--gameDir \"{0}\" ", instanceRootFolder.FullName);
 
 
 
@@ -401,7 +420,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.AssetsDir));
             if (assetsDir.Exists)
             {
-                startArgument.AppendFormat("--assetsDir {0} ", assetsDir.FullName);
+                startArgument.AppendFormat("--assetsDir \"{0}\" ", assetsDir.FullName);
             }
             else
             {
@@ -427,7 +446,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo
             {
-                FileName = this.Config.GetConfig("javaPath"),
+                FileName = this.JavaRuntime.JavaWPath,
                 Arguments = startArgument.ToString(),
                 WorkingDirectory = instanceRootFolder.FullName,
                 WindowStyle = ProcessWindowStyle.Normal,
@@ -538,7 +557,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 throw new Exception("Instance require memory over maxium machine memory!");
             }
 
-            var javaDetail = JavaUtils.GetJavaDetails(this.Config.GetConfig("javaPath"));
+            var javaDetail = this.JavaRuntime.JavaDetails;
             if (javaDetail.JavaType == JavaType.ClientX86 || javaDetail.JavaType == JavaType.ServerX86)
             {
                 if (instance.StartupArguments.MiniumMemoryMegaSize <= 1600)

@@ -33,7 +33,7 @@ namespace TerminologyLauncher.Core
 
         public String CoreVersion
         {
-            get { return "A1"; }
+            get { return "A2"; }
         }
 
         public Config CoreConfig { get; set; }

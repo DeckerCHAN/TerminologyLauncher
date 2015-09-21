@@ -1,7 +1,7 @@
 ﻿{
     "instancesFolderPath": "Instances",
     "instanceBankFilePath": "Instances/Instances.json",
-    "javaPath": "",
-    "maxMemorySizeMega": "",
+    "javaBinPath": "",
+    "maxMemorySizeMega": "2000",
     "extraJvmArguments": ""
 }

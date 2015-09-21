@@ -48,5 +48,29 @@ namespace TerminologyLauncher.Utils
             }
             return jDetail;
         }
+
+        public static JavaRuntimeEntity GetJavaRuntimeFromBinFolder(String javaBinFolderPath)
+        {
+            var javaBinFolder = new DirectoryInfo(javaBinFolderPath);
+            if (!javaBinFolder.Exists)
+            {
+                throw new DirectoryNotFoundException("Java bin folder not exists!");
+            }
+
+            var javaExeFile = new FileInfo(Path.Combine(javaBinFolder.FullName, "java.exe"));
+            var javawExeFile = new FileInfo(Path.Combine(javaBinFolder.FullName, "javaw.exe"));
+
+            if (!javaExeFile.Exists || !javawExeFile.Exists)
+            {
+                throw new FileNotFoundException("Java file or javaw file not exists!");
+            }
+
+            return new JavaRuntimeEntity
+            {
+                JavaDetails = GetJavaDetails(javaExeFile.FullName),
+                JavaPath = javaExeFile.FullName,
+                JavaWPath = javawExeFile.FullName
+            };
+        }
     }
 }

@@ -15,7 +15,7 @@
     </Window.Resources>
     <DockPanel>
         <Canvas DockPanel.Dock="Bottom">
-            <TextBlock Canvas.ZIndex="3" Canvas.Left="222" TextWrapping="Wrap"  Style="{DynamicResource TerminologyTextBlockStyle}" FontSize="16" Canvas.Top="52" Foreground="Tomato" TextAlignment="Center" Width="114"><Run Text="{Binding Progress.Percent}" ></Run><Run Text="%"></Run></TextBlock>
+            <TextBlock Canvas.ZIndex="3" Canvas.Left="222" TextWrapping="Wrap"  Style="{DynamicResource TerminologyTextBlockStyle}" FontSize="16" Canvas.Top="52" Foreground="Tomato" TextAlignment="Center" Width="114"><Run Text="{Binding Path=Progress.ReadablePercent,Mode=OneWay}" ></Run></TextBlock>
             <ProgressBar Canvas.ZIndex="2" Value="{Binding Path=Progress.Percent}"  Height="39" Canvas.Left="42" Canvas.Top="42" Width="497" Style="{DynamicResource TerminologyProgressBar}"/>
             <TextBlock Canvas.ZIndex="1" Canvas.Left="42" TextWrapping="Wrap"  Style="{DynamicResource TerminologyTextBlockStyle}" FontSize="16" Canvas.Top="92"  Width="497" Height="69"><Run  Text="{Binding Progress.TaskName}"></Run></TextBlock>
         </Canvas>

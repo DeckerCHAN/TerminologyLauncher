@@ -79,12 +79,12 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         private Boolean CheckJavaPath()
         {
             //Check config 
-            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
+            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
             {
                 try
                 {
-                    var javaBinFile = new FileInfo(this.Engine.InstanceManager.Config.GetConfig("javaPath"));
-                    if (javaBinFile.Exists && (javaBinFile.Name.Equals("java.exe") || javaBinFile.Name.Equals("javaw.exe")))
+                    var javaBinFolder = new DirectoryInfo(this.Engine.InstanceManager.Config.GetConfig("javaBinPath"));
+                    if (javaBinFolder.Exists && File.Exists(Path.Combine(javaBinFolder.FullName, "java.exe")) || File.Exists(Path.Combine(javaBinFolder.FullName, "javaw.exe")))
                     {
                         return true;
                     }
@@ -126,42 +126,49 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     //Ignore
                 }
             }
-
-            var result = this.Engine.UiControl.StartSingleSelect("Select available java", "Java Runtime:", javaRuntimeEntitiesKP.Keys);
-            if (result.Type == WindowResultType.Canceled)
+            if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
-                return false;
+                var result = this.Engine.UiControl.StartSingleSelect("Select available java", "Java Runtime:", javaRuntimeEntitiesKP.Keys);
+                if (result.Type == WindowResultType.Canceled)
+                {
+                    return false;
+                }
+                else
+                {
+                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", Directory.GetParent(javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath).FullName);
+                    return true;
+                }
             }
 
-            this.Engine.InstanceManager.Config.SetConfig("javaPath", javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath);
 
 
-            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaPath")))
+            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
-                if (result.Type == WindowResultType.CommonFinished)
+                var result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
+                switch (result.Type)
                 {
-
-                    try
-                    {
-                        var javaExe = new FileInfo(result.Result.ToString());
-                        if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
+                    case WindowResultType.CommonFinished:
                         {
-                            this.Engine.InstanceManager.Config.SetConfig("javaPath", result.Result.ToString());
-                            Logger.GetLogger().Info("Received java path from user. Pass.");
-                        }
-                    }
-                    catch (Exception)
-                    {
+                            try
+                            {
+                                var javaExe = new FileInfo(result.Result.ToString());
+                                if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
+                                {
+                                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", javaExe.DirectoryName);
+                                    Logger.GetLogger().Info("Received java path from user. Pass.");
+                                }
+                            }
+                            catch (Exception)
+                            {
 
-                        //ignore.
-                    }
-                }
-                else if (result.Type == WindowResultType.Canceled)
-                {
-                    return false;
+                                //ignore.
+                            }
+                            break;
+                        }
+                    case WindowResultType.Canceled:
+                        return false;
                 }
             }
             return true;

@@ -53,7 +53,7 @@ namespace TerminologyLauncher.UnitTest
         public void LaunchInstance()
         {
             if (InstanceManager.Config != null)
-                InstanceManager.Config.SetConfig("javaPath", "C:\\jdk1.7.0_51\\bin\\java.exe");
+                InstanceManager.Config.SetConfig("javaBinPath", "C:\\jdk1.7.0_51\\bin\\");
 
 
             var progress = new InternalNodeProgress("");
