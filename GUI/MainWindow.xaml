@@ -56,7 +56,7 @@
                                 <RowDefinition Height="5*"/>
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyButtonStyle}" Background="LightGreen" Foreground="DarkSlateGray" Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
                                 <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>

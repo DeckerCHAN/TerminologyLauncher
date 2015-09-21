@@ -30,16 +30,16 @@
         </Border>
         <Canvas >
             <Border Canvas.Left="32" Canvas.Top="30" BorderBrush="{StaticResource CornerBorder}" BorderThickness="2" >
-                <ListView ItemsSource="{Binding ConfigObservableCollection}" Style="{DynamicResource TerminologyListViewStyle}"  Height="272" Width="623">
+                <ListView x:Name="ConfigListView" ItemsSource="{Binding Path=ConfigObservableCollection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource TerminologyListViewStyle}"  Height="272" Width="623">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,0,0,5">
+                            <Grid Margin="5,5,0,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Grid.Row="0" FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}"><Run Text="{Binding Path=Key,Mode=OneWay}"/><Run Text=":"/></TextBlock>
-                                <TextBox  MinWidth="90" Grid.Column="1" Grid.Row="0"  Margin="5,0,0,0" FontSize="20" Style="{DynamicResource TerminologyTextBoxStyle}" Text="{Binding Path=Value,Mode=TwoWay}" TextWrapping="Wrap"></TextBox>
+                                <TextBox  MinWidth="90" Grid.Column="1" Grid.Row="0"  Margin="5,0,0,0" FontSize="20" Style="{DynamicResource TerminologyTextBoxStyle}" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextWrapping="NoWrap"></TextBox>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

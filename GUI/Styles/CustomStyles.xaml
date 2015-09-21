@@ -461,7 +461,7 @@
 
     <Style TargetType="{x:Type Button}" x:Key="TerminologyConfigButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="LightGreen"></Setter>
-        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Foreground" Value="DarkSlateGray"></Setter>
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="TerminologyCancelButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">

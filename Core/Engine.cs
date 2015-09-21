@@ -84,7 +84,7 @@ namespace TerminologyLauncher.Core
             this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
             this.Handlers.Add("UPDATE_AN_INSTANCE", new UpdateInstanceHandler(this));
             this.Handlers.Add("UPDATE_APPLICATION", new UpdateApplicationHandler(this));
-
+            this.Handlers.Add("CONFIG", new ConfigHandler(this));
         }
 
         public void PostInitializeComponents()

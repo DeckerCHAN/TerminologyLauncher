@@ -100,6 +100,15 @@ namespace TerminologyLauncher.GUI
             });
         }
 
+        public WindowResult StartMultiConfigWindo(String title, Dictionary<String, String> configs)
+        {
+            WindowResult result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                result = new ConfigWindow(title, configs).ReceiveUserConfigs();
+            });
+            return result;
+        }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {

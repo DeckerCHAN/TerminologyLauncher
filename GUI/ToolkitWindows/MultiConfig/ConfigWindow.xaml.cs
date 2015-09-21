@@ -15,9 +15,8 @@ namespace TerminologyLauncher.GUI
     /// <summary>
     /// Interaction logic for ConfigWindow.xaml
     /// </summary>
-    public partial class ConfigWindow : INotifyPropertyChanged
+    public sealed partial class ConfigWindow : INotifyPropertyChanged
     {
-        private ObservableCollection<FrontSideKvPire> ConfigsConfigObservableCollectionValue;
         private bool IsCanceled { get; set; }
 
         public Dictionary<String, String> Configs
@@ -35,6 +34,7 @@ namespace TerminologyLauncher.GUI
                 }
             }
         }
+        private ObservableCollection<FrontSideKvPire> ConfigsConfigObservableCollectionValue;
 
         public ObservableCollection<FrontSideKvPire> ConfigObservableCollection
         {
@@ -60,11 +60,11 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        public ConfigWindow(Dictionary<String, String> configs)
+        public ConfigWindow(String title, Dictionary<String, String> configs)
         {
 
             InitializeComponent();
-            this.Title = "Terminology Config";
+            this.Title = title;
             this.Configs = configs;
             this.OnPropertyChanged();
         }
@@ -87,7 +87,7 @@ namespace TerminologyLauncher.GUI
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
@@ -111,9 +111,38 @@ namespace TerminologyLauncher.GUI
         }
     }
 
-    public struct FrontSideKvPire
+    public class FrontSideKvPire : INotifyPropertyChanged
     {
-        public String Key { get; set; }
-        public String Value { get; set; }
+        private string KeyV;
+        private string ValueV;
+
+        public String Key
+        {
+            get { return this.KeyV; }
+            set
+            {
+                this.KeyV = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public String Value
+        {
+            get { return this.ValueV; }
+            set
+            {
+                this.ValueV = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
