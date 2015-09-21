@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
 
@@ -64,11 +63,6 @@ namespace TerminologyLauncher.GUI
         public void CrossThreadClose()
         {
             this.Dispatcher.Invoke(this.Close);
-        }
-
-        public RelayCommand KeyPressCommand
-        {
-            get { return new RelayCommand(() => { this.OnLogining(this); }); }
         }
 
         public Boolean IsPerservePassword
@@ -192,6 +186,11 @@ namespace TerminologyLauncher.GUI
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnLogining(this);
+        }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.OnLogining(this);
         }

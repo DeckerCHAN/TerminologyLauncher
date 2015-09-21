@@ -35,17 +35,21 @@
 
         </Border>
         <Canvas DockPanel.Dock="Bottom"  >
+            <Canvas.Resources>
+                <RoutedUICommand x:Key="ConfirmCommand" Text="Confirm"></RoutedUICommand>
+            </Canvas.Resources>
+            <Canvas.CommandBindings>
+                <CommandBinding Command="{StaticResource ConfirmCommand}" Executed="CommandBinding_OnExecuted"/>
+            </Canvas.CommandBindings>
+            <Canvas.InputBindings>
+                <KeyBinding Command="{StaticResource ConfirmCommand}" Key="Enter"></KeyBinding>
+            </Canvas.InputBindings>
             <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBlock Name="AccountPasswordTitle" TextWrapping="Wrap" Text="密码:" Canvas.Right="330" Canvas.Top="125" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}">
-                <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding KeyPressCommand}" Key="Enter"></KeyBinding>
-                </TextBox.InputBindings>
+
             </TextBox>
             <PasswordBox  x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}">
-                <PasswordBox.InputBindings>
-                    <KeyBinding Command="{Binding KeyPressCommand}" Key="Enter"></KeyBinding>
-                </PasswordBox.InputBindings>
             </PasswordBox>
             <ComboBox Name="LoginModeComboBox"  x:FieldModifier="public" Canvas.Left="158" Canvas.Top="172" Width="156" Height="25" SelectedIndex="1" FontSize="15" HorizontalContentAlignment="Center" Style="{DynamicResource TerminologyComboBoxStyle}" SelectionChanged="LoginMode_OnSelectionChanged">
                 <ComboBoxItem Content="离线模式" HorizontalAlignment="Stretch" Width="118"/>
