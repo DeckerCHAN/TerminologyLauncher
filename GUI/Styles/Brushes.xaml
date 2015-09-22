@@ -39,6 +39,10 @@
     <SolidColorBrush x:Key="AlmostOpaqueBackground" Color="#000000" Opacity="0.8"/>
     <SolidColorBrush x:Key="HalfOpaqueBackground" Color="#000000" Opacity="0.5"/>
 
+    <SolidColorBrush x:Key="CommonBoxBorder" Color="DarkGray" />
+    <SolidColorBrush x:Key="CommonDisabledBoxBorder" Color="{StaticResource DisabledBackgroundColor}" />
+
+
     <SolidColorBrush x:Key="TextBoxBorder" Color="DarkGray" />
     <SolidColorBrush x:Key="TextBoxBackground" Color="#7F000000" />
     <SolidColorBrush x:Key="TextBoxDisabledForeground" Color="#8C8C8C" />

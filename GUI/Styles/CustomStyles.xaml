@@ -139,7 +139,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"></Setter>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}"/>
         <Setter Property="Padding" Value="2,2,2,1"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -156,7 +156,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledForeground}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TextBoxDisabledBackground}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource CommonDisabledBoxBorder}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -185,7 +185,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledForeground}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource TextBoxDisabledBackground}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource CommonDisabledBoxBorder}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -249,7 +249,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"></Setter>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}"/>
         <Setter Property="Padding" Value="2,2,2,1"/>
         <Setter Property="ItemContainerStyle" Value="{DynamicResource TerminologyComboBoxItemStyle}"></Setter>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -343,6 +343,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource TextBoxDisabledForeground}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource CommonDisabledBoxBorder}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
