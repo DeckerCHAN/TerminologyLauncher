@@ -3,6 +3,7 @@
     "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
     "fileRepositoryConfig": "Configs/FileRepositoryConfig.json",
     "updateManagerConfig": "Configs/UpdaterConifg.json",
+    "localizationConfig": "Configs/I18N.json",
     "javaSearchPaths": [
         "C:\\Program Files\\Java\\",
         "C:\\Program Files (x86)\\Java\\",
@@ -11,5 +12,5 @@
         "Java\\"
 
     ],
-    "loginPerserveFilePath": "Login.bin" 
+    "loginPerserveFilePath": "Login.bin"
 }

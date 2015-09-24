@@ -1,0 +1,44 @@
+{
+   "guiTranslation":{
+      "mainWindowTranslation":{
+         "mainWindowTitleTranslation":"Terminology 启动器",
+         "addInstanceTranslation":"添加",
+         "removeInstanceTranslation":"删除",
+         "updateInstanceTranslation":"升级",
+         "launchInstanceTranslation":"启动",
+         "officialLoginTranslation":"正版帐号",
+         "offlineLoginTranslation":"离线模式",
+         "instanceNameFieldTranslation":"名称:",
+         "instanceVersionFieldTranslation":"版本:",
+         "instanceDescribeFieldTranslation":"简介:",
+         "instanceAuthorFieldTranslation":"作者:"
+      },
+      "loginWindowTranslation":{
+         "loginWindowTitleTranslation":"Terminology登录",
+         "mojongAccountTranslation":"Mojong账户:",
+         "offlineAccountTranslation":"离线账户:",
+         "passwordTranslation":"密码:",
+         "loginModeTranslation":"登录模式:",
+         "officialModeTranslation":"正版登录",
+         "offlineModeTranslation":"离线模式",
+         "rememberAccountTranslation":"记住账户",
+         "loginTranslation":"登录",
+         "cancelTranslation":"取消",
+         "loginFaultTranslation":"登录失败",
+         "loginFaultInsufficientArgumentsTranslation":"信息不正确！",
+         "loginFaultWrongPasswordTranslation":"密码错误！",
+         "loginFaultUserNotExistTranslation":"用户不存在！",
+         "loginFaultNetworkTimedOutTranslation":"网路超时！",
+         "loginFaultUnknownErrorTranslation":"未知错误！"
+      },
+      "singleSelectWindowTranslation":{
+         "confirmTranslation":"确定"
+      }
+   },
+   "handlerTranslation":{
+      "javaSelectTranslation":{
+         "javaSelectWindowTitleTranslation":"选择一个Java版本",
+         "javaSelectFieldTranslation":"可用Java版本:"
+      }
+   }
+}

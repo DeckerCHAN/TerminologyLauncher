@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.I18n;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 {
@@ -19,6 +21,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         private ObservableCollection<String> SelectItemsValue;
         private string SelectItemValue;
         private Boolean IsCanceled { get; set; }
+        public SingleSelectWindowTranslation Translation { get; set; }
         public String FieldName
         {
             get { return this.FieldNameValue; }
@@ -48,6 +51,9 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         public SingleSelectWindow(String title, String selectFieldName, IEnumerable<string> items)
         {
             this.SelectItems = new ObservableCollection<String>();
+            this.Translation =
+               TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
+                    .SingleSelectWindowTranslation;
             this.InitializeComponent();
             this.Title = title;
             this.FieldName = selectFieldName;

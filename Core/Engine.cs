@@ -12,6 +12,7 @@ using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Updater;
@@ -22,7 +23,7 @@ namespace TerminologyLauncher.Core
     {
         #region Instance
 
-        public static Engine Instance;
+        private static Engine Instance;
 
         public static Engine GetEngine()
         {
@@ -37,6 +38,7 @@ namespace TerminologyLauncher.Core
         }
 
         public Config CoreConfig { get; set; }
+        public TranslationProvider Translation { get; set; }
         public UiControl UiControl { get; set; }
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
@@ -48,6 +50,7 @@ namespace TerminologyLauncher.Core
         {
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
+            this.Translation = TranslationProvider.TranslationProviderInstance;
             this.UiControl = new UiControl();
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfig("authConfig"));
 

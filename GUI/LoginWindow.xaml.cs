@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI
 {
@@ -14,37 +15,27 @@ namespace TerminologyLauncher.GUI
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : INotifyPropertyChanged
+    public sealed partial class LoginWindow : INotifyPropertyChanged
     {
         private bool IsPerservePasswordValue;
 
         public delegate void LogingHandler(Object serder, EventArgs e);
 
         public event LogingHandler Logining;
+
+        public LoginWindowTranslation Translation
+        {
+            get
+            {
+                return I18n.TranslationProvider.TranslationProviderInstance
+                      .TranslationObject.GuiTranslation.LoginWindowTranslation;
+            }
+        }
+
         public LoginWindow()
         {
             this.InitializeComponent();
-        }
-
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-
-        private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            var isChecked = (checkbox).IsChecked;
-            if (isChecked == null) return;
-            this.PasswordBox.Password = String.Empty;
-            if ((bool)isChecked)
-            {
-                this.PasswordBox.IsEnabled = false;
-            }
-            else
-            {
-                this.PasswordBox.IsEnabled = true;
-            }
+            this.OnPropertyChanged();
         }
 
         public void EnableAllInputs(Boolean isEnable)
@@ -121,27 +112,27 @@ namespace TerminologyLauncher.GUI
                         }
                     case LoginResultType.IncompleteOfArguments:
                         {
-                            new PopupWindow(this, "失败", "参数不完整").ShowDialog();
+                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultInsufficientArgumentsTranslation).ShowDialog();
                             break;
                         }
                     case LoginResultType.WrongPassword:
                         {
-                            new PopupWindow(this, "失败", "密码错误").ShowDialog();
+                            new PopupWindow(this, this.Translation.LoginFaultTranslation,this.Translation.LoginFaultWrongPasswordTranslation).ShowDialog();
                             break;
                         }
                     case LoginResultType.UserNotExists:
                         {
-                            new PopupWindow(this, "失败", "用户不存在").ShowDialog();
+                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultUserNotExistTranslation).ShowDialog();
                             break;
                         }
                     case LoginResultType.NetworkTimedOut:
                         {
-                            new PopupWindow(this, "失败", "网络超时").ShowDialog();
+                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultNetworkTimedOutTranslation).ShowDialog();
                             break;
                         }
                     default:
                         {
-                            new PopupWindow(this, "失败", "未知错误").ShowDialog();
+                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultUnknownErrorTranslation).ShowDialog();
                             break;
                         }
                 }
@@ -150,11 +141,20 @@ namespace TerminologyLauncher.GUI
 
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var combox = sender as ComboBox;
             var selected = combox.SelectedIndex;
-            this.AccountTypeTitle.Text = selected == 1 ? "Majong账户:" : "用户名:";
+            this.AccountTypeTitle.Text = selected == 1 ? this.Translation.MojongAccountTranslation : this.Translation.OfflineAccountTranslation;
 
             if (selected == 0)
             {
@@ -170,19 +170,31 @@ namespace TerminologyLauncher.GUI
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual void OnLogining(object serder)
+        private void OnLogining(object serder)
         {
             var handler = this.Logining;
             if (handler != null) handler(serder, EventArgs.Empty);
+        }
+
+        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            var checkbox = (CheckBox)sender;
+            var isChecked = (checkbox).IsChecked;
+            if (isChecked == null) return;
+            this.PasswordBox.Password = String.Empty;
+            if ((bool)isChecked)
+            {
+                this.PasswordBox.IsEnabled = false;
+            }
+            else
+            {
+                this.PasswordBox.IsEnabled = true;
+            }
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

@@ -9,6 +9,7 @@ using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 
@@ -128,7 +129,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
-                var result = this.Engine.UiControl.StartSingleSelect("Select available java", "Java Runtime:", javaRuntimeEntitiesKP.Keys);
+                var result = this.Engine.UiControl.StartSingleSelect(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectFieldTranslation, javaRuntimeEntitiesKP.Keys);
                 if (result.Type == WindowResultType.Canceled)
                 {
                     return false;

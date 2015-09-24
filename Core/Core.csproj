@@ -87,6 +87,10 @@
       <Project>{93928797-0422-4f4e-8d6a-9a2cb04b81f8}</Project>
       <Name>GUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\I18n\I18n.csproj">
+      <Project>{79fd9a83-caa1-451a-a128-da30f723c45f}</Project>
+      <Name>I18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InstanceManagerSystem\InstanceManagerSystem.csproj">
       <Project>{810902d1-4781-4882-b234-212ab101ee20}</Project>
       <Name>InstanceManagerSystem</Name>

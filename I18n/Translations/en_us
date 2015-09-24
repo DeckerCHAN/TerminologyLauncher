@@ -1,0 +1,44 @@
+﻿{
+   "guiTranslation":{
+      "mainWindowTranslation":{
+         "mainWindowTitleTranslation":"Terminology Launcher",
+         "addInstanceTranslation":"New instance",
+         "removeInstanceTranslation":"Remove select",
+         "updateInstanceTranslation":"Update me!",
+         "launchInstanceTranslation":"Launch me!",
+         "officialLoginTranslation":"Official Mode",
+         "offlineLoginTranslation":"Offline Mode",
+         "instanceNameFieldTranslation":"Name:",
+         "instanceVersionFieldTranslation":"Version:",
+         "instanceDescribeFieldTranslation":"Describe:",
+         "instanceAuthorFieldTranslation":"Author:"
+      },
+      "loginWindowTranslation":{
+         "loginWindowTitleTranslation":"Terminology Login",
+         "mojongAccountTranslation":"Mojong Account:",
+         "offlineAccountTranslation":"Offline Account:",
+         "passwordTranslation":"Password:",
+         "loginModeTranslation":"Login Mode:",
+         "officialModeTranslation":"Official Login",
+         "offlineModeTranslation":"Offline Login",
+         "rememberAccountTranslation":"Remember account",
+         "loginTranslation":"Login",
+         "cancelTranslation":"Cancel",
+         "loginFaultTranslation":"Can not login!",
+         "loginFaultInsufficientArgumentsTranslation":"Insufficient Arguments",
+         "loginFaultWrongPasswordTranslation":"Wrong password!",
+         "loginFaultUserNotExistTranslation":"User not exists!",
+         "loginFaultNetworkTimedOutTranslation":"Network timed out",
+         "loginFaultUnknownErrorTranslation":"Unknown error"
+      },
+      "singleSelectWindowTranslation":{
+         "confirmTranslation":"Confirm"
+      }
+   },
+   "handlerTranslation":{
+      "javaSelectTranslation":{
+         "javaSelectWindowTitleTranslation":"Select a JRE",
+         "javaSelectFieldTranslation":"Java Runtime:"
+      }
+   }
+}

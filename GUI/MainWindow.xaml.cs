@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI
 {
@@ -27,6 +28,15 @@ namespace TerminologyLauncher.GUI
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
+        public MainWindowTranslation Translation
+        {
+            get
+            {
+                return
+                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
+                        .MainWindowTranslation;
+            }
+        }
 
         public PlayerEntity Player
         {
@@ -71,6 +81,7 @@ namespace TerminologyLauncher.GUI
         public MainWindow()
         {
             this.InitializeComponent();
+            this.OnPropertyChanged();
         }
 
         public void CrossThreadClose()
