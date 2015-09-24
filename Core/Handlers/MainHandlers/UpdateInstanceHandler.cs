@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Utils.ProgressService;
@@ -38,7 +40,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     var message = this.Engine.InstanceManager.UpdateInstance(progress, instance.InstanceName);
                     Logging.Logger.GetLogger().InfoFormat(message);
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Successful updated", message);
-
+                    this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
                 }
                 catch (NoAvailableUpdateException ex)
                 {

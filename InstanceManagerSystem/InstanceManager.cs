@@ -163,25 +163,36 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             Logger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
-            if (instanceInfo.InstanceState != InstanceState.Ok)
-            {
-                throw new WrongStateException("Wrong instance state! Just instance which in OK state could update.");
-            }
 
             var oldInstanceEntity =
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(instanceInfo.FilePath));
-
             this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
             var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
             var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
 
             //Check instance is available to update
-            if (newInstanceEntity.Version == oldInstanceEntity.Version)
+            if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
                 throw new NoAvailableUpdateException(String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
             }
+
+            if (instanceInfo.InstanceState == InstanceState.PerInitialized)
+            {
+                this.RemoveInstance(instanceInfo.Name);
+                this.AddInstance(instanceInfo.UpdateUrl);
+                return String.Format("Successful update instance file {0} from version {1} to {2}!",
+               newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+            }
+
+            if (instanceInfo.InstanceState != InstanceState.Ok)
+            {
+                throw new WrongStateException("Wrong instance state! Just instance which in OK state could update.");
+            }
+
+
+
 
             //TODO:I'll support instance name change at feature version.
             if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
@@ -285,7 +296,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
             File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(newInstanceEntity));
             progress.Percent = 100D;
-            return String.Format("Successful update instance {0} from version {1} to {2}!",
+            return String.Format("Successful update all instance {0} from version {1} to {2}!",
                 newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
         }
 
