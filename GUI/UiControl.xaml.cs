@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Windows;
 using TerminologyLauncher.GUI.ToolkitWindows;
-using TerminologyLauncher.GUI.ToolkitWindows.MultiConfig;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
@@ -102,12 +103,12 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public WindowResult StartMultiConfigWindo(String title, Dictionary<String, String> configs)
+        public WindowResult StartMultiConfigWindo(IEnumerable<TextInputConfigObject> textInputConfigs)
         {
             WindowResult result = null;
             this.Dispatcher.Invoke(() =>
             {
-                result = new ConfigWindow(title, configs).ReceiveUserConfigs();
+                result = new ConfigWindow(textInputConfigs).ReceiveUserConfigs();
             });
             return result;
         }

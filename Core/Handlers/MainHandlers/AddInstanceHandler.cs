@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.Logging;
 

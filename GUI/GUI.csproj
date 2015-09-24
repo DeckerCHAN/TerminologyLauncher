@@ -58,7 +58,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ToolkitWindows\MultiConfig\ConfigWindow.xaml">
+    <Page Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,7 +102,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ToolkitWindows\MultiConfig\ConfigWindow.xaml.cs">
+    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
+    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
+    <Compile Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConsoleWindow.xaml.cs">

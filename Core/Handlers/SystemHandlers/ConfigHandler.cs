@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 
 namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 {
@@ -19,22 +20,27 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         {
             try
             {
-                var configs = new Dictionary<String, String>();
-                configs.Add("Java bin path", this.Engine.InstanceManager.Config.GetConfig("javaBinPath"));
-                configs.Add("Max instance memory allocate size(MB)", this.Engine.InstanceManager.Config.GetConfig("maxMemorySizeMega"));
-                configs.Add("Extra jvm arguments", this.Engine.InstanceManager.Config.GetConfig("extraJvmArguments"));
+                var configs = new List<TextInputConfigObject>
+                {
+                    new TextInputConfigObject("Java bin path", "javaBinPath",
+                        this.Engine.InstanceManager.Config.GetConfig("javaBinPath")),
+                    new TextInputConfigObject("Max instance memory allocate size(MB)", "maxMemorySizeMega",
+                        this.Engine.InstanceManager.Config.GetConfig("maxMemorySizeMega")),
+                    new TextInputConfigObject("Extra jvm arguments", "extraJvmArguments",
+                        this.Engine.InstanceManager.Config.GetConfig("extraJvmArguments"))
+                };
 
-                var reslut = this.Engine.UiControl.StartMultiConfigWindo("Configs", configs);
+                var reslut = this.Engine.UiControl.StartMultiConfigWindo(configs);
                 if (reslut.Type == WindowResultType.Canceled)
                 {
                     return;
                 }
-                configs = reslut.Result as Dictionary<String, String>;
-                if (configs == null) return;
-                this.Engine.InstanceManager.Config.SetConfig("javaBinPath", configs["Java bin path"]);
-                this.Engine.InstanceManager.Config.SetConfig("maxMemorySizeMega", configs["Max instance memory allocate size(MB)"]);
-                this.Engine.InstanceManager.Config.SetConfig("extraJvmArguments", configs["Extra jvm arguments"]);
-                return;
+                var mixedConfigs = reslut.Result as List<ConfigObject>;
+                if (mixedConfigs == null) return;
+                this.Engine.InstanceManager.Config.SetConfig("javaBinPath", (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
+                this.Engine.InstanceManager.Config.SetConfig("maxMemorySizeMega", (mixedConfigs.First(x => x.Key.Equals("maxMemorySizeMega")) as TextInputConfigObject).Value);
+                this.Engine.InstanceManager.Config.SetConfig("extraJvmArguments", (mixedConfigs.First(x => x.Key.Equals("extraJvmArguments")) as TextInputConfigObject).Value);
+                  return;
             }
             catch (Exception ex)
             {
