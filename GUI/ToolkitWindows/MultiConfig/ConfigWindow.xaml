@@ -1,4 +1,4 @@
-﻿<Window x:Class="TerminologyLauncher.GUI.ConfigWindow"
+﻿<Window x:Class="TerminologyLauncher.GUI.ToolkitWindows.MultiConfig.ConfigWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ConfigWindow" Height="432" Width="700"

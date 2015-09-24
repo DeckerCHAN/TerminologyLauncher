@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.MultiConfig;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 

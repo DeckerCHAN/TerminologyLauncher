@@ -7,10 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
-using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.ToolkitWindows.MultiConfig
 {
     /// <summary>
     /// Interaction logic for ConfigWindow.xaml

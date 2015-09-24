@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.ToolkitWindows.PopupWindow
 {
     /// <summary>
     /// Interaction logic for PopupWindow.xaml

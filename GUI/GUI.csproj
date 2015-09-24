@@ -66,7 +66,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PopupWindow.xaml">
+    <Page Include="ToolkitWindows\PopupWindow\PopupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -109,7 +109,7 @@
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Toolkits\ObservableDictionary.cs" />
-    <Compile Include="PopupWindow.xaml.cs">
+    <Compile Include="ToolkitWindows\PopupWindow\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProgressWindow.xaml.cs">
