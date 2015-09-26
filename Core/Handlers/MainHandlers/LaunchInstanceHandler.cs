@@ -22,7 +22,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
             Logging.Logger.GetLogger().Info("Handling launch instance event!");
 
-            InstanceEntity instance = this.Engine.UiControl.MajorWindow.SelectInstance;
+            var instance = this.Engine.UiControl.MajorWindow.SelectInstance;
             var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
             var progressWindow = new ProgressWindow(progress);
             Task.Run(() =>
@@ -33,18 +33,12 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         this.Engine.AuthServer.CurrentPlayer);
                     this.Engine.GameProcess.Exited += (s, o) =>
                     {
+                        this.Engine.UiControl.HideConsoleWindow();
                         this.Engine.UiControl.ShowMainWindow();
                     };
                     this.Engine.UiControl.HideMainWindow();
-                    this.Engine.GameProcess.BeginOutputReadLine();
-                    this.Engine.GameProcess.OutputDataReceived += (s, ea) =>
-                    {
-
-                        if (!String.IsNullOrEmpty(ea.Data))
-                        {
-                            Logging.Logger.GetLogger().InfoFormat(">>>GAME<<<: {0}", ea.Data);
-                        }
-                    };
+                    this.Engine.UiControl.ConsoleWindow.Process = this.Engine.GameProcess;
+                    this.Engine.UiControl.ShowConsoleWindow();
                 }
                 catch (WebException ex)
                 {

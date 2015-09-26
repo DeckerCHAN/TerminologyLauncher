@@ -17,11 +17,13 @@ namespace TerminologyLauncher.GUI
     {
         public LoginWindow LoginWindow { get; set; }
         public MainWindow MajorWindow { get; set; }
+        public ConsoleWindow ConsoleWindow { get; set; }
         public UiControl()
         {
             this.MajorWindow = new MainWindow();
             this.MainWindow = this.MajorWindow;
             this.LoginWindow = new LoginWindow();
+            this.ConsoleWindow=new ConsoleWindow();
         }
 
         public void ShowLoginWindow()
@@ -72,6 +74,32 @@ namespace TerminologyLauncher.GUI
             catch (Exception ex)
             {
                 Logging.Logger.GetLogger().ErrorFormat("Can not hide main window right now! Cause:{0}", ex.Message);
+            }
+        }
+
+        public void ShowConsoleWindow()
+        {
+            try
+            {
+                this.MajorWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Show(); });
+
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not show console window right now! Cause:{0}", ex.Message);
+            }
+        }
+
+        public void HideConsoleWindow()
+        {
+            try
+            {
+                this.MajorWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Hide(); });
+
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide console window right now! Cause:{0}", ex.Message);
             }
         }
 
