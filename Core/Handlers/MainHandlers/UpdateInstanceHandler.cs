@@ -17,14 +17,14 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         public UpdateInstanceHandler(Engine engine)
             : base(engine)
         {
-            this.Engine.UiControl.MajorWindow.UpdateInstanceButton.Click += this.HandleEvent;
+            this.Engine.UiControl.MainWindow.UpdateInstanceButton.Click += this.HandleEvent;
         }
 
         public override void HandleEvent(object sender, EventArgs e)
         {
             Logging.Logger.GetLogger().Info("Handling update instance event!");
 
-            var instance = this.Engine.UiControl.MajorWindow.SelectInstance;
+            var instance = this.Engine.UiControl.MainWindow.SelectInstance;
             if (instance == null)
             {
                 Logging.Logger.GetLogger().Warn("Did not select any instance. Ignore!");
@@ -39,19 +39,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 {
                     var message = this.Engine.InstanceManager.UpdateInstance(progress, instance.InstanceName);
                     Logging.Logger.GetLogger().InfoFormat(message);
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Successful updated", message);
-                    this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Successful updated", message);
+                    this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
                 }
                 catch (NoAvailableUpdateException ex)
                 {
                     Logging.Logger.GetLogger().Info(ex.Message);
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "No available update",
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "No available update",
                         ex.Message);
                 }
                 catch (WrongStateException ex)
                 {
                     Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not update",
                         String.Format(
                             "Encounter an wrong state error. Detail:{0}",
                             ex.Message));
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 catch (Exception ex)
                 {
                     Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not update",
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not update",
                         String.Format(
                             "Caused by an internal error, we can not update this instance right now.Detail:{0}",
                             ex.Message));

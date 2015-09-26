@@ -13,19 +13,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         public RemoveInstanceHandler(Engine engine)
             : base(engine)
         {
-            this.Engine.UiControl.MajorWindow.InstanceRemoveButton.Click += this.HandleEvent;
+            this.Engine.UiControl.MainWindow.InstanceRemoveButton.Click += this.HandleEvent;
         }
 
         public override void HandleEvent(object sender, EventArgs e)
         {
             Logging.Logger.GetLogger().Info("Handling remove instance event!");
 
-            var instanceName = this.Engine.UiControl.MajorWindow.SelectInstance.InstanceName;
+            var instanceName = this.Engine.UiControl.MainWindow.SelectInstance.InstanceName;
             try
             {
                 var message = this.Engine.InstanceManager.RemoveInstance(instanceName);
 
-                this.Engine.UiControl.MajorWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
 
             }
             catch (Exception)

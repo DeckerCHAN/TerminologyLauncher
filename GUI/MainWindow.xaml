@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:account="clr-namespace:TerminologyLauncher.Entities.Account;assembly=TerminologyLauncher.Entities"
         xmlns:gui="clr-namespace:TerminologyLauncher.GUI"
+        xmlns:toolkits="clr-namespace:TerminologyLauncher.GUI.Toolkits"
         Title="MainWindow" Width="1194" Height="718" 
         Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
@@ -18,7 +19,7 @@
     </Window.Resources>
     <Border CornerRadius="8">
         <Border.Resources>
-            <gui:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
+            <toolkits:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
         </Border.Resources>
         <Border.Background>
             <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}" Stretch="UniformToFill"></ImageBrush>

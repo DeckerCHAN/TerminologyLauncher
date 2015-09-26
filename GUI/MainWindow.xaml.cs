@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Annotations;
@@ -78,7 +79,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public MainWindow()
+        public MainWindow(Config config)
         {
             this.InitializeComponent();
             this.OnPropertyChanged();
@@ -128,23 +129,5 @@ namespace TerminologyLauncher.GUI
         }
     }
 
-    public class ImageInMemoryConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var imagePath = (String)value;
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(imagePath);
-            image.EndInit();
-            return image;
 
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

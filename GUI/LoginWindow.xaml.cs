@@ -1,9 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
@@ -20,6 +24,7 @@ namespace TerminologyLauncher.GUI
     {
         private bool IsPerservePasswordValue;
 
+
         public delegate void LogingHandler(Object serder, EventArgs e);
 
         public event LogingHandler Logining;
@@ -33,8 +38,29 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public LoginWindow()
+        private String BackgroundImageSourceValue;
+        public String BackgroundImageSource
         {
+            get { return this.BackgroundImageSourceValue; }
+            set { this.BackgroundImageSourceValue = value; }
+        }
+
+        public Config Config { get; set; }
+
+        public LoginWindow(Config config)
+        {
+            this.Config = config;
+
+            if (!String.IsNullOrEmpty(this.Config.GetConfig("loginWindowBackground")) && File.Exists(this.Config.GetConfig("loginWindowBackground")))
+            {
+                var imageFile = new FileInfo(this.Config.GetConfig("loginWindowBackground"));
+                this.BackgroundImageSource = imageFile.FullName;
+            }
+            else
+            {
+                this.BackgroundImageSource = @"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg";
+            }
+
             this.InitializeComponent();
             this.OnPropertyChanged();
         }

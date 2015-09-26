@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
@@ -15,15 +17,16 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class UiControl
     {
+        public new MainWindow MainWindow { get; set; }
         public LoginWindow LoginWindow { get; set; }
-        public MainWindow MajorWindow { get; set; }
         public ConsoleWindow ConsoleWindow { get; set; }
-        public UiControl()
+        public Config Config { get; set; }
+        public UiControl(String configPath)
         {
-            this.MajorWindow = new MainWindow();
-            this.MainWindow = this.MajorWindow;
-            this.LoginWindow = new LoginWindow();
-            this.ConsoleWindow=new ConsoleWindow();
+            this.Config=new Config(new FileInfo(configPath));
+            this.MainWindow = new MainWindow(this.Config);
+            this.LoginWindow = new LoginWindow(this.Config);
+            this.ConsoleWindow=new ConsoleWindow(this.Config);
         }
 
         public void ShowLoginWindow()
@@ -55,7 +58,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
             }
             catch (Exception ex)
             {
@@ -68,7 +71,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
 
             }
             catch (Exception ex)
@@ -81,7 +84,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Show(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Show(); });
 
             }
             catch (Exception ex)
@@ -94,7 +97,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Hide(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Hide(); });
 
             }
             catch (Exception ex)

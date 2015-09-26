@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.GUI.Annotations;
 
 namespace TerminologyLauncher.GUI
@@ -62,8 +63,11 @@ namespace TerminologyLauncher.GUI
             get { return this.ProcessLogs.ToString(); }
         }
 
-        public ConsoleWindow()
+        public Config Config { get; set; }
+
+        public ConsoleWindow(Config config)
         {
+            this.Config = config;
             this.ProcessLogs = new ObservableCollection<string>();
             this.InitializeComponent();
             this.OnPropertyChanged();

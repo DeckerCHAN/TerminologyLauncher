@@ -102,6 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml.cs">
@@ -156,6 +157,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Configs\GUI.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -169,6 +173,10 @@
     <Resource Include="Resources\icon_close_hover.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Configs\Configs.csproj">
+      <Project>{b56b5d15-8a5e-4833-83f1-6fc40a4b3b7c}</Project>
+      <Name>Configs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{d7137adb-46ba-4e01-b550-060411dfe671}</Project>
       <Name>Entities</Name>

@@ -17,7 +17,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         {
             this.Engine.UiControl.LoginWindow.CloseButton.Click += this.HandleEvent;
             this.Engine.UiControl.LoginWindow.CancleButton.Click += this.HandleEvent;
-            this.Engine.UiControl.MajorWindow.CloseButton.Click += this.HandleEvent;
+            this.Engine.UiControl.MainWindow.CloseButton.Click += this.HandleEvent;
         }
     }
 }

@@ -51,7 +51,7 @@ namespace TerminologyLauncher.Core
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
-            this.UiControl = new UiControl();
+            this.UiControl = new UiControl(this.CoreConfig.GetConfig("guiConfig"));
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfig("authConfig"));
 
             this.Handlers = new Dictionary<string, HandlerBase>();

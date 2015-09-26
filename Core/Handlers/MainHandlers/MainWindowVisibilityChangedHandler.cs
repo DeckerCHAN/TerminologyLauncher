@@ -50,9 +50,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                 return;
                             }
 
-                            this.Engine.UiControl.MajorWindow.InstanceList =
+                            this.Engine.UiControl.MainWindow.InstanceList =
                                   new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-                            if (this.Engine.UiControl.MajorWindow.InstanceList.Count == 0)
+                            if (this.Engine.UiControl.MainWindow.InstanceList.Count == 0)
                             {
                                 var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
                                 if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
 
 
-                            this.Engine.UiControl.MajorWindow.CoreVersion = this.Engine.CoreVersion;
+                            this.Engine.UiControl.MainWindow.CoreVersion = this.Engine.CoreVersion;
                         }
                         break;
                     }

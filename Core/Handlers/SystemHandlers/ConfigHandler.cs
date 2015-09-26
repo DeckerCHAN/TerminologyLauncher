@@ -13,7 +13,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         public ConfigHandler(Engine engine)
             : base(engine)
         {
-            this.Engine.UiControl.MajorWindow.ConfigButton.Click += this.HandleEvent;
+            this.Engine.UiControl.MainWindow.ConfigButton.Click += this.HandleEvent;
         }
 
         public override void HandleEvent(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 
                 Logging.Logger.GetLogger()
                         .Error(String.Format("Can not update because {0}", ex));
-                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MajorWindow, "Can not launch", String.Format(
+                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch", String.Format(
                     "Caused by an internal error, we can not update right now. Detail: {0}", ex.Message));
             }
         }
