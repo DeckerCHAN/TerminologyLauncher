@@ -104,6 +104,8 @@
     </Page>
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
+    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
+    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>

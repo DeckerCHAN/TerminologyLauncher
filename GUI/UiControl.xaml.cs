@@ -134,12 +134,12 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public WindowResult StartMultiConfigWindo(IEnumerable<TextInputConfigObject> textInputConfigs)
+        public WindowResult StartMultiConfigWindo(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
             WindowResult result = null;
             this.Dispatcher.Invoke(() =>
             {
-                result = new ConfigWindow(textInputConfigs).ReceiveUserConfigs();
+                result = new ConfigWindow(textInputConfigs,itemSelectConfigs,rangeRestrictedSelectConfigs).ReceiveUserConfigs();
             });
             return result;
         }

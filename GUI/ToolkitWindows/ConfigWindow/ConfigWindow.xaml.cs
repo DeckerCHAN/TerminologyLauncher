@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 {
@@ -17,14 +18,46 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
     public sealed partial class ConfigWindow : INotifyPropertyChanged
     {
         private ObservableCollection<TextInputConfigObject> TextInputConfigObjectsValue;
+        private ObservableCollection<ItemSelectConfigObject> ItemSelectConfigObjectsValue;
+        private ObservableCollection<RangeRestrictedSelectConfigObject> RangeRestrictedSelectObjectsValue;
+
+        public ObservableCollection<RangeRestrictedSelectConfigObject> RangeRestrictedSelectObjects
+        {
+            get { return this.RangeRestrictedSelectObjectsValue; }
+            set
+            {
+                this.RangeRestrictedSelectObjectsValue = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         private bool IsCanceled { get; set; }
+
+        public ConfigWindowTranslation Translation
+        {
+            get
+            {
+                return I18n.TranslationProvider.TranslationProviderInstance
+                      .TranslationObject.GuiTranslation.ConfigWindowTranslation;
+            }
+        }
+
+        public ObservableCollection<ItemSelectConfigObject> ItemSelectConfigObjects
+        {
+            get { return this.ItemSelectConfigObjectsValue; }
+            set
+            {
+                this.ItemSelectConfigObjectsValue = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<TextInputConfigObject> TextInputConfigObjects
         {
             get { return this.TextInputConfigObjectsValue; }
             set
             {
-                this.TextInputConfigObjectsValue = value; 
+                this.TextInputConfigObjectsValue = value;
                 this.OnPropertyChanged();
             }
         }
@@ -38,16 +71,21 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
             };
             if (result.Type == WindowResultType.CommonFinished)
             {
-                result.Result = new List<ConfigObject>(this.TextInputConfigObjects);
+                var mixedCollection = new List<ConfigObject>();
+                mixedCollection.AddRange(this.TextInputConfigObjects);
+                mixedCollection.AddRange(this.RangeRestrictedSelectObjects);
+                mixedCollection.AddRange(this.ItemSelectConfigObjects);
+                result.Result = mixedCollection;
             }
             return result;
         }
 
-        public ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs)
+        public ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
-
             this.InitializeComponent();
-            this.TextInputConfigObjects = new ObservableCollection<TextInputConfigObject>(textInputConfigs);
+            this.TextInputConfigObjects = new ObservableCollection<TextInputConfigObject>(textInputConfigs??new List<TextInputConfigObject>());
+            this.RangeRestrictedSelectObjects =new ObservableCollection<RangeRestrictedSelectConfigObject>(rangeRestrictedSelectConfigs??new List<RangeRestrictedSelectConfigObject>());
+            this.ItemSelectConfigObjects =new ObservableCollection<ItemSelectConfigObject>(itemSelectConfigs??new List<ItemSelectConfigObject>());
             this.OnPropertyChanged();
         }
 

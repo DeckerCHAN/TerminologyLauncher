@@ -8,11 +8,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
 {
     public class RangeRestrictedSelectConfigObject : ConfigObject
     {
-        private double MaxiumValue;
-        private double MiniumValue;
-        private double RealValue;
+        private long MaxiumValue;
+        private long MiniumValue;
+        private long RealValue;
 
-        private Double Maxium
+        public long Maxium
         {
             get { return this.MaxiumValue; }
             set
@@ -22,7 +22,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        private Double Minium
+        public long Minium
         {
             get { return this.MiniumValue; }
             set
@@ -32,7 +32,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        private Double Value
+        public long Value
         {
             get { return this.RealValue; }
             set
@@ -43,7 +43,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        public RangeRestrictedSelectConfigObject(string name, string key, Double maxium, Double minium, Double defaultValue)
+        public RangeRestrictedSelectConfigObject(string name, string key, long maxium, long minium, long defaultValue)
             : base(name, key)
         {
             this.Maxium = maxium;

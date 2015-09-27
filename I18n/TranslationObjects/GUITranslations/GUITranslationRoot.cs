@@ -5,5 +5,6 @@
         public MainWindowTranslation MainWindowTranslation { get; set; }
         public LoginWindowTranslation LoginWindowTranslation { get; set; }
         public SingleSelectWindowTranslation SingleSelectWindowTranslation { get; set; }
+        public ConfigWindowTranslation ConfigWindowTranslation { get; set; }
     }
 }

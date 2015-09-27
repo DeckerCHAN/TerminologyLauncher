@@ -57,6 +57,14 @@ namespace TerminologyLauncher.Test
                         MainWindowTitleTranslation = "Terminology Launcher",
                         OfficialLoginTranslation = "Official Mode",
                         OfflineLoginTranslation = "Offline Mode"
+                    },
+                    ConfigWindowTranslation = new ConfigWindowTranslation()
+                    {
+                        ConfigWindowTitleTranslation = "Configs",
+                        ConfirmButtonTranslation = "Confirm",
+                        JavaPathTranslation = "Java binary path:",
+                        MaxiumMemoryAllocateTranslation = "Maxium allocate memory:",
+                        ExtraJvmArgumentTranslation = "Extra Jvm arguments:"
                     }
                 },
                 HandlerTranslation = new HandlerTranslationRoot()
