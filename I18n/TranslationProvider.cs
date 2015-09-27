@@ -35,7 +35,7 @@ namespace TerminologyLauncher.I18n
                 if (this.TranslationObjectValue != null) return this.TranslationObjectValue;
                 var translationStream =
                     ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
-                                                        this.Config.GetConfig("usingTranslation"));
+                                                        this.Config.GetConfigString("usingTranslation"));
                 var translationContent = new StreamReader(translationStream,Encoding.UTF8).ReadToEnd();
                 this.TranslationObjectValue = JsonConverter.Parse<TranslationRoot>(translationContent);
 

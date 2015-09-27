@@ -25,14 +25,14 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 var textInputConfigs = new List<TextInputConfigObject>
                 {
                     new TextInputConfigObject("Java bin path", "javaBinPath",
-                        this.Engine.InstanceManager.Config.GetConfig("javaBinPath")),
+                        this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")),
                     new TextInputConfigObject("Extra jvm arguments", "extraJvmArguments",
-                        this.Engine.InstanceManager.Config.GetConfig("extraJvmArguments"))
+                        this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"))
                 };
 
                 var rangeConfigs = new List<RangeRestrictedSelectConfigObject>
                 {
-                    new RangeRestrictedSelectConfigObject("Max instance memory allocate size(MB)","maxMemorySizeMega",MachineUtils.GetTotalMemoryInMiB(),512L,Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfig("maxMemorySizeMega")))
+                    new RangeRestrictedSelectConfigObject("Max instance memory allocate size(MB)","maxMemorySizeMega",MachineUtils.GetTotalMemoryInMiB(),512L,Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")))
                 };
 
                 var reslut = this.Engine.UiControl.StartMultiConfigWindo(textInputConfigs, null, rangeConfigs);
@@ -42,9 +42,9 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 }
                 var mixedConfigs = reslut.Result as List<ConfigObject>;
                 if (mixedConfigs == null) return;
-                this.Engine.InstanceManager.Config.SetConfig("javaBinPath", (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
-                this.Engine.InstanceManager.Config.SetConfig("maxMemorySizeMega", (mixedConfigs.First(x => x.Key.Equals("maxMemorySizeMega")) as RangeRestrictedSelectConfigObject).Value.ToString());
-                this.Engine.InstanceManager.Config.SetConfig("extraJvmArguments", (mixedConfigs.First(x => x.Key.Equals("extraJvmArguments")) as TextInputConfigObject).Value);
+                this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
+                this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", (mixedConfigs.First(x => x.Key.Equals("maxMemorySizeMega")) as RangeRestrictedSelectConfigObject).Value.ToString());
+                this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", (mixedConfigs.First(x => x.Key.Equals("extraJvmArguments")) as TextInputConfigObject).Value);
                   return;
             }
             catch (Exception ex)

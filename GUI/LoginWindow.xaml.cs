@@ -51,9 +51,9 @@ namespace TerminologyLauncher.GUI
         {
             this.Config = config;
 
-            if (!String.IsNullOrEmpty(this.Config.GetConfig("loginWindowBackground")) && File.Exists(this.Config.GetConfig("loginWindowBackground")))
+            if (!String.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) && File.Exists(this.Config.GetConfigString("loginWindowBackground")))
             {
-                var imageFile = new FileInfo(this.Config.GetConfig("loginWindowBackground"));
+                var imageFile = new FileInfo(this.Config.GetConfigString("loginWindowBackground"));
                 this.BackgroundImageSource = imageFile.FullName;
             }
             else

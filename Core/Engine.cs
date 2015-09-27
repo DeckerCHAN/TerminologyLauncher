@@ -51,8 +51,8 @@ namespace TerminologyLauncher.Core
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
-            this.UiControl = new UiControl(this.CoreConfig.GetConfig("guiConfig"));
-            this.AuthServer = new AuthServer(this.CoreConfig.GetConfig("authConfig"));
+            this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));
+            this.AuthServer = new AuthServer(this.CoreConfig.GetConfigString("authConfig"));
 
             this.Handlers = new Dictionary<string, HandlerBase>();
             Logger.GetLogger().Info("Engine Initialized!");
@@ -93,9 +93,9 @@ namespace TerminologyLauncher.Core
         public void PostInitializeComponents()
         {
             Logger.GetLogger().Info("Engine extra component initializing...");
-            this.FileRepo = new FileRepository(this.CoreConfig.GetConfig("fileRepositoryConfig"));
-            this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfig("instanceManagerConfig"), this.FileRepo);
-            this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfig("updateManagerConfig"), this.CoreVersion);
+            this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
+            this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo);
+            this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion);
             Logger.GetLogger().Info("Engine extra component initialized...");
         }
     }

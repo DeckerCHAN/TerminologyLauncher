@@ -26,7 +26,7 @@ namespace TerminologyLauncher.Updater
 
         public Boolean CheckUpdateAvailable()
         {
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfig("updateCheckingUrl")));
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfigString("updateCheckingUrl")));
             if (update.LatestVersion == null)
             {
                 throw new PlatformNotSupportedException("Can not fetch the latest version! May caused by wrong update url or un-supported version!");
@@ -44,7 +44,7 @@ namespace TerminologyLauncher.Updater
                 return "No newer update available.";
             }
 
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfig("updateCheckingUrl")));
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfigString("updateCheckingUrl")));
 
 
 

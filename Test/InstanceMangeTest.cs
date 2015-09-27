@@ -71,7 +71,7 @@ namespace TerminologyLauncher.Test
         public static void LaunchInstance()
         {
             if (InstanceManager.Config != null)
-                InstanceManager.Config.SetConfig("javaBinPath", "C:\\jdk1.7.0_51\\bin\\");
+                InstanceManager.Config.SetConfigString("javaBinPath", "C:\\jdk1.7.0_51\\bin\\");
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
 
             var progress = new InternalNodeProgress("");

@@ -24,7 +24,7 @@ namespace TerminologyLauncher.Auth
             Logger.GetLogger().Info("Initializing auth server.");
             this.Config = new Config(new FileInfo(authConfigPath));
             //Create profile folder if not exists.
-            this.ProfileDirectoryInfo = new DirectoryInfo(this.Config.GetConfig("profileFolder"));
+            this.ProfileDirectoryInfo = new DirectoryInfo(this.Config.GetConfigString("profileFolder"));
             FolderUtils.RecreateFolder(this.ProfileDirectoryInfo);
 
             Logger.GetLogger().Info("Auth server initialized.");
@@ -47,7 +47,7 @@ namespace TerminologyLauncher.Auth
 
             String authResponse = String.Empty;
 
-            var request = WebRequest.Create(this.Config.GetConfig("authUrls.authenticate"));
+            var request = WebRequest.Create(this.Config.GetConfigString("authUrls.authenticate"));
             request.Method = WebRequestMethods.Http.Post;
             request.ContentType = "application/json";
             var postData = JsonConverter.ConvertToJson(sendPayload);

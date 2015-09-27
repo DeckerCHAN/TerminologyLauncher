@@ -19,7 +19,7 @@ namespace TerminologyLauncher.Configs
             this.JsonFileInfo = jsonConfigFile;
         }
 
-        public String GetConfig(String key)
+        public String GetConfigString(String key)
         {
             this.CheckKey(key);
             this.ReadConfigsFromFile();
@@ -27,7 +27,7 @@ namespace TerminologyLauncher.Configs
             return String.IsNullOrEmpty(value) ? null : value;
         }
 
-        public List<String> GetConfigs(String key)
+        public IEnumerable<string> GetMultiConfigString(String key)
         {
             this.CheckKey(key);
             this.ReadConfigsFromFile();
@@ -36,7 +36,7 @@ namespace TerminologyLauncher.Configs
             return value.Count == 0 ? new List<string>() : value;
         }
 
-        public void SetConfigs(String key, List<String> configs)
+        public void SetMultiConfigString(String key, List<String> configs)
         {
             this.CheckKey(key);
             this.ReadConfigsFromFile();
@@ -50,7 +50,7 @@ namespace TerminologyLauncher.Configs
         }
 
 
-        public void SetConfig(String key, String value)
+        public void SetConfigString(String key, String value)
         {
             this.CheckKey(key);
             this.ConfigJObject.SelectToken(key).Replace(new JValue(value));

@@ -80,11 +80,11 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         private Boolean CheckJavaPath()
         {
             //Check config 
-            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
+            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")))
             {
                 try
                 {
-                    var javaBinFolder = new DirectoryInfo(this.Engine.InstanceManager.Config.GetConfig("javaBinPath"));
+                    var javaBinFolder = new DirectoryInfo(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath"));
                     if (javaBinFolder.Exists && File.Exists(Path.Combine(javaBinFolder.FullName, "java.exe")) || File.Exists(Path.Combine(javaBinFolder.FullName, "javaw.exe")))
                     {
                         return true;
@@ -97,7 +97,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
             }
             //Search java from default path
-            var searchPaths = this.Engine.CoreConfig.GetConfigs("javaSearchPaths");
+            var searchPaths = this.Engine.CoreConfig.GetMultiConfigString("javaSearchPaths");
 
             var javaPaths = searchPaths.Where(Directory.Exists)
                 .SelectMany(
@@ -136,14 +136,14 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 else
                 {
-                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", Directory.GetParent(javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath).FullName);
+                    this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", Directory.GetParent(javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath).FullName);
                     return true;
                 }
             }
 
 
 
-            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
+            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")))
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
@@ -157,7 +157,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                 var javaExe = new FileInfo(result.Result.ToString());
                                 if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
                                 {
-                                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", javaExe.DirectoryName);
+                                    this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", javaExe.DirectoryName);
                                     Logger.GetLogger().Info("Received java path from user. Pass.");
                                 }
                             }

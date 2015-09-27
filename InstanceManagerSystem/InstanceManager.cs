@@ -26,7 +26,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             this.Config = new Config(new FileInfo(configPath));
             this.UsingFileRepository = usingFileRepository;
-            this.InstancesFolder = new DirectoryInfo(this.Config.GetConfig("instancesFolderPath"));
+            this.InstancesFolder = new DirectoryInfo(this.Config.GetConfigString("instancesFolderPath"));
 
 
 
@@ -45,11 +45,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             get
             {
-                if (String.IsNullOrEmpty(this.Config.GetConfig("javaBinPath"))) return null;
+                if (String.IsNullOrEmpty(this.Config.GetConfigString("javaBinPath"))) return null;
                 var javaRuntime = new JavaRuntimeEntity()
                 {
-                    JavaPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "java.exe"),
-                    JavaWPath = Path.Combine(this.Config.GetConfig("javaBinPath"), "javaw.exe")
+                    JavaPath = Path.Combine(this.Config.GetConfigString("javaBinPath"), "java.exe"),
+                    JavaWPath = Path.Combine(this.Config.GetConfigString("javaBinPath"), "javaw.exe")
                 };
                 javaRuntime.JavaDetails = JavaUtils.GetJavaDetails(javaRuntime.JavaPath);
                 return javaRuntime;
@@ -89,9 +89,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public void LoadInstancesFromBankFile()
         {
 
-            if (File.Exists(this.Config.GetConfig("instanceBankFilePath")))
+            if (File.Exists(this.Config.GetConfigString("instanceBankFilePath")))
             {
-                this.InstanceBank = JsonConverter.Parse<InstanceBankEntity>(File.ReadAllText(this.Config.GetConfig("instanceBankFilePath")));
+                this.InstanceBank = JsonConverter.Parse<InstanceBankEntity>(File.ReadAllText(this.Config.GetConfigString("instanceBankFilePath")));
             }
             else
             {
@@ -105,7 +105,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         public void SaveInstancesBankToFile()
         {
             var content = JsonConverter.ConvertToJson(this.InstanceBank);
-            File.WriteAllText(this.Config.GetConfig("instanceBankFilePath"), content);
+            File.WriteAllText(this.Config.GetConfigString("instanceBankFilePath"), content);
         }
 
 
@@ -377,9 +377,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 startArgument.Append(jvmArgument + " ");
             }
 
-            startArgument.Append(this.Config.GetConfig("extraJvmArguments") ?? String.Empty).Append(" ");
+            startArgument.Append(this.Config.GetConfigString("extraJvmArguments") ?? String.Empty).Append(" ");
 
-            startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfig("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
+            startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfigString("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
 
             var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
             if (nativeFolder.Exists)

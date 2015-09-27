@@ -31,7 +31,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 {
                     this.Engine.GameProcess = this.Engine.InstanceManager.LaunchInstance(progress, instance.InstanceName,
                         this.Engine.AuthServer.CurrentPlayer);
-                    var usingConsole = this.Engine.CoreConfig.GetConfig("usingConsoleWindow") == "true";
+                    var usingConsole = this.Engine.CoreConfig.GetConfigString("usingConsoleWindow") == "true";
                     this.Engine.GameProcess.Exited += (s, o) =>
                     {
                         this.Engine.UiControl.HideConsoleWindow();
