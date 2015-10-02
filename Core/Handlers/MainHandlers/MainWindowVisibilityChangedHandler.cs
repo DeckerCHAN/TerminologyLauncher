@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
 
 
-                            this.Engine.UiControl.MainWindow.CoreVersion = this.Engine.CoreVersion;
+                            this.Engine.UiControl.MainWindow.CoreVersion = String.Format("{0} (build{1})", this.Engine.CoreVersion, this.Engine.BuildVersion);
                         }
                         break;
                     }
@@ -80,52 +80,18 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         private Boolean CheckJavaPath()
         {
             //Check config 
-            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")))
+            if (this.Engine.JreManager.JavaRuntime != null)
             {
-                try
-                {
-                    var javaBinFolder = new DirectoryInfo(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath"));
-                    if (javaBinFolder.Exists && File.Exists(Path.Combine(javaBinFolder.FullName, "java.exe")) || File.Exists(Path.Combine(javaBinFolder.FullName, "javaw.exe")))
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    //ignore
-                }
-
+                return true;
             }
-            //Search java from default path
-            var searchPaths = this.Engine.CoreConfig.GetMultiConfigString("javaSearchPaths");
-
-            var javaPaths = searchPaths.Where(Directory.Exists)
-                .SelectMany(
-                path => Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly),
-                (path, folder) => Path.Combine(folder, "bin/java.exe")
-                ).Where(File.Exists)
-                .ToList();
-
-
 
 
             var javaRuntimeEntitiesKP = new Dictionary<String, JavaRuntimeEntity>();
-            foreach (var javaPath in javaPaths)
+            foreach (var availableJre in this.Engine.JreManager.AvailableJavaRuntimes)
             {
-                try
-                {
-                    var runtimeEntity = new JavaRuntimeEntity()
-                    {
-                        JavaPath = javaPath,
-                        JavaWPath = Path.Combine(Path.GetDirectoryName(javaPath), "javaw.exe"),
-                        JavaDetails = JavaUtils.GetJavaDetails(javaPath)
-                    };
-                    javaRuntimeEntitiesKP.Add(String.Format("{0}:{1}", runtimeEntity.JavaDetails.JavaVersion, runtimeEntity.JavaDetails.JavaType), runtimeEntity);
-                }
-                catch (Exception)
-                {
-                    //Ignore
-                }
+
+                javaRuntimeEntitiesKP.Add(availableJre.Key, availableJre.Value);
+
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
@@ -136,35 +102,45 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 else
                 {
-                    this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", Directory.GetParent(javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath).FullName);
+                    this.Engine.JreManager.JavaRuntime = javaRuntimeEntitiesKP[result.Result.ToString()];
                     return true;
                 }
             }
 
 
 
-            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")))
+            while (this.Engine.JreManager.JavaRuntime == null)
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                var result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
+                var result = this.Engine.UiControl.StartSingleLineInput("Request Java bin path", "Java bin folder");
                 switch (result.Type)
                 {
                     case WindowResultType.CommonFinished:
                         {
                             try
                             {
-                                var javaExe = new FileInfo(result.Result.ToString());
-                                if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
+                                var javaBinFolder = new DirectoryInfo(result.Result.ToString());
+                                var jre = new JavaRuntimeEntity
                                 {
-                                    this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", javaExe.DirectoryName);
-                                    Logger.GetLogger().Info("Received java path from user. Pass.");
+                                    JavaDetails =
+                                        JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
+                                    JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
+                                    JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
+                                };
+                                if (JavaUtils.IsJavaRuntimeValid(jre))
+                                {
+                                    this.Engine.JreManager.JavaRuntime = jre;
+                                }
+                                else
+                                {
+                                    continue;
                                 }
                             }
                             catch (Exception)
                             {
-
                                 //ignore.
+                                continue;
                             }
                             break;
                         }
