@@ -33,6 +33,13 @@
       },
       "singleSelectWindowTranslation":{
          "confirmTranslation":"Confirm"
+      },
+      "configWindowTranslation":{
+         "configWindowTitleTranslation":"Configs",
+         "confirmButtonTranslation":"Confirm",
+         "javaPathTranslation":"Java binary path:",
+         "maxiumMemoryAllocateTranslation":"Maxium allocate memory:",
+         "extraJvmArgumentTranslation":"Extra Jvm arguments:"
       }
    },
    "handlerTranslation":{
