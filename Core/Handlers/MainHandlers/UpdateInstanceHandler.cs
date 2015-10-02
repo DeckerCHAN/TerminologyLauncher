@@ -31,7 +31,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 return;
             }
 
-            var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
+            var progress = new InternalNodeProgress(String.Format("Updating instance {0}", instance.InstanceName));
             var progressWindow = new ProgressWindow(progress);
             Task.Run(() =>
             {
