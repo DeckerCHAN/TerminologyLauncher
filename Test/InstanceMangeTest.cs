@@ -46,7 +46,7 @@ namespace TerminologyLauncher.Test
         public static void Initialize()
         {
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
-            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo);
+            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo,null);
             Assert.IsTrue(new DirectoryInfo("Instances").Exists);
         }
 

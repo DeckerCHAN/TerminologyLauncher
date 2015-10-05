@@ -48,10 +48,10 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
                                         <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}"><Run Text="{Binding Path=Name,Mode=OneWay}"/><Run Text=":"/></TextBlock>
-                                        <ComboBox Style="{DynamicResource TerminologyComboBoxStyle}" ItemsSource="{Binding AvailableSelections}" SelectedIndex="{Binding SelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                        <ComboBox Style="{DynamicResource TerminologyComboBoxStyle}" ItemsSource="{Binding AvailableSelections}"  SelectedItem="{Binding Selection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <ComboBoxItem Content="{Binding}"></ComboBoxItem>
+                                                    <ComboBoxItem Content="{Binding Key}"></ComboBoxItem>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>

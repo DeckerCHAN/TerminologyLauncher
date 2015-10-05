@@ -40,7 +40,7 @@ namespace TerminologyLauncher.Core
 
         public String BuildVersion
         {
-            get { return "1324"; }
+            get { return "1325"; }
         }
 
         public Config CoreConfig { get; set; }
@@ -55,7 +55,7 @@ namespace TerminologyLauncher.Core
         public Process GameProcess { get; set; }
         public Engine()
         {
-            Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion);
+            Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
             this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));

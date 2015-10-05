@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem;
+using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.UnitTest
@@ -28,7 +29,7 @@ namespace TerminologyLauncher.UnitTest
         public void Initialize()
         {
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
-            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo);
+            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo,new JreManager(""));
             Assert.IsTrue(new DirectoryInfo("Instances").Exists);
         }
 

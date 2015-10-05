@@ -1,51 +1,53 @@
 ﻿{
    "guiTranslation":{
       "mainWindowTranslation":{
-         "mainWindowTitleTranslation":"Terminology Launcher",
-         "addInstanceTranslation":"New instance",
-         "removeInstanceTranslation":"Remove select",
-         "updateInstanceTranslation":"Update me!",
-         "launchInstanceTranslation":"Launch me!",
-         "officialLoginTranslation":"Official Mode",
-         "offlineLoginTranslation":"Offline Mode",
-         "instanceNameFieldTranslation":"Name:",
-         "instanceVersionFieldTranslation":"Version:",
-         "instanceDescribeFieldTranslation":"Describe:",
-         "instanceAuthorFieldTranslation":"Author:"
+         "mainWindowTitleTranslation":"MainWindowTitleTranslation",
+         "addInstanceTranslation":"AddInstanceTranslation",
+         "removeInstanceTranslation":"RemoveInstanceTranslation",
+         "updateInstanceTranslation":"UpdateInstanceTranslation",
+         "launchInstanceTranslation":"LaunchInstanceTranslation",
+         "officialLoginTranslation":"OfficialLoginTranslation",
+         "offlineLoginTranslation":"OfflineLoginTranslation",
+         "instanceNameFieldTranslation":"InstanceNameFieldTranslation",
+         "instanceVersionFieldTranslation":"InstanceVersionFieldTranslation",
+         "instanceDescribeFieldTranslation":"InstanceDescribeFieldTranslation",
+         "instanceAuthorFieldTranslation":"InstanceAuthorFieldTranslation"
       },
       "loginWindowTranslation":{
-         "loginWindowTitleTranslation":"Terminology Login",
-         "mojongAccountTranslation":"Mojong Account:",
-         "offlineAccountTranslation":"Offline Account:",
-         "passwordTranslation":"Password:",
-         "loginModeTranslation":"Login Mode:",
-         "officialModeTranslation":"Official Login",
-         "offlineModeTranslation":"Offline Login",
-         "rememberAccountTranslation":"Remember account",
-         "loginTranslation":"Login",
-         "cancelTranslation":"Cancel",
-         "loginFaultTranslation":"Can not login!",
-         "loginFaultInsufficientArgumentsTranslation":"Insufficient Arguments",
-         "loginFaultWrongPasswordTranslation":"Wrong password!",
-         "loginFaultUserNotExistTranslation":"User not exists!",
-         "loginFaultNetworkTimedOutTranslation":"Network timed out",
-         "loginFaultUnknownErrorTranslation":"Unknown error"
+         "loginWindowTitleTranslation":"LoginWindowTitleTranslation",
+         "mojongAccountTranslation":"MojongAccountTranslation",
+         "offlineAccountTranslation":"OfflineAccountTranslation",
+         "passwordTranslation":"PasswordTranslation",
+         "loginModeTranslation":"LoginModeTranslation",
+         "officialModeTranslation":"OfficialModeTranslation",
+         "offlineModeTranslation":"OfflineModeTranslation",
+         "rememberAccountTranslation":"RememberAccountTranslation",
+         "loginTranslation":"LoginTranslation",
+         "cancelTranslation":"CancelTranslation",
+         "loginFaultTranslation":"LoginFaultTranslation",
+         "loginFaultInsufficientArgumentsTranslation":"LoginFaultInsufficientArgumentsTranslation",
+         "loginFaultWrongPasswordTranslation":"LoginFaultWrongPasswordTranslation",
+         "loginFaultUserNotExistTranslation":"LoginFaultUserNotExistTranslation",
+         "loginFaultNetworkTimedOutTranslation":"LoginFaultNetworkTimedOutTranslation",
+         "loginFaultUnknownErrorTranslation":"LoginFaultUnknownErrorTranslation"
       },
       "singleSelectWindowTranslation":{
-         "confirmTranslation":"Confirm"
+         "confirmTranslation":"ConfirmTranslation"
       },
       "configWindowTranslation":{
-         "configWindowTitleTranslation":"Configs",
-         "confirmButtonTranslation":"Confirm",
-         "javaPathTranslation":"Java binary path:",
-         "maxiumMemoryAllocateTranslation":"Maxium allocate memory:",
-         "extraJvmArgumentTranslation":"Extra Jvm arguments:"
+         "configWindowTitleTranslation":"ConfigWindowTitleTranslation",
+         "confirmButtonTranslation":"ConfirmButtonTranslation",
+         "javaPathTranslation":"JavaPathTranslation",
+         "maxiumMemoryAllocateTranslation":"MaxiumMemoryAllocateTranslation",
+         "extraJvmArgumentTranslation":"ExtraJvmArgumentTranslation"
       }
    },
    "handlerTranslation":{
       "javaSelectTranslation":{
-         "javaSelectWindowTitleTranslation":"Select a JRE",
-         "javaSelectFieldTranslation":"Java Runtime:"
+         "javaSelectWindowTitleTranslation":"JavaSelectWindowTitleTranslation",
+         "javaSelectFieldTranslation":"JavaSelectFieldTranslation",
+         "javaInputWindowTitleTranslation":"JavaInputWindowTitleTranslation",
+         "javaInputFieldTranslation":"JavaInputFieldTranslation"
       }
    }
 }

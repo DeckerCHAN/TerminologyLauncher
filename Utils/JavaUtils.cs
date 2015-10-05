@@ -49,6 +49,11 @@ namespace TerminologyLauncher.Utils
             return jDetail;
         }
 
+        public static JavaRuntimeEntity GetJavaRuntimeFromJavaExe(String javaExePath)
+        {
+            return GetJavaRuntimeFromBinFolder(Path.GetDirectoryName(javaExePath));
+        }
+
         public static JavaRuntimeEntity GetJavaRuntimeFromBinFolder(String javaBinFolderPath)
         {
             var javaBinFolder = new DirectoryInfo(javaBinFolderPath);
@@ -71,6 +76,38 @@ namespace TerminologyLauncher.Utils
                 JavaPath = javaExeFile.FullName,
                 JavaWPath = javawExeFile.FullName
             };
+        }
+
+        public static Boolean IsJavaRuntimeValid(JavaRuntimeEntity jre)
+        {
+            try
+            {
+                if (jre == null)
+                {
+                    return false;
+                }
+                if (!File.Exists(jre.JavaPath) || !File.Exists(jre.JavaPath))
+                {
+                    return false;
+                }
+
+                var realDetail = GetJavaDetails(jre.JavaPath);
+
+                if (realDetail.JavaType != jre.JavaDetails.JavaType ||
+                    realDetail.JavaVersion != jre.JavaDetails.JavaVersion)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+
         }
     }
 }

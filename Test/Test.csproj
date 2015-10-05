@@ -87,6 +87,10 @@
       <Project>{810902d1-4781-4882-b234-212ab101ee20}</Project>
       <Name>InstanceManagerSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JreManagerSystem\JreManagerSystem.csproj">
+      <Project>{2628ac38-1e03-4fa6-b791-2e8bd8f8e723}</Project>
+      <Name>JreManagerSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logging\Logging.csproj">
       <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
       <Name>Logging</Name>

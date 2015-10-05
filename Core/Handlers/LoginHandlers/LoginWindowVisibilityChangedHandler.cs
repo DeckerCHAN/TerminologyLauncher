@@ -32,24 +32,24 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                             var bin =
                                 Encoding.ASCII.GetBytes(
                                     EncodeUtils.Base64Encode(JsonConverter.ConvertToJson(window.GetLogin())));
-                            File.WriteAllBytes(this.Engine.CoreConfig.GetConfig("loginPerserveFilePath"), bin);
+                            File.WriteAllBytes(this.Engine.CoreConfig.GetConfigString("loginPerserveFilePath"), bin);
 
                         }
                         else
                         {
-                            if (File.Exists(this.Engine.CoreConfig.GetConfig("loginPerserveFilePath")))
+                            if (File.Exists(this.Engine.CoreConfig.GetConfigString("loginPerserveFilePath")))
                             {
-                                File.Delete(this.Engine.CoreConfig.GetConfig("loginPerserveFilePath"));
+                                File.Delete(this.Engine.CoreConfig.GetConfigString("loginPerserveFilePath"));
                             }
                         }
                         break;
                     }
                 case Visibility.Visible:
                     {
-                        if (File.Exists(this.Engine.CoreConfig.GetConfig("loginPerserveFilePath")))
+                        if (File.Exists(this.Engine.CoreConfig.GetConfigString("loginPerserveFilePath")))
                         {
 
-                            var bin = File.ReadAllBytes(this.Engine.CoreConfig.GetConfig("loginPerserveFilePath"));
+                            var bin = File.ReadAllBytes(this.Engine.CoreConfig.GetConfigString("loginPerserveFilePath"));
                             var login = JsonConverter.Parse<LoginEntity>(EncodeUtils.Base64Decode(Encoding.ASCII.GetString(bin)));
                             window.SetLogin(login);
                         }

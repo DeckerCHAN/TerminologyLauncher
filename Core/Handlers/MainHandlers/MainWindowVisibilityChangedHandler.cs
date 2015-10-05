@@ -113,7 +113,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                var result = this.Engine.UiControl.StartSingleLineInput("Request Java bin path", "Java bin folder");
+                var result = this.Engine.UiControl.StartSingleLineInput(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation);
                 switch (result.Type)
                 {
                     case WindowResultType.CommonFinished:

@@ -8,10 +8,10 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
 {
     public class ItemSelectConfigObject : ConfigObject
     {
-        private int RealSelectIndex;
-        private LinkedList<string> AvailableAvailableSelectionsValue;
+        private KeyValuePair<String, Object> RealSelection;
+        private Dictionary<String, Object> AvailableAvailableSelectionsValue;
 
-        public LinkedList<String> AvailableSelections
+        public Dictionary<String, Object> AvailableSelections
         {
             get { return this.AvailableAvailableSelectionsValue; }
             set
@@ -21,19 +21,19 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        public ItemSelectConfigObject(String name, String key, LinkedList<String> availableSelections, Int32 defaultSelection)
+        public ItemSelectConfigObject(String name, String key, Dictionary<String, Object> availableSelections, String defaultSelectKey)
             : base(name, key)
         {
             this.AvailableSelections = availableSelections;
-            this.SelectIndex = defaultSelection;
+            this.Selection = this.AvailableSelections.First(x => x.Key.Equals(defaultSelectKey));
         }
 
-        public Int32 SelectIndex
+        public KeyValuePair<String,Object> Selection
         {
-            get { return this.RealSelectIndex; }
+            get { return this.RealSelection; }
             set
             {
-                this.RealSelectIndex = value;
+                this.RealSelection = value;
                 this.OnPropertyChanged();
             }
         }

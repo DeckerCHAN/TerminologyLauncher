@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using TerminologyLauncher.Entities.InstanceManagement;
@@ -17,66 +18,16 @@ namespace TerminologyLauncher.Test
         [STAThread]
         static void Main(string[] args)
         {
-            var translation = new TranslationRoot()
-            {
-                GuiTranslation = new GUITranslationRoot()
-                {
-                    LoginWindowTranslation = new LoginWindowTranslation
-                    {
-                        LoginWindowTitleTranslation = "Terminology Login",
-                        CancelTranslation = "Cancel",
-                        LoginTranslation = "Login",
-                        MojongAccountTranslation = "Mojong Account:",
-                        OfflineAccountTranslation = "Offline Account:",
-                        LoginModeTranslation = "Login Mode:",
-                        OfficialModeTranslation = "Official Login",
-                        OfflineModeTranslation = "Offline Login",
-                        PasswordTranslation = "Password:",
-                        RememberAccountTranslation = "Remember account",
-                        LoginFaultTranslation = "Can not login!",
-                        LoginFaultInsufficientArgumentsTranslation = "Insufficient Arguments",
-                        LoginFaultWrongPasswordTranslation = "Wrong password!",
-                        LoginFaultUserNotExistTranslation = "User not exists!",
-                        LoginFaultNetworkTimedOutTranslation = "Network timed out",
-                        LoginFaultUnknownErrorTranslation = "Unknown error"
-                    },
-                    SingleSelectWindowTranslation = new SingleSelectWindowTranslation()
-                    {
-                        ConfirmTranslation = "Confirm"
-                    },
-                    MainWindowTranslation = new MainWindowTranslation()
-                    {
-                        AddInstanceTranslation = "New instance",
-                        RemoveInstanceTranslation = "Remove select",
-                        LaunchInstanceTranslation = "Launch me!",
-                        UpdateInstanceTranslation = "Update me!",
-                        InstanceAuthorFieldTranslation = "Author:",
-                        InstanceDescribeFieldTranslation = "Describe:",
-                        InstanceNameFieldTranslation = "Name:",
-                        InstanceVersionFieldTranslation = "Version:",
-                        MainWindowTitleTranslation = "Terminology Launcher",
-                        OfficialLoginTranslation = "Official Mode",
-                        OfflineLoginTranslation = "Offline Mode"
-                    },
-                    ConfigWindowTranslation = new ConfigWindowTranslation()
-                    {
-                        ConfigWindowTitleTranslation = "Configs",
-                        ConfirmButtonTranslation = "Confirm",
-                        JavaPathTranslation = "Java binary path:",
-                        MaxiumMemoryAllocateTranslation = "Maxium allocate memory:",
-                        ExtraJvmArgumentTranslation = "Extra Jvm arguments:"
-                    }
-                },
-                HandlerTranslation = new HandlerTranslationRoot()
-                {
-                    JavaSelectTranslation = new JavaSelectTranslation()
-                    {
-                        JavaSelectFieldTranslation = "Java Runtime:",
-                        JavaSelectWindowTitleTranslation = "Select a JRE"
-                    }
-                }
-            };
-            File.WriteAllText("G:\\CSharp\\TerminologyLauncher\\I18n\\Translations\\en_us", JsonConverter.ConvertToJson(translation),Encoding.UTF8);
+            CultureInfo ci = CultureInfo.InstalledUICulture;
+
+            Console.WriteLine("Default Language Info:");
+            Console.WriteLine("* Name: {0}", ci.Name);
+            Console.WriteLine("* Display Name: {0}", ci.DisplayName);
+            Console.WriteLine("* English Name: {0}", ci.EnglishName);
+            Console.WriteLine("* 2-letter ISO Name: {0}", ci.TwoLetterISOLanguageName);
+            Console.WriteLine("* 3-letter ISO Name: {0}", ci.ThreeLetterISOLanguageName);
+            Console.WriteLine("* 3-letter Win32 API Name: {0}", ci.ThreeLetterWindowsLanguageName);
+
             Console.ReadKey();
         }
     }

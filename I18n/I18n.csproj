@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TranslationFileGenerator.cs" />
     <Compile Include="TranslationObjects\GUITranslations\ConfigWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\GUITranslationRoot.cs" />
     <Compile Include="TranslationObjects\GUITranslations\LoginWindowTranslation.cs" />

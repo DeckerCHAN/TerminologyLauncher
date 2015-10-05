@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -58,6 +59,11 @@ namespace TerminologyLauncher.Utils
                 return -1;
             }
 
+        }
+
+        public static String GetCurrentLanguageName()
+        {
+            return CultureInfo.InstalledUICulture.Name;
         }
     }
 }

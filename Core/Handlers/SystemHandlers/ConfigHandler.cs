@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Core.Handlers.SystemHandlers
@@ -25,7 +23,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 var textInputConfigs = new List<TextInputConfigObject>
                 {
                     new TextInputConfigObject("Java bin path", "javaBinPath",
-                        this.Engine.InstanceManager.Config.GetConfigString("javaBinPath")),
+                        this.Engine.JreManager.JavaRuntime.JavaPath),
                     new TextInputConfigObject("Extra jvm arguments", "extraJvmArguments",
                         this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"))
                 };
@@ -42,15 +40,26 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 }
                 var mixedConfigs = reslut.Result as List<ConfigObject>;
                 if (mixedConfigs == null) return;
-                this.Engine.InstanceManager.Config.SetConfigString("javaBinPath", (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
+                try
+                {
+                    this.Engine.JreManager.JavaRuntime =
+                  JavaUtils.GetJavaRuntimeFromJavaExe(
+                      (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
+
+                }
+                catch (Exception)
+                {
+
+                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Jre not valid", "The java path that you inputed is not valid! Ignore to set.");
+                }
                 this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", (mixedConfigs.First(x => x.Key.Equals("maxMemorySizeMega")) as RangeRestrictedSelectConfigObject).Value.ToString());
                 this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", (mixedConfigs.First(x => x.Key.Equals("extraJvmArguments")) as TextInputConfigObject).Value);
-                  return;
+                return;
             }
             catch (Exception ex)
             {
 
-                Logging.Logger.GetLogger()
+                Logger.GetLogger()
                         .Error(String.Format("Can not update because {0}", ex));
                 this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch", String.Format(
                     "Caused by an internal error, we can not update right now. Detail: {0}", ex.Message));
