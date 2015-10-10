@@ -35,7 +35,8 @@ namespace TerminologyLauncher.I18n
                 if (this.TranslationObjectValue != null) return this.TranslationObjectValue;
                 var translationStream =
                     ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
-                                                        this.Config.GetConfigString("usingTranslation"));
+                                                        this.UsingTranslation) ?? ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
+                                                        "en-US");
                 var translationContent = new StreamReader(translationStream,Encoding.UTF8).ReadToEnd();
                 this.TranslationObjectValue = JsonConverter.Parse<TranslationRoot>(translationContent);
 
@@ -44,11 +45,11 @@ namespace TerminologyLauncher.I18n
             }
         }
 
-        public Config Config { get; private set; }
+        private String UsingTranslation;
 
         private TranslationProvider()
         {
-            this.Config = new Config(new FileInfo("Configs/I18N.json"));
+            this.UsingTranslation = MachineUtils.GetCurrentLanguageName();
         }
     }
 }

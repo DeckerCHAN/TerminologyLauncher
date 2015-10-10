@@ -33,6 +33,13 @@
       },
       "singleSelectWindowTranslation":{
          "confirmTranslation":"确定"
+      },
+      "configWindowTranslation":{
+         "configWindowTitleTranslation":"ConfigWindowTitleTranslation",
+         "confirmButtonTranslation":"ConfirmButtonTranslation",
+         "javaPathTranslation":"JavaPathTranslation",
+         "maxiumMemoryAllocateTranslation":"MaxiumMemoryAllocateTranslation",
+         "extraJvmArgumentTranslation":"ExtraJvmArgumentTranslation"
       }
    },
    "handlerTranslation":{

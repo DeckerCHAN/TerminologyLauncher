@@ -56,7 +56,7 @@
     <Compile Include="TranslationObjects\TranslationRoot.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Translations\en_us" />
+    <EmbeddedResource Include="Translations\en-US" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Configs\I18N.json">
@@ -74,7 +74,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Translations\zh_cn" />
+    <EmbeddedResource Include="Translations\zh-CN" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
