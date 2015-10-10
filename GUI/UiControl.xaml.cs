@@ -134,7 +134,7 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public WindowResult StartMultiConfigWindo(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
+        public WindowResult StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
             WindowResult result = null;
             this.Dispatcher.Invoke(() =>

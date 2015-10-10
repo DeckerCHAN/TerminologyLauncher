@@ -20,41 +20,36 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         {
             try
             {
-                var textInputConfigs = new List<TextInputConfigObject>
-                {
-                    new TextInputConfigObject("Java bin path", "javaBinPath",
-                        this.Engine.JreManager.JavaRuntime.JavaPath),
-                    new TextInputConfigObject("Extra jvm arguments", "extraJvmArguments",
-                        this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"))
-                };
+                var javaExeConfig = new TextInputConfigObject("Java bin path", "javaBinPath",
+                    this.Engine.JreManager.JavaRuntime.JavaPath);
+                var jvmExtraArguments = new TextInputConfigObject("Extra jvm arguments", "extraJvmArguments",
+                    this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"));
+                var memoryconfigs = new RangeRestrictedSelectConfigObject("Max instance memory allocate size(MB)",
+                    "maxMemorySizeMega", MachineUtils.GetTotalMemoryInMiB(), 512L,
+                    Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")));
+        
 
-                var rangeConfigs = new List<RangeRestrictedSelectConfigObject>
-                {
-                    new RangeRestrictedSelectConfigObject("Max instance memory allocate size(MB)","maxMemorySizeMega",MachineUtils.GetTotalMemoryInMiB(),512L,Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")))
-                };
-
-                var reslut = this.Engine.UiControl.StartMultiConfigWindo(textInputConfigs, null, rangeConfigs);
+                var reslut = this.Engine.UiControl.StartConfigWindow(new List<TextInputConfigObject>{javaExeConfig,jvmExtraArguments}, null, new List<RangeRestrictedSelectConfigObject>{memoryconfigs});
                 if (reslut.Type == WindowResultType.Canceled)
                 {
                     return;
                 }
-                var mixedConfigs = reslut.Result as List<ConfigObject>;
-                if (mixedConfigs == null) return;
                 try
                 {
                     this.Engine.JreManager.JavaRuntime =
-                  JavaUtils.GetJavaRuntimeFromJavaExe(
-                      (mixedConfigs.First(x => x.Key.Equals("javaBinPath")) as TextInputConfigObject).Value);
-
+                  JavaUtils.GetJavaRuntimeFromJavaExe(javaExeConfig.Value);
+                    Logger.GetLogger().InfoFormat("Refreshed jre to {0}", javaExeConfig.Value);
                 }
                 catch (Exception)
                 {
-
                     this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Jre not valid", "The java path that you inputed is not valid! Ignore to set.");
+                    Logger.GetLogger().Error("Trying to set invalid java exe path. Ignore.");
                 }
-                this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", (mixedConfigs.First(x => x.Key.Equals("maxMemorySizeMega")) as RangeRestrictedSelectConfigObject).Value.ToString());
-                this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", (mixedConfigs.First(x => x.Key.Equals("extraJvmArguments")) as TextInputConfigObject).Value);
-                return;
+                this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", memoryconfigs.Value.ToString());
+                Logger.GetLogger().InfoFormat("Refreshed memory size to {0}", memoryconfigs.Value);
+         
+                this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", jvmExtraArguments.Value);
+                Logger.GetLogger().InfoFormat("Refreshed extra jvm args to {0}", jvmExtraArguments.Value);
             }
             catch (Exception ex)
             {

@@ -32,19 +32,19 @@
             <Border Canvas.Left="32" Canvas.Top="30" BorderBrush="{StaticResource CornerBorder}" BorderThickness="2" >
                 <ScrollViewer Height="272" Width="623" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Style="{DynamicResource TerminologyScrollViewerStyle}">
                     <StackPanel Orientation="Vertical">
-                        <ListBox Style="{DynamicResource TerminologyListBox}" ItemsSource="{Binding TextInputConfigObjects}">
-                            <ListBox.ItemTemplate>
+                        <ItemsControl ItemsSource="{Binding TextInputConfigObjects}">
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
                                         <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}"><Run Text="{Binding Path=Name,Mode=OneWay}"/><Run Text=":"/></TextBlock>
                                         <TextBox  MinWidth="90" Margin="5,0,0,0" FontSize="20" Style="{DynamicResource TerminologyTextBoxStyle}" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextWrapping="NoWrap"></TextBox>
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                        <ListBox Style="{DynamicResource TerminologyListBox}" ItemsSource="{Binding ItemSelectConfigObjects}">
-                            <ListBox.ItemTemplate>
+                        <ItemsControl  ItemsSource="{Binding ItemSelectConfigObjects}">
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
                                         <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}"><Run Text="{Binding Path=Name,Mode=OneWay}"/><Run Text=":"/></TextBlock>
@@ -57,8 +57,8 @@
                                         </ComboBox>
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
                         <ListBox Style="{DynamicResource TerminologyListBox}" ItemsSource="{Binding RangeRestrictedSelectObjects}">
                             <ListBox.ItemTemplate>

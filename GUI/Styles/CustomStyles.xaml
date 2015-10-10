@@ -625,6 +625,8 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="SelectionMode" Value="Single"></Setter>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource TransparentListBoxItem}"></Setter>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
