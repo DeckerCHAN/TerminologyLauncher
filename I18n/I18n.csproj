@@ -59,11 +59,6 @@
     <EmbeddedResource Include="Translations\en-US" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configs\I18N.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Configs\Configs.csproj">
       <Project>{b56b5d15-8a5e-4833-83f1-6fc40a4b3b7c}</Project>
       <Name>Configs</Name>
