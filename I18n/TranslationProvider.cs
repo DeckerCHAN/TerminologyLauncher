@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
@@ -32,16 +33,7 @@ namespace TerminologyLauncher.I18n
         {
             get
             {
-                if (this.TranslationObjectValue != null) return this.TranslationObjectValue;
-                var translationStream =
-                    ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
-                                                        this.UsingTranslation) ?? ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
-                                                        "en-US");
-                var translationContent = new StreamReader(translationStream,Encoding.UTF8).ReadToEnd();
-                this.TranslationObjectValue = JsonConverter.Parse<TranslationRoot>(translationContent);
-
                 return this.TranslationObjectValue;
-
             }
         }
 
@@ -50,6 +42,41 @@ namespace TerminologyLauncher.I18n
         private TranslationProvider()
         {
             this.UsingTranslation = MachineUtils.GetCurrentLanguageName();
+            var translationStream =
+                    ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
+                                                        this.UsingTranslation) ?? ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.I18n.Translations." +
+                                                        "en-US");
+            var translationContent = new StreamReader(translationStream, Encoding.UTF8).ReadToEnd();
+            this.TranslationObjectValue = JsonConverter.Parse<TranslationRoot>(translationContent);
+            this.FillFieldValue(this.TranslationObjectValue);
+        }
+
+        private void FillFieldValue(Object obj)
+        {
+
+            var proprieties =
+                obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach (var propertyInfo in proprieties)
+            {
+                if (propertyInfo.PropertyType == String.Empty.GetType())
+                {
+                    if (propertyInfo.GetValue(obj) == null)
+                    {
+                        propertyInfo.SetValue(obj, propertyInfo.Name);
+
+                    }
+                }
+                else
+                {
+                    var valueObj = propertyInfo.GetValue(obj);
+                    if (valueObj == null)
+                    {
+                        valueObj = Activator.CreateInstance(propertyInfo.PropertyType);
+                    }
+                    this.FillFieldValue(valueObj);
+                    propertyInfo.SetValue(obj, valueObj);
+                }
+            }
         }
     }
 }
