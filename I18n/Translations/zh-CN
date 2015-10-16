@@ -35,11 +35,11 @@
          "confirmTranslation":"确定"
       },
       "configWindowTranslation":{
-         "configWindowTitleTranslation":"ConfigWindowTitleTranslation",
-         "confirmButtonTranslation":"ConfirmButtonTranslation",
-         "javaPathTranslation":"JavaPathTranslation",
-         "maxiumMemoryAllocateTranslation":"MaxiumMemoryAllocateTranslation",
-         "extraJvmArgumentTranslation":"ExtraJvmArgumentTranslation"
+         "configWindowTitleTranslation":"配置",
+         "confirmButtonTranslation":"确定",
+         "javaPathTranslation":"Java.exe路径",
+         "maxiumMemoryAllocateTranslation":"最大分配内存",
+         "extraJvmArgumentTranslation":"额外的JVM启动参数"
       }
    },
    "handlerTranslation":{
