@@ -107,7 +107,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
             this.LoadInstancesFromBankFile();
             //Download instance content
-            var rowInstanceContent = DownloadUtils.GetFileContent(instanceUrl);
+            var rowInstanceContent = DownloadUtils.GetWebContent(instanceUrl);
 
             var instance = JsonConverter.Parse<InstanceEntity>(rowInstanceContent);
 
@@ -151,6 +151,46 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
+        public String CheckAllInstanceCouldUpdate(InternalNodeProgress progress)
+        {
+            var availableUpdateInstanceNameList = new List<String>();
+            foreach (var instanceInfoEntity in this.InstanceBank.InstancesInfoList)
+            {
+                Logger.GetLogger().Info(String.Format("Check update {0}", instanceInfoEntity.Name));
+                var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceInfoEntity.Name)));
+
+                var oldInstanceEntity =
+                    JsonConverter.Parse<InstanceEntity>(
+                        File.ReadAllText(instanceInfo.FilePath));
+                this.CriticalInstanceFieldCheck(oldInstanceEntity);
+
+                var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 100D / this.InstanceBank.InstancesInfoList.Count), instanceInfo.UpdateUrl);
+                var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
+
+                if (!newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
+                {
+                    availableUpdateInstanceNameList.Add(instanceInfoEntity.Name);
+                }
+            }
+            if (availableUpdateInstanceNameList.Count == 0)
+            {
+                Logger.GetLogger().Info("All instance at latest version or no available instance to update.");
+                return String.Empty;
+            }
+            var result = new StringBuilder();
+            for (int index = 0; index < availableUpdateInstanceNameList.Count; index++)
+            {
+                var name = availableUpdateInstanceNameList[index];
+                result.Append(name);
+                if (index != availableUpdateInstanceNameList.Count - 1)
+                {
+                    result.Append(", ");
+                }
+            }
+            return String.Format("Detected {0} are available to update", result);
+        }
+
+
         public String UpdateInstance(InternalNodeProgress progress, String instanceName)
         {
             Logger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
@@ -161,13 +201,14 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     File.ReadAllText(instanceInfo.FilePath));
             this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
-            var newInstanceContent = DownloadUtils.GetFileContent(instanceInfo.UpdateUrl);
+            var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 50D), instanceInfo.UpdateUrl);
             var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
-
+            progress.Percent = 60D;
             //Check instance is available to update
             if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
-                throw new NoAvailableUpdateException(String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
+                progress.Percent = 100D;
+                return (String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
             }
 
             switch (instanceInfo.InstanceState)
@@ -176,6 +217,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     {
                         this.RemoveInstance(instanceInfo.Name);
                         this.AddInstance(instanceInfo.UpdateUrl);
+                        progress.Percent = 100D;
                         return String.Format("Successful update instance file {0} from version {1} to {2}!",
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -230,7 +272,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                             }
                         }
                         #endregion
-                        progress.Percent = 30D;
+                        progress.Percent = 80D;
                         #region Official files
 
                         var newOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
@@ -254,7 +296,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         }
                         #endregion
 
-                        progress.Percent = 60D;
+                        progress.Percent = 90D;
                         #region Custom files
 
                         var newCustomFiles = newInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
@@ -277,13 +319,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
                             }
                         }
                         #endregion
-                        progress.Percent = 90D;
+                        progress.Percent = 100D;
                         #endregion
 
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(newInstanceEntity));
-                        progress.Percent = 100D;
                         return String.Format("Successful update all instance {0} from version {1} to {2}!",
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -292,19 +333,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 default:
                     {
                         throw new WrongStateException("Wrong instance state! Just instance which in OK or perinitialized state could update.");
-
                         break;
                     }
             }
-
-
-            if (instanceInfo.InstanceState != InstanceState.Ok)
-            {
-                throw new WrongStateException("Wrong instance state! Just instance which in OK state could update.");
-            }
-
-
-
 
         }
 
@@ -335,7 +366,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
                     foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                     {
-                        this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(singlePackageDownloadNodeProgress, String.Format("Receiving entire package {0}", entirePackageFile.Name)),
+                        this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(String.Format("Receiving entire package {0}", entirePackageFile.Name), singlePackageDownloadNodeProgress),
                         instance.InstanceName, entirePackageFile);
                     }
                 }
@@ -348,8 +379,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                     {
                         this.ReceiveOfficialFile(
-                            progress.CreateNewLeafSubProgress(singleOfficialDownloadNodeProgress,
-                                String.Format("Downloading official file: {0}", officialFileEntity.Name)),
+                            progress.CreateNewLeafSubProgress(String.Format("Downloading official file: {0}", officialFileEntity.Name), singleOfficialDownloadNodeProgress),
                             instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                     }
                 }
@@ -363,8 +393,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                     {
                         this.ReceiveCustomFile(
-                           progress.CreateNewLeafSubProgress(singleCustomDownloadNodeProgress,
-                               String.Format("Downloading custom file: {0}", customFileEntity.Name)),
+                           progress.CreateNewLeafSubProgress(String.Format("Downloading custom file: {0}", customFileEntity.Name), singleCustomDownloadNodeProgress),
                            instance.InstanceName, customFileEntity);
                     }
                 }

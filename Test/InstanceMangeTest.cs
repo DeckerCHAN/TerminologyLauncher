@@ -84,7 +84,7 @@ namespace TerminologyLauncher.Test
                 }
 
             });
-            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D, ""), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress("", 100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
             process.WaitForExit();
         }
     }

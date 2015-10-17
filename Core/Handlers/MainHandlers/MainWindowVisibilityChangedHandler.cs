@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
-using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
@@ -28,9 +27,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
+
             var window = sender as Window;
             Logger.GetLogger().InfoFormat("Main window is going to {0}!", window.Visibility);
-
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -43,6 +42,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         if (this.FirstStart)
                         {
                             this.FirstStart = false;
+                            this.Engine.UiControl.MainWindow.CoreVersion = String.Format("{0} (build{1})", this.Engine.CoreVersion, this.Engine.BuildVersion);
 
                             if (!this.CheckJavaPath())
                             {
@@ -52,15 +52,36 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
                             this.Engine.UiControl.MainWindow.InstanceList =
                                   new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-                            if (this.Engine.UiControl.MainWindow.InstanceList.Count == 0)
+
+                            if (this.Engine.InstanceManager.Instances.Count == 0)
                             {
                                 var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
                                 if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
                             }
+                            else
+                            {
+                                Task.Run(() =>
+                                {
+                                    var progress = new InternalNodeProgress("Check update");
+                                    var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
+                                    if (!String.IsNullOrEmpty(result))
+                                    {
+                                        this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Available update", result);
+                                    }
+                                });
 
+                            }
+                            Task.Run(() =>
+                            {
+                                var result = this.Engine.UpdateManager.CheckUpdateAvailable();
 
+                                if (result)
+                                {
+                                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "New update available", "Detected new version of Terminology Lanucher. Press button at top to update!");
 
-                            this.Engine.UiControl.MainWindow.CoreVersion = String.Format("{0} (build{1})", this.Engine.CoreVersion, this.Engine.BuildVersion);
+                                }
+                            });
+
                         }
                         break;
                     }
@@ -70,7 +91,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         break;
                     }
             }
-            return;
+
+
         }
         public override void HandleEvent(Object sender, EventArgs e)
         {

@@ -8,6 +8,7 @@ using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.FileRepositorySystem
 {
@@ -27,7 +28,8 @@ namespace TerminologyLauncher.FileRepositorySystem
             Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
             try
             {
-                DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfigString("repoFilePath"));
+                var progress = new LeafNodeProgress("Fetch repo");
+                DownloadUtils.DownloadFile(progress, this.RepoUrl, this.Config.GetConfigString("repoFilePath"));
                 var repo =
                     JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfigString("repoFilePath")));
                 foreach (var officialProvideFile in repo.Files)

@@ -26,13 +26,23 @@ namespace TerminologyLauncher.Updater
 
         public Boolean CheckUpdateAvailable()
         {
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfigString("updateCheckingUrl")));
+            Logging.Logger.GetLogger().Info("Start to check lanucher version.");
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
             if (update.LatestVersion == null)
             {
                 throw new PlatformNotSupportedException("Can not fetch the latest version! May caused by wrong update url or un-supported version!");
             }
-            return !String.IsNullOrEmpty(update.LatestVersion.VersionNumber) &&
+            var result = !String.IsNullOrEmpty(update.LatestVersion.VersionNumber) &&
                    update.LatestVersion.VersionNumber != this.Version;
+            if (result)
+            {
+                Logging.Logger.GetLogger().InfoFormat("New version {0} available!", update.LatestVersion);
+            }
+            else
+            {
+                Logging.Logger.GetLogger().Info("No available version.");
+            }
+            return result;
         }
 
         public String FetchLatestVersionAndStartUpdate(InternalNodeProgress progress)
@@ -44,7 +54,7 @@ namespace TerminologyLauncher.Updater
                 return "No newer update available.";
             }
 
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfigString("updateCheckingUrl")));
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
 
 
 
@@ -62,7 +72,7 @@ namespace TerminologyLauncher.Updater
 
             progress.Percent = 10D;
             DownloadUtils.DownloadZippedFile(
-                progress.CreateNewInternalSubProgress(80D, "Fetching update pack"), update.LatestVersion.DownloadLink,
+                progress.CreateNewInternalSubProgress("Fetching update pack", 80D), update.LatestVersion.DownloadLink,
                 updateBinaryFolder,
                 update.LatestVersion.Md5);
             if (!File.Exists(updaterExecutorFile))

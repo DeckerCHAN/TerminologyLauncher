@@ -62,7 +62,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 Console.WriteLine(progress.Percent);
             };
-            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D,""), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
+            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress("", 100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
         }
     }
 }

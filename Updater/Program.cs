@@ -44,7 +44,6 @@ namespace TerminologyLauncher.Updater
             newProcess.Start();
 
             Console.WriteLine("Done...Press any key to continue...");
-            Console.ReadKey();
 
         }
 
