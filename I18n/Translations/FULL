@@ -52,6 +52,19 @@
     "inputInstanceUrlTranslation": {
       "inputWindowTitleTranslation": "InputWindowTitleTranslation",
       "inputFieldTranslation": "InputFieldTranslation"
+    },
+    "instanceUpdateTranslation": {
+      "instanceUpdateWindowTitleTranslation": "InstanceUpdateWindowTitleTranslation",
+      "instanceAlreadyAtLatestVersionTranslation": "InstanceAlreadyAtLatestVersionTranslation",
+      "instanceUpdateToVersionTranslation": "InstanceUpdateToVersionTranslation",
+      "allInstanceAlreadyAtLatestVersionTranslation": "AllInstanceAlreadyAtLatestVersionTranslation",
+      "someInstanceAvailableToUpdateTranslation": "SomeInstanceAvailableToUpdateTranslation"
+    },
+    "lanucherUpdateTranslation": {
+      "lanucherUpdateWindowTitleTranslation": "LanucherUpdateWindowTitleTranslation",
+      "newUpdateAvailable": "NewUpdateAvailable",
+      "noAvailableUpdate": "NoAvailableUpdate",
+      "fetchedNewUpdateToVersion": "FetchedNewUpdateToVersion"
     }
   }
 }

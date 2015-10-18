@@ -1,57 +1,70 @@
 ﻿{
-   "guiTranslation":{
-      "mainWindowTranslation":{
-         "mainWindowTitleTranslation":"Terminology Launcher",
-         "addInstanceTranslation":"New instance",
-         "removeInstanceTranslation":"Remove select",
-         "updateInstanceTranslation":"Update me!",
-         "launchInstanceTranslation":"Launch me!",
-         "officialLoginTranslation":"Official Mode",
-         "offlineLoginTranslation":"Offline Mode",
-         "instanceNameFieldTranslation":"Name:",
-         "instanceVersionFieldTranslation":"Version:",
-         "instanceDescribeFieldTranslation":"Describe:",
-         "instanceAuthorFieldTranslation":"Author:"
-         },
-      "loginWindowTranslation":{
-        "loginWindowTitleTranslation":"Terminology Login",
-         "mojongAccountTranslation":"Mojong Account:",
-         "offlineAccountTranslation":"Offline Account:",
-         "passwordTranslation":"Password:",
-         "loginModeTranslation":"Login Mode:",
-         "officialModeTranslation":"Official Login",
-         "offlineModeTranslation":"Offline Login",
-         "rememberAccountTranslation":"Remember account",
-         "loginTranslation":"Login",
-         "cancelTranslation":"Cancel",
-         "loginFaultTranslation":"Can not login!",
-         "loginFaultInsufficientArgumentsTranslation":"Insufficient Arguments",
-         "loginFaultWrongPasswordTranslation":"Wrong password!",
-         "loginFaultUserNotExistTranslation":"User not exists!",
-         "loginFaultNetworkTimedOutTranslation":"Network timed out",
-         "loginFaultUnknownErrorTranslation":"Unknown error"
+    "guiTranslation": {
+        "mainWindowTranslation": {
+            "mainWindowTitleTranslation": "Terminology Launcher",
+            "addInstanceTranslation": "New instance",
+            "removeInstanceTranslation": "Remove select",
+            "updateInstanceTranslation": "Update me!",
+            "launchInstanceTranslation": "Launch me!",
+            "officialLoginTranslation": "Official Mode",
+            "offlineLoginTranslation": "Offline Mode",
+            "instanceNameFieldTranslation": "Name:",
+            "instanceVersionFieldTranslation": "Version:",
+            "instanceDescribeFieldTranslation": "Describe:",
+            "instanceAuthorFieldTranslation": "Author:"
+        },
+        "loginWindowTranslation": {
+            "loginWindowTitleTranslation": "Terminology Login",
+            "mojongAccountTranslation": "Mojong Account:",
+            "offlineAccountTranslation": "Offline Account:",
+            "passwordTranslation": "Password:",
+            "loginModeTranslation": "Login Mode:",
+            "officialModeTranslation": "Official Login",
+            "offlineModeTranslation": "Offline Login",
+            "rememberAccountTranslation": "Remember account",
+            "loginTranslation": "Login",
+            "cancelTranslation": "Cancel",
+            "loginFaultTranslation": "Can not login!",
+            "loginFaultInsufficientArgumentsTranslation": "Insufficient Arguments",
+            "loginFaultWrongPasswordTranslation": "Wrong password!",
+            "loginFaultUserNotExistTranslation": "User not exists!",
+            "loginFaultNetworkTimedOutTranslation": "Network timed out",
+            "loginFaultUnknownErrorTranslation": "Unknown error"
+        },
+        "singleSelectWindowTranslation": {
+            "confirmTranslation": "Confirm"
+        },
+        "configWindowTranslation": {
+            "configWindowTitleTranslation": "Configs",
+            "confirmButtonTranslation": "Confirm",
+            "javaPathTranslation": "Java Path:",
+            "maxiumMemoryAllocateTranslation": "Maxium Memory Allocate:",
+            "extraJvmArgumentTranslation": "Extra JvmArguments:"
+        }
     },
-      "singleSelectWindowTranslation":{
-         "confirmTranslation":"Confirm"
-      },
-      "configWindowTranslation":{
-         "configWindowTitleTranslation":"Configs",
-         "confirmButtonTranslation":"Confirm",
-         "javaPathTranslation":"Java Path:",
-         "maxiumMemoryAllocateTranslation":"Maxium Memory Allocate:",
-         "extraJvmArgumentTranslation":"Extra JvmArguments:"
-      }
-   },
-   "handlerTranslation":{
-      "javaSelectTranslation":{
-         "javaSelectWindowTitleTranslation":"Select a Java exe",
-         "javaSelectFieldTranslation":"Available Java exe:",
-         "javaInputWindowTitleTranslation":"Input a Java exe",
-         "javaInputFieldTranslation":"Java exe path:"
-      },
-      "inputInstanceUrlTranslation":{
-         "inputWindowTitleTranslation":"Add new instance",
-         "inputFieldTranslation":"Instance url:"
-      }
-   }
+    "handlerTranslation": {
+        "javaSelectTranslation": {
+            "javaSelectWindowTitleTranslation": "Select a Java exe",
+            "javaSelectFieldTranslation": "Available Java exe:",
+            "javaInputWindowTitleTranslation": "Input a Java exe",
+            "javaInputFieldTranslation": "Java exe path:"
+        },
+        "inputInstanceUrlTranslation": {
+            "inputWindowTitleTranslation": "Add new instance",
+            "inputFieldTranslation": "Instance url:"
+        },
+        "instanceUpdateTranslation": {
+            "instanceUpdateWindowTitleTranslation": "Check update",
+            "instanceAlreadyAtLatestVersionTranslation": "Instance now in latest version:{0}! Ignore update.",
+            "instanceUpdateToVersionTranslation": "Successful update instance file {0} from version {1} to {2}!",
+            "allInstanceAlreadyAtLatestVersionTranslation": "All instances already at the latest version.",
+            "someInstanceAvailableToUpdateTranslation": "Detected {0} are available to update!"
+        },
+        "lanucherUpdateTranslation": {
+            "lanucherUpdateWindowTitleTranslation": "Lanucher update",
+            "newUpdateAvailable": "New update available",
+            "noAvailableUpdate": "No available update",
+            "fetchedNewUpdateToVersion": "Updating from {0} to {1}! Close launcher to continue."
+        }
+    }
 }

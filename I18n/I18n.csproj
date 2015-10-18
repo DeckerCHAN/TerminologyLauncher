@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TranslationObjects\HandlerTranslations\LanucherUpdateTranslation.cs" />
+    <Compile Include="TranslationObjects\HandlerTranslations\InstanceUpdateTranslation.cs" />
     <Compile Include="TranslationToolkits.cs" />
     <Compile Include="TranslationObjects\GUITranslations\ConfigWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\GUITranslationRoot.cs" />
