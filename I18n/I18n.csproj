@@ -43,13 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TranslationFileGenerator.cs" />
+    <Compile Include="TranslationToolkits.cs" />
     <Compile Include="TranslationObjects\GUITranslations\ConfigWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\GUITranslationRoot.cs" />
     <Compile Include="TranslationObjects\GUITranslations\LoginWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\MainWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\SingleSelectWindowTranslation.cs" />
     <Compile Include="TranslationObjects\HandlerTranslations\HandlerTranslationRoot.cs" />
+    <Compile Include="TranslationObjects\HandlerTranslations\InputInstanceUrlTranslation.cs" />
     <Compile Include="TranslationObjects\HandlerTranslations\JavaSelectTranslation.cs" />
     <Compile Include="TranslationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,7 +72,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Translations\zh-CN" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Translations\FULL" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

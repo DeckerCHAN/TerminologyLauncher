@@ -44,8 +44,14 @@
    },
    "handlerTranslation":{
       "javaSelectTranslation":{
-         "javaSelectWindowTitleTranslation":"选择一个Java版本",
-         "javaSelectFieldTranslation":"可用Java版本:"
+         "javaSelectWindowTitleTranslation":"选择一个java版本",
+         "javaSelectFieldTranslation":"可用的Java版本:",
+         "javaInputWindowTitleTranslation":"输入一个java版本",
+         "javaInputFieldTranslation":"Java.exe的路径:"
+      },
+      "inputInstanceUrlTranslation":{
+         "inputWindowTitleTranslation":"添加一个新的客户端",
+         "inputFieldTranslation":"有效的客户端URL："
       }
    }
 }

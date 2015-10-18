@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TerminologyLauncher.I18n.TranslationObjects.HandlerTranslations
 {
-    public class HandlerTranslationRoot
+    public class InputInstanceUrlTranslation
     {
-        public JavaSelectTranslation JavaSelectTranslation { get; set; }
-        public InputInstanceUrlTranslation InputInstanceUrlTranslation { get; set; }
+        public String InputWindowTitleTranslation { get; set; }
+        public String InputFieldTranslation { get; set; }
     }
 }

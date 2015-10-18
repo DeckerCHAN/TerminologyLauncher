@@ -48,6 +48,10 @@
          "javaSelectFieldTranslation":"Available Java exe:",
          "javaInputWindowTitleTranslation":"Input a Java exe",
          "javaInputFieldTranslation":"Java exe path:"
+      },
+      "inputInstanceUrlTranslation":{
+         "inputWindowTitleTranslation":"Add new instance",
+         "inputFieldTranslation":"Instance url:"
       }
    }
 }

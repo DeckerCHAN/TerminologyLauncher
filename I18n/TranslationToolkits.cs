@@ -8,9 +8,9 @@ using TerminologyLauncher.I18n.TranslationObjects;
 
 namespace TerminologyLauncher.I18n
 {
-    public static class TranslationFileGenerator
+    public static class TranslationToolkits
     {
-        public static TranslationRoot GenerateAllField()
+        public static TranslationRoot GenerateFllTranslation()
         {
             var obj = new TranslationRoot() as Object;
             SetFieldValue(ref  obj);
