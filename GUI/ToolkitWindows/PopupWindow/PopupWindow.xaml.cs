@@ -49,7 +49,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.PopupWindow
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
         private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)

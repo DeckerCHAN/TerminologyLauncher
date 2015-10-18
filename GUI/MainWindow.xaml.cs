@@ -92,7 +92,7 @@ namespace TerminologyLauncher.GUI
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
