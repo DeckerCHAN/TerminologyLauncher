@@ -60,6 +60,10 @@
       <Project>{d7137adb-46ba-4e01-b550-060411dfe671}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\I18n\I18n.csproj">
+      <Project>{79fd9a83-caa1-451a-a128-da30f723c45f}</Project>
+      <Name>I18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logging\Logging.csproj">
       <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
       <Name>Logging</Name>

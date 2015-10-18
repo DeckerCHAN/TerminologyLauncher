@@ -23,7 +23,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
             Logger.GetLogger().Info("Handling add instance event!");
 
-            var result = new SingleLineInputWindow("Input instance url", "URL:").ReceiveUserInput();
+            var result = new SingleLineInputWindow(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InputInstanceUrlTranslation.InputWindowTitleTranslation, I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InputInstanceUrlTranslation.InputFieldTranslation).ReceiveUserInput();
             if (result.Type == WindowResultType.Canceled)
             {
                 Logger.GetLogger().Info("Empty input or user canceled. Ignore!");

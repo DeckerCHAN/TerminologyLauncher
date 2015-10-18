@@ -7,6 +7,7 @@ using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.I18n.TranslationObjects;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 using TerminologyLauncher.I18n.TranslationObjects.HandlerTranslations;
@@ -20,9 +21,9 @@ namespace TerminologyLauncher.Test
         [MTAThread]
         static void Main(string[] args)
         {
-            DownloadUtils.GetWebContent(new LeafNodeProgress("Hello"), "http://www.baidu.com");
+            var root = TranslationToolkits.GenerateFllTranslation();
 
-            Console.ReadKey();
+            File.WriteAllText("G:\\CSharp\\TerminologyLauncher\\I18n\\Translations\\FULL", JsonConverter.ConvertToJson(root), Encoding.UTF8);
         }
     }
 }

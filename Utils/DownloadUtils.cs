@@ -143,7 +143,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadZippedFile(InternalNodeProgress progress, String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress(String.Format("Downloading zip file {0}", url), 90D), url, tempFileInfo.FullName, md5);
+            DownloadFile(progress.CreateNewLeafSubProgress(String.Format("Downloading and unzipping zip file {0}", url), 90D), url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
             {
@@ -152,6 +152,18 @@ namespace TerminologyLauncher.Utils
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
+        }
+        public static void DownloadZippedFile( String url, String path, String md5)
+        {
+            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            DownloadFile( tempFileInfo.FullName, md5);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
 
     }

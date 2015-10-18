@@ -66,7 +66,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
                                     if (!String.IsNullOrEmpty(result))
                                     {
-                                        this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Available update", result);
+                                        this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateWindowTitleTranslation, result);
                                     }
                                 });
 
@@ -77,7 +77,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
                                 if (result)
                                 {
-                                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "New update available", "Detected new version of Terminology Lanucher. Press button at top to update!");
+                                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NewUpdateAvailable);
 
                                 }
                             });

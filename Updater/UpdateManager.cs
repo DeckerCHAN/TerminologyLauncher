@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Entities.UpdateManagement;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -51,7 +52,7 @@ namespace TerminologyLauncher.Updater
 
             if (!this.CheckUpdateAvailable())
             {
-                return "No newer update available.";
+                return TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NoAvailableUpdate;
             }
 
             var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
@@ -92,7 +93,7 @@ namespace TerminologyLauncher.Updater
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return String.Format("Updating from {0} to {1}! Close launcher to continue.", this.Version,
+            return String.Format(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.FetchedNewUpdateToVersion, this.Version,
     update.LatestVersion.VersionNumber);
         }
 

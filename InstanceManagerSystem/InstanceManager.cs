@@ -174,7 +174,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             if (availableUpdateInstanceNameList.Count == 0)
             {
-                Logger.GetLogger().Info("All instance at latest version or no available instance to update.");
+                Logger.GetLogger().Info(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.AllInstanceAlreadyAtLatestVersionTranslation);
                 return String.Empty;
             }
             var result = new StringBuilder();
@@ -187,7 +187,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     result.Append(", ");
                 }
             }
-            return String.Format("Detected {0} are available to update", result);
+            return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.SomeInstanceAvailableToUpdateTranslation, result);
         }
 
 
@@ -208,7 +208,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
                 progress.Percent = 100D;
-                return (String.Format("Instance now in latest version:{0}! Ignore update.", newInstanceEntity.Version));
+                return (String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceAlreadyAtLatestVersionTranslation, newInstanceEntity.Version));
             }
 
             switch (instanceInfo.InstanceState)
@@ -218,7 +218,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.RemoveInstance(instanceInfo.Name);
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
-                        return String.Format("Successful update instance file {0} from version {1} to {2}!",
+                        return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                         break;
@@ -226,7 +226,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                 case InstanceState.Ok:
                     {
-                        //TODO:I'll support instance name change at feature version.
+                        //TODO:I'll support instance name change at future version.
                         if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
                         {
                             throw new Exception("Old instance name not equal with new instance name.");
@@ -325,7 +325,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(newInstanceEntity));
-                        return String.Format("Successful update all instance {0} from version {1} to {2}!",
+                        return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                         break;
@@ -570,6 +570,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return new FileInfo(imagePath).FullName;
         }
 
+        private String GetInstnaceFile(String instanceName)
+        {
+            var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
+            var imagePath = Path.Combine(folderPath, "Instnace.json");
+            return new FileInfo(imagePath).FullName;
+        }
+
         private void CriticalInstanceFieldCheck(InstanceEntity instance)
         {
             if (String.IsNullOrEmpty(instance.InstanceName))
@@ -608,7 +615,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var javaDetail = this.JavaRuntime.JavaDetails;
             if (javaDetail.JavaType == JavaType.ClientX86 || javaDetail.JavaType == JavaType.ServerX86)
             {
-                if (instance.StartupArguments.MiniumMemoryMegaSize <= 1600)
+                if (instance.StartupArguments.MiniumMemoryMegaSize >= 1600)
                 {
                     throw new Exception("X86 Java may not allocate memory more then 1.6G!");
                 }
