@@ -55,7 +55,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             get
             {
-                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(instanceInfo.FilePath))).Where(instance => instance.Generation.Equals(this.SupportGeneration)).ToList();
+                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)))).Where(instance => instance.Generation.Equals(this.SupportGeneration)).ToList();
             }
         }
 
@@ -119,15 +119,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 Name = instance.InstanceName,
                 InstanceState = InstanceState.PerInitialized,
-                FilePath = Path.Combine(this.GetInstanceRootFolder(instance.InstanceName).FullName,
-                    "Instance.json"),
                 UpdateUrl = instance.UpdatePath,
                 UpdateDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
 
 
 
-            File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(instance));
+            File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
             this.SaveInstancesBankToFile();
             return String.Format("Added instance:{0}", instance.InstanceName);
@@ -161,7 +159,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                 var oldInstanceEntity =
                     JsonConverter.Parse<InstanceEntity>(
-                        File.ReadAllText(instanceInfo.FilePath));
+                        File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
                 this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
                 var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 100D / this.InstanceBank.InstancesInfoList.Count), instanceInfo.UpdateUrl);
@@ -174,15 +172,15 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             if (availableUpdateInstanceNameList.Count == 0)
             {
-                Logger.GetLogger().Info(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.AllInstanceAlreadyAtLatestVersionTranslation);
+                Logger.GetLogger().Info("All instances at latest version.");
                 return String.Empty;
             }
             var result = new StringBuilder();
-            for (int index = 0; index < availableUpdateInstanceNameList.Count; index++)
+            for (var i = 0; i < availableUpdateInstanceNameList.Count; i++)
             {
-                var name = availableUpdateInstanceNameList[index];
+                var name = availableUpdateInstanceNameList[i];
                 result.Append(name);
-                if (index != availableUpdateInstanceNameList.Count - 1)
+                if (i != availableUpdateInstanceNameList.Count - 1)
                 {
                     result.Append(", ");
                 }
@@ -198,7 +196,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var oldInstanceEntity =
                 JsonConverter.Parse<InstanceEntity>(
-                    File.ReadAllText(instanceInfo.FilePath));
+                    File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
             this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
             var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 50D), instanceInfo.UpdateUrl);
@@ -324,7 +322,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
-                        File.WriteAllText(instanceInfo.FilePath, JsonConverter.ConvertToJson(newInstanceEntity));
+                        File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
                         return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -345,7 +343,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
             var instance =
                 JsonConverter.Parse<InstanceEntity>(
-                    File.ReadAllText(instanceInfo.FilePath));
+                    File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
 
             if (!(instanceInfo.InstanceState == InstanceState.Ok || instanceInfo.InstanceState == InstanceState.PerInitialized))
             {
@@ -573,7 +571,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         private String GetInstnaceFile(String instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
-            var imagePath = Path.Combine(folderPath, "Instnace.json");
+            var imagePath = Path.Combine(folderPath, "Instance.json");
             return new FileInfo(imagePath).FullName;
         }
 
