@@ -40,7 +40,7 @@ namespace TerminologyLauncher.Core
 
         public String BuildVersion
         {
-            get { return "1330"; }
+            get { return "1331"; }
         }
 
         public Config CoreConfig { get; set; }
