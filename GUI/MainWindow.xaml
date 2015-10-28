@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:account="clr-namespace:TerminologyLauncher.Entities.Account;assembly=TerminologyLauncher.Entities"
         xmlns:gui="clr-namespace:TerminologyLauncher.GUI"
-        Title="MainWindow" Width="1194" Height="718" 
+        xmlns:toolkits="clr-namespace:TerminologyLauncher.GUI.Toolkits"
+        Title="MainWindowWindow" Width="1194" Height="718" 
         Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -18,7 +19,7 @@
     </Window.Resources>
     <Border CornerRadius="8">
         <Border.Resources>
-            <gui:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
+            <toolkits:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
         </Border.Resources>
         <Border.Background>
             <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}" Stretch="UniformToFill"></ImageBrush>
@@ -33,7 +34,7 @@
                 </Border.Background>
                 <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"><Run  Text="Terminology Launcher "/><Run Text="{Binding CoreVersion}"/></TextBlock>
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"><Run  Text="{Binding Path=Translation.MainWindowTitleTranslation}"/><Run Text=" "/><Run Text="{Binding CoreVersion}"/></TextBlock>
                     <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                         <Button x:Name="ConfigButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadConfigButtonStyle}"/>
                         <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}"/>
@@ -56,10 +57,10 @@
                                 <RowDefinition Height="5*"/>
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="添加" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="{Binding Path=Translation.AddInstanceTranslation}" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
-                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="删除" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>
+                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="{Binding Path=Translation.RemoveInstanceTranslation}" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>
                             </Border>
                         </Grid>
 
@@ -104,7 +105,7 @@
                                                 <account:LoginType>OfficialMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
-                                                <Setter  Property="TextBlock.Text" Value="Official Mode"></Setter>
+                                                <Setter  Property="TextBlock.Text" Value="{Binding Path=Translation.OfficialLoginTranslation}"></Setter>
                                             </DataTrigger.Setters>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=Player.LoginType}">
@@ -112,7 +113,7 @@
                                                 <account:LoginType>OfflineMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
-                                                <Setter  Property="TextBlock.Text" Value="Offline Mode"></Setter>
+                                                <Setter  Property="TextBlock.Text" Value="{Binding Path=Translation.OfflineLoginTranslation}"></Setter>
                                             </DataTrigger.Setters>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -162,27 +163,27 @@
                                         <Setter Property="FontSize" Value="16"></Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <TextBlock Text="Pack Name:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock Text="{Binding Path=Translation.InstanceNameFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
                                 <TextBlock 
                                     Text="{Binding SelectInstance.InstanceName}" 
                                     Style="{DynamicResource DetailContentTextBlockStyle}" 
                                     ></TextBlock>
 
-                                <TextBlock FontSize="20" Text="Author:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding Path=Translation.InstanceAuthorFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
                                 <TextBlock 
                                     TextWrapping="Wrap"
                                     Text="{Binding SelectInstance.Author}" 
                                     Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
 
 
-                                <TextBlock FontSize="20" Text="Describe:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding Path=Translation.InstanceDescribeFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
                                 <TextBlock 
                                     TextWrapping="Wrap"
                                     Text="{Binding SelectInstance.Description}" 
                                     Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
 
 
-                                <TextBlock FontSize="20" Text="Version:" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding Path=Translation.InstanceVersionFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
                                 <TextBlock 
                                     TextWrapping="Wrap"
                                     Text="{Binding SelectInstance.Version}" 
@@ -191,8 +192,8 @@
                             </StackPanel>
                         </ScrollViewer>
                         <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="更新" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" ></Button>
-                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="启动" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" ></Button>
+                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="{Binding Path=Translation.UpdateInstanceTranslation}" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" ></Button>
+                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="{Binding Path=Translation.LaunchInstanceTranslation}" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" ></Button>
 
 
                         </StackPanel>

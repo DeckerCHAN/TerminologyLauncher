@@ -51,7 +51,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             this.SubProgressesAndPercentage = new Dictionary<Progress, Double>();
             base.Percent = 0D;
         }
-        public InternalNodeProgress CreateNewInternalSubProgress(Double taskPercentage, String taskName)
+        public InternalNodeProgress CreateNewInternalSubProgress(String taskName, Double taskPercentage)
         {
             taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new InternalNodeProgress(taskName);
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             return progress;
         }
 
-        public LeafNodeProgress CreateNewLeafSubProgress(Double taskPercentage, String taskName)
+        public LeafNodeProgress CreateNewLeafSubProgress(String taskName, Double taskPercentage)
         {
             taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new LeafNodeProgress(taskName);

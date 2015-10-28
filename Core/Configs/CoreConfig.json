@@ -3,13 +3,9 @@
     "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
     "fileRepositoryConfig": "Configs/FileRepositoryConfig.json",
     "updateManagerConfig": "Configs/UpdaterConifg.json",
-    "javaSearchPaths": [
-        "C:\\Program Files\\Java\\",
-        "C:\\Program Files (x86)\\Java\\",
-        "D:\\Program Files\\Java\\",
-        "D:\\Program Files (x86)\\Java\\",
-        "Java\\"
-
-    ],
-    "loginPerserveFilePath": "Login.bin" 
+    "localizationConfig": "Configs/I18N.json",
+    "guiConfig": "Configs/GUI.json",
+    "jreManagerConfig": "Configs/Jre.json",
+    "loginPerserveFilePath": "Login.bin",
+    "usingConsoleWindow": "true"
 }

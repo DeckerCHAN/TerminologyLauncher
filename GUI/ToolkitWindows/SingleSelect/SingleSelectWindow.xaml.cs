@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.I18n;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 {
@@ -17,8 +19,9 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
     {
         private String FieldNameValue;
         private ObservableCollection<String> SelectItemsValue;
-        private string SelectItemValue;
+        private FieldReference<String> SelectItemValue;
         private Boolean IsCanceled { get; set; }
+        public SingleSelectWindowTranslation Translation { get; set; }
         public String FieldName
         {
             get { return this.FieldNameValue; }
@@ -31,9 +34,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 
         public String SelectItem
         {
-            get { return this.SelectItemValue; }
-            set { this.SelectItemValue = value; }
+            get { return this.SelectItemValue.Value; }
+            set { this.SelectItemValue.Value = value; }
         }
+
+
 
         public ObservableCollection<String> SelectItems
         {
@@ -45,43 +50,43 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public SingleSelectWindow(String title, String selectFieldName, IEnumerable<string> items)
+        public SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
         {
-            this.SelectItems = new ObservableCollection<String>();
-            this.InitializeComponent();
-            this.Title = title;
-            this.FieldName = selectFieldName;
-            this.SelectItems = new ObservableCollection<string>(items);
-            this.OnPropertyChanged();
-        }
 
-        internal WindowResult ReceiveUserSelect()
-        {
-            base.ShowDialog();
-            var result = new WindowResult()
+            this.SelectItems = new ObservableCollection<String>();
+            this.Translation =
+               TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
+                    .SingleSelectWindowTranslation;
+            this.InitializeComponent();
+            if (owner != null)
             {
-                Type = this.IsCanceled ? WindowResultType.Canceled : WindowResultType.CommonFinished
-            };
-            if (result.Type == WindowResultType.CommonFinished)
-            {
-                result.Result = this.SelectItem;
+                this.Owner = owner;
+                this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             }
-            return result;
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+            this.Title = title;
+            this.FieldName = fieldName;
+            this.SelectItems = new ObservableCollection<string>(options);
+            this.OnPropertyChanged();
         }
 
         new public Boolean? ShowDialog()
         {
-            throw new InvalidOperationException("Do not directly show dialog by your self. Try use toolkit functions in UiControl!");
+            base.ShowDialog();
+            return !this.IsCanceled;
         }
 
-       new  public void Show()
+        new public void Show()
         {
-            throw new InvalidOperationException("Do not directly show by your self. Try use toolkit functions in UiControl!");
+            throw new NotSupportedException();
         }
 
         private void HeadBarPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)

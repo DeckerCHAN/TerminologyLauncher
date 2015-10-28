@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
+using TerminologyLauncher.Configs;
+using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
     /// <summary>
     /// Interaction logic for UiControl.xaml
     /// </summary>
-    public partial class UiControl
+    public partial class UiControl : IPopup
     {
+        public new MainWindow MainWindow { get; set; }
         public LoginWindow LoginWindow { get; set; }
-        public MainWindow MajorWindow { get; set; }
-        public UiControl()
+        public ConsoleWindow ConsoleWindow { get; set; }
+        public Config Config { get; set; }
+        public UiControl(String configPath)
         {
-            this.MajorWindow = new MainWindow();
-            this.MainWindow = this.MajorWindow;
-            this.LoginWindow = new LoginWindow();
+            this.Config = new Config(new FileInfo(configPath));
+            this.MainWindow = new MainWindow(this.Config);
+            this.LoginWindow = new LoginWindow(this.Config);
+            this.ConsoleWindow = new ConsoleWindow(this.Config);
         }
 
         public void ShowLoginWindow()
@@ -50,7 +60,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
             }
             catch (Exception ex)
             {
@@ -63,7 +73,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MajorWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
+                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
 
             }
             catch (Exception ex)
@@ -72,40 +82,38 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public WindowResult StartSingleLineInput(String title, String fieldName)
+        public void ShowConsoleWindow()
         {
-            WindowResult result = null;
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                result = new SingleLineInputWindow(title, fieldName).ReceiveUserInput();
-            });
-            return result;
+                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Show(); });
+
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not show console window right now! Cause:{0}", ex.Message);
+            }
         }
 
-        public WindowResult StartSingleSelect(String title, String fieldName, IEnumerable<String> selectItems)
+        public void HideConsoleWindow()
         {
-            WindowResult result = null;
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                result = new SingleSelectWindow(title, fieldName, selectItems).ReceiveUserSelect();
-            });
-            return result;
+                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Hide(); });
+
+            }
+            catch (Exception ex)
+            {
+                Logging.Logger.GetLogger().ErrorFormat("Can not hide console window right now! Cause:{0}", ex.Message);
+            }
         }
 
-        public void StartPopupWindow(Window owner, String title, String content)
+        public Boolean? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
+            Boolean? result = false;
             this.Dispatcher.Invoke(() =>
             {
-                new PopupWindow(owner, title, content).ShowDialog();
-            });
-        }
-
-        public WindowResult StartMultiConfigWindo(String title, Dictionary<String, String> configs)
-        {
-            WindowResult result = null;
-            this.Dispatcher.Invoke(() =>
-            {
-                result = new ConfigWindow(title, configs).ReceiveUserConfigs();
+                result = new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs).ShowDialog();
             });
             return result;
         }
@@ -119,6 +127,40 @@ namespace TerminologyLauncher.GUI
         {
             this.MainWindow.Close();
             this.LoginWindow.Close();
+        }
+
+        public void PopupNotifyDialog(string title, string content)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                new NotifyWindow(null, title, content).ShowDialog();
+            });
+        }
+
+        public bool? PopupConfirmDialog(string title, string content, bool? decision)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        {
+            Boolean? result = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                var selectWindow = new SingleSelectWindow(null, title, fieldName, options, selection);
+                result = selectWindow.ShowDialog();
+            });
+            return result;
+        }
+
+        public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

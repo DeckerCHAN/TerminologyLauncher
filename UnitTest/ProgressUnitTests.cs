@@ -19,14 +19,14 @@ namespace TerminologyLauncher.UnitTest
                 Console.WriteLine("Woring on {0}:{1}", progress.TaskName, progress.Percent);
             };
             Console.WriteLine(progress.Percent);
-            this.MidLevel(progress.CreateNewInternalSubProgress(100D,"MidLevel"));
+            this.MidLevel(progress.CreateNewInternalSubProgress("MidLevel", 100D));
             Console.WriteLine("All tasks finished!");
         }
 
         public void MidLevel(InternalNodeProgress progress)
         {
-            this.BottomLevelA(progress.CreateNewLeafSubProgress(50D, "MidLevel A"));
-            this.BottomLevelB(progress.CreateNewLeafSubProgress(50, "MidLevel B"));
+            this.BottomLevelA(progress.CreateNewLeafSubProgress("MidLevel A", 50D));
+            this.BottomLevelB(progress.CreateNewLeafSubProgress("MidLevel B", 50));
         }
 
         public void BottomLevelA(LeafNodeProgress progress)
@@ -58,7 +58,7 @@ namespace TerminologyLauncher.UnitTest
             progress.Percent = 100;
         }
 
-        [TestMethod]
+        [TestMethod][MTAThread]
         public void DownloadText()
         {
             var progress = new InternalNodeProgress("Download text main task");
@@ -67,7 +67,7 @@ namespace TerminologyLauncher.UnitTest
                 Console.WriteLine(progress.Percent);
             };
             var content =
-                DownloadUtils.GetFileContent(progress.CreateNewLeafSubProgress(100D, String.Format("Downloading Text")), "http://baidu.com");
+                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Downloading Text"), 100D), "http://baidu.com");
             // Console.WriteLine(content);
         }
 
@@ -84,7 +84,7 @@ namespace TerminologyLauncher.UnitTest
             {
                 downloadFile.Delete();
             }
-            DownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress(100D, "Downloading test file"),
+            DownloadUtils.DownloadFile(progress.CreateNewLeafSubProgress("Downloading test file", 100D),
                 "http://dldir1.qq.com/qqfile/qq/QQ7.4/15197/QQ7.4.exe", downloadFile.FullName);
             downloadFile.Refresh();
             Assert.IsTrue(downloadFile.Exists);

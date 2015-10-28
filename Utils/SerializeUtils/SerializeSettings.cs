@@ -8,6 +8,7 @@ namespace TerminologyLauncher.Entities.SerializeUtils
         {
             this.ContractResolver = new ContractResolver();
             this.NullValueHandling = NullValueHandling.Ignore;
+            this.Formatting=Formatting.Indented;
         }
     }
 }

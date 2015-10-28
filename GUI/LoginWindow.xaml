@@ -1,21 +1,23 @@
 ﻿<Window x:Class="TerminologyLauncher.GUI.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Terminology Launcher Login" Height="332" Width="490"
+        xmlns:toolkits="clr-namespace:TerminologyLauncher.GUI.Toolkits"
+        Title="" Height="332" Width="490"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource TerminologyWindowStyle}"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        >
-    <Window.Background>
-        <ImageBrush ImageSource="/TerminologyLauncher.GUI;component/Resources/login_bg.jpg"></ImageBrush>
-    </Window.Background>
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <ResourceDictionary>
+            <toolkits:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
+    <Window.Background>
+        <ImageBrush ImageSource="{Binding BackgroundImageSource,Converter={StaticResource ImageLocalConverter}}"></ImageBrush>
+    </Window.Background>
     <DockPanel  Width="472" Height="314">
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
@@ -26,7 +28,7 @@
             </Border.Background>
             <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Translation.LoginWindowTitleTranslation}"></TextBlock>
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                     <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}"  ></Button>
                 </StackPanel>
@@ -44,23 +46,23 @@
             <Canvas.InputBindings>
                 <KeyBinding Command="{StaticResource ConfirmCommand}" Key="Enter"></KeyBinding>
             </Canvas.InputBindings>
-            <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="Majong账户:" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
-            <TextBlock Name="AccountPasswordTitle" TextWrapping="Wrap" Text="密码:" Canvas.Right="330" Canvas.Top="125" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
+            <TextBlock Name="AccountTypeTitle" TextWrapping="Wrap" Text="{Binding Path=Translation.MojongAccountTranslation}" Canvas.Right="330" Canvas.Top="78" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
+            <TextBlock Name="AccountPasswordTitle" TextWrapping="Wrap" Text="{Binding Path=Translation.PasswordTranslation}" Canvas.Right="330" Canvas.Top="125" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
             <TextBox  x:Name="UsernameBox"  Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282" FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}">
 
             </TextBox>
             <PasswordBox  x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15" Style="{DynamicResource TransparentPasswordBox}">
             </PasswordBox>
             <ComboBox Name="LoginModeComboBox"  x:FieldModifier="public" Canvas.Left="158" Canvas.Top="172" Width="156" Height="25" SelectedIndex="1" FontSize="15" HorizontalContentAlignment="Center" Style="{DynamicResource TerminologyComboBoxStyle}" SelectionChanged="LoginMode_OnSelectionChanged">
-                <ComboBoxItem Content="离线模式" HorizontalAlignment="Stretch" Width="118"/>
-                <ComboBoxItem Content="正版登录" HorizontalAlignment="Stretch" Width="118"/>
+                <ComboBoxItem Content="{Binding Path=Translation.OfflineModeTranslation}" HorizontalAlignment="Stretch" Width="118"/>
+                <ComboBoxItem Content="{Binding Path=Translation.OfficialModeTranslation}" HorizontalAlignment="Stretch" Width="118"/>
 
 
             </ComboBox>
-            <CheckBox x:Name="IsPerservePasswordCheckBox" IsChecked="{Binding IsPerservePassword,Mode=TwoWay}" x:FieldModifier="public" Content="记住账户" Canvas.Left="348" Canvas.Top="175" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
-            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="登录" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_Click" />
-            <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="取消" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
-            <TextBlock TextWrapping="Wrap" Text="登录模式:" Canvas.Right="330" Canvas.Top="173" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
+            <CheckBox x:Name="IsPerservePasswordCheckBox" IsChecked="{Binding IsPerservePassword,Mode=TwoWay}" x:FieldModifier="public" Content="{Binding Path=Translation.RememberAccountTranslation}" Canvas.Left="331" Canvas.Top="177" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
+            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="{Binding Path=Translation.LoginTranslation}" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_Click" />
+            <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="{Binding Path=Translation.CancelTranslation}" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
+            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Translation.LoginModeTranslation}" Canvas.Right="330" Canvas.Top="173" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
 
 
         </Canvas>

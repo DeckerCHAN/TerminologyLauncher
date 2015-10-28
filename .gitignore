@@ -6,6 +6,10 @@
 *.user
 *.sln.docstates
 
+# Performance
+*.vsp
+*.psess
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

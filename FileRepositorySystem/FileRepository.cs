@@ -8,6 +8,7 @@ using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.FileRepositorySystem
 {
@@ -20,16 +21,17 @@ namespace TerminologyLauncher.FileRepositorySystem
         {
             Logger.GetLogger().Info("Initializing file repo...");
             this.Config = new Config(new FileInfo(configPath));
-            this.RepoUrl = this.Config.GetConfig("fileRepositoryUrl");
+            this.RepoUrl = this.Config.GetConfigString("fileRepositoryUrl");
             this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
 
             Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
             try
             {
-                DownloadUtils.DownloadFile(this.RepoUrl, this.Config.GetConfig("repoFilePath"));
+                var progress = new LeafNodeProgress("Fetch repo");
+                DownloadUtils.DownloadFile(progress, this.RepoUrl, this.Config.GetConfigString("repoFilePath"));
                 var repo =
-                    JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
+                    JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfigString("repoFilePath")));
                 foreach (var officialProvideFile in repo.Files)
                 {
                     this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
@@ -39,13 +41,13 @@ namespace TerminologyLauncher.FileRepositorySystem
             catch (WebException)
             {
                 Logger.GetLogger().Error("Unable to receive repo right now. Trying to using local repo list.");
-                if (!File.Exists(this.Config.GetConfig("repoFilePath")))
+                if (!File.Exists(this.Config.GetConfigString("repoFilePath")))
                 {
                     Logger.GetLogger().Error("No local repo list available.");
                     return;
                 }
                 var repo =
-                   JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfig("repoFilePath")));
+                   JsonConverter.Parse<FileRepositoryEntity>(File.ReadAllText(this.Config.GetConfigString("repoFilePath")));
                 foreach (var officialProvideFile in repo.Files)
                 {
                     this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);

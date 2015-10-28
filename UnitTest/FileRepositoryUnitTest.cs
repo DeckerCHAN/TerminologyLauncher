@@ -41,7 +41,7 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void DownloadStringTest()
         {
-            var content = DownloadUtils.GetFileContent("http://www.baidu.com");
+            var content = DownloadUtils.GetWebContent("http://www.baidu.com");
             Assert.IsFalse(String.IsNullOrEmpty(content));
         }
     }

@@ -4,16 +4,25 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.ToolkitWindows.PopupWindow
 {
     /// <summary>
-    /// Interaction logic for PopupWindow.xaml
+    /// Interaction logic for NotifyWindow.xaml
     /// </summary>
-    public sealed partial class PopupWindow : INotifyPropertyChanged
+    public sealed partial class NotifyWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-
+        public NotifyWindowTranslation Translation
+        {
+            get
+            {
+                return
+                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
+                        .NotifyWindowTranslation;
+            }
+        }
         public String ContentString
         {
             get { return this.ContentStringValue; }
@@ -29,11 +38,20 @@ namespace TerminologyLauncher.GUI
             this.Dispatcher.Invoke(this.Close);
         }
 
-        public PopupWindow(Window owner, String title, String content)
+        public NotifyWindow(Window owner, String title, String content)
         {
             this.Owner = owner;
             this.ContentString = content;
-            InitializeComponent();
+            this.InitializeComponent();
+            if (owner != null)
+            {
+                this.Owner = owner;
+                this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
             this.Title = title;
             this.OnPropertyChanged();
         }
@@ -49,7 +67,7 @@ namespace TerminologyLauncher.GUI
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
         private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TerminologyLauncher.Configs;
+using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -14,13 +17,13 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void LoginWindowTest()
         {
-            new GUI.LoginWindow().ShowDialog();
+            new GUI.LoginWindow(new Config(new FileInfo(""))).ShowDialog();
         }
 
         [TestMethod]
         public void MainWindowTest()
         {
-            new GUI.MainWindow().ShowDialog();
+            new GUI.MainWindow(new Config(new FileInfo(""))).ShowDialog();
         }
 
         [TestMethod]
@@ -46,7 +49,7 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void SingleSelectTest()
         {
-            new SingleSelectWindow("Test","TestField",new List<String>{"asdasd","dasdddd"}).ShowDialog();
+            var cancel = new SingleSelectWindow(null, "Test", "TestField", new List<String> { "asdasd", "dasdddd" }, new FieldReference<String>("dasdddd")).ShowDialog();
         }
     }
 }

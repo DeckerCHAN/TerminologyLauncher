@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
-using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
@@ -27,9 +29,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var window = sender as Window;
-            Logger.GetLogger().InfoFormat("Main window is going to {0}!", window.Visibility);
 
+            var window = sender as Window;
+            Logger.GetLogger().InfoFormat("MainWindow window is going to {0}!", window.Visibility);
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -42,6 +44,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         if (this.FirstStart)
                         {
                             this.FirstStart = false;
+                            this.Engine.UiControl.MainWindow.CoreVersion = String.Format("{0} (build{1})", this.Engine.CoreVersion, this.Engine.BuildVersion);
 
                             if (!this.CheckJavaPath())
                             {
@@ -49,17 +52,38 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                 return;
                             }
 
-                            this.Engine.UiControl.MajorWindow.InstanceList =
+                            this.Engine.UiControl.MainWindow.InstanceList =
                                   new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-                            if (this.Engine.UiControl.MajorWindow.InstanceList.Count == 0)
+
+                            if (this.Engine.InstanceManager.Instances.Count == 0)
                             {
                                 var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
                                 if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
                             }
+                            else
+                            {
+                                Task.Run(() =>
+                                {
+                                    var progress = new InternalNodeProgress("Check update");
+                                    var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
+                                    if (!String.IsNullOrEmpty(result))
+                                    {
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateWindowTitleTranslation, result);
+                                    }
+                                });
 
+                            }
+                            Task.Run(() =>
+                            {
+                                var result = this.Engine.UpdateManager.CheckUpdateAvailable();
 
+                                if (result)
+                                {
+                                    this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NewUpdateAvailable);
 
-                            this.Engine.UiControl.MajorWindow.CoreVersion = this.Engine.CoreVersion;
+                                }
+                            });
+
                         }
                         break;
                     }
@@ -69,7 +93,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         break;
                     }
             }
-            return;
+
+
         }
         public override void HandleEvent(Object sender, EventArgs e)
         {
@@ -79,96 +104,79 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         private Boolean CheckJavaPath()
         {
             //Check config 
-            if (!String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
+            if (this.Engine.JreManager.JavaRuntime != null)
             {
-                try
-                {
-                    var javaBinFolder = new DirectoryInfo(this.Engine.InstanceManager.Config.GetConfig("javaBinPath"));
-                    if (javaBinFolder.Exists && File.Exists(Path.Combine(javaBinFolder.FullName, "java.exe")) || File.Exists(Path.Combine(javaBinFolder.FullName, "javaw.exe")))
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    //ignore
-                }
-
+                return true;
             }
-            //Search java from default path
-            var searchPaths = this.Engine.CoreConfig.GetConfigs("javaSearchPaths");
-
-            var javaPaths = searchPaths.Where(Directory.Exists)
-                .SelectMany(
-                path => Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly),
-                (path, folder) => Path.Combine(folder, "bin/java.exe")
-                ).Where(File.Exists)
-                .ToList();
-
-
 
 
             var javaRuntimeEntitiesKP = new Dictionary<String, JavaRuntimeEntity>();
-            foreach (var javaPath in javaPaths)
+            foreach (var availableJre in this.Engine.JreManager.AvailableJavaRuntimes)
             {
-                try
-                {
-                    var runtimeEntity = new JavaRuntimeEntity()
-                    {
-                        JavaPath = javaPath,
-                        JavaWPath = Path.Combine(Path.GetDirectoryName(javaPath), "javaw.exe"),
-                        JavaDetails = JavaUtils.GetJavaDetails(javaPath)
-                    };
-                    javaRuntimeEntitiesKP.Add(String.Format("{0}:{1}", runtimeEntity.JavaDetails.JavaVersion, runtimeEntity.JavaDetails.JavaType), runtimeEntity);
-                }
-                catch (Exception)
-                {
-                    //Ignore
-                }
+
+                javaRuntimeEntitiesKP.Add(availableJre.Key, availableJre.Value);
+
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
-                var result = this.Engine.UiControl.StartSingleSelect("Select available java", "Java Runtime:", javaRuntimeEntitiesKP.Keys);
-                if (result.Type == WindowResultType.Canceled)
+                var field = new FieldReference<String>(javaRuntimeEntitiesKP.Keys.First());
+                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectFieldTranslation, javaRuntimeEntitiesKP.Keys, field);
+                if (result == null || result.Value == false)
                 {
                     return false;
                 }
                 else
                 {
-                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", Directory.GetParent(javaRuntimeEntitiesKP[result.Result.ToString()].JavaWPath).FullName);
+                    this.Engine.JreManager.JavaRuntime = javaRuntimeEntitiesKP[field.Value];
                     return true;
                 }
             }
 
 
 
-            while (String.IsNullOrEmpty(this.Engine.InstanceManager.Config.GetConfig("javaBinPath")))
+            while (this.Engine.JreManager.JavaRuntime == null)
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                var result = this.Engine.UiControl.StartSingleLineInput("Request Java path", "Java Path");
-                switch (result.Type)
-                {
-                    case WindowResultType.CommonFinished:
-                        {
-                            try
-                            {
-                                var javaExe = new FileInfo(result.Result.ToString());
-                                if (javaExe.Exists && (javaExe.Name == "java.exe" || javaExe.Name == "javaw.exe"))
-                                {
-                                    this.Engine.InstanceManager.Config.SetConfig("javaBinPath", javaExe.DirectoryName);
-                                    Logger.GetLogger().Info("Received java path from user. Pass.");
-                                }
-                            }
-                            catch (Exception)
-                            {
+                var field = new FieldReference<String>(String.Empty);
+                var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation, field);
 
-                                //ignore.
+                if (result == null || result.Value == false)
+                {
+                    {
+                        try
+                        {
+                            var javaBinFolder = new DirectoryInfo(field.Value);
+                            var jre = new JavaRuntimeEntity
+                            {
+                                JavaDetails =
+                                    JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
+                                JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
+                                JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
+                            };
+                            if (JavaUtils.IsJavaRuntimeValid(jre))
+                            {
+                                this.Engine.JreManager.JavaRuntime = jre;
                             }
-                            break;
+                            else
+                            {
+                                continue;
+                            }
                         }
-                    case WindowResultType.Canceled:
-                        return false;
+                        catch (Exception ex)
+                        {
+                            Logger.GetLogger()
+                                .ErrorFormat("Can not resolve java exe path through user input. Caused by:{0}",
+                                    ex.Message);
+
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
             return true;

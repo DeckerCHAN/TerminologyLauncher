@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Entities.UpdateManagement;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -26,13 +27,23 @@ namespace TerminologyLauncher.Updater
 
         public Boolean CheckUpdateAvailable()
         {
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfig("updateCheckingUrl")));
+            Logging.Logger.GetLogger().Info("Start to check lanucher version.");
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
             if (update.LatestVersion == null)
             {
                 throw new PlatformNotSupportedException("Can not fetch the latest version! May caused by wrong update url or un-supported version!");
             }
-            return !String.IsNullOrEmpty(update.LatestVersion.VersionNumber) &&
+            var result = !String.IsNullOrEmpty(update.LatestVersion.VersionNumber) &&
                    update.LatestVersion.VersionNumber != this.Version;
+            if (result)
+            {
+                Logging.Logger.GetLogger().InfoFormat("New version {0} available!", update.LatestVersion.VersionNumber);
+            }
+            else
+            {
+                Logging.Logger.GetLogger().Info("No available version.");
+            }
+            return result;
         }
 
         public String FetchLatestVersionAndStartUpdate(InternalNodeProgress progress)
@@ -41,10 +52,10 @@ namespace TerminologyLauncher.Updater
 
             if (!this.CheckUpdateAvailable())
             {
-                return "No newer update available.";
+                return TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NoAvailableUpdate;
             }
 
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetFileContent(this.Config.GetConfig("updateCheckingUrl")));
+            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
 
 
 
@@ -62,7 +73,7 @@ namespace TerminologyLauncher.Updater
 
             progress.Percent = 10D;
             DownloadUtils.DownloadZippedFile(
-                progress.CreateNewInternalSubProgress(80D, "Fetching update pack"), update.LatestVersion.DownloadLink,
+                progress.CreateNewInternalSubProgress("Fetching update pack", 80D), update.LatestVersion.DownloadLink,
                 updateBinaryFolder,
                 update.LatestVersion.Md5);
             if (!File.Exists(updaterExecutorFile))
@@ -82,7 +93,7 @@ namespace TerminologyLauncher.Updater
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return String.Format("Updating from {0} to {1}! Close launcher to continue.", this.Version,
+            return String.Format(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.FetchedNewUpdateToVersion, this.Version,
     update.LatestVersion.VersionNumber);
         }
 

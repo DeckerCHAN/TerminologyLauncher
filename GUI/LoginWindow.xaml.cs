@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
@@ -14,37 +23,49 @@ namespace TerminologyLauncher.GUI
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : INotifyPropertyChanged
+    public sealed partial class LoginWindow : IPopup, INotifyPropertyChanged
     {
         private bool IsPerservePasswordValue;
+
 
         public delegate void LogingHandler(Object serder, EventArgs e);
 
         public event LogingHandler Logining;
-        public LoginWindow()
-        {
-            this.InitializeComponent();
-        }
 
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public LoginWindowTranslation Translation
         {
-            this.DragMove();
-        }
-
-        private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            var isChecked = (checkbox).IsChecked;
-            if (isChecked == null) return;
-            this.PasswordBox.Password = String.Empty;
-            if ((bool)isChecked)
+            get
             {
-                this.PasswordBox.IsEnabled = false;
+                return I18n.TranslationProvider.TranslationProviderInstance
+                      .TranslationObject.GuiTranslation.LoginWindowTranslation;
+            }
+        }
+
+        private String BackgroundImageSourceValue;
+        public String BackgroundImageSource
+        {
+            get { return this.BackgroundImageSourceValue; }
+            set { this.BackgroundImageSourceValue = value; }
+        }
+
+        public Config Config { get; set; }
+
+        public LoginWindow(Config config)
+        {
+            this.Config = config;
+
+            if (!String.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) && File.Exists(this.Config.GetConfigString("loginWindowBackground")))
+            {
+                var imageFile = new FileInfo(this.Config.GetConfigString("loginWindowBackground"));
+                this.BackgroundImageSource = imageFile.FullName;
             }
             else
             {
-                this.PasswordBox.IsEnabled = true;
+                this.BackgroundImageSource = @"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg";
             }
+
+            this.InitializeComponent();
+            this.OnPropertyChanged();
         }
 
         public void EnableAllInputs(Boolean isEnable)
@@ -121,27 +142,32 @@ namespace TerminologyLauncher.GUI
                         }
                     case LoginResultType.IncompleteOfArguments:
                         {
-                            new PopupWindow(this, "失败", "参数不完整").ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultInsufficientArgumentsTranslation);
                             break;
                         }
                     case LoginResultType.WrongPassword:
                         {
-                            new PopupWindow(this, "失败", "密码错误").ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultWrongPasswordTranslation);
                             break;
                         }
                     case LoginResultType.UserNotExists:
                         {
-                            new PopupWindow(this, "失败", "用户不存在").ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultUserNotExistTranslation);
                             break;
                         }
                     case LoginResultType.NetworkTimedOut:
                         {
-                            new PopupWindow(this, "失败", "网络超时").ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultNetworkTimedOutTranslation);
                             break;
                         }
                     default:
                         {
-                            new PopupWindow(this, "失败", "未知错误").ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultUnknownErrorTranslation);
                             break;
                         }
                 }
@@ -150,11 +176,20 @@ namespace TerminologyLauncher.GUI
 
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var combox = sender as ComboBox;
             var selected = combox.SelectedIndex;
-            this.AccountTypeTitle.Text = selected == 1 ? "Majong账户:" : "用户名:";
+            this.AccountTypeTitle.Text = selected == 1 ? this.Translation.MojongAccountTranslation : this.Translation.OfflineAccountTranslation;
 
             if (selected == 0)
             {
@@ -170,19 +205,31 @@ namespace TerminologyLauncher.GUI
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual void OnLogining(object serder)
+        private void OnLogining(object serder)
         {
             var handler = this.Logining;
             if (handler != null) handler(serder, EventArgs.Empty);
+        }
+
+        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
+        }
+
+        private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            var checkbox = (CheckBox)sender;
+            var isChecked = (checkbox).IsChecked;
+            if (isChecked == null) return;
+            this.PasswordBox.Password = String.Empty;
+            if ((bool)isChecked)
+            {
+                this.PasswordBox.IsEnabled = false;
+            }
+            else
+            {
+                this.PasswordBox.IsEnabled = true;
+            }
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -193,6 +240,31 @@ namespace TerminologyLauncher.GUI
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.OnLogining(this);
+        }
+
+        public void PopupNotifyDialog(string title, string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupConfirmDialog(string title, string content, bool? decision)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

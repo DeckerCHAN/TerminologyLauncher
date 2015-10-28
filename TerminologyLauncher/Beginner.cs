@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using TerminologyLauncher.Core;
 
 namespace TerminologyLauncher
@@ -14,6 +15,13 @@ namespace TerminologyLauncher
     {
         public static void Start()
         {
+            if (!RuntimeDotNetHigherThan45())
+            {
+                Process.Start("http://www.microsoft.com/en-us/download/details.aspx?id=30653");
+                Console.WriteLine("Current .net version is lower than 4.5! Please download the higher version.");
+                return;
+            }
+
             try
             {
                 if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
@@ -34,5 +42,15 @@ namespace TerminologyLauncher
                 Console.WriteLine("!!!CRASH!!!More detail at {0}", report.FullName);
             }
         }
+
+        private static Boolean RuntimeDotNetHigherThan45()
+        {
+            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
+            {
+                int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
+                return releaseKey >= 378389;
+            }
+        }
+
     }
 }

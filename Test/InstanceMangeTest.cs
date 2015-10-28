@@ -46,7 +46,7 @@ namespace TerminologyLauncher.Test
         public static void Initialize()
         {
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
-            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo);
+            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo,null);
             Assert.IsTrue(new DirectoryInfo("Instances").Exists);
         }
 
@@ -71,7 +71,7 @@ namespace TerminologyLauncher.Test
         public static void LaunchInstance()
         {
             if (InstanceManager.Config != null)
-                InstanceManager.Config.SetConfig("javaBinPath", "C:\\jdk1.7.0_51\\bin\\");
+                InstanceManager.Config.SetConfigString("javaBinPath", "C:\\jdk1.7.0_51\\bin\\");
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
 
             var progress = new InternalNodeProgress("");
@@ -84,7 +84,7 @@ namespace TerminologyLauncher.Test
                 }
 
             });
-            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress(100D, ""), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
+            var process = InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress("", 100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
             process.WaitForExit();
         }
     }

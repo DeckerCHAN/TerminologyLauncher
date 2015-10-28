@@ -11,22 +11,38 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainWindow : INotifyPropertyChanged
+    public sealed partial class MainWindow : INotifyPropertyChanged, IPopup
     {
         private ObservableCollection<InstanceEntity> InstanceListValue;
         private InstanceEntity SelectInstanceValue;
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
+        public MainWindowTranslation Translation
+        {
+            get
+            {
+                return
+                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
+                        .MainWindowTranslation;
+            }
+        }
 
         public PlayerEntity Player
         {
@@ -68,9 +84,10 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public MainWindow()
+        public MainWindow(Config config)
         {
             this.InitializeComponent();
+            this.OnPropertyChanged();
         }
 
         public void CrossThreadClose()
@@ -80,7 +97,7 @@ namespace TerminologyLauncher.GUI
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -95,15 +112,7 @@ namespace TerminologyLauncher.GUI
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                var instance = (InstanceEntity)e.AddedItems[0];
-                //  this.BackgroundImageSource
-            }
-            catch (Exception)
-            {
-                //ignore
-            }
+
         }
 
         private void InstanceAddButton_Click(object sender, RoutedEventArgs e)
@@ -115,25 +124,55 @@ namespace TerminologyLauncher.GUI
         {
 
         }
-    }
 
-    public class ImageInMemoryConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public void PopupNotifyDialog(string title, string content)
         {
-            var imagePath = (String)value;
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(imagePath);
-            image.EndInit();
-            return image;
-
+            this.Dispatcher.Invoke(() =>
+            {
+                var notifyWindow = new NotifyWindow(this, title, content);
+                notifyWindow.ShowDialog();
+            });
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public Boolean? PopupConfirmDialog(string title, string content, bool? decision)
         {
             throw new NotImplementedException();
         }
+
+        public Boolean? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<String> selection)
+        {
+            Boolean? result = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                var selectWindow = new SingleSelectWindow(this, title, fieldName, options, selection);
+                result = selectWindow.ShowDialog();
+            });
+            return result;
+        }
+
+        public Boolean? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<String> content)
+        {
+            Boolean? result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                var inputWindow = new SingleLineInputWindow(this, title, fieldName, content);
+                result = inputWindow.ShowDialog();
+            });
+            return result;
+        }
+
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            ProgressWindow progressWindow = null;
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                progressWindow = new ProgressWindow(progress);
+                progressWindow.Show();
+            });
+            return progressWindow;
+        }
     }
+
+
 }
