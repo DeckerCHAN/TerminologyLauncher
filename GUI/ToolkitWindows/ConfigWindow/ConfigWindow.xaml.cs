@@ -62,23 +62,6 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
             }
         }
 
-        public WindowResult ReceiveUserConfigs()
-        {
-            base.ShowDialog();
-            var result = new WindowResult()
-            {
-                Type = this.IsCanceled ? WindowResultType.Canceled : WindowResultType.CommonFinished
-            };
-            if (result.Type == WindowResultType.CommonFinished)
-            {
-                var mixedCollection = new List<ConfigObject>();
-                mixedCollection.AddRange(this.TextInputConfigObjects);
-                mixedCollection.AddRange(this.RangeRestrictedSelectObjects);
-                mixedCollection.AddRange(this.ItemSelectConfigObjects);
-                result.Result = mixedCollection;
-            }
-            return result;
-        }
 
         public ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
@@ -96,7 +79,8 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 
         public new Boolean? ShowDialog()
         {
-            throw new InvalidOperationException();
+            base.ShowDialog();
+            return !this.IsCanceled;
         }
 
         public new void Show()

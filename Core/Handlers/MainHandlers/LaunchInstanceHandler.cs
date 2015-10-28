@@ -54,7 +54,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
                                 Logging.Logger.GetLogger()
                                     .ErrorFormat("Can not find file on server when donloading:{0}", response.ResponseUri);
-                                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch",
+                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch",
                                     String.Format(
                                         "Can not find file on server when donloading:{0}", response.ResponseUri));
                                 break;
@@ -63,7 +63,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
                                 Logging.Logger.GetLogger()
                                  .ErrorFormat("You have no right to access this server when downloading: {0}", response.ResponseUri);
-                                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch",
+                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch",
                                     String.Format(
                                         "You have no right to access this server when downloading: {0}", response.ResponseUri));
 
@@ -74,7 +74,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
                                 Logging.Logger.GetLogger()
                  .Error(String.Format("Encounter an network error during build environment: {0}", ex));
-                                this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch", String.Format(
+                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch", String.Format(
                                     "Encounter an network error during build environment: {0}", ex.Message));
 
                                 break;
@@ -85,7 +85,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 {
                     Logging.Logger.GetLogger()
                         .Error(String.Format("Can not launch this instance because {0}", ex));
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch", String.Format(
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch", String.Format(
                         "Caused by an internal error, we can not launch this instance right now. Detail: {0}", ex.Message));
                 }
                 finally

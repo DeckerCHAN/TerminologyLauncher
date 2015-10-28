@@ -206,6 +206,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
                 progress.Percent = 100D;
+                Logger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
                 return (String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceAlreadyAtLatestVersionTranslation, newInstanceEntity.Version));
             }
 
@@ -216,10 +217,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.RemoveInstance(instanceInfo.Name);
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
+                        Logger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
                         return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
-                        break;
                     }
 
                 case InstanceState.Ok:
@@ -323,16 +324,17 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
+                        Logger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
                         return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
-                        break;
                     }
                 default:
                     {
                         throw new WrongStateException("Wrong instance state! Just instance which in OK or perinitialized state could update.");
                         break;
                     }
+
             }
 
         }

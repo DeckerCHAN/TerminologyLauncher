@@ -40,6 +40,9 @@
             "javaPathTranslation": "Java Path:",
             "maxiumMemoryAllocateTranslation": "Maxium Memory Allocate:",
             "extraJvmArgumentTranslation": "Extra JvmArguments:"
+        },
+        "notifyWindowTranslation": {
+            "notifyWindowConfirmTranslation": "NotifyWindowConfirmTranslation"
         }
     },
     "handlerTranslation": {

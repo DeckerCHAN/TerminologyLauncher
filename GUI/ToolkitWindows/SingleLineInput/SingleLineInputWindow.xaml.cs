@@ -4,21 +4,31 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Toolkits;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 {
     /// <summary>
     /// Interaction logic for SingleLineInputWindow.xaml
     /// </summary>
-    public sealed partial class SingleLineInputWindow : Window, INotifyPropertyChanged
+    public sealed partial class SingleLineInputWindow : INotifyPropertyChanged
     {
-        private string InputContentValue;
+        private FieldReference<String> InputContentValue;
         private string FieldNameValue;
         private Boolean IsCanceled { get; set; }
 
-        public SingleLineInputWindow(String title, String inputFieldName)
+        public SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            if (owner != null)
+            {
+                this.Owner = owner;
+                this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
             this.Title = title;
             this.OnPropertyChanged();
             this.FieldName = inputFieldName;
@@ -26,30 +36,16 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 
         public new Boolean? ShowDialog()
         {
-            throw new InvalidOperationException();
-        }
-
-        public WindowResult ReceiveUserInput()
-        {
-            base.ShowDialog();
-            var result = new WindowResult()
-            {
-                Type = this.IsCanceled ? WindowResultType.Canceled : WindowResultType.CommonFinished
-            };
-            if (result.Type == WindowResultType.CommonFinished)
-            {
-                result.Result = this.InputContent;
-            }
-            return result;
+            return !this.IsCanceled;
         }
 
 
         public String InputContent
         {
-            get { return this.InputContentValue; }
+            get { return this.InputContentValue.Value; }
             set
             {
-                this.InputContentValue = value;
+                this.InputContentValue.Value = value;
                 this.OnPropertyChanged();
             }
         }

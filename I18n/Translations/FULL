@@ -40,6 +40,9 @@
       "javaPathTranslation": "JavaPathTranslation",
       "maxiumMemoryAllocateTranslation": "MaxiumMemoryAllocateTranslation",
       "extraJvmArgumentTranslation": "ExtraJvmArgumentTranslation"
+    },
+    "notifyWindowTranslation": {
+      "notifyWindowConfirmTranslation": "NotifyWindowConfirmTranslation"
     }
   },
   "handlerTranslation": {

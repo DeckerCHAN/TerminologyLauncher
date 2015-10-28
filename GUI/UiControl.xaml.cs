@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using TerminologyLauncher.Configs;
+using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
     /// <summary>
     /// Interaction logic for UiControl.xaml
     /// </summary>
-    public partial class UiControl
+    public partial class UiControl : IPopup
     {
         public new MainWindow MainWindow { get; set; }
         public LoginWindow LoginWindow { get; set; }
@@ -23,10 +25,10 @@ namespace TerminologyLauncher.GUI
         public Config Config { get; set; }
         public UiControl(String configPath)
         {
-            this.Config=new Config(new FileInfo(configPath));
+            this.Config = new Config(new FileInfo(configPath));
             this.MainWindow = new MainWindow(this.Config);
             this.LoginWindow = new LoginWindow(this.Config);
-            this.ConsoleWindow=new ConsoleWindow(this.Config);
+            this.ConsoleWindow = new ConsoleWindow(this.Config);
         }
 
         public void ShowLoginWindow()
@@ -106,40 +108,12 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public WindowResult StartSingleLineInput(String title, String fieldName)
+        public Boolean? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
-            WindowResult result = null;
+            Boolean? result = false;
             this.Dispatcher.Invoke(() =>
             {
-                result = new SingleLineInputWindow(title, fieldName).ReceiveUserInput();
-            });
-            return result;
-        }
-
-        public WindowResult StartSingleSelect(String title, String fieldName, IEnumerable<String> selectItems)
-        {
-            WindowResult result = null;
-            this.Dispatcher.Invoke(() =>
-            {
-                result = new SingleSelectWindow(title, fieldName, selectItems).ReceiveUserSelect();
-            });
-            return result;
-        }
-
-        public void StartPopupWindow(Window owner, String title, String content)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                new PopupWindow(owner, title, content).ShowDialog();
-            });
-        }
-
-        public WindowResult StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
-        {
-            WindowResult result = null;
-            this.Dispatcher.Invoke(() =>
-            {
-                result = new ConfigWindow(textInputConfigs,itemSelectConfigs,rangeRestrictedSelectConfigs).ReceiveUserConfigs();
+                result = new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs).ShowDialog();
             });
             return result;
         }
@@ -153,6 +127,40 @@ namespace TerminologyLauncher.GUI
         {
             this.MainWindow.Close();
             this.LoginWindow.Close();
+        }
+
+        public void PopupNotifyDialog(string title, string content)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                new NotifyWindow(null, title, content).ShowDialog();
+            });
+        }
+
+        public bool? PopupConfirmDialog(string title, string content, bool? decision)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        {
+            Boolean? result = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                var selectWindow = new SingleSelectWindow(null, title, fieldName, options, selection);
+                result = selectWindow.ShowDialog();
+            });
+            return result;
+        }
+
+        public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

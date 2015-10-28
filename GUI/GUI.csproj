@@ -66,7 +66,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ToolkitWindows\PopupWindow\PopupWindow.xaml">
+    <Page Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,7 +102,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="IPopup.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
+    <Compile Include="Toolkits\FieldReference.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
@@ -114,15 +116,13 @@
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Toolkits\ObservableDictionary.cs" />
-    <Compile Include="ToolkitWindows\PopupWindow\PopupWindow.xaml.cs">
-      <DependentUpon>PopupWindow.xaml</DependentUpon>
+    <Compile Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml.cs">
+      <DependentUpon>NotifyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ToolkitWindows\WindowResult.cs" />
-    <Compile Include="ToolkitWindows\WindowResultType.cs" />
     <Compile Include="ToolkitWindows\SingleLineInput\SingleLineInputWindow.xaml.cs">
       <DependentUpon>SingleLineInputWindow.xaml</DependentUpon>
     </Compile>
@@ -219,6 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon_config_default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ToolkitWindows\ConfirmWindow\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

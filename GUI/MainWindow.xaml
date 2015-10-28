@@ -4,7 +4,7 @@
         xmlns:account="clr-namespace:TerminologyLauncher.Entities.Account;assembly=TerminologyLauncher.Entities"
         xmlns:gui="clr-namespace:TerminologyLauncher.GUI"
         xmlns:toolkits="clr-namespace:TerminologyLauncher.GUI.Toolkits"
-        Title="MainWindow" Width="1194" Height="718" 
+        Title="MainWindowWindow" Width="1194" Height="718" 
         Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"

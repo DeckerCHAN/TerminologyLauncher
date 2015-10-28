@@ -37,7 +37,7 @@ namespace TerminologyLauncher.Updater
                    update.LatestVersion.VersionNumber != this.Version;
             if (result)
             {
-                Logging.Logger.GetLogger().InfoFormat("New version {0} available!", update.LatestVersion);
+                Logging.Logger.GetLogger().InfoFormat("New version {0} available!", update.LatestVersion.VersionNumber);
             }
             else
             {

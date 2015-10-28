@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
+using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
@@ -29,7 +31,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
 
             var window = sender as Window;
-            Logger.GetLogger().InfoFormat("Main window is going to {0}!", window.Visibility);
+            Logger.GetLogger().InfoFormat("MainWindow window is going to {0}!", window.Visibility);
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -66,7 +68,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
                                     if (!String.IsNullOrEmpty(result))
                                     {
-                                        this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateWindowTitleTranslation, result);
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateWindowTitleTranslation, result);
                                     }
                                 });
 
@@ -77,7 +79,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
                                 if (result)
                                 {
-                                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NewUpdateAvailable);
+                                    this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NewUpdateAvailable);
 
                                 }
                             });
@@ -117,14 +119,15 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
-                var result = this.Engine.UiControl.StartSingleSelect(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectFieldTranslation, javaRuntimeEntitiesKP.Keys);
-                if (result.Type == WindowResultType.Canceled)
+                var field = new FieldReference<String>(javaRuntimeEntitiesKP.Keys.First());
+                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectFieldTranslation, javaRuntimeEntitiesKP.Keys, field);
+                if (result == null || result.Value == false)
                 {
                     return false;
                 }
                 else
                 {
-                    this.Engine.JreManager.JavaRuntime = javaRuntimeEntitiesKP[result.Result.ToString()];
+                    this.Engine.JreManager.JavaRuntime = javaRuntimeEntitiesKP[field.Value];
                     return true;
                 }
             }
@@ -135,40 +138,45 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                var result = this.Engine.UiControl.StartSingleLineInput(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation);
-                switch (result.Type)
-                {
-                    case WindowResultType.CommonFinished:
-                        {
-                            try
-                            {
-                                var javaBinFolder = new DirectoryInfo(result.Result.ToString());
-                                var jre = new JavaRuntimeEntity
-                                {
-                                    JavaDetails =
-                                        JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
-                                    JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
-                                    JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
-                                };
-                                if (JavaUtils.IsJavaRuntimeValid(jre))
-                                {
-                                    this.Engine.JreManager.JavaRuntime = jre;
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.GetLogger().ErrorFormat("Can not resolve java exe path through user input. Caused by:{0}", ex.Message);
+                var field = new FieldReference<String>(String.Empty);
+                var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation, field);
 
+                if (result == null || result.Value == false)
+                {
+                    {
+                        try
+                        {
+                            var javaBinFolder = new DirectoryInfo(field.Value);
+                            var jre = new JavaRuntimeEntity
+                            {
+                                JavaDetails =
+                                    JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
+                                JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
+                                JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
+                            };
+                            if (JavaUtils.IsJavaRuntimeValid(jre))
+                            {
+                                this.Engine.JreManager.JavaRuntime = jre;
+                            }
+                            else
+                            {
                                 continue;
                             }
-                            break;
                         }
-                    case WindowResultType.Canceled:
-                        return false;
+                        catch (Exception ex)
+                        {
+                            Logger.GetLogger()
+                                .ErrorFormat("Can not resolve java exe path through user input. Caused by:{0}",
+                                    ex.Message);
+
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
             return true;

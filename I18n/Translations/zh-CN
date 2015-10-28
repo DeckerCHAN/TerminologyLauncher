@@ -40,6 +40,9 @@
             "javaPathTranslation": "Java.exe路径",
             "maxiumMemoryAllocateTranslation": "最大分配内存",
             "extraJvmArgumentTranslation": "额外的JVM启动参数"
+        },
+        "notifyWindowTranslation": {
+            "notifyWindowConfirmTranslation": "确定"
         }
     },
     "handlerTranslation": {
@@ -51,7 +54,7 @@
         },
         "inputInstanceUrlTranslation": {
             "inputWindowTitleTranslation": "添加一个新的客户端",
-            "inputFieldTranslation": "有效的客户端URL："
+            "inputFieldTranslation": "客户端URL："
         },
         "instanceUpdateTranslation": {
             "instanceUpdateWindowTitleTranslation": "检查更新",

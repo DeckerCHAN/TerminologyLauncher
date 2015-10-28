@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -10,8 +11,10 @@ using System.Windows.Media.Imaging;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
@@ -20,7 +23,7 @@ namespace TerminologyLauncher.GUI
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public sealed partial class LoginWindow : INotifyPropertyChanged
+    public sealed partial class LoginWindow : IPopup, INotifyPropertyChanged
     {
         private bool IsPerservePasswordValue;
 
@@ -139,27 +142,32 @@ namespace TerminologyLauncher.GUI
                         }
                     case LoginResultType.IncompleteOfArguments:
                         {
-                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultInsufficientArgumentsTranslation).ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultInsufficientArgumentsTranslation);
                             break;
                         }
                     case LoginResultType.WrongPassword:
                         {
-                            new PopupWindow(this, this.Translation.LoginFaultTranslation,this.Translation.LoginFaultWrongPasswordTranslation).ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultWrongPasswordTranslation);
                             break;
                         }
                     case LoginResultType.UserNotExists:
                         {
-                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultUserNotExistTranslation).ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultUserNotExistTranslation);
                             break;
                         }
                     case LoginResultType.NetworkTimedOut:
                         {
-                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultNetworkTimedOutTranslation).ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultNetworkTimedOutTranslation);
                             break;
                         }
                     default:
                         {
-                            new PopupWindow(this, this.Translation.LoginFaultTranslation, this.Translation.LoginFaultUnknownErrorTranslation).ShowDialog();
+                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
+                                this.Translation.LoginFaultUnknownErrorTranslation);
                             break;
                         }
                 }
@@ -232,6 +240,31 @@ namespace TerminologyLauncher.GUI
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.OnLogining(this);
+        }
+
+        public void PopupNotifyDialog(string title, string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupConfirmDialog(string title, string content, bool? decision)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

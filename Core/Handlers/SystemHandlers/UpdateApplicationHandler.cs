@@ -24,14 +24,14 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 try
                 {
                     var message = this.Engine.UpdateManager.FetchLatestVersionAndStartUpdate(progress);
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Update", message);
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Update", message);
                 }
                 catch (Exception ex)
                 {
 
                     Logging.Logger.GetLogger()
                             .Error(String.Format("Can not update because {0}", ex));
-                    this.Engine.UiControl.StartPopupWindow(this.Engine.UiControl.MainWindow, "Can not launch", String.Format(
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch", String.Format(
                         "Caused by an internal error, we can not update right now. Detail: {0}", ex.Message));
                 }
                 finally

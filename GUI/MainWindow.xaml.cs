@@ -15,14 +15,19 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainWindow : INotifyPropertyChanged
+    public sealed partial class MainWindow : INotifyPropertyChanged, IPopup
     {
         private ObservableCollection<InstanceEntity> InstanceListValue;
         private InstanceEntity SelectInstanceValue;
@@ -107,15 +112,7 @@ namespace TerminologyLauncher.GUI
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                var instance = (InstanceEntity)e.AddedItems[0];
-                //  this.BackgroundImageSource
-            }
-            catch (Exception)
-            {
-                //ignore
-            }
+
         }
 
         private void InstanceAddButton_Click(object sender, RoutedEventArgs e)
@@ -126,6 +123,54 @@ namespace TerminologyLauncher.GUI
         private void InstanceRemoveButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        public void PopupNotifyDialog(string title, string content)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                var notifyWindow = new NotifyWindow(this, title, content);
+                notifyWindow.ShowDialog();
+            });
+        }
+
+        public Boolean? PopupConfirmDialog(string title, string content, bool? decision)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<String> selection)
+        {
+            Boolean? result = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                var selectWindow = new SingleSelectWindow(this, title, fieldName, options, selection);
+                result = selectWindow.ShowDialog();
+            });
+            return result;
+        }
+
+        public Boolean? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<String> content)
+        {
+            Boolean? result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                var inputWindow = new SingleLineInputWindow(this, title, fieldName, content);
+                result = inputWindow.ShowDialog();
+            });
+            return result;
+        }
+
+
+        public ProgressWindow BeginPopupProgressWindow(Progress progress)
+        {
+            ProgressWindow progressWindow = null;
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                progressWindow = new ProgressWindow(progress);
+                progressWindow.Show();
+            });
+            return progressWindow;
         }
     }
 
