@@ -32,7 +32,7 @@ namespace TerminologyLauncher.Auth
         }
 
 
-        public LoginResultType Auth(String username, String password)
+        public LoginResultType OfficialAuth(String username, String password)
         {
             var sendPayload = new AuthenticatePayload()
             {
@@ -113,7 +113,12 @@ namespace TerminologyLauncher.Auth
             return LoginResultType.Success;
         }
 
-        public LoginResultType Auth(String username)
+        public LoginResultType TerminologyAuth()
+        {
+            throw new NotImplementedException();
+        }
+
+        public LoginResultType OfflineAuth(String username)
         {
             Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
             if (String.IsNullOrEmpty(username) || username.Length < 4)

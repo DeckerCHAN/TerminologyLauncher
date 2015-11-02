@@ -84,7 +84,7 @@ namespace TerminologyLauncher.GUI
 
         private void HeadBarPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) this.DragMove();
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
         }
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)

@@ -86,7 +86,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) this.DragMove();
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
         }
     }
 }

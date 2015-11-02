@@ -36,7 +36,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                         {
                             try
                             {
-                                var result = this.Engine.AuthServer.Auth(login.UserName, login.Password);
+                                var result = this.Engine.AuthServer.OfficialAuth(login.UserName, login.Password);
                                 if (result == LoginResultType.Success)
                                 {
                                     this.LoginSuccess();
@@ -48,7 +48,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                             }
                             catch (WebException ex)
                             {
-                                Logger.GetLogger().Error(String.Format("Auth encountered an error:{0}", ex.Message));
+                                Logger.GetLogger().Error(String.Format("OfficialAuth encountered an error:{0}", ex.Message));
                                 this.LoginFault(LoginResultType.NetworkTimedOut);
                             }
                         });
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                     }
                 case LoginType.OfflineMode:
                     {
-                        var result = this.Engine.AuthServer.Auth(login.UserName);
+                        var result = this.Engine.AuthServer.OfflineAuth(login.UserName);
                         if (result == LoginResultType.Success)
                         {
                             this.LoginSuccess();

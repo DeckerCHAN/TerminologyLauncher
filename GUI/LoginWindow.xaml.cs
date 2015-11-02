@@ -213,7 +213,7 @@ namespace TerminologyLauncher.GUI
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) this.DragMove();
+            if (e.ChangedButton == MouseButton.Left && e.ButtonState == MouseButtonState.Pressed) this.DragMove();
         }
 
         private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
