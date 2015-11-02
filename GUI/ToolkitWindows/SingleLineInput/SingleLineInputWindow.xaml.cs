@@ -19,6 +19,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 
         public SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
         {
+            this.InputContentValue = content;
             this.InitializeComponent();
             if (owner != null)
             {
@@ -36,6 +37,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 
         public new Boolean? ShowDialog()
         {
+            base.ShowDialog();
             return !this.IsCanceled;
         }
 

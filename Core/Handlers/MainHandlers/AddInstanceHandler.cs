@@ -32,7 +32,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         .InputInstanceUrlTranslation.InputWindowTitleTranslation,
                     I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation
                         .InputInstanceUrlTranslation.InputFieldTranslation, result);
-            if (confim == null || confim.Value)
+            if (confim == null || confim.Value == false)
             {
                 Logger.GetLogger().Info("Empty input or user canceled. Ignore!");
                 return;

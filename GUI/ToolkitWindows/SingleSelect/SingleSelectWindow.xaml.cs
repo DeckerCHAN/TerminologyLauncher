@@ -52,7 +52,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 
         public SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
         {
-
+            this.SelectItemValue = selection;
             this.SelectItems = new ObservableCollection<String>();
             this.Translation =
                TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation

@@ -4,7 +4,7 @@ A Minecraft game lanucher that just focusing on Minecraft Modpack. Bring large a
 
 ## Usage
 
-1. Ensure you have .NET framework 4.0 or higher. If not, you may download it through [official page](http://www.microsoft.com/en-us/download/details.aspx?id=17851).
+1. Ensure you have .NET framework 4.5 or higher. If not, you may download it through [official page](https://www.microsoft.com/en-us/download/details.aspx?id=30653).
 
 2. Download latest version at [release page](https://github.com/DeckerCHAN/TerminologyLanucher/releases).
 
