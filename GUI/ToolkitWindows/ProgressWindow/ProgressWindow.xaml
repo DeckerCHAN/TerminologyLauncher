@@ -1,4 +1,4 @@
-﻿<Window x:Class="TerminologyLauncher.GUI.ProgressWindow"
+﻿<Window x:Class="TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow.ProgressWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ProgressWindow" Height="184" Width="592"
@@ -9,7 +9,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
+                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

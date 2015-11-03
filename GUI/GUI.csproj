@@ -70,7 +70,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProgressWindow.xaml">
+    <Page Include="ToolkitWindows\ProgressWindow\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,7 +119,7 @@
     <Compile Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml.cs">
       <DependentUpon>NotifyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProgressWindow.xaml.cs">
+    <Compile Include="ToolkitWindows\ProgressWindow\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -32,12 +33,13 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
 
             var progress = new InternalNodeProgress(String.Format("Updating instance {0}", instance.InstanceName));
-            var progressWindow = new ProgressWindow(progress);
+            var progressWindow = this.Engine.UiControl.MainWindow.BeginPopupProgressWindow(progress);
             Task.Run(() =>
             {
                 try
                 {
                     var message = this.Engine.InstanceManager.UpdateInstance(progress, instance.InstanceName);
+                    progressWindow.CrossThreadClose();
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Successful updated", message);
                     this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
                 }

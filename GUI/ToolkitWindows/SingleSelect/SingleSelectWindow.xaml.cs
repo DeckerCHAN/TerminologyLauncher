@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
@@ -50,7 +50,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
+        internal SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
         {
             this.SelectItemValue = selection;
             this.SelectItems = new ObservableCollection<String>();

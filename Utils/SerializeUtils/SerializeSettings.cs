@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TerminologyLauncher.Entities.SerializeUtils
+namespace TerminologyLauncher.Utils.SerializeUtils
 {
     internal class SerializeSettings : JsonSerializerSettings
     {

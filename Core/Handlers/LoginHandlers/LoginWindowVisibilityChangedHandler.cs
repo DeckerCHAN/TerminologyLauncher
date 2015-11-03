@@ -3,10 +3,10 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using TerminologyLauncher.Entities.Account;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 {

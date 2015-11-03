@@ -10,9 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 using TerminologyLauncher.Utils.ProgressService;
 

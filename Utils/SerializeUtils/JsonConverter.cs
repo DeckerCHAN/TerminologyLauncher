@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TerminologyLauncher.Entities.SerializeUtils
+namespace TerminologyLauncher.Utils.SerializeUtils
 {
     public class JsonConverter
     {

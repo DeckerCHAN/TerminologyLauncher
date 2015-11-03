@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TerminologyLauncher.Configs;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 
 namespace TerminologyLauncher.GUI
 {

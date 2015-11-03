@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
@@ -24,7 +25,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
             var instance = this.Engine.UiControl.MainWindow.SelectInstance;
             var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
-            var progressWindow = new ProgressWindow(progress);
+            var progressWindow = this.Engine.UiControl.MainWindow.BeginPopupProgressWindow(progress);
             Task.Run(() =>
             {
                 try

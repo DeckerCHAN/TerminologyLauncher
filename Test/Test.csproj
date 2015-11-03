@@ -46,9 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstanceMangeTest.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProgressWindowTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

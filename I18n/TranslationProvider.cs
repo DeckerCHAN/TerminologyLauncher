@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.I18n.TranslationObjects;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.I18n
 {

@@ -14,9 +14,10 @@ using System.Windows.Media.Imaging;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
@@ -165,11 +166,11 @@ namespace TerminologyLauncher.GUI
         public ProgressWindow BeginPopupProgressWindow(Progress progress)
         {
             ProgressWindow progressWindow = null;
-            this.Dispatcher.InvokeAsync(() =>
+            this.Dispatcher.Invoke(() =>
             {
-                progressWindow = new ProgressWindow(progress);
-                progressWindow.Show();
+                progressWindow = new ProgressWindow(this, progress);
             });
+            this.Dispatcher.InvokeAsync(() => { progressWindow.Show(); });
             return progressWindow;
         }
     }

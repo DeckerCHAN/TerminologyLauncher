@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
@@ -17,7 +17,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
         private string FieldNameValue;
         private Boolean IsCanceled { get; set; }
 
-        public SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
+        internal SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
         {
             this.InputContentValue = content;
             this.InitializeComponent();

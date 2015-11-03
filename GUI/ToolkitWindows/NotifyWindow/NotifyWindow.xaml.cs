@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
-namespace TerminologyLauncher.GUI.ToolkitWindows.PopupWindow
+namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
 {
     /// <summary>
     /// Interaction logic for NotifyWindow.xaml
@@ -38,7 +38,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.PopupWindow
             this.Dispatcher.Invoke(this.Close);
         }
 
-        public NotifyWindow(Window owner, String title, String content)
+        internal NotifyWindow(Window owner, String title, String content)
         {
             this.Owner = owner;
             this.ContentString = content;

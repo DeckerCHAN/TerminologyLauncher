@@ -10,7 +10,6 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
@@ -18,6 +17,7 @@ using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.InstanceManagerSystem
 {

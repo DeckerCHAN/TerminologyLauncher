@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.Utils.ProgressService;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow
 {
     /// <summary>
     /// Interaction logic for ProgressWindow.xaml
@@ -35,7 +23,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public ProgressWindow(Progress progress)
+        internal ProgressWindow(Window owner, Progress progress)
         {
             this.Progress = progress;
             this.Progress.ProgressChanged += s =>
@@ -43,6 +31,15 @@ namespace TerminologyLauncher.GUI
                 this.OnPropertyChanged("Progress");
             };
             this.InitializeComponent();
+            if (owner != null)
+            {
+                this.Owner = owner;
+                this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
         }
 
         public void CrossThreadClose()

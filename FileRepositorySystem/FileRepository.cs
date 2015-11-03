@@ -5,10 +5,10 @@ using System.Net;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.FileRepositorySystem
 {

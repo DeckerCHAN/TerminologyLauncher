@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TerminologyLauncher.GUI;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Core.Handlers.SystemHandlers
@@ -18,7 +19,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             Logging.Logger.GetLogger().Info("Handling update application event!");
 
             var progress = new InternalNodeProgress("Update Application");
-            var progressWindow = new ProgressWindow(progress);
+            var progressWindow = this.Engine.UiControl.MainWindow.BeginPopupProgressWindow(progress);
             Task.Run(() =>
             {
                 try

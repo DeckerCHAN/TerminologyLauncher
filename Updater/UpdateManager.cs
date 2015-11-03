@@ -7,11 +7,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Entities.UpdateManagement;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.Updater
 {

@@ -7,7 +7,8 @@ using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
-using TerminologyLauncher.GUI.ToolkitWindows.PopupWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.Utils.ProgressService;
@@ -160,7 +161,13 @@ namespace TerminologyLauncher.GUI
 
         public ProgressWindow BeginPopupProgressWindow(Progress progress)
         {
-            throw new NotImplementedException();
+            ProgressWindow progressWindow = null;
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                progressWindow = new ProgressWindow(null, progress);
+                progressWindow.Show();
+            });
+            return progressWindow;
         }
     }
 }

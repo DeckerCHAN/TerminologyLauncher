@@ -9,7 +9,7 @@ using System.Diagnostics;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace TerminologyLauncher.GUI.Annotations
+namespace TerminologyLauncher.GUI.Properties
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using TerminologyLauncher.GUI.Annotations;
+using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
@@ -63,7 +63,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
         }
 
 
-        public ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
+        internal ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
             this.InitializeComponent();
             this.TextInputConfigObjects = new ObservableCollection<TextInputConfigObject>(textInputConfigs??new List<TextInputConfigObject>());

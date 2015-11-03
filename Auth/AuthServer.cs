@@ -7,9 +7,9 @@ using System.Threading;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.Account.Authentication.Authenticate;
-using TerminologyLauncher.Entities.SerializeUtils;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.Auth
 {
