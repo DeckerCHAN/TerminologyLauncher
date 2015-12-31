@@ -528,13 +528,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
         private void ReceiveOfficialFile(LeafNodeProgress progress, String instanceName, OfficialFileEntity officialFile, FileRepository usingRepo)
         {
             //Try to find file at file repo 
-            var repositoryFile = usingRepo.GetOfficialFile(officialFile.ProvideId);
+            var repositoryFile = usingRepo.GetOfficialFile(progress, officialFile.ProvideId);
 
-            var downloadLink = repositoryFile.DownloadPath;
-            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
-            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
-            DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, repositoryFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+
+            var targetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
+            repositoryFile.CopyTo(targetPositon, true);
+            Logger.GetLogger().Info(String.Format("Successfully put file:{0}.", targetPositon));
 
         }
 

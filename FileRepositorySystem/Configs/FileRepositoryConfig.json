@@ -1,4 +1,5 @@
-﻿{ 
-	"fileRepositoryUrl":"http://terminology.b0.upaiyun.com/Repo/Repo.json",
+﻿{
+    "fileRepositoryUrl": "http://terminology.b0.upaiyun.com/Repo/Repo.json",
+    "repoRootFolder":"RepoCache",
 	"repoFilePath": "Repo.list" 
 }
