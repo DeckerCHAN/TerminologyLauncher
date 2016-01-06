@@ -18,12 +18,14 @@ Repository file is available to defined by everyone and shared through URL locat
           {
              "provideId":"369071A33847B871D39B32",
              "name":"GregTech.lang",
-             "md5":"0102030405060708",             "downloadPath":"https://OfficialRepo.com/GregTech.lang"
+             "md5":"0102030405060708",
+             "downloadPath":"https://OfficialRepo.com/GregTech.lang"
           },
           {
              "provideId":"789871A39278B871239B32",
              "name":"Railcraft.jar",
-             "md5":"0102030405060708",             "downloadPath":"https://OfficialRepo.com/Railcraft.jar"
+             "md5":"0102030405060708",
+             "downloadPath":"https://OfficialRepo.com/Railcraft.jar"
           }
        ]
     }
