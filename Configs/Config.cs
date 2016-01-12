@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TerminologyLauncher.Configs.Exceptions;
 
 namespace TerminologyLauncher.Configs
 {
@@ -25,17 +27,15 @@ namespace TerminologyLauncher.Configs
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
-            var value = this.ConfigJObject.SelectToken(key).ToString();
-            return String.IsNullOrEmpty(value) ? null : value;
-        }
-
-        public IEnumerable<string> GetMultiConfigString(String key)
-        {
-            this.ReadConfigsFromFile();
-            this.CheckKey(key);
-            var value = this.ConfigJObject.SelectToken(key).ToObject<List<String>>();
-
-            return value.Count == 0 ? new List<string>() : value;
+            var value = this.ConfigJObject.SelectToken(key);
+            if (value == null)
+            {
+                throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
+            }
+            else
+            {
+                return value.ToString();
+            }
         }
 
         public void SetMultiConfigString(String key, List<String> configs)
@@ -49,6 +49,25 @@ namespace TerminologyLauncher.Configs
             }
             this.ConfigJObject.SelectToken(key).Replace(jarray);
             this.SaveConfig();
+        }
+
+        public IEnumerable<string> GetMultiConfigString(String key)
+        {
+            this.ReadConfigsFromFile();
+            this.CheckKey(key);
+            var rowList = this.ConfigJObject.SelectToken(key);
+
+            if (rowList == null)
+            {
+                throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
+            }
+            else
+            {
+                var value = rowList.ToObject<List<String>>();
+                return value.Count == 0 ? new List<string>() : value;
+            }
+
+            
         }
 
 
@@ -67,7 +86,16 @@ namespace TerminologyLauncher.Configs
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
-            return JsonConvert.DeserializeObject<T>(this.ConfigJObject.SelectToken(key).ToString());
+            var rowData = this.ConfigJObject.SelectToken(key);
+            if (rowData == null)
+            {
+                throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
+            }
+            else
+            {
+                return JsonConvert.DeserializeObject<T>(rowData.ToString()); 
+            }
+            
         }
 
         public void SetConfigObject(String key, Object obj)
