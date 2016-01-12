@@ -28,7 +28,7 @@ namespace TerminologyLauncher.FileRepositorySystem
             this.RepoUrl = this.Config.GetConfigString("fileRepositoryUrl");
             this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryFileEntity>();
             Logger.GetLogger().Info("Initialized file repo!");
-            this.CacheRootDirectoryInfo = new DirectoryInfo(Config.GetConfigString("RepoCache"));
+            this.CacheRootDirectoryInfo = new DirectoryInfo(Config.GetConfigString("repoCacheFolder"));
             if (!this.CacheRootDirectoryInfo.Exists)
             {
                 this.CacheRootDirectoryInfo.Create();
