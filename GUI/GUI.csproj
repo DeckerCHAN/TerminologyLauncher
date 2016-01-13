@@ -102,6 +102,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Animations\Fade.cs" />
+    <Compile Include="IFade.cs" />
     <Compile Include="IPopup.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="Toolkits\FieldReference.cs" />

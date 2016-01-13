@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Animation;
 using TerminologyLauncher.Configs;
+using TerminologyLauncher.GUI.Animations;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
-using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -32,11 +32,27 @@ namespace TerminologyLauncher.GUI
             this.ConsoleWindow = new ConsoleWindow(this.Config);
         }
 
+        public Storyboard FadeInStoryboard
+        {
+            get { return Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500)); }
+        }
+
+        public Storyboard FadeOutStoryboard
+        {
+            get
+            {
+                return Fade.CreateFadeOutStoryboard(TimeSpan.FromMilliseconds(500));
+            }
+        }
+
         public void ShowLoginWindow()
         {
             try
             {
-                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Show(); });
+                this.LoginWindow.Dispatcher.Invoke(() =>
+                {
+                    Fade.FadeInShowWindow(this.LoginWindow,TimeSpan.FromMilliseconds(300));
+                });
 
             }
             catch (Exception ex)
@@ -49,7 +65,10 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.LoginWindow.Dispatcher.Invoke(() => { this.LoginWindow.Hide(); });
+                this.LoginWindow.Dispatcher.Invoke(() =>
+                {
+                    Fade.FadeOutHideWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300));
+                });
             }
             catch (Exception ex)
             {
@@ -61,7 +80,10 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Show(); });
+                this.MainWindow.Dispatcher.Invoke(() =>
+                {
+                    Fade.FadeInShowWindow(this.MainWindow, TimeSpan.FromMilliseconds(300));
+                });
             }
             catch (Exception ex)
             {
@@ -74,7 +96,10 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { this.MainWindow.Hide(); });
+                this.MainWindow.Dispatcher.Invoke(() =>
+                {
+                    Fade.FadeOutHideWindow(this.MainWindow, TimeSpan.FromMilliseconds(300));
+                });
 
             }
             catch (Exception ex)
@@ -87,7 +112,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Show(); });
+                this.MainWindow.Dispatcher.Invoke(() => { Fade.FadeInShowWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
 
             }
             catch (Exception ex)
@@ -100,7 +125,7 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { this.ConsoleWindow.Hide(); });
+                this.MainWindow.Dispatcher.Invoke(() => { Fade.FadeOutHideWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
 
             }
             catch (Exception ex)

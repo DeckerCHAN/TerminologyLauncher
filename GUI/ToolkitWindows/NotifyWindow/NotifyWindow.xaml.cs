@@ -36,6 +36,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
         public void CrossThreadClose()
         {
             this.Dispatcher.Invoke(this.Close);
+
         }
 
         internal NotifyWindow(Window owner, String title, String content)

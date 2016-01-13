@@ -74,7 +74,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style  x:Key="TerminologyHeadConfigButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
@@ -364,7 +364,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="TerminologyComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
@@ -756,7 +756,7 @@
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="Focusable" Value="false"/>
     </Style>
-    
+
     <!-- ScrollBar -->
     <Style x:Key="TerminologyScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
         <Setter Property="Template">
@@ -1163,5 +1163,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Animations -->
+
+    <BeginStoryboard x:Key="FadeIn">
+        <Storyboard>
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.5" AutoReverse="False" ></DoubleAnimation>
+        </Storyboard>
+    </BeginStoryboard>
+
+    <BeginStoryboard x:Key="FadeOut">
+        <Storyboard>
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.5" AutoReverse="False" ></DoubleAnimation>
+        </Storyboard>
+    </BeginStoryboard>
+
 
 </ResourceDictionary>

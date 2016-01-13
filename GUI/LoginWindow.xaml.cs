@@ -6,8 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Properties;
@@ -137,7 +135,6 @@ namespace TerminologyLauncher.GUI
                 {
                     case LoginResultType.Success:
                         {
-                            this.Hide();
                             break;
                         }
                     case LoginResultType.IncompleteOfArguments:
@@ -266,5 +263,6 @@ namespace TerminologyLauncher.GUI
         {
             throw new NotImplementedException();
         }
+
     }
 }
