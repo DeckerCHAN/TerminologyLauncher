@@ -57,7 +57,8 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not show login window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not show login window right now! Cause:{0}", ex);
+                this.Shutdown();
             }
         }
 
@@ -72,7 +73,8 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not hide login window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not hide login window right now! Cause:{0}", ex);
+                this.Shutdown();
             }
         }
 
@@ -88,7 +90,8 @@ namespace TerminologyLauncher.GUI
             catch (Exception ex)
             {
 
-                Logging.Logger.GetLogger().ErrorFormat("Can not show main window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not show main window right now! Cause:{0}", ex);
+                this.Shutdown();
             }
 
         }
@@ -104,7 +107,8 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not hide main window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not hide main window right now! Cause:{0}", ex.Message);
+                this.Shutdown();
             }
         }
 
@@ -117,7 +121,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not show console window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not show console window right now! Cause:{0}", ex);
             }
         }
 
@@ -130,7 +134,8 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not hide console window right now! Cause:{0}", ex.Message);
+                Logging.Logger.GetLogger().FatalFormat("Can not hide console window right now! Cause:{0}", ex);
+                this.Shutdown();
             }
         }
 
