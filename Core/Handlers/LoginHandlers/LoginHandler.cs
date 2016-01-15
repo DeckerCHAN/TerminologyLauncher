@@ -1,11 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.Account;
-using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.ToolkitWindows;
-using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
@@ -84,6 +80,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         private void LoginSuccess()
         {
             this.Engine.UiControl.LoginWindow.LoginResult(LoginResultType.Success);
+            this.Engine.UiControl.HideLoginWindow();
             this.Engine.PostInitializeComponents();
             this.Engine.UiControl.MainWindow.Player = this.Engine.AuthServer.CurrentPlayer;
             this.Engine.UiControl.ShowMainWindow();

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.Utils;

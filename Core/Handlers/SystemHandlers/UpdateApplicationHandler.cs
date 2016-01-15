@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Core.Handlers.SystemHandlers

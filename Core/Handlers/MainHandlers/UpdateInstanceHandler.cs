@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TerminologyLauncher.Entities.InstanceManagement;
-using TerminologyLauncher.GUI;
-using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.Utils.ProgressService;
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
-using TerminologyLauncher.Core;
 
 namespace TerminologyLauncher
 {

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TerminologyLauncher.Entities.System.Java;
+using TerminologyLauncher.Utils.Exceptions;
 
 namespace TerminologyLauncher.Utils
 {
@@ -29,7 +26,7 @@ namespace TerminologyLauncher.Utils
             var bit = Regex.Match(content, "(?<=Java HotSpot\\(TM\\)\\ ).*(?=\\ VM \\(build)").Value;
             if (String.IsNullOrEmpty(version) || String.IsNullOrEmpty(bit))
             {
-                throw new Exception("Invalid java exe!");
+                throw new SolutionProvidedException("Invalid java exe!","Using valid java exe or install a new jre.");
             }
 
             var jDetail = new JavaDetails { JavaVersion = version };

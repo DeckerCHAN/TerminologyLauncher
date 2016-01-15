@@ -3,10 +3,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using Newtonsoft.Json;
 using TerminologyLauncher.Entities.InstanceManagement;
-using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows;
-using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers

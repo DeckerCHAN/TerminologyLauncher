@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 
 namespace TerminologyLauncher.Entities.InstanceManagement

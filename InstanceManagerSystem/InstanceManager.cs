@@ -16,6 +16,7 @@ using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.Exceptions;
 using TerminologyLauncher.Utils.ProgressService;
 using TerminologyLauncher.Utils.SerializeUtils;
 
@@ -580,20 +581,20 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             if (String.IsNullOrEmpty(instance.InstanceName))
             {
-                throw new MissingFieldException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
+                throw new SolutionProvidedException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
             }
             if (!instance.Generation.Equals(this.SupportGeneration))
             {
-                throw new NotSupportedException(String.Format("Current launcher not support {0} generation instance. Using latest version for both launcher or instance my resolver this problem.", instance.Generation));
+                throw new SolutionProvidedException(String.Format("Current launcher not support {0} generation instance.", instance.Generation), " Using latest version for both launcher or instance my resolver this problem.");
             }
             if (String.IsNullOrEmpty(instance.UpdatePath))
             {
-                throw new MissingFieldException(String.Format("Instance {0} is missing update url, this may caused unable to update. Try to connect author for more information.", instance.UpdatePath));
+                throw new SolutionProvidedException(String.Format("Instance {0} is missing update url", instance.UpdatePath), "This problem should be report to instance author.");
             }
 
             if (String.IsNullOrEmpty(instance.Version))
             {
-                throw new MissingFieldException(String.Format("Instance {0} is missing version number, this may caused unable to update. Try to connect author for more information.", instance.Version));
+                throw new SolutionProvidedException(String.Format("Instance {0} is missing version number.", instance.Version), "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
@@ -603,12 +604,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             if (String.IsNullOrEmpty(instance.StartupArguments.Nativespath))
             {
-                throw new Exception(String.Format("Instance {0} is missing valid native path arguments!", instance.InstanceName));
+                throw new SolutionProvidedException(String.Format("Instance {0} is missing valid native path arguments!", instance.InstanceName), "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
             {
-                throw new Exception("Instance require memory over maxium machine memory!");
+                throw new SolutionProvidedException("Instance require memory over maxium machine memory!", "Extern machine memory may resolve problem.");
             }
 
             var javaDetail = this.JavaRuntime.JavaDetails;
@@ -616,7 +617,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 if (instance.StartupArguments.MiniumMemoryMegaSize >= 1600)
                 {
-                    throw new Exception("X86 Java may not allocate memory more then 1.6G!");
+                    throw new SolutionProvidedException("X86 Java may not allocate memory more then 1.6G!", "Using X64 Jre/Jdk may resolve this problem.");
                 }
             }
 

@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloadUtils.cs" />
+    <Compile Include="Exceptions\SolutionProvidedException.cs" />
     <Compile Include="FolderUtils.cs" />
     <Compile Include="JavaUtils.cs" />
     <Compile Include="EncodeUtils.cs" />

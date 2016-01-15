@@ -8,7 +8,6 @@ using System.Windows;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;

@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.FileRepository;
-using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;

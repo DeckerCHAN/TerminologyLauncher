@@ -122,6 +122,7 @@ namespace TerminologyLauncher.GUI
             catch (Exception ex)
             {
                 Logging.Logger.GetLogger().FatalFormat("Can not show console window right now! Cause:{0}", ex);
+                this.Shutdown();
             }
         }
 

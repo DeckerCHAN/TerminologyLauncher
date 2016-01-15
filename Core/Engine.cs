@@ -8,8 +8,6 @@ using TerminologyLauncher.Core.Handlers;
 using TerminologyLauncher.Core.Handlers.LoginHandlers;
 using TerminologyLauncher.Core.Handlers.MainHandlers;
 using TerminologyLauncher.Core.Handlers.SystemHandlers;
-using TerminologyLauncher.Entities.Account;
-using TerminologyLauncher.Entities.FileRepository;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.I18n;
@@ -99,12 +97,21 @@ namespace TerminologyLauncher.Core
 
         public void PostInitializeComponents()
         {
-            Logger.GetLogger().Info("Engine extra component initializing...");
-            this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
-            this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
-            this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
-            this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion + this.BuildVersion);
-            Logger.GetLogger().Info("Engine extra component initialized...");
+            try
+            {
+                Logger.GetLogger().Info("Engine extra component initializing...");
+                this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
+                this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
+                this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
+                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion + this.BuildVersion);
+                Logger.GetLogger().Info("Engine extra component initialized...");
+
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
+                this.Exit();
+            }
         }
     }
 }
