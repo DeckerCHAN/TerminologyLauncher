@@ -30,7 +30,7 @@
 
         </Border>
         <Canvas DockPanel.Dock="Bottom">
-            <Border Canvas.Left="21" Canvas.Top="10" >
+            <Border Canvas.Left="30" Canvas.Top="10" >
                 <ScrollViewer Width="366" Height="113" Style="{DynamicResource TerminologyScrollViewerStyle}" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                     <TextBlock  Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding ContentString}" FontSize="16" Height="auto" Width="345"  TextWrapping="Wrap" VerticalAlignment="Center"  HorizontalAlignment="Left"></TextBlock>
                 </ScrollViewer>

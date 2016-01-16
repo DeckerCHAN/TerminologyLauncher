@@ -32,7 +32,7 @@
 
     <Style x:Key="TerminologyTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
         <Setter Property="FontSize" Value="17"></Setter>
-        <Setter Property="Margin" Value="8,8,0,0"></Setter>
+        <Setter Property="Margin" Value="15,8,0,0"></Setter>
     </Style>
 
     <Style x:Key="TerminologyCheckBoxStyle" TargetType="{x:Type CheckBox}">

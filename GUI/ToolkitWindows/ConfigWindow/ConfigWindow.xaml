@@ -22,7 +22,7 @@
             </Border.Background>
             <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown"    Height="30" Background="Transparent" >
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Translation.ConfigWindowTitleTranslation}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left"  Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Translation.ConfigWindowTitleTranslation}"></TextBlock>
                 <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                     <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
                 </StackPanel>
@@ -60,8 +60,8 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <ListBox Style="{DynamicResource TerminologyListBox}" ItemsSource="{Binding RangeRestrictedSelectObjects}">
-                            <ListBox.ItemTemplate>
+                        <ItemsControl  ItemsSource="{Binding RangeRestrictedSelectObjects}">
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
                                         <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}"><Run Text="{Binding Path=Name,Mode=OneWay}"/><Run Text=":"/></TextBlock>
@@ -69,8 +69,8 @@
                                         <TextBox  MinWidth="90" Margin="5,0,0,0" FontSize="20" Style="{DynamicResource TerminologyTextBoxStyle}" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextWrapping="NoWrap"></TextBox>
                                     </StackPanel>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         
                     </StackPanel>
                 </ScrollViewer>

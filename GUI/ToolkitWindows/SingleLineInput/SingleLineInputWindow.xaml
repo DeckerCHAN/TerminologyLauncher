@@ -22,7 +22,7 @@
             </Border.Background>
             <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Height="30" Background="Transparent" >
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
+                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
                 <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                     <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
                 </StackPanel>
