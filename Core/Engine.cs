@@ -54,8 +54,8 @@ namespace TerminologyLauncher.Core
         public Process GameProcess { get; set; }
         public Engine()
         {
-            Logger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
             Logger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
+            Logger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
@@ -69,7 +69,7 @@ namespace TerminologyLauncher.Core
         {
             this.RegisterHandlers();
             Logger.GetLogger().Info("Engine running...");
-              Logger.GetLogger().Info("Starting GUI...");
+            Logger.GetLogger().Info("Starting GUI...");
             this.UiControl.ShowLoginWindow();
             this.UiControl.Run();
             Logger.GetLogger().Info("Exit running.");
