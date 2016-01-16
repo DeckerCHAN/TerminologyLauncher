@@ -15,6 +15,7 @@ using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Updater;
+using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Core
 {
@@ -53,6 +54,8 @@ namespace TerminologyLauncher.Core
         public Process GameProcess { get; set; }
         public Engine()
         {
+            Logger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
+            Logger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
@@ -66,7 +69,7 @@ namespace TerminologyLauncher.Core
         {
             this.RegisterHandlers();
             Logger.GetLogger().Info("Engine running...");
-            Logger.GetLogger().Info("Starting GUI...");
+              Logger.GetLogger().Info("Starting GUI...");
             this.UiControl.ShowLoginWindow();
             this.UiControl.Run();
             Logger.GetLogger().Info("Exit running.");
@@ -103,7 +106,7 @@ namespace TerminologyLauncher.Core
                 this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
                 this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
                 this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
-                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion , this.BuildVersion);
+                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion, this.BuildVersion);
                 Logger.GetLogger().Info("Engine extra component initialized...");
 
             }
