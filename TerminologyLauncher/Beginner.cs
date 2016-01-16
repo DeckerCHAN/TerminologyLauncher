@@ -22,7 +22,7 @@ namespace TerminologyLauncher
             {
                 if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
                 {
-                    Console.WriteLine("You can not run nore than one Terminology Launcher at same time!");
+                    Console.WriteLine("You cannot run nore than one Terminology Launcher at same time!");
                     return;
                 }
                 Application.EnableVisualStyles();

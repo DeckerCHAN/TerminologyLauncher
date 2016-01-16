@@ -25,7 +25,7 @@ namespace TerminologyLauncher.Utils
             {
                 if (resourceStream == null)
                 {
-                    throw new FileNotFoundException(String.Format("Link {0} is not invalid, can not find that file.", link));
+                    throw new FileNotFoundException(String.Format("Link {0} is not invalid, cannot find that file.", link));
                 }
                 using (var fileStream = file.OpenWrite())
                 {

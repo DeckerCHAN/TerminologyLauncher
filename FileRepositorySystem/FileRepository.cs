@@ -79,7 +79,7 @@ namespace TerminologyLauncher.FileRepositorySystem
         {
             if (!this.OfficialProviRdeFilesRepo.ContainsKey(id))
             {
-                throw new Exception(String.Format("Can not find official file with id:{0} at current repo. Try to change repo or contact instance author to correct provide info.", id));
+                throw new Exception(String.Format("Cannot find official file with id:{0} at current repo. Try to change repo or contact instance author to correct provide info.", id));
             }
             var repositoryFile = this.OfficialProviRdeFilesRepo[id];
             var cacheFile = new FileInfo(Path.Combine(this.CacheDirectoryInfo.FullName, repositoryFile.ProvideId));

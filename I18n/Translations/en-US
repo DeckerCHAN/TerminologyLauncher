@@ -24,7 +24,7 @@
             "rememberAccountTranslation": "Remember account",
             "loginTranslation": "Login",
             "cancelTranslation": "Cancel",
-            "loginFaultTranslation": "Can not login!",
+            "loginFaultTranslation": "Cannot login!",
             "loginFaultInsufficientArgumentsTranslation": "Insufficient Arguments",
             "loginFaultWrongPasswordTranslation": "Wrong password!",
             "loginFaultUserNotExistTranslation": "User not exists!",

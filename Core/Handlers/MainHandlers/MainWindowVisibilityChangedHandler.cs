@@ -165,7 +165,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         catch (Exception ex)
                         {
                             Logger.GetLogger()
-                                .ErrorFormat("Can not resolve java exe path through user input. Caused by:{0}",
+                                .ErrorFormat("Cannot resolve java exe path through user input. Caused by:{0}",
                                     ex.Message);
 
                             continue;

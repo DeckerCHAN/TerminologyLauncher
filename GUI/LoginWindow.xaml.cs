@@ -109,7 +109,7 @@ namespace TerminologyLauncher.GUI
             });
             if (login == null)
             {
-                throw new Exception("Can not get valid login entity");
+                throw new Exception("Cannot get valid login entity");
             }
             return login;
 

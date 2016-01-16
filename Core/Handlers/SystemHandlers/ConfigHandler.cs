@@ -53,9 +53,9 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             {
 
                 Logger.GetLogger()
-                        .Error(String.Format("Can not update because {0}", ex));
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch", String.Format(
-                    "Caused by an internal error, we can not update right now. Detail: {0}", ex.Message));
+                        .Error(String.Format("Cannot update because {0}", ex));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
+                    "Caused by an internal error, we cannot update right now. Detail: {0}", ex.Message));
             }
         }
     }

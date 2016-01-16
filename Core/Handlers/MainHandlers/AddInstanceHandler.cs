@@ -61,8 +61,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             catch (Exception ex)
             {
                 Logger.GetLogger()
-                    .ErrorFormat("Can not add this instance because {0}", ex);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Can not launch", String.Format("Caused by an error, we can not add this instance right now. Detail: {0}", ex.Message));
+                    .ErrorFormat("Cannot add this instance because {0}", ex);
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format("Caused by an error, we cannot add this instance right now. Detail: {0}", ex.Message));
 
             }
             finally

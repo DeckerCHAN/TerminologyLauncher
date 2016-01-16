@@ -676,7 +676,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             catch (WebException)
             {
-                Logger.GetLogger().Warn("Can not download icon file.Using default instead.");
+                Logger.GetLogger().Warn("Cannot download icon file.Using default instead.");
                 ResourceUtils.CopyEmbedFileResource(
                     "TerminologyLauncher.InstanceManagerSystem.Resources.default_icon.png", new FileInfo(iconFile));
             }
@@ -689,7 +689,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             catch (WebException)
             {
-                Logger.GetLogger().Warn("Can not download background file.Using default instead.");
+                Logger.GetLogger().Warn("Cannot download background file.Using default instead.");
                 ResourceUtils.CopyEmbedFileResource(
                     "TerminologyLauncher.InstanceManagerSystem.Resources.default_bg.png", new FileInfo(bgFile));
             }

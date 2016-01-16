@@ -12,7 +12,7 @@ namespace TerminologyLauncher.Utils
             if (!File.Exists(filePath) || File.GetAttributes(filePath).HasFlag(FileAttributes.Directory))
             {
                 throw new FileNotFoundException(
-                    String.Format("Can not calculate file Md5 for {0} if file not exists or it is a directory!", filePath));
+                    String.Format("Cannot calculate file Md5 for {0} if file not exists or it is a directory!", filePath));
             }
             using (var md5 = MD5.Create())
             {

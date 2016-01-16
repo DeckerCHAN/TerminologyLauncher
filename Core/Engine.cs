@@ -36,9 +36,9 @@ namespace TerminologyLauncher.Core
             get { return "A2"; }
         }
 
-        public String BuildVersion
+        public Int32 BuildVersion
         {
-            get { return "1336"; }
+            get { return 1336; }
         }
 
         public Config CoreConfig { get; set; }
@@ -103,7 +103,7 @@ namespace TerminologyLauncher.Core
                 this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
                 this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
                 this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
-                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion + this.BuildVersion);
+                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion , this.BuildVersion);
                 Logger.GetLogger().Info("Engine extra component initialized...");
 
             }

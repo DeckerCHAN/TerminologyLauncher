@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine.cs" />
+    <Compile Include="Exceptions\Update\UpdateServerErrorException.cs" />
     <Compile Include="Handlers\SystemHandlers\CloseHandler.cs" />
     <Compile Include="Handlers\HandlerBase.cs" />
     <Compile Include="Handlers\LoginHandlers\LoginHandler.cs" />
