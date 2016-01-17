@@ -36,7 +36,7 @@ namespace TerminologyLauncher.Utils.Exceptions
 
         public override string Message
         {
-            get { return String.Format("{0} Solution tip: {1}", this.SlutionTip); }
+            get { return String.Format("{0} Solution tip: {1}", base.Message, this.SlutionTip); }
         }
     }
 }
