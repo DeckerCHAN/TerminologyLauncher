@@ -54,6 +54,11 @@ namespace TerminologyLauncher.Utils
                     {
                         throw ex.GetBaseException();
                     }
+                    catch (ArgumentException ex)
+                    {
+                        throw new ArgumentException(ex.Message + String.Format("Url:{0}", url), ex);
+                    }
+                  
                     if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
                     {
                         targetFileInfo.Directory.Create();
@@ -114,8 +119,8 @@ namespace TerminologyLauncher.Utils
         {
             using (var client = new WebClient())
             {
-                client.Encoding = Encoding.UTF8;
-                return client.DownloadString(url);
+                client.Encoding = EncodeUtils.NoneBomUTF8;
+                return client.DownloadString(url);  
             }
         }
 
@@ -126,13 +131,19 @@ namespace TerminologyLauncher.Utils
             {
                 using (var client = new WebClient())
                 {
-                    client.Encoding = Encoding.UTF8;
+                    client.Encoding = EncodeUtils.NoneBomUTF8;
                     client.DownloadProgressChanged += (i, o) =>
                     {
                         progress.Percent = o.ProgressPercentage;
                     };
-
-                    return client.DownloadStringTaskAsync(url).Result;
+                    try
+                    {
+                        return client.DownloadStringTaskAsync(url).Result;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        throw new ArgumentException(ex.Message + String.Format("Url:{0}", url), ex);
+                    }
                 }
             });
             task.Start();
@@ -153,10 +164,10 @@ namespace TerminologyLauncher.Utils
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
         }
-        public static void DownloadZippedFile( String url, String path, String md5)
+        public static void DownloadZippedFile(String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile( tempFileInfo.FullName, md5);
+            DownloadFile(tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
             {

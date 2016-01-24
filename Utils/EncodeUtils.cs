@@ -7,6 +7,14 @@ namespace TerminologyLauncher.Utils
 {
     public static class EncodeUtils
     {
+        public static Encoding NoneBomUTF8
+        {
+            get
+            {
+                return new UTF8Encoding(false);
+            }
+        }
+
         public static String CalculateFileMd5(String filePath)
         {
             if (!File.Exists(filePath) || File.GetAttributes(filePath).HasFlag(FileAttributes.Directory))
