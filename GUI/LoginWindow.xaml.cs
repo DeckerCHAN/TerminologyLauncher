@@ -10,6 +10,7 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 using TerminologyLauncher.Utils.ProgressService;
@@ -241,7 +242,11 @@ namespace TerminologyLauncher.GUI
 
         public void PopupNotifyDialog(string title, string content)
         {
-            throw new NotImplementedException();
+            this.Dispatcher.Invoke(() =>
+            {
+                var notifyWindow = new NotifyWindow(this, title, content);
+                notifyWindow.ShowDialog();
+            });
         }
 
         public bool? PopupConfirmDialog(string title, string content, bool? decision)
