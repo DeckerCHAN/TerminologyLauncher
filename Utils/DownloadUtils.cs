@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
@@ -58,7 +59,7 @@ namespace TerminologyLauncher.Utils
                     {
                         throw new ArgumentException(ex.Message + String.Format("Url:{0}", url), ex);
                     }
-                  
+
                     if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
                     {
                         targetFileInfo.Directory.Create();
@@ -119,8 +120,9 @@ namespace TerminologyLauncher.Utils
         {
             using (var client = new WebClient())
             {
+                client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                 client.Encoding = EncodeUtils.NoneBomUTF8;
-                return client.DownloadString(url);  
+                return client.DownloadString(url);
             }
         }
 
@@ -131,6 +133,7 @@ namespace TerminologyLauncher.Utils
             {
                 using (var client = new WebClient())
                 {
+                    client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                     client.Encoding = EncodeUtils.NoneBomUTF8;
                     client.DownloadProgressChanged += (i, o) =>
                     {
@@ -167,7 +170,7 @@ namespace TerminologyLauncher.Utils
         public static void DownloadZippedFile(String url, String path, String md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(tempFileInfo.FullName, md5);
+            DownloadFile(url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
             {
