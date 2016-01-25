@@ -214,22 +214,6 @@ namespace TerminologyLauncher.GUI
             if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
         }
 
-        private void ToggleButton_OnCheckedChanged(object sender, RoutedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            var isChecked = (checkbox).IsChecked;
-            if (isChecked == null) return;
-            this.PasswordBox.Password = String.Empty;
-            if ((bool)isChecked)
-            {
-                this.PasswordBox.IsEnabled = false;
-            }
-            else
-            {
-                this.PasswordBox.IsEnabled = true;
-            }
-        }
-
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             this.OnLogining(this);
