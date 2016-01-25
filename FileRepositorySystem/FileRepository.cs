@@ -36,9 +36,13 @@ namespace TerminologyLauncher.FileRepositorySystem
             if (!this.CacheDirectoryInfo.Exists)
             {
                 this.CacheDirectoryInfo.Create();
+                Logger.GetLogger().InfoFormat("Created cache directory {0}", this.CacheDirectoryInfo.Name);
             }
-            Logger.GetLogger().InfoFormat("Created cache directory {0}", this.CacheDirectoryInfo.Name);
-
+            else
+            {
+                Logger.GetLogger().InfoFormat("Using cache directory {0}", this.CacheDirectoryInfo.Name);
+            }
+           
             Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
             try
             {
