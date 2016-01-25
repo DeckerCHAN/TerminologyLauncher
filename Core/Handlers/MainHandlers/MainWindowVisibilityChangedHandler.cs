@@ -74,13 +74,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             }
                             Task.Run(() =>
                             {
-                                var result = this.Engine.UpdateManager.CheckUpdateAvailable();
-
-                                if (result)
+                                try
                                 {
-                                    this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NewUpdateAvailable);
-
+                                    if (this.Engine.UpdateManager.IsNewVersionAvailable())
+                                    {
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, this.Engine.UpdateManager.GetUpdateInformationHumanReadable());
+                                    }
                                 }
+                                catch (Exception)
+                                {
+                                    this.Engine.Exit();
+                                }
+
+
                             });
 
                         }
@@ -165,7 +171,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         catch (Exception ex)
                         {
                             Logger.GetLogger()
-                                .ErrorFormat("Cannot resolve java exe path through user input. Caused by:{0}",
+                                .ErrorFormat("cannot resolve java exe path through user input. Caused by:{0}",
                                     ex.Message);
 
                             continue;

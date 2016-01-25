@@ -78,7 +78,7 @@ namespace TerminologyLauncher.Core
         public void Exit()
         {
             Logger.GetLogger().Info("Engine shutting down...");
-            Engine.GetEngine().UiControl.Shutdown();
+            this.UiControl.Shutdown();
             Logger.GetLogger().Info("UiControl shutdown.");
         }
 
