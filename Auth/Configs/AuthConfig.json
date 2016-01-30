@@ -1,9 +1,10 @@
 ﻿{
-	"profileFolder":"Profiles", 
-	"authServer":" https://authserver.mojang.com",
-	"authUrls":{
-		"authenticate": " https://authserver.mojang.com/authenticate"
-	  } ,
-	  "refreshInterval":"600000" 
-	 
+    "profileFolder": "Profiles",
+    "authServer": " https://authserver.mojang.com",
+    "authUrls": {
+        "authenticate": " https://authserver.mojang.com/authenticate"
+    },
+    "profileUrl": "https://sessionserver.mojang.com/session/minecraft/profile/",
+    "refreshInterval": "600000"
+
 }

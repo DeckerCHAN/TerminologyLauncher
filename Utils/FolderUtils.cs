@@ -44,5 +44,13 @@ namespace TerminologyLauncher.Utils
                 Directory.Delete(path, true);
             }
         }
+
+        public static void CreateDirectoryIfNotExists(DirectoryInfo directoryInfo)
+        {
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+            }
+        }
     }
 }

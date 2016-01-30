@@ -43,10 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AdditionalInfo\Properties\CapeEntity.cs" />
+    <Compile Include="Account\AdditionalInfo\Properties\SkinEntity.cs" />
+    <Compile Include="Account\AdditionalInfo\Properties\TexturesEntity.cs" />
+    <Compile Include="Account\AdditionalInfo\Properties\TexturesInfoEntity.cs" />
+    <Compile Include="Account\AdditionalInfo\PropertiyEntity.cs" />
     <Compile Include="Account\Authentication\Authenticate\AgentEntity.cs" />
     <Compile Include="Account\Authentication\Authenticate\AuthenticatePayload.cs" />
-    <Compile Include="Account\Authentication\Authenticate\AuthenticateResponse.cs" />
-    <Compile Include="Account\Authentication\AuthenticationResponseEntity.cs" />
+    <Compile Include="Account\AuthenticateResponse.cs" />
+    <Compile Include="Account\ResponseEntity.cs" />
     <Compile Include="Account\Authentication\Invalidate\InvalidatePayload.cs" />
     <Compile Include="Account\Authentication\ProfileEntity.cs" />
     <Compile Include="Account\Authentication\Refresh\RefreshPayload.cs" />
@@ -57,6 +62,7 @@
     <Compile Include="Account\LoginResultType.cs" />
     <Compile Include="Account\LoginType.cs" />
     <Compile Include="Account\PlayerEntity.cs" />
+    <Compile Include="Account\AdditionalInfo\AdditionalInfoEntity.cs" />
     <Compile Include="FileRepository\FileRepositoryEntity.cs" />
     <Compile Include="FileRepository\RepositoryFileEntity.cs" />
     <Compile Include="InstanceManagement\InstanceInfoEntity.cs" />

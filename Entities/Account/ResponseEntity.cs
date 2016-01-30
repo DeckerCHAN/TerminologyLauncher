@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TerminologyLauncher.Entities.Account.Authentication
+namespace TerminologyLauncher.Entities.Account
 {
-    public class AuthenticationResponseEntity
+    public class ResponseEntity
     {
         public String Error { get; set; }
         public String ErrorMessage { get; set; }

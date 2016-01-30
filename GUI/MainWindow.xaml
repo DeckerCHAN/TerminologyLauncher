@@ -92,9 +92,9 @@
 
                     </DockPanel>
                 </Border>
-                <Border Background="#333333" Width="262" Height="70"  Canvas.Left="889" Canvas.Top="64">
+                <Border Background="#333333" Width="262" Height="70"  Canvas.Left="889" Canvas.Top="64" ClipToBounds="True">
                     <Canvas>
-                        <Image Source="{Binding Path=Player.PlayerAvatarImagePath,Mode=OneWay}" Width="86" Height="50" Canvas.Left="10" Canvas.Top="10"></Image>
+                        <Image Source="{Binding Path=Player.PlayerAvatarImagePath,Mode=OneWay}" Width="50" Height="50" Canvas.Left="28" Canvas.Top="10" Stretch="Fill"/>
                         <TextBlock Text="{Binding Path=Player.PlayerName}" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="17" Canvas.Left="105" Canvas.Top="10" FontWeight="Bold"></TextBlock>
                         <TextBlock  FontSize="13" Canvas.Left="105" Canvas.Top="37">
                             <TextBlock.Style >
