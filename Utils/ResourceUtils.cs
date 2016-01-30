@@ -13,6 +13,12 @@ namespace TerminologyLauncher.Utils
             return stream;
         }
 
+        public static Stream ReadEmbedFileResource(Assembly assembly,String link)
+        {
+            var stream = assembly.GetManifestResourceStream(link);
+            return stream;
+        }
+
         public static void CopyEmbedFileResource(String link, FileInfo file)
         {
             if (file.Exists)

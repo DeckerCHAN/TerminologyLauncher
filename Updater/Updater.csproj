@@ -48,9 +48,9 @@
     <Compile Include="UpdateManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configs\UpdaterConifg.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Configs\UpdaterConifg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Configs\Configs.csproj">

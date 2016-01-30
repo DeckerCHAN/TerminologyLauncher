@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TerminologyLauncher.Configs.Exceptions;
+using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Configs
 {
@@ -29,7 +33,25 @@ namespace TerminologyLauncher.Configs
             var value = this.ConfigJObject.SelectToken(key);
             if (value == null)
             {
-                throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
+                try
+                {
+                    var ass = Assembly.GetCallingAssembly();
+                    var resourceAccessString = ass.GetManifestResourceNames().First(x => x.EndsWith(this.JsonFileInfo.Name));
+                    var stream = ResourceUtils.ReadEmbedFileResource(ass, resourceAccessString);
+                    var obj = JObject.Parse(new StreamReader(stream).ReadToEnd());
+                    var newValue = obj.SelectToken(key);
+                    if (newValue == null)
+                    {
+                        throw new Exception();
+                    }
+                    this.SetConfigString(key, newValue.ToString());
+                    return newValue.ToString();
+                }
+                catch (Exception)
+                {
+                    throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
+                }
+
             }
             else
             {
@@ -37,44 +59,21 @@ namespace TerminologyLauncher.Configs
             }
         }
 
-        public void SetMultiConfigString(String key, List<String> configs)
-        {
-            this.ReadConfigsFromFile();
-            this.CheckKey(key);
-            var jarray = new JArray();
-            foreach (var config in configs)
-            {
-                jarray.Add(new JValue(config));
-            }
-            this.ConfigJObject.SelectToken(key).Replace(jarray);
-            this.SaveConfig();
-        }
-
-        public IEnumerable<string> GetMultiConfigString(String key)
-        {
-            this.ReadConfigsFromFile();
-            this.CheckKey(key);
-            var rowList = this.ConfigJObject.SelectToken(key);
-
-            if (rowList == null)
-            {
-                throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
-            }
-            else
-            {
-                var value = rowList.ToObject<List<String>>();
-                return value.Count == 0 ? new List<string>() : value;
-            }
-
-            
-        }
-
 
         public void SetConfigString(String key, String value)
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
-            this.ConfigJObject.SelectToken(key).Replace(new JValue(value));
+            var token = this.ConfigJObject.SelectToken(key);
+            if (token != null)
+            {
+                token.Replace(new JValue(value));
+            }
+            else
+            {
+                this.ConfigJObject.Add(new JProperty(key, value));
+            }
+
             this.SaveConfig();
 
 
@@ -92,9 +91,9 @@ namespace TerminologyLauncher.Configs
             }
             else
             {
-                return JsonConvert.DeserializeObject<T>(rowData.ToString()); 
+                return JsonConvert.DeserializeObject<T>(rowData.ToString());
             }
-            
+
         }
 
         public void SetConfigObject(String key, Object obj)
