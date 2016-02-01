@@ -460,7 +460,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="TerminologyConfigButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyConfirmButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="LightGreen"></Setter>
         <Setter Property="Foreground" Value="DarkSlateGray"></Setter>
     </Style>
@@ -468,14 +468,6 @@
     <Style TargetType="{x:Type Button}" x:Key="TerminologyCancelButtonStyle" BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="Tomato"></Setter>
         <Setter Property="Foreground" Value="White"></Setter>
-    </Style>
-
-    <Style TargetType="{x:Type Button}" x:Key="ConfirmTransparentButtonStyle"  BasedOn="{StaticResource TerminologyButtonStyle}">
-        <Setter Property="Background" Value="DarkSeaGreen"></Setter>
-    </Style>
-
-    <Style x:Key="CancelTransparentButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TerminologyButtonStyle}">
-        <Setter Property="Background" Value="Tomato"></Setter>
     </Style>
 
     <!-- CheckBox-->
