@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TranslationObjects\GUITranslations\ConfirmWindowTranslation.cs" />
     <Compile Include="TranslationObjects\GUITranslations\NotifyWindowTranslation.cs" />
     <Compile Include="TranslationObjects\HandlerTranslations\LanucherUpdateTranslation.cs" />
     <Compile Include="TranslationObjects\HandlerTranslations\InstanceUpdateTranslation.cs" />

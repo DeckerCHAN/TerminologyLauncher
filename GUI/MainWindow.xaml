@@ -60,7 +60,7 @@
                                 <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="{Binding Path=Translation.AddInstanceTranslation}" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
-                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="{Binding Path=Translation.RemoveInstanceTranslation}" Style="{DynamicResource TerminologyButtonStyle}" Background="Tomato" Click="InstanceRemoveButton_Click" ></Button>
+                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="{Binding Path=Translation.RemoveInstanceTranslation}" Style="{DynamicResource TerminologyCancelButtonStyle}"  Click="InstanceRemoveButton_Click" ></Button>
                             </Border>
                         </Grid>
 
