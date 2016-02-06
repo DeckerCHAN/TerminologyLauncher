@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using TerminologyLauncher.Entities.InstanceManagement;
+using TerminologyLauncher.Logging;
 
 namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
@@ -24,8 +25,11 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.GetLogger()
+                .ErrorFormat("Cannot remove this instance because {0}", ex);
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format("Caused by an error, we cannot remove this instance right now. Detail: {0}", ex.Message));
 
                 throw;
             }
