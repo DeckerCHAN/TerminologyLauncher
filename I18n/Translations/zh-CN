@@ -43,6 +43,10 @@
         },
         "notifyWindowTranslation": {
             "notifyWindowConfirmTranslation": "确定"
+        },
+        "confirmWindowTranslation": {
+            "confirmWindowConfirmTranslation": "确认",
+            "confirmWindowCancelTranslation": "取消"
         }
     },
     "handlerTranslation": {

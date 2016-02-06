@@ -43,6 +43,10 @@
         },
         "notifyWindowTranslation": {
             "notifyWindowConfirmTranslation": "NotifyWindowConfirmTranslation"
+        },
+        "confirmWindowTranslation": {
+            "confirmWindowConfirmTranslation": "Confirm",
+            "confirmWindowCancelTranslation": "Cancel"
         }
     },
     "handlerTranslation": {
