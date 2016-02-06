@@ -10,6 +10,7 @@ using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
+using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -51,7 +52,7 @@ namespace TerminologyLauncher.GUI
             {
                 this.LoginWindow.Dispatcher.Invoke(() =>
                 {
-                    Fade.FadeInShowWindow(this.LoginWindow,TimeSpan.FromMilliseconds(300));
+                    Fade.FadeInShowWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300));
                 });
 
             }
@@ -187,7 +188,13 @@ namespace TerminologyLauncher.GUI
 
         public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
         {
-            throw new NotImplementedException();
+            Boolean? result = null;
+            this.Dispatcher.Invoke(() =>
+            {
+                var inputWindow = new SingleLineInputWindow(null, title, fieldName, content);
+                result = inputWindow.ShowDialog();
+            });
+            return result;
         }
 
         public ProgressWindow BeginPopupProgressWindow(Progress progress)
