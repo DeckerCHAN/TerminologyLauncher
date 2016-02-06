@@ -22,59 +22,64 @@ namespace TerminologyLauncher.Updater
             this.Version = new VersionEntity() { BuildNumber = buildNumber, CoreVersion = coreVersion };
         }
 
-        public Boolean IsNewVersionAvailable()
+        public UpdateInfo GetupdateInfo()
         {
+            var updateInfo = new UpdateInfo()
+            {
+                UpdateType = UpdateType.Equal,
+                LatestVersion = this.GetLatestVersion()
+            };
             try
             {
-                var latest = this.GetLatestVersion();
-                if (latest.CoreVersion != this.Version.CoreVersion)
+
+                if (updateInfo.LatestVersion.CoreVersion != this.Version.CoreVersion)
                 {
-                    return true;
+                    for (var i = 0; i < updateInfo.LatestVersion.CoreVersion.ToCharArray().Length; i++)
+                    {
+                        var newChar = updateInfo.LatestVersion.CoreVersion.ToCharArray()[i];
+                        var oldChar = this.Version.CoreVersion[i];
+                        if (newChar > oldChar)
+                        {
+                            updateInfo.UpdateType = UpdateType.Higher;
+                            break;
+                        }
+                        else if (newChar < oldChar)
+                        {
+                            updateInfo.UpdateType = UpdateType.Lower;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                 }
-                return latest.BuildNumber != this.Version.BuildNumber;
+                else
+                {
+                    if (updateInfo.LatestVersion.BuildNumber > this.Version.BuildNumber)
+                    {
+                        updateInfo.UpdateType = UpdateType.Higher;
+                    }
+                    else if (updateInfo.LatestVersion.BuildNumber == this.Version.BuildNumber)
+                    {
+                        updateInfo.UpdateType = UpdateType.Equal;
+                    }
+                    else
+                    {
+                        updateInfo.UpdateType = UpdateType.Lower;
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 Logging.Logger.GetLogger().ErrorFormat("Can not judge update available. Cause:{0}", ex);
-                return false;
+                updateInfo.UpdateType = UpdateType.Equal;
             }
+            return updateInfo;
 
         }
 
-        public String GetUpdateInformationHumanReadable()
-        {
-            try
-            {
-                var latest = this.GetLatestVersion();
-                if (latest.CoreVersion != this.Version.CoreVersion)
-                {
-                    return String.Format("New generation launcher {0}-{1} available.", latest.CoreVersion,
-                        latest.BuildNumber);
-                }
-                else
-                {
-                    if (latest.BuildNumber > this.Version.BuildNumber)
-                    {
-                        return String.Format("Launcher has newer build version {0}", latest.BuildNumber);
-                    }
-                    else if (latest.BuildNumber == this.Version.BuildNumber)
-                    {
-                        return String.Format("You are using the latest version {0} build {1}", latest.CoreVersion, latest.BuildNumber);
-                    }
-                    else
-                    {
-                        return String.Format("The version you are using ({0}) is higher than official build({1}). You may using pre-release version or test version. PLEASE DO NOT DISTRIBUTE THIS VERSION UNLESS AUTHORISED.",
-                            this.Version.BuildNumber, latest.BuildNumber);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Logger.GetLogger().ErrorFormat("Can not detecte update available. Cause:{0}", ex);
-                return String.Format("Cannot detecte update right now. Cause:{0}", ex.Message);
-            }
-
-        }
 
         private VersionEntity GetLatestVersion()
         {
@@ -91,7 +96,7 @@ namespace TerminologyLauncher.Updater
         {
             progress.Percent = 0D;
 
-            if (!this.IsNewVersionAvailable())
+            if (!this.GetupdateInfo().UpdateType.Equals(UpdateType.Higher))
             {
                 return TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NoAvailableUpdate;
             }

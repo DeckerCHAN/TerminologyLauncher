@@ -45,7 +45,9 @@
     <Compile Include="Exceptions\Update\UpdateServerErrorException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdateInfo.cs" />
     <Compile Include="UpdateManager.cs" />
+    <Compile Include="UpdateType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Configs\UpdaterConifg.json">

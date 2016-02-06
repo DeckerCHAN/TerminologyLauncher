@@ -10,6 +10,7 @@ using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
+using TerminologyLauncher.Updater;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.ProgressService;
 
@@ -76,10 +77,32 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
                                 try
                                 {
-                                    if (this.Engine.UpdateManager.IsNewVersionAvailable())
+                                    var message = String.Empty;
+                                    var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
+
+                                    switch (updateInfo.UpdateType)
                                     {
-                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, this.Engine.UpdateManager.GetUpdateInformationHumanReadable());
+                                        case UpdateType.Higher:
+                                            message = String.Format("There is higher version({0}-{1}) available",
+                                                updateInfo.LatestVersion.CoreVersion,
+                                                updateInfo.LatestVersion.BuildNumber);
+                                            break;
+                                        case UpdateType.Lower:
+                                            message =
+                                                String.Format(
+                                                    "You are using the test version or pre-release version({0}-{1}). DO NOT DISTRIBUTE THIS VERSION!",
+                                                    updateInfo.LatestVersion.CoreVersion,
+                                                    updateInfo.LatestVersion.BuildNumber);
+                                            break;
+                                        default:
+                                            break;
                                     }
+                                    if (!String.IsNullOrEmpty(message))
+                                    {
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, message);
+
+                                    }
+
                                 }
                                 catch (Exception)
                                 {
