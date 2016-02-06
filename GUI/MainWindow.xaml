@@ -57,7 +57,7 @@
                                 <RowDefinition Height="5*"/>
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="{Binding Path=Translation.AddInstanceTranslation}" Style="{DynamicResource TerminologyConfigButtonStyle}"  Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="{Binding Path=Translation.AddInstanceTranslation}" Style="{DynamicResource TerminologyConfirmButtonStyle}"  Click="InstanceAddButton_Click"></Button>
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
                                 <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="{Binding Path=Translation.RemoveInstanceTranslation}" Style="{DynamicResource TerminologyCancelButtonStyle}"  Click="InstanceRemoveButton_Click" ></Button>

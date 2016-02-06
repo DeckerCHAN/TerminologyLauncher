@@ -11,6 +11,7 @@ using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
@@ -130,9 +131,15 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public Boolean? PopupConfirmDialog(string title, string content, bool? decision)
+        public Boolean? PopupConfirmDialog(string title, string content)
         {
-            throw new NotImplementedException();
+            Boolean? result = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                var confirm = new ConfirmWindow(this, title, content);
+                result = confirm.ShowDialog();
+            });
+            return result;
         }
 
         public Boolean? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<String> selection)

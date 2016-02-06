@@ -169,7 +169,7 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public bool? PopupConfirmDialog(string title, string content, bool? decision)
+        public bool? PopupConfirmDialog(string title, string content)
         {
             throw new NotImplementedException();
         }

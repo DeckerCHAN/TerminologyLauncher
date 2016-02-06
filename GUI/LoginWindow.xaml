@@ -60,8 +60,8 @@
 
             </ComboBox>
             <CheckBox x:Name="IsPerservePasswordCheckBox" IsChecked="{Binding IsPerservePassword,Mode=TwoWay}" x:FieldModifier="public" Content="{Binding Path=Translation.RememberAccountTranslation}" Canvas.Left="331" Canvas.Top="177" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}"/>
-            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource ConfirmTransparentButtonStyle}"  Content="{Binding Path=Translation.LoginTranslation}" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_Click" />
-            <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource CancelTransparentButtonStyle}" Content="{Binding Path=Translation.CancelTranslation}" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
+            <Button x:Name="LoginButton" x:FieldModifier="public" Style="{DynamicResource TerminologyConfirmButtonStyle}"  Content="{Binding Path=Translation.LoginTranslation}" Canvas.Left="177" Canvas.Top="232" Width="119" Height="28" Click="LoginButton_Click" />
+            <Button x:Name="CancleButton" x:FieldModifier="public" Style="{DynamicResource TerminologyCancelButtonStyle}" Content="{Binding Path=Translation.CancelTranslation}" Canvas.Left="321" Canvas.Top="232" Width="119" Height="28" />
             <TextBlock TextWrapping="Wrap" Text="{Binding Path=Translation.LoginModeTranslation}" Canvas.Right="330" Canvas.Top="173" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right"/>
 
 

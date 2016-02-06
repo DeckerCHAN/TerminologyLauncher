@@ -31,6 +31,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
             this.Title = title;
+            this.IsCanceled = false;
             this.OnPropertyChanged();
             this.FieldName = inputFieldName;
         }
@@ -51,7 +52,14 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.OnPropertyChanged();
             }
         }
-
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.IsCanceled = true;
+                this.Close();
+            });
+        }
         public String FieldName
         {
             get { return this.FieldNameValue; }

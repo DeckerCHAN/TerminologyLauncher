@@ -3,24 +3,24 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using TerminologyLauncher.GUI.Properties;
+using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
-namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
+namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
 {
     /// <summary>
-    /// Interaction logic for NotifyWindow.xaml
+    /// Interaction logic for ConfirmWindow.xaml
     /// </summary>
-    public sealed partial class NotifyWindow : INotifyPropertyChanged
+    public sealed partial class ConfirmWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-        public NotifyWindowTranslation Translation
+        public ConfirmWindowTranslation Translation
         {
             get
             {
                 return
                     I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
-                        .NotifyWindowTranslation;
+                        .ConfirmWindowTranslation;
             }
         }
         public String ContentString
@@ -32,13 +32,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
                 this.OnPropertyChanged();
             }
         }
-
-        public void CrossThreadClose()
-        {
-            this.Dispatcher.Invoke(this.Close);
-        }
-
-        internal NotifyWindow(Window owner, String title, String content)
+        internal ConfirmWindow(Window owner, String title, String content)
         {
             this.Owner = owner;
             this.ContentString = content;
@@ -53,7 +47,40 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
             this.Title = title;
+            this.IsCanceled = false;
             this.OnPropertyChanged();
+        }
+        private Boolean IsCanceled { get; set; }
+
+        public new Boolean? ShowDialog()
+        {
+            base.ShowDialog();
+            return !this.IsCanceled;
+        }
+
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.IsCanceled = true;
+                this.Close();
+            });
+        }
+
+        private void OnDrag(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
+        }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.IsCanceled = true;
+            this.Close();
+        }
+
+        private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -63,16 +90,6 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
         {
             var handler = this.PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
-        }
-
-        private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

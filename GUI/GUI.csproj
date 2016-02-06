@@ -66,6 +66,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ToolkitWindows\ConfirmWindow\ConfirmWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +109,7 @@
     <Compile Include="Animations\Fade.cs" />
     <Compile Include="IFade.cs" />
     <Compile Include="IPopup.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="Toolkits\FieldReference.cs" />
     <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
@@ -118,6 +123,9 @@
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Toolkits\ObservableDictionary.cs" />
+    <Compile Include="ToolkitWindows\ConfirmWindow\ConfirmWindow.xaml.cs">
+      <DependentUpon>ConfirmWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml.cs">
       <DependentUpon>NotifyWindow.xaml</DependentUpon>
     </Compile>
@@ -222,9 +230,7 @@
   <ItemGroup>
     <Resource Include="Resources\icon_config_default.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ToolkitWindows\ConfirmWindow\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
