@@ -7,5 +7,6 @@
         public SingleSelectWindowTranslation SingleSelectWindowTranslation { get; set; }
         public ConfigWindowTranslation ConfigWindowTranslation { get; set; }
         public NotifyWindowTranslation NotifyWindowTranslation { get; set; }
+        public ConfirmWindowTranslation ConfirmWindowTranslation { get; set; }
     }
 }
