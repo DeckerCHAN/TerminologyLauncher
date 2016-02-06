@@ -58,7 +58,7 @@ namespace TerminologyLauncher.I18n
                 {
                     if (propertyInfo.GetValue(obj) == null)
                     {
-                        propertyInfo.SetValue(obj, propertyInfo.Name);
+                        propertyInfo.SetValue(obj, "(Field Name)"+propertyInfo.Name);
 
                     }
                 }
