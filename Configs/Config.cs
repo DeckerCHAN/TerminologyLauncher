@@ -12,7 +12,6 @@ using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Configs
 {
-    //TODO:Using reflect to find default config if config is missing in file
     public class Config
     {
         public FileInfo JsonFileInfo { get; protected set; }
