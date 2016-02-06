@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Threading;
 using TerminologyLauncher.Auth;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Core.Handlers;
@@ -52,11 +53,13 @@ namespace TerminologyLauncher.Core
         public Dictionary<String, HandlerBase> Handlers { get; set; }
         public JreManager JreManager { get; set; }
         public Process GameProcess { get; set; }
+        public Dispatcher EngineDispatcher { get; private set; }
         public Engine()
         {
             Logger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
             Logger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
             Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
+            this.EngineDispatcher = Dispatcher.CurrentDispatcher;
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
             this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));
@@ -77,9 +80,12 @@ namespace TerminologyLauncher.Core
 
         public void Exit()
         {
-            Logger.GetLogger().Info("Engine shutting down...");
-            this.UiControl.Shutdown();
-            Logger.GetLogger().Info("UiControl shutdown.");
+            this.EngineDispatcher.Invoke(() =>
+            {
+                Logger.GetLogger().Info("Engine shutting down...");
+                this.UiControl.Shutdown();
+                Logger.GetLogger().Info("UiControl shutdown.");
+            });
         }
 
         public void RegisterHandlers()
