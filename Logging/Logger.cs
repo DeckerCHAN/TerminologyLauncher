@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using log4net;
+using log4net.Appender;
 using log4net.Config;
 using log4net.Repository.Hierarchy;
 using TerminologyLauncher.Utils;
@@ -11,12 +12,19 @@ namespace TerminologyLauncher.Logging
     public static class TerminologyLogger
     {
         private static Boolean _isLoaded = false;
+
+        public static MemoryAppender MemoryAppender;
         public static ILog GetLogger()
         {
-            if (_isLoaded) return LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);
-            XmlConfigurator.Configure(
-                ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Logging.Configs.Logging.config"));
-            _isLoaded = true;
+            if (!_isLoaded)
+            {
+                XmlConfigurator.Configure(
+                    ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.Logging.Configs.Logging.config"));
+                var hierarchy = LogManager.GetRepository() as Hierarchy;
+                if (hierarchy != null) MemoryAppender = hierarchy.Root.GetAppender("MemoryAppender") as MemoryAppender;
+
+                _isLoaded = true;
+            }
             return LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);
         }
     }
