@@ -31,7 +31,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
 
             var window = sender as Window;
-            Logger.GetLogger().InfoFormat("MainWindow window is going to {0}!", window.Visibility);
+            TerminologyLogger.GetLogger().InfoFormat("MainWindow window is going to {0}!", window.Visibility);
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -117,7 +117,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     }
                 default:
                     {
-                        Logger.GetLogger().Error(String.Format("HandlerBase could not handle {0} status.", window.Visibility));
+                        TerminologyLogger.GetLogger().Error(String.Format("HandlerBase could not handle {0} status.", window.Visibility));
                         break;
                     }
             }
@@ -164,7 +164,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
             while (this.Engine.JreManager.JavaRuntime == null)
             {
-                Logger.GetLogger().Warn("Java path is empty. Try to receive from user..");
+                TerminologyLogger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
                 var field = new FieldReference<String>(String.Empty);
                 var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation, field);
@@ -193,7 +193,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         }
                         catch (Exception ex)
                         {
-                            Logger.GetLogger()
+                            TerminologyLogger.GetLogger()
                                 .ErrorFormat("cannot resolve java exe path through user input. Caused by:{0}",
                                     ex.Message);
 

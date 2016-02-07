@@ -73,7 +73,7 @@ namespace TerminologyLauncher.Updater
             }
             catch (Exception ex)
             {
-                Logging.Logger.GetLogger().ErrorFormat("Can not judge update available. Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().ErrorFormat("Can not judge update available. Cause:{0}", ex);
                 updateInfo.UpdateType = UpdateType.Equal;
             }
             return updateInfo;
@@ -83,7 +83,7 @@ namespace TerminologyLauncher.Updater
 
         private VersionEntity GetLatestVersion()
         {
-            Logging.Logger.GetLogger().Info("Start to check lanucher update.");
+            Logging.TerminologyLogger.GetLogger().Info("Start to check lanucher update.");
             var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
             if (update.LatestVersion == null || String.IsNullOrEmpty(update.LatestVersion.CoreVersion) || update.LatestVersion.BuildNumber.Equals(0) || String.IsNullOrEmpty(update.LatestVersion.DownloadLink) || String.IsNullOrEmpty(update.LatestVersion.Md5))
             {

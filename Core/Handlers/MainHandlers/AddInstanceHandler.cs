@@ -18,7 +18,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logger.GetLogger().Info("Handling add instance event!");
+            TerminologyLogger.GetLogger().Info("Handling add instance event!");
 
             var result = new FieldReference<String>(String.Empty);
 
@@ -30,7 +30,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         .InputInstanceUrlTranslation.InputFieldTranslation, result);
             if (confim == null || confim.Value == false)
             {
-                Logger.GetLogger().Info("Empty input or user canceled. Ignore!");
+                TerminologyLogger.GetLogger().Info("Empty input or user canceled. Ignore!");
                 return;
             }
             try
@@ -42,13 +42,13 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             catch (WebException ex)
             {
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                        .ErrorFormat("Network is not accessable! Detail: {0}", ex.Message);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Error", String.Format("Network is not accessable! Detail: {0}", ex.Message));
             }
             catch (JsonReaderException ex)
             {
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                     .ErrorFormat("Wrong instance json format! {0}", ex.Message);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Error", String.Format("Wrong instance json format! {0}", ex.Message));
             }
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
             catch (Exception ex)
             {
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                     .ErrorFormat("Cannot add this instance because {0}", ex);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format("Caused by an error, we cannot add this instance right now. Detail: {0}", ex.Message));
 

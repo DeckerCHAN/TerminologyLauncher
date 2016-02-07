@@ -15,7 +15,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logging.Logger.GetLogger().Info("Handling remove instance event!");
+            Logging.TerminologyLogger.GetLogger().Info("Handling remove instance event!");
 
             var instanceName = this.Engine.UiControl.MainWindow.SelectInstance.InstanceName;
             try
@@ -27,7 +27,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             catch (Exception ex)
             {
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                 .ErrorFormat("Cannot remove this instance because {0}", ex);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format("Caused by an error, we cannot remove this instance right now. Detail: {0}", ex.Message));
 

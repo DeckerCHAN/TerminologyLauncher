@@ -23,13 +23,13 @@ namespace TerminologyLauncher.Auth
         public DirectoryInfo ProfileDirectoryInfo { get; set; }
         public AuthServer(String authConfigPath)
         {
-            Logger.GetLogger().Info("Initializing auth server.");
+            TerminologyLogger.GetLogger().Info("Initializing auth server.");
             this.Config = new Config(new FileInfo(authConfigPath));
             //Create profile folder if not exists.
             this.ProfileDirectoryInfo = new DirectoryInfo(this.Config.GetConfigString("profileFolder"));
             FolderUtils.RecreateFolder(this.ProfileDirectoryInfo);
 
-            Logger.GetLogger().Info("Auth server initialized.");
+            TerminologyLogger.GetLogger().Info("Auth server initialized.");
 
         }
 
@@ -37,7 +37,7 @@ namespace TerminologyLauncher.Auth
 
         public LoginResultType OfficialAuth(String username, String password)
         {
-            Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in official mode.", username));
+            TerminologyLogger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in official mode.", username));
             var mojangLogin = new MojangLogin(username, password, this.ProfileDirectoryInfo, this.Config);
             var result = mojangLogin.ExecuteLogin();
             if (result == LoginResultType.Success)
@@ -54,7 +54,7 @@ namespace TerminologyLauncher.Auth
 
         public LoginResultType OfflineAuth(String username)
         {
-            Logger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
+            TerminologyLogger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
             var offlineLogin = new OfflineLogin(username, this.ProfileDirectoryInfo, this.Config);
             var result = offlineLogin.ExecuteLogin();
             if (result == LoginResultType.Success)

@@ -56,9 +56,9 @@ namespace TerminologyLauncher.Core
         public Dispatcher EngineDispatcher { get; private set; }
         public Engine()
         {
-            Logger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
-            Logger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
-            Logger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
+            TerminologyLogger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
+            TerminologyLogger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
+            TerminologyLogger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
             this.EngineDispatcher = Dispatcher.CurrentDispatcher;
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.Translation = TranslationProvider.TranslationProviderInstance;
@@ -66,31 +66,31 @@ namespace TerminologyLauncher.Core
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfigString("authConfig"));
 
             this.Handlers = new Dictionary<string, HandlerBase>();
-            Logger.GetLogger().Info("Engine Initialized!");
+            TerminologyLogger.GetLogger().Info("Engine Initialized!");
         }
         public void Run()
         {
             this.RegisterHandlers();
-            Logger.GetLogger().Info("Engine running...");
-            Logger.GetLogger().Info("Starting GUI...");
+            TerminologyLogger.GetLogger().Info("Engine running...");
+            TerminologyLogger.GetLogger().Info("Starting GUI...");
             this.UiControl.ShowLoginWindow();
             this.UiControl.Run();
-            Logger.GetLogger().Info("Exit running.");
+            TerminologyLogger.GetLogger().Info("Exit running.");
         }
 
         public void Exit()
         {
             this.EngineDispatcher.Invoke(() =>
             {
-                Logger.GetLogger().Info("Engine shutting down...");
+                TerminologyLogger.GetLogger().Info("Engine shutting down...");
                 this.UiControl.Shutdown();
-                Logger.GetLogger().Info("UiControl shutdown.");
+                TerminologyLogger.GetLogger().Info("UiControl shutdown.");
             });
         }
 
         public void RegisterHandlers()
         {
-            Logger.GetLogger().Debug("Engine Register events.");
+            TerminologyLogger.GetLogger().Debug("Engine Register events.");
             //DONE:Using IHandler interface, let handlers register their events duding ctor.
             this.Handlers.Add("WINDOWS_CLOSE", new CloseHandler(this));
             this.Handlers.Add("LOGIN", new LoginHandlerBase(this));
@@ -108,17 +108,17 @@ namespace TerminologyLauncher.Core
         {
             try
             {
-                Logger.GetLogger().Info("Engine extra component initializing...");
+                TerminologyLogger.GetLogger().Info("Engine extra component initializing...");
                 this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
                 this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
                 this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
                 this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion, this.BuildVersion);
-                Logger.GetLogger().Info("Engine extra component initialized...");
+                TerminologyLogger.GetLogger().Info("Engine extra component initialized...");
 
             }
             catch (Exception ex)
             {
-                Logger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
+                TerminologyLogger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
                 this.Exit();
             }
         }

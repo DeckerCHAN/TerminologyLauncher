@@ -21,7 +21,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         public void HandleEvent(Object sender, DependencyPropertyChangedEventArgs e)
         {
             var window = sender as LoginWindow;
-            Logger.GetLogger().InfoFormat("Login window is going to {0}!", window.Visibility);
+            TerminologyLogger.GetLogger().InfoFormat("Login window is going to {0}!", window.Visibility);
             switch (window.Visibility)
             {
                 case Visibility.Hidden:

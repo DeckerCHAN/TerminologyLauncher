@@ -7,7 +7,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
     {
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logger.GetLogger().Info("Handling close event.");
+            TerminologyLogger.GetLogger().Info("Handling close event.");
             
             Engine.GetEngine().Exit(); 
         }

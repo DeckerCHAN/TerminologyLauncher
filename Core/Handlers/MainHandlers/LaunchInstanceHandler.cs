@@ -15,7 +15,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logging.Logger.GetLogger().Info("Handling launch instance event!");
+            Logging.TerminologyLogger.GetLogger().Info("Handling launch instance event!");
 
             var instance = this.Engine.UiControl.MainWindow.SelectInstance;
             var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
@@ -47,7 +47,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     {
                         case HttpStatusCode.NotFound:
                             {
-                                Logging.Logger.GetLogger()
+                                Logging.TerminologyLogger.GetLogger()
                                     .ErrorFormat("Cannot find file on server when donloading:{0}", response.ResponseUri);
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                                     String.Format(
@@ -56,7 +56,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             }
                         case HttpStatusCode.Forbidden:
                             {
-                                Logging.Logger.GetLogger()
+                                Logging.TerminologyLogger.GetLogger()
                                  .ErrorFormat("You have no right to access this server when downloading: {0}", response.ResponseUri);
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                                     String.Format(
@@ -67,7 +67,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         default:
                             {
 
-                                Logging.Logger.GetLogger()
+                                Logging.TerminologyLogger.GetLogger()
                  .Error(String.Format("Encounter an network error during build environment: {0}", ex));
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
                                     "Encounter an network error during build environment: {0}", ex.Message));
@@ -78,7 +78,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (Exception ex)
                 {
-                    Logging.Logger.GetLogger()
+                    Logging.TerminologyLogger.GetLogger()
                         .Error(String.Format("Cannot launch this instance because {0}", ex));
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
                         "Caused by an internal error, we cannot launch this instance right now. Detail: {0}", ex.Message));
