@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -10,6 +11,9 @@ namespace TerminologyLauncher
 {
     public static class Beginner
     {
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
         public static void Start()
         {
             if (!RuntimeDotNetHigherThan45())
@@ -24,6 +28,7 @@ namespace TerminologyLauncher
                 if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
                 {
                     Console.WriteLine("You cannot run nore than one Terminology Launcher at same time!");
+                    MessageBox(new IntPtr(0), "You cannot run nore than one Terminology Launcher at same time!", "Launcher already running", 0);
                     return;
                 }
                 Application.EnableVisualStyles();
