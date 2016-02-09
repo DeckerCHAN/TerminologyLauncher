@@ -20,30 +20,30 @@ namespace TerminologyLauncher.FileRepositorySystem
         private DirectoryInfo CacheRootDirectoryInfo { get; set; }
         public FileRepository(String configPath)
         {
-            Logger.GetLogger().Info("Initializing file repo...");
+            TerminologyLogger.GetLogger().Info("Initializing file repo...");
             this.Config = new Config(new FileInfo(configPath));
             this.RepoUrl = this.Config.GetConfigString("fileRepositoryUrl");
             this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryFileEntity>();
-            Logger.GetLogger().Info("Initialized file repo!");
+            TerminologyLogger.GetLogger().Info("Initialized file repo!");
             this.CacheRootDirectoryInfo = new DirectoryInfo(Config.GetConfigString("repoCacheFolder"));
             if (!this.CacheRootDirectoryInfo.Exists)
             {
                 this.CacheRootDirectoryInfo.Create();
             }
-            Logger.GetLogger().Info("Finished create repo repository folder.");
+            TerminologyLogger.GetLogger().Info("Finished create repo repository folder.");
             //Different repo url will not share same cache folder.
             this.CacheDirectoryInfo = new DirectoryInfo(Path.Combine(this.CacheRootDirectoryInfo.FullName, EncodeUtils.CalculateStringMd5(this.Config.GetConfigString("fileRepositoryUrl"))));
             if (!this.CacheDirectoryInfo.Exists)
             {
                 this.CacheDirectoryInfo.Create();
-                Logger.GetLogger().InfoFormat("Created cache directory {0}", this.CacheDirectoryInfo.Name);
+                TerminologyLogger.GetLogger().InfoFormat("Created cache directory {0}", this.CacheDirectoryInfo.Name);
             }
             else
             {
-                Logger.GetLogger().InfoFormat("Using cache directory {0}", this.CacheDirectoryInfo.Name);
+                TerminologyLogger.GetLogger().InfoFormat("Using cache directory {0}", this.CacheDirectoryInfo.Name);
             }
            
-            Logger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
+            TerminologyLogger.GetLogger().Info(String.Format("Start to fetch repo from url {0}", RepoUrl));
             try
             {
                 var progress = new LeafNodeProgress("Fetch repo");
@@ -58,10 +58,10 @@ namespace TerminologyLauncher.FileRepositorySystem
             }
             catch (WebException)
             {
-                Logger.GetLogger().Error("Unable to receive repo right now. Trying to using local repo list.");
+                TerminologyLogger.GetLogger().Error("Unable to receive repo right now. Trying to using local repo list.");
                 if (!File.Exists(this.Config.GetConfigString("repoFilePath")))
                 {
-                    Logger.GetLogger().Error("No local repo list available.");
+                    TerminologyLogger.GetLogger().Error("No local repo list available.");
                     return;
                 }
                 var repo =
@@ -70,7 +70,7 @@ namespace TerminologyLauncher.FileRepositorySystem
                 {
                     this.OfficialProviRdeFilesRepo.Add(officialProvideFile.ProvideId, officialProvideFile);
                 }
-                Logger.GetLogger().Info("Used local repo list.");
+                TerminologyLogger.GetLogger().Info("Used local repo list.");
             }
             catch (Exception)
             {
@@ -90,15 +90,15 @@ namespace TerminologyLauncher.FileRepositorySystem
             if (cacheFile.Exists && (EncodeUtils.CalculateFileMd5(cacheFile.FullName).Equals(repositoryFile.Md5)))
             {
                 progress.Percent = 100D;
-                Logger.GetLogger().InfoFormat("File {0} exists and md5 check successful. Using cache file.", repositoryFile.Name);
+                TerminologyLogger.GetLogger().InfoFormat("File {0} exists and md5 check successful. Using cache file.", repositoryFile.Name);
             }
             else
             {
-                Logger.GetLogger().InfoFormat("File {0} not exists or md5 check fault. Download new file.", repositoryFile.Name);
+                TerminologyLogger.GetLogger().InfoFormat("File {0} not exists or md5 check fault. Download new file.", repositoryFile.Name);
 
                 cacheFile.Delete();
                 DownloadUtils.DownloadFile(progress, repositoryFile.DownloadPath, cacheFile.FullName);
-                Logger.GetLogger().InfoFormat("Successful download file {0} from url {1}", repositoryFile.Name, repositoryFile.DownloadPath);
+                TerminologyLogger.GetLogger().InfoFormat("Successful download file {0} from url {1}", repositoryFile.Name, repositoryFile.DownloadPath);
             }
             return cacheFile;
 

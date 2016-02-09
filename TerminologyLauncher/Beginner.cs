@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using TerminologyLauncher.Core;
@@ -9,6 +11,9 @@ namespace TerminologyLauncher
 {
     public static class Beginner
     {
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
         public static void Start()
         {
             if (!RuntimeDotNetHigherThan45())
@@ -23,6 +28,7 @@ namespace TerminologyLauncher
                 if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
                 {
                     Console.WriteLine("You cannot run nore than one Terminology Launcher at same time!");
+                    MessageBox(new IntPtr(0), "You cannot run nore than one Terminology Launcher at same time!", "Launcher already running", 0);
                     return;
                 }
                 Application.EnableVisualStyles();
@@ -32,10 +38,21 @@ namespace TerminologyLauncher
             catch (Exception ex)
             {
                 Directory.CreateDirectory("Crash-report");
-                var report = new FileInfo(String.Format("Crash-report\\crash-report-{0}.report", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")));
-                File.WriteAllText(report.FullName, ex.ToString());
-                Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
-                Console.WriteLine("!!!CRASH!!!More detail at {0}", report.FullName);
+                try
+                {
+                    Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
+                    Console.WriteLine("Collecting crash report...");
+                    var reportor = new CrashReportor(ex);
+                    reportor.DoReport();
+
+                    Console.WriteLine("!!!CRASH!!!More detail at {0}", reportor.ReportFileInfo.FullName);
+
+                }
+                catch (Exception)
+                {
+
+                    //ignore.
+                }
             }
         }
 

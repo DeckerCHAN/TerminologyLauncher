@@ -44,7 +44,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                             }
                             catch (WebException ex)
                             {
-                                Logger.GetLogger().Error(String.Format("OfficialAuth encountered an error:{0}", ex.Message));
+                                TerminologyLogger.GetLogger().Error(String.Format("OfficialAuth encountered an error:{0}", ex.Message));
                                 this.LoginFault(LoginResultType.NetworkTimedOut);
                             }
                         });
@@ -70,7 +70,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 
                 default:
                     {
-                        Logger.GetLogger().Error(String.Format("Core is not support {0} to login", login.LoginType));
+                        TerminologyLogger.GetLogger().Error(String.Format("Core is not support {0} to login", login.LoginType));
                         break;
                     }
             }

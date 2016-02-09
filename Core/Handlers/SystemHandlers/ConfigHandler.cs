@@ -36,23 +36,23 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 {
                     this.Engine.JreManager.JavaRuntime =
                   JavaUtils.GetJavaRuntimeFromJavaExe(javaExeConfig.Value);
-                    Logger.GetLogger().InfoFormat("Refreshed jre to {0}", javaExeConfig.Value);
+                    TerminologyLogger.GetLogger().InfoFormat("Refreshed jre to {0}", javaExeConfig.Value);
                 }
                 catch (Exception)
                 {
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Jre not valid", "The java path that you inputed is not valid! Ignore to set.");
-                    Logger.GetLogger().Error("Trying to set invalid java exe path. Ignore.");
+                    TerminologyLogger.GetLogger().Error("Trying to set invalid java exe path. Ignore.");
                 }
                 this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", memoryconfigs.Value.ToString());
-                Logger.GetLogger().InfoFormat("Refreshed memory size to {0}", memoryconfigs.Value);
+                TerminologyLogger.GetLogger().InfoFormat("Refreshed memory size to {0}", memoryconfigs.Value);
 
                 this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", jvmExtraArguments.Value);
-                Logger.GetLogger().InfoFormat("Refreshed extra jvm args to {0}", jvmExtraArguments.Value);
+                TerminologyLogger.GetLogger().InfoFormat("Refreshed extra jvm args to {0}", jvmExtraArguments.Value);
             }
             catch (Exception ex)
             {
 
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                         .Error(String.Format("Cannot update because {0}", ex));
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
                     "Caused by an internal error, we cannot update right now. Detail: {0}", ex.Message));

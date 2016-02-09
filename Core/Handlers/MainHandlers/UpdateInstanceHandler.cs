@@ -17,12 +17,12 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logging.Logger.GetLogger().Info("Handling update instance event!");
+            Logging.TerminologyLogger.GetLogger().Info("Handling update instance event!");
 
             var instance = this.Engine.UiControl.MainWindow.SelectInstance;
             if (instance == null)
             {
-                Logging.Logger.GetLogger().Warn("Did not select any instance. Ignore!");
+                Logging.TerminologyLogger.GetLogger().Warn("Did not select any instance. Ignore!");
                 return;
             }
 
@@ -39,12 +39,12 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (NoAvailableUpdateException ex)
                 {
-                    Logging.Logger.GetLogger().Info(ex.Message);
+                    Logging.TerminologyLogger.GetLogger().Info(ex.Message);
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("No available update", ex.Message);
                 }
                 catch (WrongStateException ex)
                 {
-                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
+                    Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         String.Format(
                             "Encounter an wrong state error. Detail:{0}",
@@ -53,7 +53,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (Exception ex)
                 {
-                    Logging.Logger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
+                    Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         String.Format(
                             "Caused by an internal error, we cannot update this instance right now.Detail:{0}",

@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Beginner.cs" />
+    <Compile Include="CrashReportor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -78,6 +79,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{344a31c3-d60f-4cef-819a-f49b0c93aaa8}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{392827a7-ad9a-4120-b507-1a09465d24ed}</Project>
+      <Name>Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

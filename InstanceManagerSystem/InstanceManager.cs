@@ -105,7 +105,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
         #region Operation
         public String AddInstance(String instanceUrl)
         {
-            Logger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
+            TerminologyLogger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
             this.LoadInstancesFromBankFile();
             //Download instance content
             var rowInstanceContent = DownloadUtils.GetWebContent(instanceUrl);
@@ -155,7 +155,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var availableUpdateInstanceNameList = new List<String>();
             foreach (var instanceInfoEntity in this.InstanceBank.InstancesInfoList)
             {
-                Logger.GetLogger().Info(String.Format("Check update {0}", instanceInfoEntity.Name));
+                TerminologyLogger.GetLogger().Info(String.Format("Check update {0}", instanceInfoEntity.Name));
                 var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceInfoEntity.Name)));
 
                 var oldInstanceEntity =
@@ -173,7 +173,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             if (availableUpdateInstanceNameList.Count == 0)
             {
-                Logger.GetLogger().Info("All instances at latest version.");
+                TerminologyLogger.GetLogger().Info("All instances at latest version.");
                 return String.Empty;
             }
             var result = new StringBuilder();
@@ -192,7 +192,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public String UpdateInstance(InternalNodeProgress progress, String instanceName)
         {
-            Logger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
+            TerminologyLogger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
 
             var oldInstanceEntity =
@@ -207,7 +207,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
                 progress.Percent = 100D;
-                Logger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
+                TerminologyLogger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
                 return (String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceAlreadyAtLatestVersionTranslation, newInstanceEntity.Version));
             }
 
@@ -218,7 +218,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.RemoveInstance(instanceInfo.Name);
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
-                        Logger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                        TerminologyLogger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
                         return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -325,7 +325,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
-                        Logger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                        TerminologyLogger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
                         return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -342,7 +342,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public Process LaunchInstance(InternalNodeProgress progress, String instanceName, PlayerEntity player)
         {
-            Logger.GetLogger().Info(String.Format("Start to launch {0} by player {1}...", instanceName, player.PlayerName));
+            TerminologyLogger.GetLogger().Info(String.Format("Start to launch {0} by player {1}...", instanceName, player.PlayerName));
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
             var instance =
                 JsonConverter.Parse<InstanceEntity>(
@@ -507,7 +507,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             progress.Percent = 100D;
 
             this.CurrentInstanceProcess = instanceProcess;
-            Logger.GetLogger().Info(String.Format("Instance {0} launched!", instanceName));
+            TerminologyLogger.GetLogger().Info(String.Format("Instance {0} launched!", instanceName));
 
             return this.CurrentInstanceProcess;
 
@@ -534,7 +534,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var targetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
             repositoryFile.CopyTo(targetPositon, true);
-            Logger.GetLogger().Info(String.Format("Successfully put file:{0}.", targetPositon));
+            TerminologyLogger.GetLogger().Info(String.Format("Successfully put file:{0}.", targetPositon));
 
         }
 
@@ -542,18 +542,18 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
-            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            TerminologyLogger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
             DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            TerminologyLogger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
         }
 
         private void ReceiveEntirePackage(InternalNodeProgress progress, String instanceName, EntirePackageFileEntity entirePackageFile)
         {
             var downloadLink = entirePackageFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? String.Empty);
-            Logger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            TerminologyLogger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
             DownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
-            Logger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
+            TerminologyLogger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
         }
 
         private String GetIconImage(String instanceName)
@@ -676,7 +676,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             catch (WebException)
             {
-                Logger.GetLogger().Warn("Cannot download icon file.Using default instead.");
+                TerminologyLogger.GetLogger().Warn("Cannot download icon file.Using default instead.");
                 ResourceUtils.CopyEmbedFileResource(
                     "TerminologyLauncher.InstanceManagerSystem.Resources.default_icon.png", new FileInfo(iconFile));
             }
@@ -689,7 +689,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             catch (WebException)
             {
-                Logger.GetLogger().Warn("Cannot download background file.Using default instead.");
+                TerminologyLogger.GetLogger().Warn("Cannot download background file.Using default instead.");
                 ResourceUtils.CopyEmbedFileResource(
                     "TerminologyLauncher.InstanceManagerSystem.Resources.default_bg.png", new FileInfo(bgFile));
             }

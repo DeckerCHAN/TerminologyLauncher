@@ -16,7 +16,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            Logging.Logger.GetLogger().Info("Handling update application event!");
+            Logging.TerminologyLogger.GetLogger().Info("Handling update application event!");
 
             try
             {
@@ -47,7 +47,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     catch (Exception ex)
                     {
 
-                        Logging.Logger.GetLogger()
+                        Logging.TerminologyLogger.GetLogger()
                                 .Error(String.Format("Cannot update because {0}", ex));
                         this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
                             "Caused by an internal error, we cannot update right now. Detail: {0}", ex.Message));
@@ -62,7 +62,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             }
             catch (Exception ex)
             {
-                Logger.GetLogger()
+                TerminologyLogger.GetLogger()
                 .ErrorFormat("Cannot update launcher because {0}", ex);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update", String.Format("Caused by an error, we cannot update launcher right now. Detail: {0}", ex.Message));
 
