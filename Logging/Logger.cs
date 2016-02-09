@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
@@ -13,7 +15,7 @@ namespace TerminologyLauncher.Logging
     {
         private static Boolean _isLoaded = false;
 
-        public static MemoryAppender MemoryAppender;
+        private static MemoryAppender MemoryAppender;
         public static ILog GetLogger()
         {
             if (!_isLoaded)
@@ -26,6 +28,25 @@ namespace TerminologyLauncher.Logging
                 _isLoaded = true;
             }
             return LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);
+        }
+
+        public static String GetLogConent()
+        {
+            if (MemoryAppender == null)
+            {
+                return String.Empty;
+            }
+
+            using (var content = new StringWriter())
+            {
+                foreach (var loggingEvent in MemoryAppender.GetEvents())
+                {
+                    MemoryAppender.Layout.Format(content, loggingEvent);
+                    content.Write(Environment.NewLine);
+                }
+                return content.ToString();
+            }
+
         }
     }
 

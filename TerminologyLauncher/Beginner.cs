@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using TerminologyLauncher.Core;
@@ -32,10 +33,21 @@ namespace TerminologyLauncher
             catch (Exception ex)
             {
                 Directory.CreateDirectory("Crash-report");
-                var report = new FileInfo(String.Format("Crash-report\\crash-report-{0}.report", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")));
-                File.WriteAllText(report.FullName, ex.ToString());
-                Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
-                Console.WriteLine("!!!CRASH!!!More detail at {0}", report.FullName);
+                try
+                {
+                    Console.WriteLine("!!!CRASH!!!Encountered unhandled exception. System crashed!");
+                    Console.WriteLine("Collecting crash report...");
+                    var reportor = new CrashReportor(ex);
+                    reportor.DoReport();
+
+                    Console.WriteLine("!!!CRASH!!!More detail at {0}", reportor.ReportFileInfo.FullName);
+
+                }
+                catch (Exception)
+                {
+
+                    //ignore.
+                }
             }
         }
 

@@ -26,5 +26,6 @@ namespace TerminologyLauncher.UnitTest
             var javaDetail = JavaUtils.GetJavaDetails(@"C:\Program Files\Java\jdk1.7.0_51\bin\java.exe");
             Assert.IsTrue(javaDetail.JavaType == JavaType.ServerX64);
         }
+
     }
 }
