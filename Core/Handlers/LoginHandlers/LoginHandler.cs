@@ -17,7 +17,6 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.EnableAllInputs(false);
             var login = this.Engine.UiControl.LoginWindow.GetLogin();
-            throw new NotImplementedException();
             switch (login.LoginType)
             {
                 case LoginType.OfficialMode:
