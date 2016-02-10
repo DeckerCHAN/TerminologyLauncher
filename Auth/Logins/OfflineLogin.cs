@@ -14,7 +14,7 @@ namespace TerminologyLauncher.Auth.Logins
 
         private Boolean isValidUserName(String userName)
         {
-            var regex = new Regex(@"^[a-zA-Z0-9]+$");
+            var regex = new Regex(@"^[a-zA-Z0-9_]+$");
             var match = regex.Match(userName);
             return match.Success;
         }
