@@ -5,6 +5,7 @@ using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
+using TerminologyLauncher.Utils.Net;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.Utils
@@ -15,7 +16,7 @@ namespace TerminologyLauncher.Utils
         {
             var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
             var targetFileInfo = new FileInfo(path);
-            using (var client = new WebClient())
+            using (var client = new TerminologyWebClient())
             {
                 client.DownloadFile(url, tempFileInfo.FullName);
                 if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
@@ -41,7 +42,7 @@ namespace TerminologyLauncher.Utils
             {
                 var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
                 var targetFileInfo = new FileInfo(path);
-                using (var client = new WebClient())
+                using (var client = new TerminologyWebClient())
                 {
                     client.DownloadProgressChanged += (i, o) =>
                     {
@@ -118,7 +119,7 @@ namespace TerminologyLauncher.Utils
 
         public static String GetWebContent(String url)
         {
-            using (var client = new WebClient())
+            using (var client = new TerminologyWebClient())
             {
                 client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                 client.Encoding = EncodeUtils.NoneBomUTF8;
@@ -131,7 +132,7 @@ namespace TerminologyLauncher.Utils
         {
             var task = new Task<String>(() =>
             {
-                using (var client = new WebClient())
+                using (var client = new TerminologyWebClient())
                 {
                     client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                     client.Encoding = EncodeUtils.NoneBomUTF8;
