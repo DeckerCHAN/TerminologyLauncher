@@ -151,7 +151,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
-        public String CheckAllInstanceCouldUpdate(InternalNodeProgress progress)
+        public String CheckAllInstanceCouldUpdate()
         {
             var availableUpdateInstanceNameList = new List<String>();
             foreach (var instanceInfoEntity in this.InstanceBank.InstancesInfoList)
@@ -164,7 +164,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
                 this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
-                var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 100D / this.InstanceBank.InstancesInfoList.Count), instanceInfo.UpdateUrl);
+                var newInstanceContent = DownloadUtils.GetWebContent(instanceInfo.UpdateUrl);
                 var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
 
                 if (!newInstanceEntity.Version.Equals(oldInstanceEntity.Version))

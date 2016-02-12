@@ -66,8 +66,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                 {
                                     try
                                     {
-                                        var progress = new InternalNodeProgress("Check update");
-                                        var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
+                                        var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate();
                                         if (!String.IsNullOrEmpty(result))
                                         {
                                             this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("InstanceUpdateNotifyTitle", "Check Update"), result);
@@ -75,7 +74,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     }
                                     catch (Exception ex)
                                     {
-                                        TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check update right now! Detail:{0}", ex.Message);
+                                        TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check instance update right now! Detail:{0}", ex.Message);
                                         throw;
                                     }
                                 });
