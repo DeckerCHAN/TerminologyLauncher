@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Annotations;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
 {
@@ -14,15 +14,16 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
     public sealed partial class ConfirmWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-        public ConfirmWindowTranslation Translation
+        public String ConfirmButtonTranslation
         {
-            get
-            {
-                return
-                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
-                        .ConfirmWindowTranslation;
-            }
+            get { return TranslationManager.GetManager.Localize("Confirm", "Confirm"); }
         }
+
+        public String CancelButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("Cancel", "Cancel"); }
+        }
+
         public String ContentString
         {
             get { return this.ContentStringValue; }

@@ -12,6 +12,7 @@ using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.Entities.System.Java;
 using TerminologyLauncher.FileRepositorySystem;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.InstanceManagerSystem.Exceptions;
 using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
@@ -186,7 +187,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     result.Append(", ");
                 }
             }
-            return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.SomeInstanceAvailableToUpdateTranslation, result);
+            return String.Format(TranslationManager.GetManager.Localize("ExistsInstanceAvailableToUpdate", "Detected {0} are available to update!", 1), result);
         }
 
 
@@ -208,9 +209,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 progress.Percent = 100D;
                 TerminologyLogger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
-                return (String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceAlreadyAtLatestVersionTranslation, newInstanceEntity.Version));
+                return (String.Format(TranslationManager.GetManager.Localize("InsatnceAtLatestVersion", "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
             }
-
+            var updateSuccessfulInfo = TranslationManager.GetManager.Localize("InstanceUpdateToVersion",
+                "Successful update instance file {0} from version {1} to {2}!", 3);
             switch (instanceInfo.InstanceState)
             {
                 case InstanceState.PerInitialized:
@@ -219,7 +221,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
                         TerminologyLogger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-                        return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
+                        return String.Format(updateSuccessfulInfo,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                     }
@@ -326,7 +328,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
                         TerminologyLogger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-                        return String.Format(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateToVersionTranslation,
+                        return String.Format(updateSuccessfulInfo,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                     }

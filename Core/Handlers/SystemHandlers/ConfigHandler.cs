@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 
@@ -18,11 +19,11 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         {
             try
             {
-                var javaExeConfig = new TextInputConfigObject(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation.ConfigWindowTranslation.JavaPathTranslation, "javaExePath",
+                var javaExeConfig = new TextInputConfigObject(TranslationManager.GetManager.Localize("JavaPathTranslation", "Java Path:"), "javaExePath",
                     this.Engine.JreManager.JavaRuntime.JavaPath);
-                var jvmExtraArguments = new TextInputConfigObject(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation.ConfigWindowTranslation.ExtraJvmArgumentTranslation, "extraJvmArguments",
+                var jvmExtraArguments = new TextInputConfigObject(TranslationManager.GetManager.Localize("ExtraJvmArgumentTranslation", "Extra JvmArguments:"), "extraJvmArguments",
                     this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"));
-                var memoryconfigs = new RangeRestrictedSelectConfigObject(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation.ConfigWindowTranslation.MaxiumMemoryAllocateTranslation,
+                var memoryconfigs = new RangeRestrictedSelectConfigObject(TranslationManager.GetManager.Localize("MaxiumMemoryAllocate", "Maxium Memory Allocate:"),
                     "maxMemorySizeMega", MachineUtils.GetTotalMemoryInMiB(), 512L,
                     Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")));
 

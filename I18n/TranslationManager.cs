@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.I18n
@@ -16,7 +15,7 @@ namespace TerminologyLauncher.I18n
 
         private static TranslationManager Instance;
 
-        public static TranslationManager TranslationProviderInstance
+        public static TranslationManager GetManager
         {
             get
             {
@@ -32,27 +31,42 @@ namespace TerminologyLauncher.I18n
         private TranslationManager()
         {
             this.CurrentLanguageName = MachineUtils.GetCurrentLanguageName();
-            this.TranslatonFileInfo = new FileInfo(Path.Combine(Assembly.GetEntryAssembly().Location, String.Format("{0}.ln", this.CurrentLanguageName)));
+            this.TranslatonFileInfo = new FileInfo(Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName, "Translations", String.Format("{0}.ln", this.CurrentLanguageName)));
             if (!this.TranslatonFileInfo.Exists)
             {
-                File.CreateText(this.TranslatonFileInfo.FullName);
+                FolderUtils.CreateDirectoryIfNotExists(this.TranslatonFileInfo.Directory);
+                File.CreateText(this.TranslatonFileInfo.FullName).Close();
             }
             this.LoadFile();
         }
 
-        public String Localize(String identity, String defaultContent)
+        public String Localize(String identity, String defaultContent, UInt16 argumentNumber = 0)
         {
-            var key = String.Format("{0}.{1}", new StackTrace().GetFrame(1).GetMethod().Name, identity);
+            if (!new Regex("^[a-zA-Z]+$").Match(identity).Success)
+            {
+                throw new ArgumentException("Identity not allow string contains characters except letters.");
+            }
+            var key = String.Format("{0}.{1}", new StackTrace().GetFrame(1).GetMethod().ReflectedType.FullName, identity);
+
             if (this.TranslationDictionary.ContainsKey(key))
             {
-                return this.TranslationDictionary[key];
+                if (new Regex("{.*?}").Match(this.TranslationDictionary[key]).Captures.Count == argumentNumber)
+                {
+                    return this.TranslationDictionary[key];
+                }
+                else
+                {
+                    this.TranslationDictionary[key] = defaultContent;
+                }
             }
             else
             {
                 this.TranslationDictionary.Add(key, defaultContent);
-                this.SaveFile();
-                return defaultContent;
             }
+
+            this.SaveFile();
+            return defaultContent;
+
         }
 
         public void LoadFile()
@@ -65,12 +79,12 @@ namespace TerminologyLauncher.I18n
                 if (lines.Length == 0) return;
                 foreach (var line in lines)
                 {
-                    if (!line.Contains("="))
+                    if (!line.Contains("=") || line.StartsWith("#"))
                     {
                         continue;
                     }
                     var key = line.Substring(0, line.IndexOf('='));
-                    var value = line.Substring(line.IndexOf('='));
+                    var value = line.Substring(line.IndexOf('=') + 1);
                     this.TranslationDictionary.Add(key, value);
                 }
             }
@@ -82,16 +96,20 @@ namespace TerminologyLauncher.I18n
 
         public void SaveFile()
         {
-            using (var file = new StreamWriter(File.Open(this.TranslatonFileInfo.FullName, FileMode.Create)))
+            using (var file = File.Open(this.TranslatonFileInfo.FullName, FileMode.Create))
             {
-                file.Write("#Terminology Translation File");
-                var keys = this.TranslationDictionary.Keys.ToArray();
-                Array.Sort(keys);
-                foreach (var key in keys)
+                using (var writer = new StreamWriter(file))
                 {
-                    file.WriteLine("{0}={1}", key, this.TranslationDictionary[key]);
+                    writer.WriteLine("#Terminology Translation File");
+                    var keys = this.TranslationDictionary.Keys.ToArray();
+                    Array.Sort(keys);
+                    foreach (var key in keys)
+                    {
+                        writer.WriteLine("{0}={1}", key, this.TranslationDictionary[key]);
+                    }
                 }
             }
+
         }
     }
 }

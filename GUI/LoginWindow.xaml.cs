@@ -12,7 +12,7 @@ using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -31,20 +31,62 @@ namespace TerminologyLauncher.GUI
 
         public event LogingHandler Logining;
 
-        public LoginWindowTranslation Translation
+        public String LoginWindowTranslation
         {
-            get
-            {
-                return I18n.TranslationProvider.TranslationProviderInstance
-                      .TranslationObject.GuiTranslation.LoginWindowTranslation;
-            }
+            get { return TranslationManager.GetManager.Localize("Title", "Terminology login"); }
+        }
+        public String MojangAccountTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:"); }
+        }
+
+        public String OfflineAccountTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:"); }
+        }
+
+        public String MojangAccountModeTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("OfficialMode", "Official Mode"); }
+        }
+
+        public String OfflineAccountModeTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode"); }
+        }
+        public String PasswordTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("Password", "Password:"); }
+        }
+
+        public String LoginModeTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("LoginMode", "Login Mode:"); }
+        }
+
+        public String RememberAccountTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("RememberAccount", "Remember account"); }
+        }
+
+        public String LoginButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("LoginButtion", "Login"); }
+        }
+        public String CancelButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("CancelButton", "Cancel"); }
         }
 
         private String BackgroundImageSourceValue;
         public String BackgroundImageSource
         {
             get { return this.BackgroundImageSourceValue; }
-            set { this.BackgroundImageSourceValue = value; }
+            set
+            {
+                this.BackgroundImageSourceValue = value; 
+                this.OnPropertyChanged();
+            }
         }
 
         public Config Config { get; set; }
@@ -132,6 +174,7 @@ namespace TerminologyLauncher.GUI
         {
             this.Dispatcher.Invoke(() =>
             {
+                var title = TranslationManager.GetManager.Localize("NotifyWindowTitle", "Unable to login in");
                 switch (result)
                 {
                     case LoginResultType.Success:
@@ -140,32 +183,32 @@ namespace TerminologyLauncher.GUI
                         }
                     case LoginResultType.IncompleteOfArguments:
                         {
-                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
-                                this.Translation.LoginFaultInsufficientArgumentsTranslation);
+                            this.PopupNotifyDialog(title,
+                                TranslationManager.GetManager.Localize("IncompleteOfArguments","Argumnets are not completely. Please check again."));
                             break;
                         }
                     case LoginResultType.WrongPassword:
                         {
-                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
-                                this.Translation.LoginFaultWrongPasswordTranslation);
+                            this.PopupNotifyDialog(title,
+                                TranslationManager.GetManager.Localize("WrongPasswrd","Password is incorrect."));
                             break;
                         }
                     case LoginResultType.UserNotExists:
                         {
-                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
-                                this.Translation.LoginFaultUserNotExistTranslation);
+                            this.PopupNotifyDialog(title,
+                                TranslationManager.GetManager.Localize("UserNotExists","User name is not exists. Create user before log in."));
                             break;
                         }
                     case LoginResultType.NetworkTimedOut:
                         {
-                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
-                                this.Translation.LoginFaultNetworkTimedOutTranslation);
+                            this.PopupNotifyDialog(title,
+                                TranslationManager.GetManager.Localize("NetWorkTimeOut","Can not access server. Please check network."));
                             break;
                         }
                     default:
                         {
-                            this.PopupNotifyDialog(this.Translation.LoginFaultTranslation,
-                                this.Translation.LoginFaultUnknownErrorTranslation);
+                            this.PopupNotifyDialog(title,
+                                TranslationManager.GetManager.Localize("UnknownLoginError","Unknown fault caused unable to log in."));
                             break;
                         }
                 }
@@ -187,7 +230,7 @@ namespace TerminologyLauncher.GUI
         {
             var combox = sender as ComboBox;
             var selected = combox.SelectedIndex;
-            this.AccountTypeTitle.Text = selected == 1 ? this.Translation.MojongAccountTranslation : this.Translation.OfflineAccountTranslation;
+            this.AccountTypeTitle.Text = selected == 1 ? TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:") : TranslationManager.GetManager.Localize("OfflineAccount","Offline username:");
 
             if (selected == 0)
             {

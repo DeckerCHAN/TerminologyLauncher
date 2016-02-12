@@ -64,11 +64,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
                                 Task.Run(() =>
                                 {
-                                    var progress = new InternalNodeProgress("Check update");
-                                    var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
-                                    if (!String.IsNullOrEmpty(result))
+                                    try
                                     {
-                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.InstanceUpdateTranslation.InstanceUpdateWindowTitleTranslation, result);
+                                        var progress = new InternalNodeProgress("Check update");
+                                        var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate(progress);
+                                        if (!String.IsNullOrEmpty(result))
+                                        {
+                                            this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("InstanceUpdateNotifyTitle", "Check Update"), result);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check update right now! Detail:{0}", ex.Message);
+                                        throw;
                                     }
                                 });
 
@@ -99,14 +107,15 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     }
                                     if (!String.IsNullOrEmpty(message))
                                     {
-                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.LanucherUpdateWindowTitleTranslation, message);
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("LanucherUpdateNotifyTitle", "Lanucher Update"), message);
 
                                     }
 
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
-                                    this.Engine.Exit();
+                                    TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check update right now! Detail:{0}", ex.Message);
+                                    throw;
                                 }
 
 
@@ -148,7 +157,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
                 var field = new FieldReference<String>(javaRuntimeEntitiesKP.Keys.First());
-                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaSelectFieldTranslation, javaRuntimeEntitiesKP.Keys, field);
+                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java exe"), TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"), javaRuntimeEntitiesKP.Keys, field);
                 if (result == null || result.Value == false)
                 {
                     return false;
@@ -167,7 +176,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 TerminologyLogger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
                 var field = new FieldReference<String>(String.Empty);
-                var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputWindowTitleTranslation, TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.JavaSelectTranslation.JavaInputFieldTranslation, field);
+                var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationManager.GetManager.Localize("JavaInputWindowTitle", "Input a Java exe"), TranslationManager.GetManager.Localize("JavaInputField", "Java(not javaw) exe path:"), field);
 
                 if (result == null || result.Value == false)
                 {

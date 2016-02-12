@@ -11,7 +11,6 @@ using TerminologyLauncher.Core.Handlers.MainHandlers;
 using TerminologyLauncher.Core.Handlers.SystemHandlers;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
-using TerminologyLauncher.I18n;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
@@ -44,7 +43,6 @@ namespace TerminologyLauncher.Core
         }
 
         public Config CoreConfig { get; set; }
-        public TranslationProvider Translation { get; set; }
         public UiControl UiControl { get; set; }
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
@@ -61,7 +59,6 @@ namespace TerminologyLauncher.Core
             TerminologyLogger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
             this.EngineDispatcher = Dispatcher.CurrentDispatcher;
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
-            this.Translation = TranslationProvider.TranslationProviderInstance;
             this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfigString("authConfig"));
 
@@ -119,7 +116,7 @@ namespace TerminologyLauncher.Core
             catch (Exception ex)
             {
                 TerminologyLogger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
-                this.Exit();
+                throw;
             }
         }
     }

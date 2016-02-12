@@ -8,7 +8,6 @@ using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.I18n;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 {
@@ -21,7 +20,6 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         private ObservableCollection<String> SelectItemsValue;
         private FieldReference<String> SelectItemValue;
         private Boolean IsCanceled { get; set; }
-        public SingleSelectWindowTranslation Translation { get; set; }
         public String FieldName
         {
             get { return this.FieldNameValue; }
@@ -50,13 +48,15 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
+        public String ConfirmButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
+        }
+
         internal SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
         {
             this.SelectItemValue = selection;
             this.SelectItems = new ObservableCollection<String>();
-            this.Translation =
-               TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
-                    .SingleSelectWindowTranslation;
             this.InitializeComponent();
             if (owner != null)
             {

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
 {
@@ -14,15 +14,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
     public sealed partial class NotifyWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-        public NotifyWindowTranslation Translation
-        {
-            get
-            {
-                return
-                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
-                        .NotifyWindowTranslation;
-            }
-        }
+  
         public String ContentString
         {
             get { return this.ContentStringValue; }
@@ -31,6 +23,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
                 this.ContentStringValue = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public object ConfirmButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
         }
 
         public void CrossThreadClose()

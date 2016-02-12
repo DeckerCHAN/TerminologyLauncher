@@ -98,7 +98,7 @@ namespace TerminologyLauncher.Updater
 
             if (!this.GetupdateInfo().UpdateType.Equals(UpdateType.Higher))
             {
-                return TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NoAvailableUpdate;
+                return TranslationManager.GetManager.Localize("NoUpdateAvailable", "No update available.");
             }
 
             var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
@@ -139,7 +139,7 @@ namespace TerminologyLauncher.Updater
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return String.Format(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.FetchedNewUpdateToVersion, String.Format("{0}-{1}", this.Version.CoreVersion, this.Version.BuildNumber),
+            return String.Format(TranslationManager.GetManager.Localize("FetchedNewUpdateToVersion", "Updating from {0} to {1}! Close launcher to continue.", 2), String.Format("{0}-{1}", this.Version.CoreVersion, this.Version.BuildNumber),
    String.Format("{0}-{1}", this.Version.CoreVersion, this.Version.BuildNumber));
         }
 

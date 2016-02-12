@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 {
@@ -32,14 +32,16 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 
         private bool IsCanceled { get; set; }
 
-        public ConfigWindowTranslation Translation
+        public String TitileTranslation
         {
-            get
-            {
-                return I18n.TranslationProvider.TranslationProviderInstance
-                      .TranslationObject.GuiTranslation.ConfigWindowTranslation;
-            }
+            get { return TranslationManager.GetManager.Localize("Titile", "Configs"); }
         }
+        public String ConfirmButtionTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
+        }
+
+
 
         public ObservableCollection<ItemSelectConfigObject> ItemSelectConfigObjects
         {
