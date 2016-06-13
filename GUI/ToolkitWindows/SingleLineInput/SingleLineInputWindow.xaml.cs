@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 {
@@ -36,6 +37,10 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
             this.FieldName = inputFieldName;
         }
 
+        public object ConfirmButtonTranslation
+        {
+            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
+        }
         public new Boolean? ShowDialog()
         {
             base.ShowDialog();
