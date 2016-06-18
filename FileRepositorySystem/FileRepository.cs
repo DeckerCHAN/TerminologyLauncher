@@ -15,7 +15,7 @@ namespace TerminologyLauncher.FileRepositorySystem
     {
         public String RepoUrl { get; set; }
         public Config Config { get; set; }
-        private Dictionary<String, RepositoryFileEntity> OfficialProviRdeFilesRepo { get; set; }
+        private Dictionary<String, RepositoryItemEntity> OfficialProviRdeFilesRepo { get; set; }
         private DirectoryInfo CacheDirectoryInfo { get; set; }
         private DirectoryInfo CacheRootDirectoryInfo { get; set; }
         public FileRepository(String configPath)
@@ -23,7 +23,7 @@ namespace TerminologyLauncher.FileRepositorySystem
             TerminologyLogger.GetLogger().Info("Initializing file repo...");
             this.Config = new Config(new FileInfo(configPath));
             this.RepoUrl = this.Config.GetConfigString("fileRepositoryUrl");
-            this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryFileEntity>();
+            this.OfficialProviRdeFilesRepo = new Dictionary<string, RepositoryItemEntity>();
             TerminologyLogger.GetLogger().Info("Initialized file repo!");
             this.CacheRootDirectoryInfo = new DirectoryInfo(Config.GetConfigString("repoCacheFolder"));
             if (!this.CacheRootDirectoryInfo.Exists)
