@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using TerminologyLauncher.Utils;
 
@@ -42,7 +43,12 @@ namespace TerminologyLauncher.I18n
             {
                 throw new ArgumentException("Identity not allow string contains characters except letters.");
             }
-            var key = $"{new StackTrace().GetFrame(1).GetMethod().ReflectedType.FullName}.{identity}";
+            var callingMethod = new StackTrace().GetFrame(1).GetMethod();
+            var key = $"{callingMethod.ReflectedType.Namespace}.{callingMethod.ReflectedType.Name}.{callingMethod.Name}.{identity}"
+                    .Split('.')
+                    .Where(s => !new Regex("[<|>]", RegexOptions.IgnoreCase).Match(s).Success)
+                    .Aggregate((sa, sb) => $"{sa}.{sb}");
+
 
             if (this.TranslationDictionary.ContainsKey(key))
             {
@@ -97,11 +103,12 @@ namespace TerminologyLauncher.I18n
                 using (var writer = new StreamWriter(file))
                 {
                     writer.WriteLine("#Terminology Translation File");
+                    writer.WriteLine("#This file will gredually growth after usage.");
                     var keys = this.TranslationDictionary.Keys.ToArray();
                     Array.Sort(keys);
                     foreach (var key in keys)
                     {
-                        writer.WriteLine("{0}={1}", key, this.TranslationDictionary[key]);
+                        writer.WriteLine($"{key}={this.TranslationDictionary[key]}");
                     }
                 }
             }
