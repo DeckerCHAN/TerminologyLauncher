@@ -6,7 +6,7 @@ namespace TerminologyLauncher.Entities.System.Java
     {
 
         public JavaDetails JavaDetails { get; set; }
-        public String JavaPath { get; set; }
-        public String JavaWPath { get; set; }
+        public string JavaPath { get; set; }
+        public string JavaWPath { get; set; }
     }
 }

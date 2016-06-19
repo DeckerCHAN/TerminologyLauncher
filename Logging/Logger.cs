@@ -12,7 +12,7 @@ namespace TerminologyLauncher.Logging
 
     public static class TerminologyLogger
     {
-        private static Boolean _isLoaded = false;
+        private static bool _isLoaded = false;
 
         private static MemoryAppender MemoryAppender;
         public static ILog GetLogger()
@@ -29,11 +29,11 @@ namespace TerminologyLauncher.Logging
             return LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);
         }
 
-        public static String GetLogConent()
+        public static string GetLogConent()
         {
             if (MemoryAppender == null)
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             using (var content = new StringWriter())

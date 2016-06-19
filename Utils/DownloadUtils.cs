@@ -10,7 +10,7 @@ namespace TerminologyLauncher.Utils
 {
     public static class DownloadUtils
     {
-        public static void DownloadFile(String url, String path)
+        public static void DownloadFile(string url, string path)
         {
             var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
             var targetFileInfo = new FileInfo(path);
@@ -25,16 +25,16 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static void DownloadFile(String url, String path, String md5)
+        public static void DownloadFile(string url, string path, string md5)
         {
             DownloadFile(url, path);
             if (!EncodeUtils.CheckFileMd5(path, md5))
             {
-                throw new Exception(String.Format("Md5 check for {0} refused!", path));
+                throw new Exception($"Md5 check for {path} refused!");
             }
         }
 
-        public static void DownloadFile(LeafNodeProgress progress, String url, String path)
+        public static void DownloadFile(LeafNodeProgress progress, string url, string path)
         {
             var task = new Task(() =>
             {
@@ -56,7 +56,7 @@ namespace TerminologyLauncher.Utils
                     }
                     catch (ArgumentException ex)
                     {
-                        throw new ArgumentException(ex.Message + String.Format("Url:{0}", url), ex);
+                        throw new ArgumentException(ex.Message + $"Url:{url}", ex);
                     }
 
                     if (targetFileInfo.Directory != null && !targetFileInfo.Directory.Exists)
@@ -80,16 +80,16 @@ namespace TerminologyLauncher.Utils
 
         }
 
-        public static void DownloadFile(LeafNodeProgress progress, String url, String path, String md5)
+        public static void DownloadFile(LeafNodeProgress progress, string url, string path, string md5)
         {
             DownloadFile(progress, url, path);
             if (!EncodeUtils.CheckFileMd5(path, md5))
             {
-                throw new Exception(String.Format("Md5 check for {0} refused!", path));
+                throw new Exception($"Md5 check for {path} refused!");
             }
         }
 
-        public static void DownloadAndExtractZippedFile(String url, String path, String md5)
+        public static void DownloadAndExtractZippedFile(string url, string path, string md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName, md5);
@@ -102,7 +102,7 @@ namespace TerminologyLauncher.Utils
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
 
-        public static void DownloadAndExtractZippedFile(String url, String path)
+        public static void DownloadAndExtractZippedFile(string url, string path)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName);
@@ -115,7 +115,7 @@ namespace TerminologyLauncher.Utils
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
 
-        public static String GetWebContent(String url)
+        public static string GetWebContent(string url)
         {
             using (var client = new TerminologyWebClient())
             {
@@ -126,9 +126,9 @@ namespace TerminologyLauncher.Utils
         }
 
         [STAThread]
-        public static String GetWebContent(LeafNodeProgress progress, string url)
+        public static string GetWebContent(LeafNodeProgress progress, string url)
         {
-            var task = new Task<String>(() =>
+            var task = new Task<string>(() =>
             {
                 using (var client = new TerminologyWebClient())
                 {
@@ -144,7 +144,7 @@ namespace TerminologyLauncher.Utils
                     }
                     catch (ArgumentException ex)
                     {
-                        throw new ArgumentException(ex.Message + String.Format("Url:{0}", url), ex);
+                        throw new ArgumentException(ex.Message + $"Url:{url}", ex);
                     }
                 }
             });
@@ -153,10 +153,10 @@ namespace TerminologyLauncher.Utils
             return task.Result;
         }
 
-        public static void DownloadZippedFile(InternalNodeProgress progress, String url, String path, String md5)
+        public static void DownloadZippedFile(InternalNodeProgress progress, string url, string path, string md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress(String.Format("Downloading and unzipping zip file {0}", url), 90D), url, tempFileInfo.FullName, md5);
+            DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
             {
@@ -166,7 +166,7 @@ namespace TerminologyLauncher.Utils
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
         }
-        public static void DownloadZippedFile(String url, String path, String md5)
+        public static void DownloadZippedFile(string url, string path, string md5)
         {
             var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
             DownloadFile(url, tempFileInfo.FullName, md5);

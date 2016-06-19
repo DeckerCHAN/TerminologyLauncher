@@ -5,12 +5,12 @@ namespace TerminologyLauncher.Utils.SerializeUtils
 {
     public class JsonConverter
     {
-        public static String ConvertToJson(Object obj)
+        public static string ConvertToJson(object obj)
         {
             return JsonConvert.SerializeObject(obj, new SerializeSettings());
         }
 
-        public static T Parse<T>(String json)
+        public static T Parse<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, new SerializeSettings());
         }

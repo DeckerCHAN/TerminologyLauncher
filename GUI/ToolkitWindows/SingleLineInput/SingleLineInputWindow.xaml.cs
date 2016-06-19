@@ -14,11 +14,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
     /// </summary>
     public sealed partial class SingleLineInputWindow : INotifyPropertyChanged
     {
-        private FieldReference<String> InputContentValue;
+        private FieldReference<string> InputContentValue;
         private string FieldNameValue;
-        private Boolean IsCanceled { get; set; }
+        private bool IsCanceled { get; set; }
 
-        internal SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
+        internal SingleLineInputWindow(Window owner, string title, string inputFieldName, FieldReference<string> content)
         {
             this.InputContentValue = content;
             this.InitializeComponent();
@@ -41,14 +41,14 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
         {
             get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
         }
-        public new Boolean? ShowDialog()
+        public new bool? ShowDialog()
         {
             base.ShowDialog();
             return !this.IsCanceled;
         }
 
 
-        public String InputContent
+        public string InputContent
         {
             get { return this.InputContentValue.Value; }
             set
@@ -65,7 +65,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.Close();
             });
         }
-        public String FieldName
+        public string FieldName
         {
             get { return this.FieldNameValue; }
             set

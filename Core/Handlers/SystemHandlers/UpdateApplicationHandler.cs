@@ -28,7 +28,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 
                 var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
                 var confirm = this.Engine.UiControl.MainWindow.PopupConfirmDialog("Update",
-                    String.Format("Do you confirm to update from {0}-{1} to {2}-{3}", this.Engine.UpdateManager.Version.CoreVersion, this.Engine.UpdateManager.Version.BuildNumber, updateInfo.LatestVersion.CoreVersion, updateInfo.LatestVersion.BuildNumber));
+                    $"Do you confirm to update from {this.Engine.UpdateManager.Version.CoreVersion}-{this.Engine.UpdateManager.Version.BuildNumber} to {updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}");
                 if (!confirm.Value)
                 {
                     return;
@@ -48,9 +48,9 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     {
 
                         Logging.TerminologyLogger.GetLogger()
-                                .Error(String.Format("Cannot update because {0}", ex));
-                        this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
-                            "Caused by an internal error, we cannot update right now. Detail: {0}", ex.Message));
+                                .Error($"Cannot update because {ex}");
+                        this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                            $"Caused by an internal error, we cannot update right now. Detail: {ex.Message}");
                     }
                     finally
                     {
@@ -64,7 +64,8 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             {
                 TerminologyLogger.GetLogger()
                 .ErrorFormat("Cannot update launcher because {0}", ex);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update", String.Format("Caused by an error, we cannot update launcher right now. Detail: {0}", ex.Message));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
+                    $"Caused by an error, we cannot update launcher right now. Detail: {ex.Message}");
 
                 throw;
             }

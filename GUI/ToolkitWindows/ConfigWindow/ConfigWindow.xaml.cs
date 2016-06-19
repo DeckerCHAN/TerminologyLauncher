@@ -32,11 +32,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 
         private bool IsCanceled { get; set; }
 
-        public String TitileTranslation
+        public string TitileTranslation
         {
             get { return TranslationManager.GetManager.Localize("Titile", "Configs"); }
         }
-        public String ConfirmButtionTranslation
+        public string ConfirmButtionTranslation
         {
             get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
         }
@@ -78,7 +78,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
             this.Dispatcher.Invoke(this.Close);
         }
 
-        public new Boolean? ShowDialog()
+        public new bool? ShowDialog()
         {
             base.ShowDialog();
             return !this.IsCanceled;

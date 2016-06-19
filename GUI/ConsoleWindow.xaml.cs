@@ -26,7 +26,7 @@ namespace TerminologyLauncher.GUI
                 this.ProcessValue.BeginOutputReadLine();
                 this.ProcessValue.OutputDataReceived += (s, ea) =>
                 {
-                    if (String.IsNullOrEmpty(ea.Data)) return;
+                    if (string.IsNullOrEmpty(ea.Data)) return;
                     this.Dispatcher.InvokeAsync(() =>
                     {
                         if (this.ProcessLogs.Count >= 50) this.ProcessLogs.RemoveAt(this.ProcessLogs.Count - 1);
@@ -37,8 +37,8 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        private ObservableCollection<String> ProcessLogsValue;
-        public ObservableCollection<String> ProcessLogs
+        private ObservableCollection<string> ProcessLogsValue;
+        public ObservableCollection<string> ProcessLogs
         {
             get { return this.ProcessLogsValue; }
             private set
@@ -48,7 +48,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public String ProcessLogContent
+        public string ProcessLogContent
         {
             get { return this.ProcessLogs.ToString(); }
         }

@@ -46,7 +46,7 @@ namespace TerminologyLauncher.Updater
 
         }
 
-        public static void CopyAllFilesToDirectory(String sourceDir, String targetDir)
+        public static void CopyAllFilesToDirectory(string sourceDir, string targetDir)
         {
             Directory.CreateDirectory(targetDir);
 

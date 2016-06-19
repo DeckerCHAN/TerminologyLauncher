@@ -14,17 +14,17 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
     public sealed partial class ConfirmWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-        public String ConfirmButtonTranslation
+        public string ConfirmButtonTranslation
         {
             get { return TranslationManager.GetManager.Localize("Confirm", "Confirm"); }
         }
 
-        public String CancelButtonTranslation
+        public string CancelButtonTranslation
         {
             get { return TranslationManager.GetManager.Localize("Cancel", "Cancel"); }
         }
 
-        public String ContentString
+        public string ContentString
         {
             get { return this.ContentStringValue; }
             set
@@ -33,7 +33,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
                 this.OnPropertyChanged();
             }
         }
-        internal ConfirmWindow(Window owner, String title, String content)
+        internal ConfirmWindow(Window owner, string title, string content)
         {
             this.Owner = owner;
             this.ContentString = content;
@@ -51,9 +51,9 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
             this.IsCanceled = false;
             this.OnPropertyChanged();
         }
-        private Boolean IsCanceled { get; set; }
+        private bool IsCanceled { get; set; }
 
-        public new Boolean? ShowDialog()
+        public new bool? ShowDialog()
         {
             base.ShowDialog();
             return !this.IsCanceled;

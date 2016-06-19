@@ -4,8 +4,8 @@ namespace TerminologyLauncher.Entities.Account.AdditionalInfo
 {
     public class PropertiyEntity
     {
-        public String Name { get; set; }
-        public String Value { get; set; }
-        public String Signature { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public string Signature { get; set; }
     }
 }

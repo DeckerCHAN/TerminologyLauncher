@@ -8,7 +8,7 @@ namespace TerminologyLauncher.Utils
     {
         public static readonly DirectoryInfo SystemTempFolder = new DirectoryInfo(Path.GetTempPath());
         public static readonly DirectoryInfo ExecutorFolder = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
-        public static void RecreateFolder(String path)
+        public static void RecreateFolder(string path)
         {
             RecreateFolder(new DirectoryInfo(path));
         }

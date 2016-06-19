@@ -8,22 +8,23 @@ namespace TerminologyLauncher
 {
     public class CrashReportor
     {
-        public String Report
+        public string Report
         {
             get
             {
                 var reportBuilder = new StringBuilder();
                 reportBuilder.AppendLine("Crash report:");
-                reportBuilder.AppendLine(String.Format("Data:{0}", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")));
-                reportBuilder.AppendLine(String.Format("Detail:{0}", this.Exception));
+                reportBuilder.AppendLine($"Data:{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")}");
+                reportBuilder.AppendLine($"Detail:{this.Exception}");
                 return reportBuilder.ToString();
             }
         }
 
         public Exception Exception { get; set; }
-        public String Log { get; set; }
-        public String ReportUrl { get { return "http://termlauncher.applinzi.com/report"; } }
-        public FileInfo ReportFileInfo { get { return new FileInfo(String.Format("Crash-report\\crash-report-{0}.report", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt"))); } }
+        public string Log { get; set; }
+        public string ReportUrl { get { return "http://termlauncher.applinzi.com/report"; } }
+        public FileInfo ReportFileInfo { get { return new FileInfo(
+            $"Crash-report\\crash-report-{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")}.report"); } }
         public CrashReportor(Exception ex)
         {
             this.Exception = ex;
@@ -39,8 +40,8 @@ namespace TerminologyLauncher
             using (var webClient = new WebClient())
             {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                var resp = webClient.UploadString(this.ReportUrl, String.Format("crash_report={0}&log={1}", Uri.EscapeDataString(this.Report),
-                    Uri.EscapeDataString(this.Log)));
+                var resp = webClient.UploadString(this.ReportUrl,
+                    $"crash_report={Uri.EscapeDataString(this.Report)}&log={Uri.EscapeDataString(this.Log)}");
                 Console.WriteLine(resp);
 
             }

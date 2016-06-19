@@ -16,11 +16,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
     /// </summary>
     public sealed partial class SingleSelectWindow : INotifyPropertyChanged
     {
-        private String FieldNameValue;
-        private ObservableCollection<String> SelectItemsValue;
-        private FieldReference<String> SelectItemValue;
-        private Boolean IsCanceled { get; set; }
-        public String FieldName
+        private string FieldNameValue;
+        private ObservableCollection<string> SelectItemsValue;
+        private FieldReference<string> SelectItemValue;
+        private bool IsCanceled { get; set; }
+        public string FieldName
         {
             get { return this.FieldNameValue; }
             set
@@ -30,7 +30,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public String SelectItem
+        public string SelectItem
         {
             get { return this.SelectItemValue.Value; }
             set { this.SelectItemValue.Value = value; }
@@ -38,7 +38,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 
 
 
-        public ObservableCollection<String> SelectItems
+        public ObservableCollection<string> SelectItems
         {
             get { return this.SelectItemsValue; }
             set
@@ -48,15 +48,15 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public String ConfirmButtonTranslation
+        public string ConfirmButtonTranslation
         {
             get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
         }
 
-        internal SingleSelectWindow(Window owner, String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection)
+        internal SingleSelectWindow(Window owner, string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
         {
             this.SelectItemValue = selection;
-            this.SelectItems = new ObservableCollection<String>();
+            this.SelectItems = new ObservableCollection<string>();
             this.InitializeComponent();
             if (owner != null)
             {
@@ -73,7 +73,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             this.OnPropertyChanged();
         }
 
-        new public Boolean? ShowDialog()
+        new public bool? ShowDialog()
         {
             base.ShowDialog();
             return !this.IsCanceled;

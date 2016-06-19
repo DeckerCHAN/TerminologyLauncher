@@ -25,7 +25,7 @@ namespace TerminologyLauncher.GUI
         public LoginWindow LoginWindow { get; set; }
         public ConsoleWindow ConsoleWindow { get; set; }
         public Config Config { get; set; }
-        public UiControl(String configPath)
+        public UiControl(string configPath)
         {
             this.Config = new Config(new FileInfo(configPath));
             this.MainWindow = new MainWindow(this.Config);
@@ -141,9 +141,9 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public Boolean? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
+        public bool? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
-            Boolean? result = false;
+            bool? result = false;
             this.Dispatcher.Invoke(() =>
             {
                 result = new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs).ShowDialog();
@@ -177,7 +177,7 @@ namespace TerminologyLauncher.GUI
 
         public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
         {
-            Boolean? result = false;
+            bool? result = false;
             this.Dispatcher.Invoke(() =>
             {
                 var selectWindow = new SingleSelectWindow(null, title, fieldName, options, selection);
@@ -188,7 +188,7 @@ namespace TerminologyLauncher.GUI
 
         public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
         {
-            Boolean? result = null;
+            bool? result = null;
             this.Dispatcher.Invoke(() =>
             {
                 var inputWindow = new SingleLineInputWindow(null, title, fieldName, content);

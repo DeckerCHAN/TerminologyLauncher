@@ -18,7 +18,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 {
     public class MainWindowVisibilityChangedHandler : HandlerBase
     {
-        private Boolean FirstStart;
+        private bool FirstStart;
 
         public MainWindowVisibilityChangedHandler(Engine engine)
             : base(engine)
@@ -44,7 +44,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         if (this.FirstStart)
                         {
                             this.FirstStart = false;
-                            this.Engine.UiControl.MainWindow.CoreVersion = String.Format("{0} (build{1})", this.Engine.CoreVersion, this.Engine.BuildVersion);
+                            this.Engine.UiControl.MainWindow.CoreVersion =
+                                $"{this.Engine.CoreVersion} (build{this.Engine.BuildVersion})";
 
                             if (!this.CheckJavaPath())
                             {
@@ -67,7 +68,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     try
                                     {
                                         var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate();
-                                        if (!String.IsNullOrEmpty(result))
+                                        if (!string.IsNullOrEmpty(result))
                                         {
                                             this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("InstanceUpdateNotifyTitle", "Check Update"), result);
                                         }
@@ -84,27 +85,23 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
                                 try
                                 {
-                                    var message = String.Empty;
+                                    var message = string.Empty;
                                     var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
 
                                     switch (updateInfo.UpdateType)
                                     {
                                         case UpdateType.Higher:
-                                            message = String.Format("There is higher version({0}-{1}) available",
-                                                updateInfo.LatestVersion.CoreVersion,
-                                                updateInfo.LatestVersion.BuildNumber);
+                                            message =
+                                                $"There is higher version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}) available";
                                             break;
                                         case UpdateType.Lower:
                                             message =
-                                                String.Format(
-                                                    "You are using the test version or pre-release version({0}-{1}). DO NOT DISTRIBUTE THIS VERSION!",
-                                                    updateInfo.LatestVersion.CoreVersion,
-                                                    updateInfo.LatestVersion.BuildNumber);
+                                                $"You are using the test version or pre-release version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}). DO NOT DISTRIBUTE THIS VERSION!";
                                             break;
                                         default:
                                             break;
                                     }
-                                    if (!String.IsNullOrEmpty(message))
+                                    if (!string.IsNullOrEmpty(message))
                                     {
                                         this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("LanucherUpdateNotifyTitle", "Lanucher Update"), message);
 
@@ -125,19 +122,19 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     }
                 default:
                     {
-                        TerminologyLogger.GetLogger().Error(String.Format("HandlerBase could not handle {0} status.", window.Visibility));
+                        TerminologyLogger.GetLogger().Error($"HandlerBase could not handle {window.Visibility} status.");
                         break;
                     }
             }
 
 
         }
-        public override void HandleEvent(Object sender, EventArgs e)
+        public override void HandleEvent(object sender, EventArgs e)
         {
             throw new NotSupportedException();
         }
 
-        private Boolean CheckJavaPath()
+        private bool CheckJavaPath()
         {
             //Check config 
             if (this.Engine.JreManager.JavaRuntime != null)
@@ -146,7 +143,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
 
 
-            var javaRuntimeEntitiesKP = new Dictionary<String, JavaRuntimeEntity>();
+            var javaRuntimeEntitiesKP = new Dictionary<string, JavaRuntimeEntity>();
             foreach (var availableJre in this.Engine.JreManager.AvailableJavaRuntimes)
             {
 
@@ -155,7 +152,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
-                var field = new FieldReference<String>(javaRuntimeEntitiesKP.Keys.First());
+                var field = new FieldReference<string>(javaRuntimeEntitiesKP.Keys.First());
                 var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java exe"), TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"), javaRuntimeEntitiesKP.Keys, field);
                 if (result == null || result.Value == false)
                 {
@@ -174,7 +171,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 TerminologyLogger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
-                var field = new FieldReference<String>(String.Empty);
+                var field = new FieldReference<string>(string.Empty);
                 var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationManager.GetManager.Localize("JavaInputWindowTitle", "Input a Java exe"), TranslationManager.GetManager.Localize("JavaInputField", "Java(not javaw) exe path:"), field);
 
                 if (result == null || result.Value == false)

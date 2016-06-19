@@ -5,11 +5,11 @@ namespace TerminologyLauncher.Configs.Exceptions
 {
     public sealed class ConfigurationKeyNotFoundException : SolutionProvidedException
     {
-        public String MissingKey { get; private set; }
-        public String Config { get; private set; }
+        public string MissingKey { get; private set; }
+        public string Config { get; private set; }
 
-        public ConfigurationKeyNotFoundException(String config, String missingConfigKey)
-            : base(String.Format("Key {0} for {1} is missing.", missingConfigKey, config), "Re-install may required to resolve this problem")
+        public ConfigurationKeyNotFoundException(string config, string missingConfigKey)
+            : base($"Key {missingConfigKey} for {config} is missing.", "Re-install may required to resolve this problem")
         {
             this.Config = config;
             this.MissingKey = missingConfigKey;

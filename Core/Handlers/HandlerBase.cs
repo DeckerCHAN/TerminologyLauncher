@@ -9,6 +9,6 @@ namespace TerminologyLauncher.Core.Handlers
         {
             this.Engine = engine;
         }
-        public abstract void HandleEvent(Object sender, EventArgs e);
+        public abstract void HandleEvent(object sender, EventArgs e);
     }
 }

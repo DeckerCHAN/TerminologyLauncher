@@ -18,12 +18,12 @@ namespace TerminologyLauncher.Configs
         {
             if (!jsonConfigFile.Exists)
             {
-                throw new FileNotFoundException(String.Format("Config file {0} not exists!", jsonConfigFile));
+                throw new FileNotFoundException($"Config file {jsonConfigFile} not exists!");
             }
             this.JsonFileInfo = jsonConfigFile;
         }
 
-        public String GetConfigString(String key)
+        public string GetConfigString(string key)
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
@@ -57,7 +57,7 @@ namespace TerminologyLauncher.Configs
         }
 
 
-        public void SetConfigString(String key, String value)
+        public void SetConfigString(string key, string value)
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
@@ -77,7 +77,7 @@ namespace TerminologyLauncher.Configs
 
         }
 
-        public T GetConfigObject<T>(String key)
+        public T GetConfigObject<T>(string key)
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
@@ -93,7 +93,7 @@ namespace TerminologyLauncher.Configs
 
         }
 
-        public void SetConfigObject(String key, Object obj)
+        public void SetConfigObject(string key, object obj)
         {
             this.ReadConfigsFromFile();
             this.CheckKey(key);
@@ -101,14 +101,14 @@ namespace TerminologyLauncher.Configs
             this.SaveConfig();
         }
 
-        private String GetUpperKey(String key)
+        private string GetUpperKey(string key)
         {
-            return Char.ToLowerInvariant(key[0]) + key.Substring(1);
+            return char.ToLowerInvariant(key[0]) + key.Substring(1);
         }
 
-        private void CheckKey(String key)
+        private void CheckKey(string key)
         {
-            if (String.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentException("Empty key is not allowed!");
             }

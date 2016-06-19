@@ -32,12 +32,12 @@ namespace TerminologyLauncher.Core
 
         #endregion
 
-        public String CoreVersion
+        public string CoreVersion
         {
             get { return "A2"; }
         }
 
-        public Int32 BuildVersion
+        public int BuildVersion
         {
             get { return 1339; }
         }
@@ -48,7 +48,7 @@ namespace TerminologyLauncher.Core
         public FileRepository FileRepo { get; set; }
         public InstanceManager InstanceManager { get; set; }
         public UpdateManager UpdateManager { get; set; }
-        public Dictionary<String, HandlerBase> Handlers { get; set; }
+        public Dictionary<string, HandlerBase> Handlers { get; set; }
         public JreManager JreManager { get; set; }
         public Process GameProcess { get; set; }
         public Dispatcher EngineDispatcher { get; private set; }

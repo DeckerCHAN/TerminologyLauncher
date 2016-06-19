@@ -21,7 +21,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
             TerminologyLogger.GetLogger().Info("Handling add instance event!");
 
-            var result = new FieldReference<String>(String.Empty);
+            var result = new FieldReference<string>(string.Empty);
 
             var confim =
                 this.Engine.UiControl.MainWindow.PopupSingleLineInputDialog(TranslationManager.GetManager.Localize("Title", "Add a Instance"),
@@ -42,26 +42,26 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 TerminologyLogger.GetLogger()
                        .ErrorFormat("Network is not accessable! Detail: {0}", ex.Message);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), String.Format(TranslationManager.GetManager.Localize("NetworkNotAccessable", "Network is not accessable! Detail: {0}", 1), ex.Message));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("NetworkNotAccessable", "Network is not accessable! Detail: {0}", 1), ex.Message));
             }
             catch (JsonReaderException ex)
             {
                 TerminologyLogger.GetLogger()
                     .ErrorFormat("Wrong instance json format! {0}", ex.Message);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), String.Format(TranslationManager.GetManager.Localize("WrongJsonFormat", "Wrong instance json format! {0}", 1), ex.Message));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("WrongJsonFormat", "Wrong instance json format! {0}", 1), ex.Message));
             }
             catch (MissingFieldException ex)
             {
                 TerminologyLogger.GetLogger()
                   .ErrorFormat("Critical field is missing! {0}", ex.Message);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), String.Format(TranslationManager.GetManager.Localize("MissCriticalField", "Some critical field is missing. Unable to add this instance! Detail:{0}", 1), ex.Message));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("MissCriticalField", "Some critical field is missing. Unable to add this instance! Detail:{0}", 1), ex.Message));
             }
 
             catch (Exception ex)
             {
                 TerminologyLogger.GetLogger()
                     .ErrorFormat("Cannot add this instance because {0}", ex);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), String.Format(TranslationManager.GetManager.Localize("UnknownError", "Caused by an error, we cannot add this instance right now. Detail: {0}", 1), ex.Message));
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("UnknownError", "Caused by an error, we cannot add this instance right now. Detail: {0}", 1), ex.Message));
 
             }
         }

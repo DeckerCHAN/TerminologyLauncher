@@ -4,9 +4,9 @@ namespace TerminologyLauncher.Entities.FileRepository
 {
     public class RepositoryItemEntity
     {
-        public String ProvideId { get; set; }
-        public String Name { get; set; }
-        public String Md5 { get; set; }
-        public String DownloadPath { get; set; }
+        public string ProvideId { get; set; }
+        public string Name { get; set; }
+        public string Md5 { get; set; }
+        public string DownloadPath { get; set; }
     }
 }

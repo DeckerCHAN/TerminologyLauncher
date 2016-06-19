@@ -15,7 +15,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
     {
         private string ContentStringValue;
   
-        public String ContentString
+        public string ContentString
         {
             get { return this.ContentStringValue; }
             set
@@ -35,7 +35,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
             this.Dispatcher.Invoke(this.Close);
         }
 
-        internal NotifyWindow(Window owner, String title, String content)
+        internal NotifyWindow(Window owner, string title, string content)
         {
             this.Owner = owner;
             this.ContentString = content;

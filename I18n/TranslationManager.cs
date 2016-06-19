@@ -24,14 +24,15 @@ namespace TerminologyLauncher.I18n
         }
         #endregion
 
-        public String CurrentLanguageName { get; private set; }
+        public string CurrentLanguageName { get; private set; }
         public FileInfo TranslatonFileInfo { get; private set; }
-        public Dictionary<String, String> TranslationDictionary { get; private set; }
+        public Dictionary<string, string> TranslationDictionary { get; private set; }
 
         private TranslationManager()
         {
             this.CurrentLanguageName = MachineUtils.GetCurrentLanguageName();
-            this.TranslatonFileInfo = new FileInfo(Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName, "Translations", String.Format("{0}.ln", this.CurrentLanguageName)));
+            this.TranslatonFileInfo = new FileInfo(Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName, "Translations",
+                $"{this.CurrentLanguageName}.ln"));
             if (!this.TranslatonFileInfo.Exists)
             {
                 FolderUtils.CreateDirectoryIfNotExists(this.TranslatonFileInfo.Directory);
@@ -40,13 +41,13 @@ namespace TerminologyLauncher.I18n
             this.LoadFile();
         }
 
-        public String Localize(String identity, String defaultContent, UInt16 argumentNumber = 0)
+        public string Localize(string identity, string defaultContent, ushort argumentNumber = 0)
         {
             if (!new Regex("^[a-zA-Z]+$").Match(identity).Success)
             {
                 throw new ArgumentException("Identity not allow string contains characters except letters.");
             }
-            var key = String.Format("{0}.{1}", new StackTrace().GetFrame(1).GetMethod().ReflectedType.FullName, identity);
+            var key = $"{new StackTrace().GetFrame(1).GetMethod().ReflectedType.FullName}.{identity}";
 
             if (this.TranslationDictionary.ContainsKey(key))
             {

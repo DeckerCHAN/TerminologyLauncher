@@ -5,20 +5,20 @@ namespace TerminologyLauncher.Utils.ProgressService
     public delegate void ProgressChangedEventHandler(object sender);
     public abstract class Progress
     {
-        public Progress(String taskName)
+        public Progress(string taskName)
         {
             this.TaskName = taskName;
         }
         public event ProgressChangedEventHandler ProgressChanged;
-        public virtual Double Percent { get; set; }
+        public virtual double Percent { get; set; }
 
-        public virtual String ReadablePercent
+        public virtual string ReadablePercent
         {
-            get { return String.Format("{0:0.00}%", this.Percent); }
+            get { return $"{this.Percent:0.00}%"; }
         }
 
-        public virtual String TaskName { get; set; }
-        protected virtual Double CheckPercentage(Double percent)
+        public virtual string TaskName { get; set; }
+        protected virtual double CheckPercentage(double percent)
         {
             if (percent > 100D)
             {

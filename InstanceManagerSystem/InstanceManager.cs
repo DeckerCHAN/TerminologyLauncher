@@ -25,7 +25,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 {
     public class InstanceManager
     {
-        public InstanceManager(String configPath, FileRepository usingFileRepository, JreManager jreManager)
+        public InstanceManager(string configPath, FileRepository usingFileRepository, JreManager jreManager)
         {
             this.Config = new Config(new FileInfo(configPath));
             this.UsingFileRepository = usingFileRepository;
@@ -41,7 +41,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.LoadInstancesFromBankFile();
         }
         public Config Config { get; set; }
-        public Int32 SupportGeneration { get { return 2; } }
+        public int SupportGeneration { get { return 2; } }
         public DirectoryInfo InstancesFolder { get; set; }
         public InstanceBankEntity InstanceBank { get; set; }
         public JreManager JreManager { get; set; }
@@ -104,9 +104,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
 
         #region Operation
-        public String AddInstance(String instanceUrl)
+        public string AddInstance(string instanceUrl)
         {
-            TerminologyLogger.GetLogger().Info(String.Format("Starting to add new instance through {0}.", instanceUrl));
+            TerminologyLogger.GetLogger().Info($"Starting to add new instance through {instanceUrl}.");
             this.LoadInstancesFromBankFile();
             //Download instance content
             var rowInstanceContent = DownloadUtils.GetWebContent(instanceUrl);
@@ -130,11 +130,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
             File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
             this.SaveInstancesBankToFile();
-            return String.Format("Added instance:{0}", instance.InstanceName);
+            return $"Added instance:{instance.InstanceName}";
 
         }
 
-        public String RemoveInstance(String instanceName)
+        public string RemoveInstance(string instanceName)
         {
             this.LoadInstancesFromBankFile();
 
@@ -147,16 +147,16 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName))));
             this.SaveInstancesBankToFile();
 
-            return String.Format("Removed instance by instance name:{0}", instanceName);
+            return $"Removed instance by instance name:{instanceName}";
 
         }
 
-        public String CheckAllInstanceCouldUpdate()
+        public string CheckAllInstanceCouldUpdate()
         {
-            var availableUpdateInstanceNameList = new List<String>();
+            var availableUpdateInstanceNameList = new List<string>();
             foreach (var instanceInfoEntity in this.InstanceBank.InstancesInfoList)
             {
-                TerminologyLogger.GetLogger().Info(String.Format("Check update {0}", instanceInfoEntity.Name));
+                TerminologyLogger.GetLogger().Info($"Check update {instanceInfoEntity.Name}");
                 var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceInfoEntity.Name)));
 
                 var oldInstanceEntity =
@@ -175,7 +175,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (availableUpdateInstanceNameList.Count == 0)
             {
                 TerminologyLogger.GetLogger().Info("All instances at latest version.");
-                return String.Empty;
+                return string.Empty;
             }
             var result = new StringBuilder();
             for (var i = 0; i < availableUpdateInstanceNameList.Count; i++)
@@ -187,13 +187,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     result.Append(", ");
                 }
             }
-            return String.Format(TranslationManager.GetManager.Localize("ExistsInstanceAvailableToUpdate", "Detected {0} are available to update!", 1), result);
+            return string.Format(TranslationManager.GetManager.Localize("ExistsInstanceAvailableToUpdate", "Detected {0} are available to update!", 1), result);
         }
 
 
-        public String UpdateInstance(InternalNodeProgress progress, String instanceName)
+        public string UpdateInstance(InternalNodeProgress progress, string instanceName)
         {
-            TerminologyLogger.GetLogger().Info(String.Format("Start to update {0}", instanceName));
+            TerminologyLogger.GetLogger().Info($"Start to update {instanceName}");
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
 
             var oldInstanceEntity =
@@ -201,7 +201,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
             this.CriticalInstanceFieldCheck(oldInstanceEntity);
 
-            var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Receiving {0} instance file", instanceInfo.Name), 50D), instanceInfo.UpdateUrl);
+            var newInstanceContent = DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(
+                $"Receiving {instanceInfo.Name} instance file", 50D), instanceInfo.UpdateUrl);
             var newInstanceEntity = JsonConverter.Parse<InstanceEntity>(newInstanceContent);
             progress.Percent = 60D;
             //Check instance is available to update
@@ -209,7 +210,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 progress.Percent = 100D;
                 TerminologyLogger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
-                return (String.Format(TranslationManager.GetManager.Localize("InsatnceAtLatestVersion", "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
+                return (string.Format(TranslationManager.GetManager.Localize("InsatnceAtLatestVersion", "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
             }
             var updateSuccessfulInfo = TranslationManager.GetManager.Localize("InstanceUpdateToVersion",
                 "Successful update instance file {0} from version {1} to {2}!", 3);
@@ -221,7 +222,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
                         TerminologyLogger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-                        return String.Format(updateSuccessfulInfo,
+                        return string.Format(updateSuccessfulInfo,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                     }
@@ -328,7 +329,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
                         TerminologyLogger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-                        return String.Format(updateSuccessfulInfo,
+                        return string.Format(updateSuccessfulInfo,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
                     }
@@ -342,9 +343,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         }
 
-        public Process LaunchInstance(InternalNodeProgress progress, String instanceName, PlayerEntity player)
+        public Process LaunchInstance(InternalNodeProgress progress, string instanceName, PlayerEntity player)
         {
-            TerminologyLogger.GetLogger().Info(String.Format("Start to launch {0} by player {1}...", instanceName, player.PlayerName));
+            TerminologyLogger.GetLogger().Info($"Start to launch {instanceName} by player {player.PlayerName}...");
             var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceName)));
             var instance =
                 JsonConverter.Parse<InstanceEntity>(
@@ -369,7 +370,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
                     foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                     {
-                        this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(String.Format("Receiving entire package {0}", entirePackageFile.Name), singlePackageDownloadNodeProgress),
+                        this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(
+                            $"Receiving entire package {entirePackageFile.Name}", singlePackageDownloadNodeProgress),
                         instance.InstanceName, entirePackageFile);
                     }
                 }
@@ -382,7 +384,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                     {
                         this.ReceiveOfficialFile(
-                            progress.CreateNewLeafSubProgress(String.Format("Downloading official file: {0}", officialFileEntity.Name), singleOfficialDownloadNodeProgress),
+                            progress.CreateNewLeafSubProgress($"Downloading official file: {officialFileEntity.Name}", singleOfficialDownloadNodeProgress),
                             instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                     }
                 }
@@ -396,7 +398,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                     {
                         this.ReceiveCustomFile(
-                           progress.CreateNewLeafSubProgress(String.Format("Downloading custom file: {0}", customFileEntity.Name), singleCustomDownloadNodeProgress),
+                           progress.CreateNewLeafSubProgress($"Downloading custom file: {customFileEntity.Name}", singleCustomDownloadNodeProgress),
                            instance.InstanceName, customFileEntity);
                     }
                 }
@@ -417,7 +419,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 startArgument.Append(jvmArgument + " ");
             }
 
-            startArgument.Append(this.Config.GetConfigString("extraJvmArguments") ?? String.Empty).Append(" ");
+            startArgument.Append(this.Config.GetConfigString("extraJvmArguments") ?? string.Empty).Append(" ");
 
             startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfigString("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
 
@@ -429,7 +431,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             else
             {
-                throw new DirectoryNotFoundException(String.Format("Native folder is not valid!"));
+                throw new DirectoryNotFoundException(string.Format("Native folder is not valid!"));
             }
 
             startArgument.Append("-cp" + " ");
@@ -443,7 +445,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 }
                 else
                 {
-                    throw new FileNotFoundException(String.Format("Instance {0} is missing lib file {1}", instance.InstanceName, libraryPath));
+                    throw new FileNotFoundException(
+                        $"Instance {instance.InstanceName} is missing lib file {libraryPath}");
                 }
             }
 
@@ -456,7 +459,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
             else
             {
-                throw new FileNotFoundException(String.Format("Instance {0} is missing main jar file {1}", instance.InstanceName, mainJarFile.Name));
+                throw new FileNotFoundException(
+                    $"Instance {instance.InstanceName} is missing main jar file {mainJarFile.Name}");
             }
 
             startArgument.Append(instance.StartupArguments.MainClass + " ");
@@ -509,7 +513,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             progress.Percent = 100D;
 
             this.CurrentInstanceProcess = instanceProcess;
-            TerminologyLogger.GetLogger().Info(String.Format("Instance {0} launched!", instanceName));
+            TerminologyLogger.GetLogger().Info($"Instance {instanceName} launched!");
 
             return this.CurrentInstanceProcess;
 
@@ -518,17 +522,17 @@ namespace TerminologyLauncher.InstanceManagerSystem
         #endregion
         #region Toolkits
 
-        private DirectoryInfo GetInstanceRootFolder(String instanceName)
+        private DirectoryInfo GetInstanceRootFolder(string instanceName)
         {
             var folder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instanceName));
             if (!folder.Exists)
             {
-                throw new DirectoryNotFoundException(String.Format("Root folder for {0} not exists.", instanceName));
+                throw new DirectoryNotFoundException($"Root folder for {instanceName} not exists.");
             }
             return folder;
         }
 
-        private void ReceiveOfficialFile(LeafNodeProgress progress, String instanceName, OfficialFileEntity officialFile, FileRepository usingRepo)
+        private void ReceiveOfficialFile(LeafNodeProgress progress, string instanceName, OfficialFileEntity officialFile, FileRepository usingRepo)
         {
             //Try to find file at file repo 
             var repositoryFile = usingRepo.GetOfficialFile(progress, officialFile.ProvideId);
@@ -536,43 +540,47 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             var targetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
             repositoryFile.CopyTo(targetPositon, true);
-            TerminologyLogger.GetLogger().Info(String.Format("Successfully put file:{0}.", targetPositon));
+            TerminologyLogger.GetLogger().Info($"Successfully put file:{targetPositon}.");
 
         }
 
-        private void ReceiveCustomFile(LeafNodeProgress progress, String instanceName, CustomFileEntity customFile)
+        private void ReceiveCustomFile(LeafNodeProgress progress, string instanceName, CustomFileEntity customFile)
         {
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
-            TerminologyLogger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            TerminologyLogger.GetLogger().Info(
+                $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
-            TerminologyLogger.GetLogger().Info(String.Format("Successfully downloaded file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            TerminologyLogger.GetLogger().Info(
+                $"Successfully downloaded file:{downloadTargetPositon} from remote url:{downloadLink}.");
         }
 
-        private void ReceiveEntirePackage(InternalNodeProgress progress, String instanceName, EntirePackageFileEntity entirePackageFile)
+        private void ReceiveEntirePackage(InternalNodeProgress progress, string instanceName, EntirePackageFileEntity entirePackageFile)
         {
             var downloadLink = entirePackageFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? String.Empty);
-            TerminologyLogger.GetLogger().Info(String.Format("Downloading file:{0} from remote url:{1}.", downloadTargetPositon, downloadLink));
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? string.Empty);
+            TerminologyLogger.GetLogger().Info(
+                $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
-            TerminologyLogger.GetLogger().Info(String.Format("Successfully downloaded file:{0} then extracted to {1}.", downloadLink, downloadTargetPositon));
+            TerminologyLogger.GetLogger().Info(
+                $"Successfully downloaded file:{downloadLink} then extracted to {downloadTargetPositon}.");
         }
 
-        private String GetIconImage(String instanceName)
+        private string GetIconImage(string instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
             var imagePath = Path.Combine(folderPath, "icon.png");
             return new FileInfo(imagePath).FullName;
         }
 
-        private String GetBackgroundImage(String instanceName)
+        private string GetBackgroundImage(string instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
             var imagePath = Path.Combine(folderPath, "background.png");
             return new FileInfo(imagePath).FullName;
         }
 
-        private String GetInstnaceFile(String instanceName)
+        private string GetInstnaceFile(string instanceName)
         {
             var folderPath = this.GetInstanceRootFolder(instanceName).FullName;
             var imagePath = Path.Combine(folderPath, "Instance.json");
@@ -581,32 +589,34 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         private void CriticalInstanceFieldCheck(InstanceEntity instance)
         {
-            if (String.IsNullOrEmpty(instance.InstanceName))
+            if (string.IsNullOrEmpty(instance.InstanceName))
             {
                 throw new SolutionProvidedException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
             }
             if (!instance.Generation.Equals(this.SupportGeneration))
             {
-                throw new SolutionProvidedException(String.Format("Current launcher not support {0} generation instance.", instance.Generation), " Using latest version for both launcher or instance my resolver this problem.");
+                throw new SolutionProvidedException(
+                    $"Current launcher not support {instance.Generation} generation instance.", " Using latest version for both launcher or instance my resolver this problem.");
             }
-            if (String.IsNullOrEmpty(instance.UpdatePath))
+            if (string.IsNullOrEmpty(instance.UpdatePath))
             {
-                throw new SolutionProvidedException(String.Format("Instance {0} is missing update url", instance.UpdatePath), "This problem should be report to instance author.");
+                throw new SolutionProvidedException($"Instance {instance.UpdatePath} is missing update url", "This problem should be report to instance author.");
             }
 
-            if (String.IsNullOrEmpty(instance.Version))
+            if (string.IsNullOrEmpty(instance.Version))
             {
-                throw new SolutionProvidedException(String.Format("Instance {0} is missing version number.", instance.Version), "This problem should be report to instance author.");
+                throw new SolutionProvidedException($"Instance {instance.Version} is missing version number.", "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
             {
-                throw new Exception(String.Format("Instance {0} is missing valid Jvm arguments!", instance.InstanceName));
+                throw new Exception($"Instance {instance.InstanceName} is missing valid Jvm arguments!");
             }
 
-            if (String.IsNullOrEmpty(instance.StartupArguments.Nativespath))
+            if (string.IsNullOrEmpty(instance.StartupArguments.Nativespath))
             {
-                throw new SolutionProvidedException(String.Format("Instance {0} is missing valid native path arguments!", instance.InstanceName), "This problem should be report to instance author.");
+                throw new SolutionProvidedException(
+                    $"Instance {instance.InstanceName} is missing valid native path arguments!", "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
@@ -625,23 +635,23 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             if (instance.StartupArguments.LibraryPaths == null || instance.StartupArguments.LibraryPaths.Count == 0)
             {
-                throw new Exception(String.Format("Empty libraries path for instance {0} does not make sense!", instance.InstanceName));
+                throw new Exception($"Empty libraries path for instance {instance.InstanceName} does not make sense!");
             }
 
-            if (String.IsNullOrEmpty(instance.StartupArguments.MainClass))
+            if (string.IsNullOrEmpty(instance.StartupArguments.MainClass))
             {
-                throw new Exception(String.Format("Empty main class for instance {0} is not allowed!", instance.InstanceName));
+                throw new Exception($"Empty main class for instance {instance.InstanceName} is not allowed!");
             }
 
-            if (String.IsNullOrEmpty(instance.StartupArguments.MainJarPath))
+            if (string.IsNullOrEmpty(instance.StartupArguments.MainJarPath))
             {
-                throw new Exception(String.Format("Empty main jar path for instance {0} is not allowed!", instance.InstanceName));
+                throw new Exception($"Empty main jar path for instance {instance.InstanceName} is not allowed!");
             }
 
-            if (String.IsNullOrEmpty(instance.StartupArguments.AssetsDir) ||
-                String.IsNullOrEmpty(instance.StartupArguments.AssetIndex))
+            if (string.IsNullOrEmpty(instance.StartupArguments.AssetsDir) ||
+                string.IsNullOrEmpty(instance.StartupArguments.AssetIndex))
             {
-                throw new Exception(String.Format("Empty assets arguments for instance {0} is not allowed!", instance.InstanceName));
+                throw new Exception($"Empty assets arguments for instance {instance.InstanceName} is not allowed!");
 
             }
 
@@ -650,7 +660,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var etp = instance.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
             if ((cmf.Count + omf.Count + etp.Count) == 0)
             {
-                throw new Exception(String.Format("Instance {0} do not have any file! This should not happen and may cause divesting error!", instance.InstanceName));
+                throw new Exception(
+                    $"Instance {instance.InstanceName} do not have any file! This should not happen and may cause divesting error!");
             }
         }
 
@@ -659,7 +670,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             //Check instance already exists
             if (this.Instances.Any(x => (x.InstanceName.Equals(instance.InstanceName))))
             {
-                throw new InvalidOperationException(String.Format("Instance {0} already exists!", instance.InstanceName));
+                throw new InvalidOperationException($"Instance {instance.InstanceName} already exists!");
             }
             //Localize instance
             var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instance.InstanceName));

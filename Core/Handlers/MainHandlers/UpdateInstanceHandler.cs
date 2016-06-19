@@ -26,7 +26,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 return;
             }
 
-            var progress = new InternalNodeProgress(String.Format("Updating instance {0}", instance.InstanceName));
+            var progress = new InternalNodeProgress($"Updating instance {instance.InstanceName}");
             var progressWindow = this.Engine.UiControl.MainWindow.BeginPopupProgressWindow(progress);
             Task.Run(() =>
             {
@@ -46,18 +46,14 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 {
                     Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
-                        String.Format(
-                            "Encounter an wrong state error. Detail:{0}",
-                            ex.Message));
+                        $"Encounter an wrong state error. Detail:{ex.Message}");
 
                 }
                 catch (Exception ex)
                 {
                     Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
-                        String.Format(
-                            "Caused by an internal error, we cannot update this instance right now.Detail:{0}",
-                            ex.Message));
+                        $"Caused by an internal error, we cannot update this instance right now.Detail:{ex.Message}");
 
                 }
                 finally

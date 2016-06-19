@@ -67,7 +67,7 @@ namespace TerminologyLauncher.UnitTest
                 Console.WriteLine(progress.Percent);
             };
             var content =
-                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Downloading Text"), 100D), "http://baidu.com");
+                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(string.Format("Downloading Text"), 100D), "http://baidu.com");
             // Console.WriteLine(content);
         }
 

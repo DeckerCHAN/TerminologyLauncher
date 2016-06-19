@@ -27,59 +27,59 @@ namespace TerminologyLauncher.GUI
         private bool IsPerservePasswordValue;
 
 
-        public delegate void LogingHandler(Object serder, EventArgs e);
+        public delegate void LogingHandler(object serder, EventArgs e);
 
         public event LogingHandler Logining;
 
-        public String LoginWindowTranslation
+        public string LoginWindowTranslation
         {
             get { return TranslationManager.GetManager.Localize("Title", "Terminology login"); }
         }
-        public String MojangAccountTranslation
+        public string MojangAccountTranslation
         {
             get { return TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:"); }
         }
 
-        public String OfflineAccountTranslation
+        public string OfflineAccountTranslation
         {
             get { return TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:"); }
         }
 
-        public String MojangAccountModeTranslation
+        public string MojangAccountModeTranslation
         {
             get { return TranslationManager.GetManager.Localize("OfficialMode", "Official Mode"); }
         }
 
-        public String OfflineAccountModeTranslation
+        public string OfflineAccountModeTranslation
         {
             get { return TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode"); }
         }
-        public String PasswordTranslation
+        public string PasswordTranslation
         {
             get { return TranslationManager.GetManager.Localize("Password", "Password:"); }
         }
 
-        public String LoginModeTranslation
+        public string LoginModeTranslation
         {
             get { return TranslationManager.GetManager.Localize("LoginMode", "Login Mode:"); }
         }
 
-        public String RememberAccountTranslation
+        public string RememberAccountTranslation
         {
             get { return TranslationManager.GetManager.Localize("RememberAccount", "Remember account"); }
         }
 
-        public String LoginButtonTranslation
+        public string LoginButtonTranslation
         {
             get { return TranslationManager.GetManager.Localize("LoginButtion", "Login"); }
         }
-        public String CancelButtonTranslation
+        public string CancelButtonTranslation
         {
             get { return TranslationManager.GetManager.Localize("CancelButton", "Cancel"); }
         }
 
-        private String BackgroundImageSourceValue;
-        public String BackgroundImageSource
+        private string BackgroundImageSourceValue;
+        public string BackgroundImageSource
         {
             get { return this.BackgroundImageSourceValue; }
             set
@@ -95,7 +95,7 @@ namespace TerminologyLauncher.GUI
         {
             this.Config = config;
 
-            if (!String.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) && File.Exists(this.Config.GetConfigString("loginWindowBackground")))
+            if (!string.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) && File.Exists(this.Config.GetConfigString("loginWindowBackground")))
             {
                 var imageFile = new FileInfo(this.Config.GetConfigString("loginWindowBackground"));
                 this.BackgroundImageSource = imageFile.FullName;
@@ -109,7 +109,7 @@ namespace TerminologyLauncher.GUI
             this.OnPropertyChanged();
         }
 
-        public void EnableAllInputs(Boolean isEnable)
+        public void EnableAllInputs(bool isEnable)
         {
             this.Dispatcher.InvokeAsync(() =>
             {
@@ -127,7 +127,7 @@ namespace TerminologyLauncher.GUI
             this.Dispatcher.Invoke(this.Close);
         }
 
-        public Boolean IsPerservePassword
+        public bool IsPerservePassword
         {
             get { return this.IsPerservePasswordValue; }
             set

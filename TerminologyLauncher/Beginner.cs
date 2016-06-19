@@ -11,7 +11,7 @@ namespace TerminologyLauncher
     public static class Beginner
     {
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+        public static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 
         public static void Start()
         {
@@ -55,7 +55,7 @@ namespace TerminologyLauncher
             }
         }
 
-        private static Boolean RuntimeDotNetHigherThan45()
+        private static bool RuntimeDotNetHigherThan45()
         {
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
             {
