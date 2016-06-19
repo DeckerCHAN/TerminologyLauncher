@@ -22,9 +22,11 @@ namespace TerminologyLauncher
 
         public Exception Exception { get; set; }
         public string Log { get; set; }
-        public string ReportUrl { get { return "http://termlauncher.applinzi.com/report"; } }
-        public FileInfo ReportFileInfo { get { return new FileInfo(
-            $"Crash-report\\crash-report-{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")}.report"); } }
+        public string ReportUrl => "http://termlauncher.applinzi.com/report";
+
+        public FileInfo ReportFileInfo => new FileInfo(
+            $"Crash-report\\crash-report-{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-tt")}.report");
+
         public CrashReportor(Exception ex)
         {
             this.Exception = ex;

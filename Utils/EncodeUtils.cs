@@ -7,13 +7,7 @@ namespace TerminologyLauncher.Utils
 {
     public static class EncodeUtils
     {
-        public static Encoding NoneBomUTF8
-        {
-            get
-            {
-                return new UTF8Encoding(false);
-            }
-        }
+        public static Encoding NoneBomUTF8 => new UTF8Encoding(false);
 
         public static string CalculateFileMd5(string filePath)
         {

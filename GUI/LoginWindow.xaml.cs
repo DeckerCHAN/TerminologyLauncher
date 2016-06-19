@@ -31,52 +31,25 @@ namespace TerminologyLauncher.GUI
 
         public event LogingHandler Logining;
 
-        public string LoginWindowTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("Title", "Terminology login"); }
-        }
-        public string MojangAccountTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:"); }
-        }
+        public string LoginWindowTranslation => TranslationManager.GetManager.Localize("Title", "Terminology login");
 
-        public string OfflineAccountTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:"); }
-        }
+        public string MojangAccountTranslation => TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:");
 
-        public string MojangAccountModeTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("OfficialMode", "Official Mode"); }
-        }
+        public string OfflineAccountTranslation => TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:");
 
-        public string OfflineAccountModeTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode"); }
-        }
-        public string PasswordTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("Password", "Password:"); }
-        }
+        public string MojangAccountModeTranslation => TranslationManager.GetManager.Localize("OfficialMode", "Official Mode");
 
-        public string LoginModeTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("LoginMode", "Login Mode:"); }
-        }
+        public string OfflineAccountModeTranslation => TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode");
 
-        public string RememberAccountTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("RememberAccount", "Remember account"); }
-        }
+        public string PasswordTranslation => TranslationManager.GetManager.Localize("Password", "Password:");
 
-        public string LoginButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("LoginButtion", "Login"); }
-        }
-        public string CancelButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("CancelButton", "Cancel"); }
-        }
+        public string LoginModeTranslation => TranslationManager.GetManager.Localize("LoginMode", "Login Mode:");
+
+        public string RememberAccountTranslation => TranslationManager.GetManager.Localize("RememberAccount", "Remember account");
+
+        public string LoginButtonTranslation => TranslationManager.GetManager.Localize("LoginButtion", "Login");
+
+        public string CancelButtonTranslation => TranslationManager.GetManager.Localize("CancelButton", "Cancel");
 
         private string BackgroundImageSourceValue;
         public string BackgroundImageSource

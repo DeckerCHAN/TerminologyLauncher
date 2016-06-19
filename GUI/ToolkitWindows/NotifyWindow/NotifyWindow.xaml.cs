@@ -25,10 +25,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
             }
         }
 
-        public object ConfirmButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
-        }
+        public object ConfirmButtonTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
 
         public void CrossThreadClose()
         {

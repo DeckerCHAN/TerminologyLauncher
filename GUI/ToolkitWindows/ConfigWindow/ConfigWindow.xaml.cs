@@ -32,15 +32,8 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
 
         private bool IsCanceled { get; set; }
 
-        public string TitileTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("Titile", "Configs"); }
-        }
-        public string ConfirmButtionTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
-        }
-
+        public string TitileTranslation => TranslationManager.GetManager.Localize("Titile", "Configs");
+        public string ConfirmButtionTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
 
 
         public ObservableCollection<ItemSelectConfigObject> ItemSelectConfigObjects

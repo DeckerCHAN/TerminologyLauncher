@@ -31,10 +31,7 @@ namespace TerminologyLauncher.GUI
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
-        public string MainWindowTitleTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("MainWindowTitle", "Terminology Launcher"); }
-        }
+        public string MainWindowTitleTranslation => TranslationManager.GetManager.Localize("MainWindowTitle", "Terminology Launcher");
 
         public PlayerEntity Player
         {
@@ -76,55 +73,25 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public string AddInstanceTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("AddInstance", "Add new instance"); }
-        }
+        public string AddInstanceTranslation => TranslationManager.GetManager.Localize("AddInstance", "Add new instance");
 
-        public string RemoveInstanceTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("RemoveInstance", "Remove select instance"); }
-        }
+        public string RemoveInstanceTranslation => TranslationManager.GetManager.Localize("RemoveInstance", "Remove select instance");
 
-        public string OfficialLoginTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("OfficialLogin", "Official Mode"); }
-        }
+        public string OfficialLoginTranslation => TranslationManager.GetManager.Localize("OfficialLogin", "Official Mode");
 
-        public string OfflineLoginTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("OfflineLogin", "Offline Mode"); }
-        }
+        public string OfflineLoginTranslation => TranslationManager.GetManager.Localize("OfflineLogin", "Offline Mode");
 
-        public string InstanceNameFieldTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("InstanceNameField", "Name:"); }
-        }
+        public string InstanceNameFieldTranslation => TranslationManager.GetManager.Localize("InstanceNameField", "Name:");
 
-        public string InstanceAuthorFieldTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("InstanceAuthorField", "Author:"); }
-        }
+        public string InstanceAuthorFieldTranslation => TranslationManager.GetManager.Localize("InstanceAuthorField", "Author:");
 
-        public string InstanceDescribeFieldTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("InstanceDescribeField", "Describe:"); }
-        }
+        public string InstanceDescribeFieldTranslation => TranslationManager.GetManager.Localize("InstanceDescribeField", "Describe:");
 
-        public string InstanceVersionFieldTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("InstanceVersionField", "Version:"); }
-        }
+        public string InstanceVersionFieldTranslation => TranslationManager.GetManager.Localize("InstanceVersionField", "Version:");
 
-        public string UpdateInstanceButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("UpdateInstanceButton", "Update"); }
-        }
+        public string UpdateInstanceButtonTranslation => TranslationManager.GetManager.Localize("UpdateInstanceButton", "Update");
 
-        public object LaunchInstanceButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("LaunchInstanceButtonTranslation", "Launch"); }
-        }
+        public object LaunchInstanceButtonTranslation => TranslationManager.GetManager.Localize("LaunchInstanceButtonTranslation", "Launch");
 
         public MainWindow(Config config)
         {

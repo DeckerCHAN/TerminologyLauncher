@@ -33,18 +33,9 @@ namespace TerminologyLauncher.GUI
             this.ConsoleWindow = new ConsoleWindow(this.Config);
         }
 
-        public Storyboard FadeInStoryboard
-        {
-            get { return Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500)); }
-        }
+        public Storyboard FadeInStoryboard => Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500));
 
-        public Storyboard FadeOutStoryboard
-        {
-            get
-            {
-                return Fade.CreateFadeOutStoryboard(TimeSpan.FromMilliseconds(500));
-            }
-        }
+        public Storyboard FadeOutStoryboard => Fade.CreateFadeOutStoryboard(TimeSpan.FromMilliseconds(500));
 
         public void ShowLoginWindow()
         {

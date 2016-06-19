@@ -32,15 +32,9 @@ namespace TerminologyLauncher.Core
 
         #endregion
 
-        public string CoreVersion
-        {
-            get { return "A2"; }
-        }
+        public string CoreVersion => "A2";
 
-        public int BuildVersion
-        {
-            get { return 1339; }
-        }
+        public int BuildVersion => 1339;
 
         public Config CoreConfig { get; set; }
         public UiControl UiControl { get; set; }

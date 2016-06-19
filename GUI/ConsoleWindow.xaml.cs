@@ -48,10 +48,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public string ProcessLogContent
-        {
-            get { return this.ProcessLogs.ToString(); }
-        }
+        public string ProcessLogContent => this.ProcessLogs.ToString();
 
         public Config Config { get; set; }
 

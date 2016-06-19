@@ -48,10 +48,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
             }
         }
 
-        public string ConfirmButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
-        }
+        public string ConfirmButtonTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
 
         internal SingleSelectWindow(Window owner, string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
         {

@@ -15,13 +15,8 @@ namespace TerminologyLauncher.I18n
 
         private static TranslationManager Instance;
 
-        public static TranslationManager GetManager
-        {
-            get
-            {
-                return Instance ?? (Instance = new TranslationManager());
-            }
-        }
+        public static TranslationManager GetManager => Instance ?? (Instance = new TranslationManager());
+
         #endregion
 
         public string CurrentLanguageName { get; private set; }

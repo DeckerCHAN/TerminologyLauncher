@@ -34,9 +34,6 @@ namespace TerminologyLauncher.Utils.Exceptions
             return $"{base.ToString()}{Environment.NewLine} Solution Tips: {this.SlutionTip}";
         }
 
-        public override string Message
-        {
-            get { return $"{base.Message} Solution tip: {this.SlutionTip}"; }
-        }
+        public override string Message => $"{base.Message} Solution tip: {this.SlutionTip}";
     }
 }

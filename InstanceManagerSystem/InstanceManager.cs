@@ -41,14 +41,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.LoadInstancesFromBankFile();
         }
         public Config Config { get; set; }
-        public int SupportGeneration { get { return 2; } }
+        public int SupportGeneration => 2;
         public DirectoryInfo InstancesFolder { get; set; }
         public InstanceBankEntity InstanceBank { get; set; }
         public JreManager JreManager { get; set; }
-        public JavaRuntimeEntity JavaRuntime
-        {
-            get { return this.JreManager.JavaRuntime; }
-        }
+        public JavaRuntimeEntity JavaRuntime => this.JreManager.JavaRuntime;
 
         public Process CurrentInstanceProcess { get; set; }
         public FileRepository UsingFileRepository { get; protected set; }
@@ -75,10 +72,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
         }
 
-        public InstanceEntity[] InstancesArray
-        {
-            get { return this.Instances.ToArray(); }
-        }
+        public InstanceEntity[] InstancesArray => this.Instances.ToArray();
 
         public void LoadInstancesFromBankFile()
         {

@@ -37,10 +37,8 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
             this.FieldName = inputFieldName;
         }
 
-        public object ConfirmButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("ConfirmButton", "Confirm"); }
-        }
+        public object ConfirmButtonTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
+
         public new bool? ShowDialog()
         {
             base.ShowDialog();

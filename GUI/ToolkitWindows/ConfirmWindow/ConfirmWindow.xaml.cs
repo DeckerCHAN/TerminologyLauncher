@@ -14,15 +14,9 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
     public sealed partial class ConfirmWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-        public string ConfirmButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("Confirm", "Confirm"); }
-        }
+        public string ConfirmButtonTranslation => TranslationManager.GetManager.Localize("Confirm", "Confirm");
 
-        public string CancelButtonTranslation
-        {
-            get { return TranslationManager.GetManager.Localize("Cancel", "Cancel"); }
-        }
+        public string CancelButtonTranslation => TranslationManager.GetManager.Localize("Cancel", "Cancel");
 
         public string ContentString
         {
