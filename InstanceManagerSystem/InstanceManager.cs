@@ -203,7 +203,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (newInstanceEntity.Version.Equals(oldInstanceEntity.Version))
             {
                 progress.Percent = 100D;
-                TerminologyLogger.GetLogger().InfoFormat("Instacne {0} already at latest version {1}", oldInstanceEntity.InstanceName, oldInstanceEntity.Version);
+                TerminologyLogger.GetLogger()
+                    .InfoFormat(
+                        $"Instacne {oldInstanceEntity.InstanceName} already at latest version {oldInstanceEntity.Version}");
                 return (string.Format(TranslationManager.GetManager.Localize("InsatnceAtLatestVersion", "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
             }
             var updateSuccessfulInfo = TranslationManager.GetManager.Localize("InstanceUpdateToVersion",
@@ -215,7 +217,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         this.RemoveInstance(instanceInfo.Name);
                         this.AddInstance(instanceInfo.UpdateUrl);
                         progress.Percent = 100D;
-                        TerminologyLogger.GetLogger().InfoFormat("Successful updated instance file {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                        TerminologyLogger.GetLogger()
+                            .InfoFormat(
+                                $"Successful updated instance file {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
                         return string.Format(updateSuccessfulInfo,
                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -322,7 +326,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         instanceInfo.UpdateDate = DateTime.Now.ToString("O");
                         this.SaveInstancesBankToFile();
                         File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
-                        TerminologyLogger.GetLogger().InfoFormat("Successful updated entire instance {0} from {1} to {2}!", newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                        TerminologyLogger.GetLogger()
+                            .InfoFormat(
+                                $"Successful updated entire instance {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
                         return string.Format(updateSuccessfulInfo,
                             newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
 
@@ -415,12 +421,14 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             startArgument.Append(this.Config.GetConfigString("extraJvmArguments") ?? string.Empty).Append(" ");
 
-            startArgument.AppendFormat("-Xmx{0}M -Xms{1}M" + " ", Convert.ToInt64(this.Config.GetConfigString("maxMemorySizeMega")), instance.StartupArguments.MiniumMemoryMegaSize);
+            startArgument.Append(
+                $"-Xmx{Convert.ToInt64(this.Config.GetConfigString("maxMemorySizeMega"))}M -Xms{instance.StartupArguments.MiniumMemoryMegaSize}M" +
+                " ");
 
             var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
             if (nativeFolder.Exists)
             {
-                startArgument.AppendFormat("-Djava.library.path=\"{0}\"" + " ", nativeFolder.FullName);
+                startArgument.Append($"-Djava.library.path=\"{nativeFolder.FullName}\"" + " ");
 
             }
             else
@@ -459,9 +467,9 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
             startArgument.Append(instance.StartupArguments.MainClass + " ");
 
-            startArgument.AppendFormat("--username {0} ", player.PlayerName);
-            startArgument.AppendFormat("--version {0} ", instance.StartupArguments.Version);
-            startArgument.AppendFormat("--gameDir \"{0}\" ", instanceRootFolder.FullName);
+            startArgument.Append($"--username {player.PlayerName} ");
+            startArgument.Append($"--version {instance.StartupArguments.Version} ");
+            startArgument.Append($"--gameDir \"{instanceRootFolder.FullName}\" ");
 
 
 
@@ -469,7 +477,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.AssetsDir));
             if (assetsDir.Exists)
             {
-                startArgument.AppendFormat("--assetsDir \"{0}\" ", assetsDir.FullName);
+                startArgument.Append($"--assetsDir \"{assetsDir.FullName}\" ");
             }
             else
             {
@@ -477,15 +485,15 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
 
 
-            startArgument.AppendFormat("--assetIndex {0} ", instance.StartupArguments.AssetIndex);
-            startArgument.AppendFormat("--uuid {0} ", player.PlayerId);
-            startArgument.AppendFormat("--accessToken {0} ", player.AccessToken);
-            startArgument.AppendFormat("--userProperties {{{0}}} ", instance.StartupArguments.UserProperties);
-            startArgument.AppendFormat("--userType {0} ", instance.StartupArguments.UserType);
+            startArgument.Append($"--assetIndex {instance.StartupArguments.AssetIndex} ");
+            startArgument.Append($"--uuid {player.PlayerId} ");
+            startArgument.Append($"--accessToken {player.AccessToken} ");
+            startArgument.Append($"--userProperties {{{instance.StartupArguments.UserProperties}}} ");
+            startArgument.Append($"--userType {instance.StartupArguments.UserType} ");
 
             foreach (var tweakClass in instance.StartupArguments.TweakClasses)
             {
-                startArgument.AppendFormat("--tweakClass {0} ", tweakClass);
+                startArgument.Append($"--tweakClass {tweakClass} ");
             }
 
 

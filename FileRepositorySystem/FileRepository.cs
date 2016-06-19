@@ -36,11 +36,11 @@ namespace TerminologyLauncher.FileRepositorySystem
             if (!this.CacheDirectoryInfo.Exists)
             {
                 this.CacheDirectoryInfo.Create();
-                TerminologyLogger.GetLogger().InfoFormat("Created cache directory {0}", this.CacheDirectoryInfo.Name);
+                TerminologyLogger.GetLogger().InfoFormat($"Created cache directory {this.CacheDirectoryInfo.Name}");
             }
             else
             {
-                TerminologyLogger.GetLogger().InfoFormat("Using cache directory {0}", this.CacheDirectoryInfo.Name);
+                TerminologyLogger.GetLogger().InfoFormat($"Using cache directory {this.CacheDirectoryInfo.Name}");
             }
            
             TerminologyLogger.GetLogger().Info($"Start to fetch repo from url {RepoUrl}");
@@ -91,15 +91,18 @@ namespace TerminologyLauncher.FileRepositorySystem
             if (cacheFile.Exists && (EncodeUtils.CalculateFileMd5(cacheFile.FullName).Equals(repositoryFile.Md5)))
             {
                 progress.Percent = 100D;
-                TerminologyLogger.GetLogger().InfoFormat("File {0} exists and md5 check successful. Using cache file.", repositoryFile.Name);
+                TerminologyLogger.GetLogger()
+                    .InfoFormat($"File {repositoryFile.Name} exists and md5 check successful. Using cache file.");
             }
             else
             {
-                TerminologyLogger.GetLogger().InfoFormat("File {0} not exists or md5 check fault. Download new file.", repositoryFile.Name);
+                TerminologyLogger.GetLogger()
+                    .InfoFormat($"File {repositoryFile.Name} not exists or md5 check fault. Download new file.");
 
                 cacheFile.Delete();
                 DownloadUtils.DownloadFile(progress, repositoryFile.DownloadPath, cacheFile.FullName);
-                TerminologyLogger.GetLogger().InfoFormat("Successful download file {0} from url {1}", repositoryFile.Name, repositoryFile.DownloadPath);
+                TerminologyLogger.GetLogger()
+                    .InfoFormat($"Successful download file {repositoryFile.Name} from url {repositoryFile.DownloadPath}");
             }
             return cacheFile;
 

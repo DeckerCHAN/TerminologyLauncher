@@ -73,7 +73,7 @@ namespace TerminologyLauncher.Updater
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().ErrorFormat("Can not judge update available. Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().ErrorFormat($"Can not judge update available. Cause:{ex}");
                 updateInfo.UpdateType = UpdateType.Equal;
             }
             return updateInfo;

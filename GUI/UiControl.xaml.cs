@@ -49,7 +49,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot show login window right now! Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show login window right now! Cause:{ex}");
                 this.Shutdown();
             }
         }
@@ -65,7 +65,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot hide login window right now! Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot hide login window right now! Cause:{ex}");
                 this.Shutdown();
             }
         }
@@ -81,8 +81,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot show main window right now! Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show main window right now! Cause:{ex}");
                 this.Shutdown();
             }
 
@@ -99,7 +98,8 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot hide main window right now! Cause:{0}", ex.Message);
+                Logging.TerminologyLogger.GetLogger()
+                    .FatalFormat($"Cannot hide main window right now! Cause:{ex.Message}");
                 this.Shutdown();
             }
         }
@@ -113,7 +113,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot show console window right now! Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show console window right now! Cause:{ex}");
                 this.Shutdown();
             }
         }
@@ -127,7 +127,7 @@ namespace TerminologyLauncher.GUI
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().FatalFormat("Cannot hide console window right now! Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot hide console window right now! Cause:{ex}");
                 this.Shutdown();
             }
         }

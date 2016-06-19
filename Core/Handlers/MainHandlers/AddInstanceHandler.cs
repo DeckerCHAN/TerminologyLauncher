@@ -41,26 +41,26 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             catch (WebException ex)
             {
                 TerminologyLogger.GetLogger()
-                       .ErrorFormat("Network is not accessable! Detail: {0}", ex.Message);
+                    .ErrorFormat($"Network is not accessable! Detail: {ex.Message}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("NetworkNotAccessable", "Network is not accessable! Detail: {0}", 1), ex.Message));
             }
             catch (JsonReaderException ex)
             {
                 TerminologyLogger.GetLogger()
-                    .ErrorFormat("Wrong instance json format! {0}", ex.Message);
+                    .ErrorFormat($"Wrong instance json format! {ex.Message}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("WrongJsonFormat", "Wrong instance json format! {0}", 1), ex.Message));
             }
             catch (MissingFieldException ex)
             {
                 TerminologyLogger.GetLogger()
-                  .ErrorFormat("Critical field is missing! {0}", ex.Message);
+                    .ErrorFormat($"Critical field is missing! {ex.Message}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("MissCriticalField", "Some critical field is missing. Unable to add this instance! Detail:{0}", 1), ex.Message));
             }
 
             catch (Exception ex)
             {
                 TerminologyLogger.GetLogger()
-                    .ErrorFormat("Cannot add this instance because {0}", ex);
+                    .ErrorFormat($"Cannot add this instance because {ex}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("Error", "Error"), string.Format(TranslationManager.GetManager.Localize("UnknownError", "Caused by an error, we cannot add this instance right now. Detail: {0}", 1), ex.Message));
 
             }

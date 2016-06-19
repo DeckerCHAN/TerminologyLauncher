@@ -72,7 +72,8 @@ namespace TerminologyLauncher.JreManagerSystem
                 }
                 catch (Exception ex)
                 {
-                    Logging.TerminologyLogger.GetLogger().WarnFormat("Cannot indentify this java caused by {0}. Ignored!", ex.Message);
+                    Logging.TerminologyLogger.GetLogger()
+                        .WarnFormat($"Cannot indentify this java caused by {ex.Message}. Ignored!");
                 }
             }
         }

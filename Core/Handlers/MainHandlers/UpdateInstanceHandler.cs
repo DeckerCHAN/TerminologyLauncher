@@ -44,14 +44,16 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
                 catch (WrongStateException ex)
                 {
-                    Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error: {1}", instance.InstanceName, ex.Message);
+                    Logging.TerminologyLogger.GetLogger()
+                        .ErrorFormat($"Update instance {instance.InstanceName} encountered an error: {ex.Message}");
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         $"Encounter an wrong state error. Detail:{ex.Message}");
 
                 }
                 catch (Exception ex)
                 {
-                    Logging.TerminologyLogger.GetLogger().ErrorFormat("Update instance {0} encountered an error:\n{1}", instance.InstanceName, ex);
+                    Logging.TerminologyLogger.GetLogger()
+                        .ErrorFormat($"Update instance {instance.InstanceName} encountered an error:\n{ex}");
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         $"Caused by an internal error, we cannot update this instance right now.Detail:{ex.Message}");
 

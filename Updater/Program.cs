@@ -53,13 +53,13 @@ namespace TerminologyLauncher.Updater
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
-                Console.WriteLine("Copied {0} from {1} to {2}", Path.GetFileName(file), sourceDir, targetDir);
+                Console.WriteLine($"Copied {Path.GetFileName(file)} from {sourceDir} to {targetDir}");
             }
 
             foreach (var directory in Directory.GetDirectories(sourceDir))
             {
                 CopyAllFilesToDirectory(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
-                Console.WriteLine("Copied {0} from {1} to {2}", Path.GetFileName(directory), sourceDir, targetDir);
+                Console.WriteLine($"Copied {Path.GetFileName(directory)} from {sourceDir} to {targetDir}");
             }
         }
     }

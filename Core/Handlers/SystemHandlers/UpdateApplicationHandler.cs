@@ -63,7 +63,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             catch (Exception ex)
             {
                 TerminologyLogger.GetLogger()
-                .ErrorFormat("Cannot update launcher because {0}", ex);
+                    .ErrorFormat($"Cannot update launcher because {ex}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                     $"Caused by an error, we cannot update launcher right now. Detail: {ex.Message}");
 

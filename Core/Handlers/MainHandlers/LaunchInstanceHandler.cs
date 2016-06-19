@@ -48,7 +48,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         case HttpStatusCode.NotFound:
                             {
                                 Logging.TerminologyLogger.GetLogger()
-                                    .ErrorFormat("Cannot find file on server when donloading:{0}", response.ResponseUri);
+                                    .ErrorFormat($"Cannot find file on server when donloading:{response.ResponseUri}");
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                                     $"Cannot find file on server when donloading:{response.ResponseUri}");
                                 break;
@@ -56,7 +56,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         case HttpStatusCode.Forbidden:
                             {
                                 Logging.TerminologyLogger.GetLogger()
-                                 .ErrorFormat("You have no right to access this server when downloading: {0}", response.ResponseUri);
+                                    .ErrorFormat(
+                                        $"You have no right to access this server when downloading: {response.ResponseUri}");
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                                     $"You have no right to access this server when downloading: {response.ResponseUri}");
 

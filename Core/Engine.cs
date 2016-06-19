@@ -48,9 +48,10 @@ namespace TerminologyLauncher.Core
         public Dispatcher EngineDispatcher { get; private set; }
         public Engine()
         {
-            TerminologyLogger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
-            TerminologyLogger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
-            TerminologyLogger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
+            TerminologyLogger.GetLogger().InfoFormat($"Os version:{Environment.NewLine + MachineUtils.GetOsVersion()}");
+            TerminologyLogger.GetLogger()
+                .InfoFormat($"Dot net versions:{Environment.NewLine + MachineUtils.GetNetVersionFromRegistry()}");
+            TerminologyLogger.GetLogger().InfoFormat($"Engine {this.CoreVersion + this.BuildVersion} Initializing...");
             this.EngineDispatcher = Dispatcher.CurrentDispatcher;
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
             this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));
@@ -109,7 +110,9 @@ namespace TerminologyLauncher.Core
             }
             catch (Exception ex)
             {
-                TerminologyLogger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
+                TerminologyLogger.GetLogger()
+                    .FatalFormat(
+                        $"Enging encountered an fatal during post initialize. This exception caused by {ex.Message}. Launcher shuting down.\n Detail:{ex.ToString()}");
                 throw;
             }
         }

@@ -37,7 +37,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 {
                     this.Engine.JreManager.JavaRuntime =
                   JavaUtils.GetJavaRuntimeFromJavaExe(javaExeConfig.Value);
-                    TerminologyLogger.GetLogger().InfoFormat("Refreshed jre to {0}", javaExeConfig.Value);
+                    TerminologyLogger.GetLogger().InfoFormat($"Refreshed jre to {javaExeConfig.Value}");
                 }
                 catch (Exception)
                 {
@@ -45,10 +45,10 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     TerminologyLogger.GetLogger().Error("Trying to set invalid java exe path. Ignore.");
                 }
                 this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", memoryconfigs.Value.ToString());
-                TerminologyLogger.GetLogger().InfoFormat("Refreshed memory size to {0}", memoryconfigs.Value);
+                TerminologyLogger.GetLogger().InfoFormat($"Refreshed memory size to {memoryconfigs.Value}");
 
                 this.Engine.InstanceManager.Config.SetConfigString("extraJvmArguments", jvmExtraArguments.Value);
-                TerminologyLogger.GetLogger().InfoFormat("Refreshed extra jvm args to {0}", jvmExtraArguments.Value);
+                TerminologyLogger.GetLogger().InfoFormat($"Refreshed extra jvm args to {jvmExtraArguments.Value}");
             }
             catch (Exception ex)
             {

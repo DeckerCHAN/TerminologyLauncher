@@ -31,7 +31,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
         {
 
             var window = sender as Window;
-            TerminologyLogger.GetLogger().InfoFormat("MainWindow window is going to {0}!", window.Visibility);
+            TerminologyLogger.GetLogger().InfoFormat($"MainWindow window is going to {window.Visibility}!");
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
@@ -75,7 +75,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                     }
                                     catch (Exception ex)
                                     {
-                                        TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check instance update right now! Detail:{0}", ex.Message);
+                                        TerminologyLogger.GetLogger()
+                                            .ErrorFormat(
+                                                $"Cause by a error, can not check instance update right now! Detail:{ex.Message}");
                                         throw;
                                     }
                                 });
@@ -110,7 +112,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                 }
                                 catch (Exception ex)
                                 {
-                                    TerminologyLogger.GetLogger().ErrorFormat("Cause by a error, can not check update right now! Detail:{0}", ex.Message);
+                                    TerminologyLogger.GetLogger()
+                                        .ErrorFormat(
+                                            $"Cause by a error, can not check update right now! Detail:{ex.Message}");
                                     throw;
                                 }
 
@@ -199,8 +203,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         catch (Exception ex)
                         {
                             TerminologyLogger.GetLogger()
-                                .ErrorFormat("cannot resolve java exe path through user input. Caused by:{0}",
-                                    ex.Message);
+                                .ErrorFormat($"cannot resolve java exe path through user input. Caused by:{ex.Message}");
 
                             continue;
                         }

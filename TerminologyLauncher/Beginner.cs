@@ -44,7 +44,7 @@ namespace TerminologyLauncher
                     var reportor = new CrashReportor(ex);
                     reportor.DoReport();
 
-                    Console.WriteLine("!!!CRASH!!!More detail at {0}", reportor.ReportFileInfo.FullName);
+                    Console.WriteLine($"!!!CRASH!!!More detail at {reportor.ReportFileInfo.FullName}");
 
                 }
                 catch (Exception)
