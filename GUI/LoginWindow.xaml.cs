@@ -157,7 +157,7 @@ namespace TerminologyLauncher.GUI
                     case LoginResultType.IncompleteOfArguments:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("IncompleteOfArguments","Argumnets are not completely. Please check again."));
+                                TranslationManager.GetManager.Localize("InvalidInput","Password or username maybe invalid. Please check again."));
                             break;
                         }
                     case LoginResultType.WrongPassword:
