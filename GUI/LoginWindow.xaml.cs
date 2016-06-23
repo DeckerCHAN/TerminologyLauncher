@@ -57,7 +57,7 @@ namespace TerminologyLauncher.GUI
             get { return this.BackgroundImageSourceValue; }
             set
             {
-                this.BackgroundImageSourceValue = value; 
+                this.BackgroundImageSourceValue = value;
                 this.OnPropertyChanged();
             }
         }
@@ -157,31 +157,31 @@ namespace TerminologyLauncher.GUI
                     case LoginResultType.IncompleteOfArguments:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("InvalidInput","Password or username maybe invalid. Please check again."));
+                                TranslationManager.GetManager.Localize("InvalidInput", "Password or username maybe invalid. Please check again."));
                             break;
                         }
                     case LoginResultType.WrongPassword:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("WrongPasswrd","Password is incorrect."));
+                                TranslationManager.GetManager.Localize("WrongPasswrd", "Password is incorrect."));
                             break;
                         }
                     case LoginResultType.UserNotExists:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("UserNotExists","User name is not exists. Create user before log in."));
+                                TranslationManager.GetManager.Localize("UserNotExists", "User name is not exists. Create user before log in."));
                             break;
                         }
                     case LoginResultType.NetworkTimedOut:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("NetWorkTimeOut","Can not access server. Please check network."));
+                                TranslationManager.GetManager.Localize("NetWorkTimeOut", "Can not access server. Please check network."));
                             break;
                         }
                     default:
                         {
                             this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("UnknownLoginError","Unknown fault caused unable to log in."));
+                                TranslationManager.GetManager.Localize("UnknownLoginError", "Unknown fault caused unable to log in."));
                             break;
                         }
                 }
@@ -203,7 +203,7 @@ namespace TerminologyLauncher.GUI
         {
             var combox = sender as ComboBox;
             var selected = combox.SelectedIndex;
-            this.AccountTypeTitle.Text = selected == 1 ? TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:") : TranslationManager.GetManager.Localize("OfflineAccount","Offline username:");
+            this.AccountTypeTitle.Text = selected == 1 ? TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:") : TranslationManager.GetManager.Localize("OfflineAccount", "Offline username:");
 
             if (selected == 0)
             {
