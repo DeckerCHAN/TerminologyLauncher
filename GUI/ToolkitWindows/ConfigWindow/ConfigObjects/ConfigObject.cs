@@ -7,7 +7,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
 {
     public abstract class ConfigObject : INotifyPropertyChanged
     {
-        protected ConfigObject(String name, String key)
+        protected ConfigObject(string name, string key)
         {
             this.Name = name;
             this.Key = key;
@@ -15,7 +15,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
         private string RealKey;
         private string RealName;
 
-        public String Key
+        public string Key
         {
             get { return this.RealKey; }
             protected set
@@ -25,7 +25,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        public String Name
+        public string Name
         {
             get { return this.RealName; }
             set

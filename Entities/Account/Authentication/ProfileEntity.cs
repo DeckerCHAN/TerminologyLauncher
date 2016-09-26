@@ -4,8 +4,8 @@ namespace TerminologyLauncher.Entities.Account.Authentication
 {
     public class ProfileEntity
     {
-        public String Id { get; set; }
-        public String Name { get; set; }
-        public Boolean Legacy { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public bool Legacy { get; set; }
     }
 }

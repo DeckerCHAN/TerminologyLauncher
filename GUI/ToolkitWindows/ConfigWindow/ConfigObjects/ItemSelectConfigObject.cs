@@ -6,10 +6,10 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
 {
     public class ItemSelectConfigObject : ConfigObject
     {
-        private KeyValuePair<String, Object> RealSelection;
-        private Dictionary<String, Object> AvailableAvailableSelectionsValue;
+        private KeyValuePair<string, object> RealSelection;
+        private Dictionary<string, object> AvailableAvailableSelectionsValue;
 
-        public Dictionary<String, Object> AvailableSelections
+        public Dictionary<string, object> AvailableSelections
         {
             get { return this.AvailableAvailableSelectionsValue; }
             set
@@ -19,14 +19,14 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             }
         }
 
-        public ItemSelectConfigObject(String name, String key, Dictionary<String, Object> availableSelections, String defaultSelectKey)
+        public ItemSelectConfigObject(string name, string key, Dictionary<string, object> availableSelections, string defaultSelectKey)
             : base(name, key)
         {
             this.AvailableSelections = availableSelections;
             this.Selection = this.AvailableSelections.First(x => x.Key.Equals(defaultSelectKey));
         }
 
-        public KeyValuePair<String,Object> Selection
+        public KeyValuePair<string,object> Selection
         {
             get { return this.RealSelection; }
             set

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
 using TerminologyLauncher.Entities.Account.AdditionalInfo;
@@ -56,7 +53,7 @@ namespace TerminologyLauncher.Auth.Logins
 
         public override LoginResultType ExecuteLogin()
         {
-            if (!this.IsValidMailAddress(this.UserName) || String.IsNullOrEmpty(this.Password))
+            if (!this.IsValidMailAddress(this.UserName) || string.IsNullOrEmpty(this.Password))
             {
                 return LoginResultType.IncompleteOfArguments;
             }
@@ -104,7 +101,7 @@ namespace TerminologyLauncher.Auth.Logins
 
 
 
-        private AdditionalInfoEntity ReceiveAdditionalInfoEntity(String id)
+        private AdditionalInfoEntity ReceiveAdditionalInfoEntity(string id)
         {
             var response = DownloadUtils.GetWebContent(this.Config.GetConfigString("profileUrl") + id);
             return JsonConverter.Parse<AdditionalInfoEntity>(response);
@@ -165,7 +162,7 @@ namespace TerminologyLauncher.Auth.Logins
                 Password = this.Password
             };
 
-            String authResponse = String.Empty;
+            string authResponse = string.Empty;
 
             var request = (HttpWebRequest)WebRequest.Create(this.Config.GetConfigString("authUrls.authenticate"));
             request.Method = WebRequestMethods.Http.Post;

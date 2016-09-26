@@ -11,7 +11,6 @@ using TerminologyLauncher.Core.Handlers.MainHandlers;
 using TerminologyLauncher.Core.Handlers.SystemHandlers;
 using TerminologyLauncher.FileRepositorySystem;
 using TerminologyLauncher.GUI;
-using TerminologyLauncher.I18n;
 using TerminologyLauncher.InstanceManagerSystem;
 using TerminologyLauncher.JreManagerSystem;
 using TerminologyLauncher.Logging;
@@ -33,35 +32,28 @@ namespace TerminologyLauncher.Core
 
         #endregion
 
-        public String CoreVersion
-        {
-            get { return "A2"; }
-        }
+        public string CoreVersion => "A2";
 
-        public Int32 BuildVersion
-        {
-            get { return 1338; }
-        }
+        public int BuildVersion => 1339;
 
         public Config CoreConfig { get; set; }
-        public TranslationProvider Translation { get; set; }
         public UiControl UiControl { get; set; }
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
         public InstanceManager InstanceManager { get; set; }
         public UpdateManager UpdateManager { get; set; }
-        public Dictionary<String, HandlerBase> Handlers { get; set; }
+        public Dictionary<string, HandlerBase> Handlers { get; set; }
         public JreManager JreManager { get; set; }
         public Process GameProcess { get; set; }
         public Dispatcher EngineDispatcher { get; private set; }
         public Engine()
         {
-            TerminologyLogger.GetLogger().InfoFormat("Os version:{0}", Environment.NewLine + MachineUtils.GetOsVersion());
-            TerminologyLogger.GetLogger().InfoFormat("Dot net versions:{0}", Environment.NewLine + MachineUtils.GetNetVersionFromRegistry());
-            TerminologyLogger.GetLogger().InfoFormat("Engine {0} Initializing...", this.CoreVersion + this.BuildVersion);
+            TerminologyLogger.GetLogger().InfoFormat($"Os version:{Environment.NewLine + MachineUtils.GetOsVersion()}");
+            TerminologyLogger.GetLogger()
+                .InfoFormat($"Dot net versions:{Environment.NewLine + MachineUtils.GetNetVersionFromRegistry()}");
+            TerminologyLogger.GetLogger().InfoFormat($"Engine {this.CoreVersion + this.BuildVersion} Initializing...");
             this.EngineDispatcher = Dispatcher.CurrentDispatcher;
             this.CoreConfig = new Config(new FileInfo("Configs/CoreConfig.json"));
-            this.Translation = TranslationProvider.TranslationProviderInstance;
             this.UiControl = new UiControl(this.CoreConfig.GetConfigString("guiConfig"));
             this.AuthServer = new AuthServer(this.CoreConfig.GetConfigString("authConfig"));
 
@@ -118,8 +110,10 @@ namespace TerminologyLauncher.Core
             }
             catch (Exception ex)
             {
-                TerminologyLogger.GetLogger().FatalFormat("Enging encountered an fatal during post initialize. This exception caused by {0}. Launcher shuting down.\n Detail:{1}", ex.Message, ex.ToString());
-                this.Exit();
+                TerminologyLogger.GetLogger()
+                    .FatalFormat(
+                        $"Enging encountered an fatal during post initialize. This exception caused by {ex.Message}. Launcher shuting down.\n Detail:{ex.ToString()}");
+                throw;
             }
         }
     }

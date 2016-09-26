@@ -13,7 +13,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.Logining += this.HandleEvent;
         }
-        public override void HandleEvent(Object sender, EventArgs e)
+        public override void HandleEvent(object sender, EventArgs e)
         {
             this.Engine.UiControl.LoginWindow.EnableAllInputs(false);
             var login = this.Engine.UiControl.LoginWindow.GetLogin();
@@ -22,7 +22,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                 case LoginType.OfficialMode:
                     {
 
-                        if (String.IsNullOrEmpty(login.UserName) || String.IsNullOrEmpty(login.Password))
+                        if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
                         {
                             this.LoginFault(LoginResultType.IncompleteOfArguments);
                             return;
@@ -44,7 +44,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
                             }
                             catch (WebException ex)
                             {
-                                TerminologyLogger.GetLogger().Error(String.Format("OfficialAuth encountered an error:{0}", ex.Message));
+                                TerminologyLogger.GetLogger().Error($"OfficialAuth encountered an error:{ex.Message}");
                                 this.LoginFault(LoginResultType.NetworkTimedOut);
                             }
                         });
@@ -70,7 +70,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 
                 default:
                     {
-                        TerminologyLogger.GetLogger().Error(String.Format("Core is not support {0} to login", login.LoginType));
+                        TerminologyLogger.GetLogger().Error($"Core is not support {login.LoginType} to login");
                         break;
                     }
             }

@@ -16,7 +16,7 @@ namespace TerminologyLauncher.UnitTest
             var progress = new InternalNodeProgress("Main task");
             progress.ProgressChanged += sender =>
             {
-                Console.WriteLine("Woring on {0}:{1}", progress.TaskName, progress.Percent);
+                Console.WriteLine($"Woring on {progress.TaskName}:{progress.Percent}");
             };
             Console.WriteLine(progress.Percent);
             this.MidLevel(progress.CreateNewInternalSubProgress("MidLevel", 100D));
@@ -67,7 +67,7 @@ namespace TerminologyLauncher.UnitTest
                 Console.WriteLine(progress.Percent);
             };
             var content =
-                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(String.Format("Downloading Text"), 100D), "http://baidu.com");
+                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(string.Format("Downloading Text"), 100D), "http://baidu.com");
             // Console.WriteLine(content);
         }
 

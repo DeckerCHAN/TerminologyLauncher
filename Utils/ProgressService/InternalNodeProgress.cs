@@ -6,9 +6,9 @@ namespace TerminologyLauncher.Utils.ProgressService
 {
     public class InternalNodeProgress : Progress
     {
-        public Dictionary<Progress, Double> SubProgressesAndPercentage { get; set; }
+        public Dictionary<Progress, double> SubProgressesAndPercentage { get; set; }
 
-        public override String TaskName
+        public override string TaskName
         {
             get
             {
@@ -45,13 +45,13 @@ namespace TerminologyLauncher.Utils.ProgressService
             }
         }
 
-        public InternalNodeProgress(String taskName)
+        public InternalNodeProgress(string taskName)
             : base(taskName)
         {
-            this.SubProgressesAndPercentage = new Dictionary<Progress, Double>();
+            this.SubProgressesAndPercentage = new Dictionary<Progress, double>();
             base.Percent = 0D;
         }
-        public InternalNodeProgress CreateNewInternalSubProgress(String taskName, Double taskPercentage)
+        public InternalNodeProgress CreateNewInternalSubProgress(string taskName, double taskPercentage)
         {
             taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new InternalNodeProgress(taskName);
@@ -60,7 +60,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             return progress;
         }
 
-        public LeafNodeProgress CreateNewLeafSubProgress(String taskName, Double taskPercentage)
+        public LeafNodeProgress CreateNewLeafSubProgress(string taskName, double taskPercentage)
         {
             taskPercentage = this.CheckPercentage(taskPercentage);
             var progress = new LeafNodeProgress(taskName);
@@ -69,12 +69,12 @@ namespace TerminologyLauncher.Utils.ProgressService
             return progress;
         }
 
-        protected override Double CheckPercentage(Double percent)
+        protected override double CheckPercentage(double percent)
         {
             percent = base.CheckPercentage(percent);
             if (this.SubProgressesAndPercentage.Sum(x => (x.Value)) > 100)
             {
-                throw new InvalidOperationException(String.Format("Add {0}% will over 100%.", percent));
+                throw new InvalidOperationException($"Add {percent}% will over 100%.");
             }
             return percent;
         }

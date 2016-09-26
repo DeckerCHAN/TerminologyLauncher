@@ -54,6 +54,9 @@
     <Compile Include="JavaUtils.cs" />
     <Compile Include="EncodeUtils.cs" />
     <Compile Include="MachineUtils.cs" />
+    <Compile Include="Net\TerminologyWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ProgressService\LeafNodeProgress.cs" />
     <Compile Include="ProgressService\Progress.cs" />
     <Compile Include="ProgressService\InternalNodeProgress.cs" />

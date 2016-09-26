@@ -4,7 +4,7 @@ namespace TerminologyLauncher.Entities.InstanceManagement.FileSystem
 {
     public abstract class FileBaseEntity
     {
-        public String Name { get; set; }
-        public String LocalPath { get; set; }
+        public string Name { get; set; }
+        public string LocalPath { get; set; }
     }
 }

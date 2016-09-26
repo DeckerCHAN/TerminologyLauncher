@@ -4,7 +4,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
 {
     public class TextInputConfigObject : ConfigObject
     {
-        public TextInputConfigObject(String name, String key, String value)
+        public TextInputConfigObject(string name, string key, string value)
             : base(name, key)
         {
             this.Value = value;
@@ -13,7 +13,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
         private string RealValue;
 
 
-        public String Value
+        public string Value
         {
             get { return this.RealValue; }
             set

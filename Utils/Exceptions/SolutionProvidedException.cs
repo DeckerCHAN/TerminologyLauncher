@@ -4,7 +4,7 @@ namespace TerminologyLauncher.Utils.Exceptions
 {
     public class SolutionProvidedException : System.Exception
     {
-        public String SlutionTip { get; protected set; }
+        public string SlutionTip { get; protected set; }
 
         public SolutionProvidedException()
         {
@@ -31,12 +31,9 @@ namespace TerminologyLauncher.Utils.Exceptions
 
         public override string ToString()
         {
-            return String.Format("{0}{1} Solution Tips: {2}", base.ToString(), Environment.NewLine, this.SlutionTip);
+            return $"{base.ToString()}{Environment.NewLine} Solution Tips: {this.SlutionTip}";
         }
 
-        public override string Message
-        {
-            get { return String.Format("{0} Solution tip: {1}", base.Message, this.SlutionTip); }
-        }
+        public override string Message => $"{base.Message} Solution tip: {this.SlutionTip}";
     }
 }

@@ -9,12 +9,12 @@ namespace TerminologyLauncher.Utils
 {
     public static class JavaUtils
     {
-        public static JavaDetails GetJavaDetails(String javaExePath)
+        public static JavaDetails GetJavaDetails(string javaExePath)
         {
             var javaExeFile = new FileInfo(javaExePath);
             if (!javaExeFile.Exists || !javaExeFile.Name.ToLower().Equals("java.exe"))
             {
-                throw new FileNotFoundException(String.Format("{0} is not valid java executable file."));
+                throw new FileNotFoundException(string.Format("{0} is not valid java executable file."));
             }
             var process = new Process { StartInfo = new ProcessStartInfo(javaExeFile.FullName) { Arguments = "-version", CreateNoWindow = true, UseShellExecute = false, RedirectStandardError = true } };
             process.Start();
@@ -24,7 +24,7 @@ namespace TerminologyLauncher.Utils
 
             var version = Regex.Match(content, "(?<=java version\\ \\\").*(?=\\\")").Value;
             var bit = Regex.Match(content, "(?<=Java HotSpot\\(TM\\)\\ ).*(?=\\ VM \\(build)").Value;
-            if (String.IsNullOrEmpty(version) || String.IsNullOrEmpty(bit))
+            if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(bit))
             {
                 throw new SolutionProvidedException("Invalid java exe!","Using valid java exe or install a new jre.");
             }
@@ -46,12 +46,12 @@ namespace TerminologyLauncher.Utils
             return jDetail;
         }
 
-        public static JavaRuntimeEntity GetJavaRuntimeFromJavaExe(String javaExePath)
+        public static JavaRuntimeEntity GetJavaRuntimeFromJavaExe(string javaExePath)
         {
             return GetJavaRuntimeFromBinFolder(Path.GetDirectoryName(javaExePath));
         }
 
-        public static JavaRuntimeEntity GetJavaRuntimeFromBinFolder(String javaBinFolderPath)
+        public static JavaRuntimeEntity GetJavaRuntimeFromBinFolder(string javaBinFolderPath)
         {
             var javaBinFolder = new DirectoryInfo(javaBinFolderPath);
             if (!javaBinFolder.Exists)
@@ -75,7 +75,7 @@ namespace TerminologyLauncher.Utils
             };
         }
 
-        public static Boolean IsJavaRuntimeValid(JavaRuntimeEntity jre)
+        public static bool IsJavaRuntimeValid(JavaRuntimeEntity jre)
         {
             try
             {

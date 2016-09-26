@@ -10,18 +10,18 @@ namespace TerminologyLauncher.Auth.Logins
     public class OfflineLogin : Login
     {
 
-        public String PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
-        private Boolean isValidUserName(String userName)
+        private bool isValidUserName(string userName)
         {
-            var regex = new Regex(@"^[a-zA-Z0-9]+$");
+            var regex = new Regex(@"^[a-zA-Z0-9_]+$");
             var match = regex.Match(userName);
             return match.Success;
         }
 
         public override LoginResultType ExecuteLogin()
         {
-            if (String.IsNullOrEmpty(this.UserName) || this.UserName.Length < 4||!this.isValidUserName(this.UserName))
+            if (string.IsNullOrEmpty(this.UserName) || this.UserName.Length < 4||!this.isValidUserName(this.UserName))
             {
                 return LoginResultType.IncompleteOfArguments;
             }
@@ -54,7 +54,7 @@ namespace TerminologyLauncher.Auth.Logins
         }
 
         public OfflineLogin(string userName, DirectoryInfo profileRootDirectoryInfo, Config config)
-            : base(userName, String.Empty, profileRootDirectoryInfo, config)
+            : base(userName, string.Empty, profileRootDirectoryInfo, config)
         {
             this.PlayerId = EncodeUtils.CalculateStringMd5(userName);
         }

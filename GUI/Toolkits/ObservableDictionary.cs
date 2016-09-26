@@ -69,20 +69,11 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         #region public
 
-        public IEqualityComparer<TKey> Comparer
-        {
-            get { return this._keyedEntryCollection.Comparer; }
-        }
+        public IEqualityComparer<TKey> Comparer => this._keyedEntryCollection.Comparer;
 
-        public int Count
-        {
-            get { return this._keyedEntryCollection.Count; }
-        }
+        public int Count => this._keyedEntryCollection.Count;
 
-        public Dictionary<TKey, TValue>.KeyCollection Keys
-        {
-            get { return this.TrueDictionary.Keys; }
-        }
+        public Dictionary<TKey, TValue>.KeyCollection Keys => this.TrueDictionary.Keys;
 
         public TValue this[TKey key]
         {
@@ -90,10 +81,7 @@ namespace TerminologyLauncher.GUI.Toolkits
             set { this.DoSetEntry(key, value); }
         }
 
-        public Dictionary<TKey, TValue>.ValueCollection Values
-        {
-            get { return this.TrueDictionary.Values; }
-        }
+        public Dictionary<TKey, TValue>.ValueCollection Values => this.TrueDictionary.Values;
 
         #endregion public
 
@@ -367,15 +355,9 @@ namespace TerminologyLauncher.GUI.Toolkits
             return this.TryGetValue(key, out value);
         }
 
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
-        {
-            get { return this.Keys; }
-        }
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys => this.Keys;
 
-        ICollection<TValue> IDictionary<TKey, TValue>.Values
-        {
-            get { return this.Values; }
-        }
+        ICollection<TValue> IDictionary<TKey, TValue>.Values => this.Values;
 
         TValue IDictionary<TKey, TValue>.this[TKey key]
         {
@@ -407,15 +389,9 @@ namespace TerminologyLauncher.GUI.Toolkits
             return new Enumerator<TKey, TValue>(this, true);
         }
 
-        bool IDictionary.IsFixedSize
-        {
-            get { return false; }
-        }
+        bool IDictionary.IsFixedSize => false;
 
-        bool IDictionary.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool IDictionary.IsReadOnly => false;
 
         object IDictionary.this[object key]
         {
@@ -423,20 +399,14 @@ namespace TerminologyLauncher.GUI.Toolkits
             set { this.DoSetEntry((TKey)key, (TValue)value); }
         }
 
-        ICollection IDictionary.Keys
-        {
-            get { return this.Keys; }
-        }
+        ICollection IDictionary.Keys => this.Keys;
 
         void IDictionary.Remove(object key)
         {
             this.DoRemoveEntry((TKey)key);
         }
 
-        ICollection IDictionary.Values
-        {
-            get { return this.Values; }
-        }
+        ICollection IDictionary.Values => this.Values;
 
         #endregion IDictionary
 
@@ -476,15 +446,9 @@ namespace TerminologyLauncher.GUI.Toolkits
                 array[index++] = new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value);
         }
 
-        int ICollection<KeyValuePair<TKey, TValue>>.Count
-        {
-            get { return this._keyedEntryCollection.Count; }
-        }
+        int ICollection<KeyValuePair<TKey, TValue>>.Count => this._keyedEntryCollection.Count;
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> kvp)
         {
@@ -500,20 +464,11 @@ namespace TerminologyLauncher.GUI.Toolkits
             ((ICollection)this._keyedEntryCollection).CopyTo(array, index);
         }
 
-        int ICollection.Count
-        {
-            get { return this._keyedEntryCollection.Count; }
-        }
+        int ICollection.Count => this._keyedEntryCollection.Count;
 
-        bool ICollection.IsSynchronized
-        {
-            get { return ((ICollection)this._keyedEntryCollection).IsSynchronized; }
-        }
+        bool ICollection.IsSynchronized => ((ICollection)this._keyedEntryCollection).IsSynchronized;
 
-        object ICollection.SyncRoot
-        {
-            get { return ((ICollection)this._keyedEntryCollection).SyncRoot; }
-        }
+        object ICollection.SyncRoot => ((ICollection)this._keyedEntryCollection).SyncRoot;
 
         #endregion ICollection
 

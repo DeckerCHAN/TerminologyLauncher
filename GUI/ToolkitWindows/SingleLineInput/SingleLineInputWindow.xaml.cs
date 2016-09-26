@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.GUI.Toolkits;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
 {
@@ -13,11 +14,11 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
     /// </summary>
     public sealed partial class SingleLineInputWindow : INotifyPropertyChanged
     {
-        private FieldReference<String> InputContentValue;
+        private FieldReference<string> InputContentValue;
         private string FieldNameValue;
-        private Boolean IsCanceled { get; set; }
+        private bool IsCanceled { get; set; }
 
-        internal SingleLineInputWindow(Window owner, String title, String inputFieldName, FieldReference<String> content)
+        internal SingleLineInputWindow(Window owner, string title, string inputFieldName, FieldReference<string> content)
         {
             this.InputContentValue = content;
             this.InitializeComponent();
@@ -36,14 +37,16 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
             this.FieldName = inputFieldName;
         }
 
-        public new Boolean? ShowDialog()
+        public object ConfirmButtonTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
+
+        public new bool? ShowDialog()
         {
             base.ShowDialog();
             return !this.IsCanceled;
         }
 
 
-        public String InputContent
+        public string InputContent
         {
             get { return this.InputContentValue.Value; }
             set
@@ -60,7 +63,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.Close();
             });
         }
-        public String FieldName
+        public string FieldName
         {
             get { return this.FieldNameValue; }
             set

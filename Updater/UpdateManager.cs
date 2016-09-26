@@ -16,7 +16,7 @@ namespace TerminologyLauncher.Updater
     {
         public VersionEntity Version { get; set; }
         public Config Config { get; set; }
-        public UpdateManager(String configPath, String coreVersion, Int32 buildNumber)
+        public UpdateManager(string configPath, string coreVersion, int buildNumber)
         {
             this.Config = new Config(new FileInfo(configPath));
             this.Version = new VersionEntity() { BuildNumber = buildNumber, CoreVersion = coreVersion };
@@ -73,7 +73,7 @@ namespace TerminologyLauncher.Updater
             }
             catch (Exception ex)
             {
-                Logging.TerminologyLogger.GetLogger().ErrorFormat("Can not judge update available. Cause:{0}", ex);
+                Logging.TerminologyLogger.GetLogger().ErrorFormat($"Can not judge update available. Cause:{ex}");
                 updateInfo.UpdateType = UpdateType.Equal;
             }
             return updateInfo;
@@ -85,20 +85,20 @@ namespace TerminologyLauncher.Updater
         {
             Logging.TerminologyLogger.GetLogger().Info("Start to check lanucher update.");
             var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
-            if (update.LatestVersion == null || String.IsNullOrEmpty(update.LatestVersion.CoreVersion) || update.LatestVersion.BuildNumber.Equals(0) || String.IsNullOrEmpty(update.LatestVersion.DownloadLink) || String.IsNullOrEmpty(update.LatestVersion.Md5))
+            if (update.LatestVersion == null || string.IsNullOrEmpty(update.LatestVersion.CoreVersion) || update.LatestVersion.BuildNumber.Equals(0) || string.IsNullOrEmpty(update.LatestVersion.DownloadLink) || string.IsNullOrEmpty(update.LatestVersion.Md5))
             {
                 throw new UpdateServerErrorException("Cannot fetch the latest version!");
             }
             return update.LatestVersion;
         }
 
-        public String FetchLatestVersionAndStartUpdate(InternalNodeProgress progress)
+        public string FetchLatestVersionAndStartUpdate(InternalNodeProgress progress)
         {
             progress.Percent = 0D;
 
             if (!this.GetupdateInfo().UpdateType.Equals(UpdateType.Higher))
             {
-                return TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.NoAvailableUpdate;
+                return TranslationManager.GetManager.Localize("NoUpdateAvailable", "No update available.");
             }
 
             var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
@@ -106,7 +106,7 @@ namespace TerminologyLauncher.Updater
 
 
             var updateTempFolder = Path.Combine(FolderUtils.SystemTempFolder.FullName,
-                String.Format("TerminologyLauncher-{0}-{1}", update.LatestVersion.CoreVersion, update.LatestVersion.BuildNumber));
+                $"TerminologyLauncher-{update.LatestVersion.CoreVersion}-{update.LatestVersion.BuildNumber}");
             var updateBinaryFolder = Path.Combine(updateTempFolder, "Binary");
             var updaterExecutorFile = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Updater.exe");
@@ -130,8 +130,7 @@ namespace TerminologyLauncher.Updater
             var updateProcessInfo = new ProcessStartInfo(updaterRealExecutorFile)
             {
                 Arguments =
-                    String.Format("{0} {1} {2}", updateBinaryFolder,
-                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), Assembly.GetEntryAssembly().Location),
+                    $"{updateBinaryFolder} {Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)} {Assembly.GetEntryAssembly().Location}",
                 CreateNoWindow = false,
                 UseShellExecute = true
             };
@@ -139,8 +138,9 @@ namespace TerminologyLauncher.Updater
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return String.Format(TranslationProvider.TranslationProviderInstance.TranslationObject.HandlerTranslation.LanucherUpdateTranslation.FetchedNewUpdateToVersion, String.Format("{0}-{1}", this.Version.CoreVersion, this.Version.BuildNumber),
-   String.Format("{0}-{1}", this.Version.CoreVersion, this.Version.BuildNumber));
+            return string.Format(TranslationManager.GetManager.Localize("FetchedNewUpdateToVersion", "Updating from {0} to {1}! Close launcher to continue.", 2),
+                $"{this.Version.CoreVersion}-{this.Version.BuildNumber}",
+                $"{this.Version.CoreVersion}-{this.Version.BuildNumber}");
         }
 
     }

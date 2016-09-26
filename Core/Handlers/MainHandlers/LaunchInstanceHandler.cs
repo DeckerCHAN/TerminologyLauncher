@@ -18,7 +18,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             Logging.TerminologyLogger.GetLogger().Info("Handling launch instance event!");
 
             var instance = this.Engine.UiControl.MainWindow.SelectInstance;
-            var progress = new InternalNodeProgress(String.Format("Launching instance {0}", instance.InstanceName));
+            var progress = new InternalNodeProgress($"Launching instance {instance.InstanceName}");
             var progressWindow = this.Engine.UiControl.MainWindow.BeginPopupProgressWindow(progress);
             Task.Run(() =>
             {
@@ -26,7 +26,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 {
                     this.Engine.GameProcess = this.Engine.InstanceManager.LaunchInstance(progress, instance.InstanceName,
                         this.Engine.AuthServer.CurrentPlayer);
-                    var usingConsole = this.Engine.CoreConfig.GetConfigObject<Boolean>("usingConsoleWindow");
+                    var usingConsole = this.Engine.CoreConfig.GetConfigObject<bool>("usingConsoleWindow");
                     this.Engine.GameProcess.Exited += (s, o) =>
                     {
                         this.Engine.UiControl.HideConsoleWindow();
@@ -48,19 +48,18 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         case HttpStatusCode.NotFound:
                             {
                                 Logging.TerminologyLogger.GetLogger()
-                                    .ErrorFormat("Cannot find file on server when donloading:{0}", response.ResponseUri);
+                                    .ErrorFormat($"Cannot find file on server when donloading:{response.ResponseUri}");
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
-                                    String.Format(
-                                        "Cannot find file on server when donloading:{0}", response.ResponseUri));
+                                    $"Cannot find file on server when donloading:{response.ResponseUri}");
                                 break;
                             }
                         case HttpStatusCode.Forbidden:
                             {
                                 Logging.TerminologyLogger.GetLogger()
-                                 .ErrorFormat("You have no right to access this server when downloading: {0}", response.ResponseUri);
+                                    .ErrorFormat(
+                                        $"You have no right to access this server when downloading: {response.ResponseUri}");
                                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
-                                    String.Format(
-                                        "You have no right to access this server when downloading: {0}", response.ResponseUri));
+                                    $"You have no right to access this server when downloading: {response.ResponseUri}");
 
                                 break;
                             }
@@ -68,9 +67,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             {
 
                                 Logging.TerminologyLogger.GetLogger()
-                 .Error(String.Format("Encounter an network error during build environment: {0}", ex));
-                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
-                                    "Encounter an network error during build environment: {0}", ex.Message));
+                 .Error($"Encounter an network error during build environment: {ex}");
+                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                                    $"Encounter an network error during build environment: {ex.Message}");
 
                                 break;
                             }
@@ -79,9 +78,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 catch (Exception ex)
                 {
                     Logging.TerminologyLogger.GetLogger()
-                        .Error(String.Format("Cannot launch this instance because {0}", ex));
-                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format(
-                        "Caused by an internal error, we cannot launch this instance right now. Detail: {0}", ex.Message));
+                        .Error($"Cannot launch this instance because {ex}");
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                        $"Caused by an internal error, we cannot launch this instance right now. Detail: {ex.Message}");
                 }
                 finally
                 {

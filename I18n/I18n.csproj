@@ -43,25 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TranslationObjects\GUITranslations\ConfirmWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\NotifyWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\HandlerTranslations\LanucherUpdateTranslation.cs" />
-    <Compile Include="TranslationObjects\HandlerTranslations\InstanceUpdateTranslation.cs" />
-    <Compile Include="TranslationToolkits.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\ConfigWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\GUITranslationRoot.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\LoginWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\MainWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\GUITranslations\SingleSelectWindowTranslation.cs" />
-    <Compile Include="TranslationObjects\HandlerTranslations\HandlerTranslationRoot.cs" />
-    <Compile Include="TranslationObjects\HandlerTranslations\InputInstanceUrlTranslation.cs" />
-    <Compile Include="TranslationObjects\HandlerTranslations\JavaSelectTranslation.cs" />
-    <Compile Include="TranslationProvider.cs" />
+    <Compile Include="TranslationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TranslationObjects\TranslationRoot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Translations\en-US" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Configs\Configs.csproj">
@@ -74,10 +57,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Translations\zh-CN" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Translations\FULL" />
+    <Folder Include="Translations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

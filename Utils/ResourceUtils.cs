@@ -6,20 +6,20 @@ namespace TerminologyLauncher.Utils
 {
     public static class ResourceUtils
     {
-        public static Stream ReadEmbedFileResource(String link)
+        public static Stream ReadEmbedFileResource(string link)
         {
             var currentAssembly = Assembly.GetCallingAssembly();
             var stream = currentAssembly.GetManifestResourceStream(link);
             return stream;
         }
 
-        public static Stream ReadEmbedFileResource(Assembly assembly,String link)
+        public static Stream ReadEmbedFileResource(Assembly assembly,string link)
         {
             var stream = assembly.GetManifestResourceStream(link);
             return stream;
         }
 
-        public static void CopyEmbedFileResource(String link, FileInfo file)
+        public static void CopyEmbedFileResource(string link, FileInfo file)
         {
             if (file.Exists)
             {
@@ -31,7 +31,7 @@ namespace TerminologyLauncher.Utils
             {
                 if (resourceStream == null)
                 {
-                    throw new FileNotFoundException(String.Format("Link {0} is not invalid, cannot find that file.", link));
+                    throw new FileNotFoundException($"Link {link} is not invalid, cannot find that file.");
                 }
                 using (var fileStream = file.OpenWrite())
                 {

@@ -33,7 +33,7 @@
         <Canvas>
             <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
             <TextBox  x:Name="UserInput"  Height="25" Canvas.Left="149" Canvas.Top="50" Width="282" Text="{Binding InputContent,Mode=TwoWay}" TextWrapping="NoWrap"  FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}"/>
-            <Button x:Name="ConfirmButton" Content="确定" Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="364" Canvas.Top="99" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
+            <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation,Mode=OneTime}" Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="364" Canvas.Top="99" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 
         </Canvas>
     </DockPanel>

@@ -4,7 +4,7 @@ namespace TerminologyLauncher.Entities.Account.Authentication.Invalidate
 {
     public class InvalidatePayload
     {
-        public String AccessToken { get; set; }
-        public String ClientToken { get; set; }
+        public string AccessToken { get; set; }
+        public string ClientToken { get; set; }
     }
 }

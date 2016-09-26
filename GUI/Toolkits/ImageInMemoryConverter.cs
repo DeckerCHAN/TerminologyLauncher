@@ -9,7 +9,7 @@ namespace TerminologyLauncher.GUI.Toolkits
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var imagePath = (String)value;
+            var imagePath = (string)value;
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;

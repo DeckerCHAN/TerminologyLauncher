@@ -4,6 +4,6 @@ namespace TerminologyLauncher.Entities.Account.AdditionalInfo.Properties
 {
     public class SkinEntity
     {
-        public String Url { get; set; }
+        public string Url { get; set; }
     }
 }

@@ -4,11 +4,11 @@ namespace TerminologyLauncher.Entities.Account
 {
     public class PlayerEntity
     {
-        public String AccessToken { get; set; }
-        public String ClientToken { get; set; }
+        public string AccessToken { get; set; }
+        public string ClientToken { get; set; }
         public LoginType LoginType { get; set; }
-        public String PlayerId { get; set; }
-        public String PlayerName { get; set; }
-        public String PlayerAvatarImagePath { get; set; }
+        public string PlayerId { get; set; }
+        public string PlayerName { get; set; }
+        public string PlayerAvatarImagePath { get; set; }
     }
 }
