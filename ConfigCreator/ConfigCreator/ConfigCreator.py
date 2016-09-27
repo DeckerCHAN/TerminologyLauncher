@@ -1,4 +1,4 @@
-import zipfile, os, json, hashlib, sys, threading
+import zipfile, os, json, hashlib, sys, threading, string
 from threading import Thread
 
 def zip_folder(threadID,destination,file_name,folder_location):      #Example: zip_folder('D:/','sample.zip','D:/test/')
@@ -468,15 +468,28 @@ def test():
     entirePackageFiles=zipping(Dot_Minecraft_Path,'D:/MC/NUK3TOWN/upload',file_tuple)
     json_dump('D:/MC/NUK3TOWN/upload',Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
 
-
 def main():
     Dot_Minecraft_Path=os.getcwd()+'/.minecraft'
     upload_path=os.getcwd()+'/upload'
     if not os.path.isdir(upload_path):
         os.mkdir(upload_path)
     dict_a=Minecraft_directory_search(Dot_Minecraft_Path)
-    print dict_a.keys()
+
+    selection_list=zip([a for a in string.lowercase[:len(dict_a.keys())]],dict_a.keys())
+    for option, version in selection_list:
+        print option+': '+version
     select=raw_input('Select version: ')
+    found_version=False
+    for option, version in selection_list:
+        if select==option:
+            select=version
+            found_version=True
+            break
+        else:
+            continue
+    if not found_version: 
+        print 'Your option is wrong! Please restart the program！'
+        return -1
     dict_a=libraries_search(Dot_Minecraft_Path,select,dict_a)
     file_tuple=calculate_file_to_zip(Dot_Minecraft_Path,dict_a,select)
     entirePackageFiles=zipping(Dot_Minecraft_Path,upload_path,file_tuple)
