@@ -404,79 +404,11 @@ def json_dump(upload_path,Dot_Minecraft_Path,Full_version_dict,selected_version,
     return json_structure
 
 def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
-    file_list,folder_list=file_and_folder_tuple
+    file_dict,folder_dict=file_and_folder_tuple
     entirePackageFiles=[]
     section_sample={'downloadLink':'','md5':'','name':'','localPath':''}
-    threads=[]
     threadLock=threading.Lock()
 
-    '''
-    class zip_file_thread (threading.Thread):
-        def _init_(self,threadID,Dot_Minecraft_Path,destination,file_name,file_or_list):
-            threading.Thread._init_(self)
-            self.threadID=threadID
-            self.Dot_Minecraft_Path=Dot_Minecraft_Path
-            self.destination=destination
-            self.file_name=file_name
-            self.file_or_list=file_or_list
-
-        def processing(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list):
-            temp=section_sample
-            return_value=zip_file(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list)
-            if file_name=='others.zip':
-                temp['localPath']=''
-            else:
-                temp['localPath']=os.path.splitext(file_name)[0]+'/'
-            temp['name']=os.path.splitext(file_name)[0]
-            temp['md5']=return_value[1]
-            threadLock.acquire()
-            entirePackageFiles.append(temp)
-            threadLock.release()
-        
-        def run(self):
-            print 'ThreadID: {0}, Job: {1}, Start!'.format(self.threadID,self.file_name)
-            processing(self.threadID,self.Dot_Minecraft_Path,self.destination,self.file_name,self.file_or_list)
-            print 'ThreadID {0}, Job: {1}, Finished!'.format(self.threadID,self.file_name)
-
-    class zip_folder_thread (threading.Thread):
-        def _init_(self):
-            threading.Thread._init_(self)
-            self.threadID=self._Thread__args[0]
-            self.destination=self._Thread__args[1]
-            self.file_name=self._Thread__args[2]
-            self.folder_location=self._Thread__args[3]
-
-        def processing(threadID,destination,file_name,foler_location):
-            temp=section_sample
-            return_value=zip_file(threadID,destination,file_name,folder_location)
-            temp['localPath']=os.path.splitext(file_name)[0]+'/'
-            temp['name']=os.path.splitext(file_name)[0]
-            temp['md5']=return_value[1]
-            threadLock.acquire()
-            entirePackageFiles.append(temp)
-            threadLock.release()
-        
-        def run(self):
-            print 'ThreadID: {0}, Job: {1}, Start!'.format(self.threadID,self.file_name)
-            processing(self.threadID,self.destination,self.file_name,self.folder_location)
-            print 'ThreadID {0}, Job: {1}, Finished!'.format(self.threadID,self.file_name)
-
-    count=0
-    '''
-    '''
-    for pack_name in file_list.keys():
-        eval('thread'+str(count)+'=zip_file_thread(str(count),Dot_Minecraft_Path,destination,pack_name+".zip",file_list["pack_name"])')
-        eval('thread'+str(count)+'.start()')
-        threads.append(eval('thread'+str(count)))
-        count+=1
-
-    for pack_name in folder_list.keys():
-        eval('thread'+str(count)+'=zip_file_thread(str(count),destination,pack_name+".zip",folder_list["pack_name"])')
-        eval('thread'+str(count)+'.start()')
-        threads.append(eval('thread'+str(count)))
-        count+=1
-
-    '''
     def file_processing(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list,folder_exclude_in_zip=False):
         temp=section_sample.copy()
         return_value=zip_file(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list,folder_exclude_in_zip)
@@ -504,31 +436,30 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
             threadLock.release()
         print 'Thread-{} exiting! Result: {}'.format(threadID,return_value)
 
-    natives=Thread(target=folder_processing,args=(0,destination,'natives.zip',folder_list['natives']))
-    scripts=Thread(target=folder_processing,args=(1,destination,'scripts.zip',folder_list['scripts']))
-    config=Thread(target=folder_processing,args=(2,destination,'config.zip',folder_list['config']))
-    mods=Thread(target=folder_processing,args=(3,destination,'mods.zip',folder_list['mods']))
-    others=Thread(target=file_processing,args=(4,Dot_Minecraft_Path,destination,'others.zip',file_list['others']))
-    libraries=Thread(target=file_processing,args=(5,Dot_Minecraft_Path,destination,'libraries.zip',file_list['libraries'],True))
-    assets=Thread(target=file_processing,args=(6,Dot_Minecraft_Path,destination,'assets.zip',file_list['assets'],True))
+    objects={}
+    threadID=1
 
-    natives.start()
-    scripts.start()
-    config.start()
-    mods.start()
-    others.start()
-    libraries.start()
-    assets.start()
-
-    threads=[natives,scripts,config,mods,others,libraries,assets]
-    for t in threads:
-        t.join()
+    for keys in file_dict.keys():
+        if keys!='others':
+            objects[keys]=Thread(target=file_processing,args=(threadID,Dot_Minecraft_Path, destination, keys+'.zip',file_dict[keys],True))
+        elif keys=='others':
+            objects[keys]=Thread(target=file_processing, args=(threadID,Dot_Minecraft_Path, destination, keys+'.zip',file_dict[keys]))
+        threadID+=1
+    for keys in folder_dict.keys():
+        objects[keys]=Thread(target=folder_processing, args=(threadID,destination,keys+'.zip',folder_dict[keys]))
+        threadID+=1
+    for object in objects.keys():
+        objects[object].start()
+     
+    for object in objects.keys():
+        objects[object].join()
 
     return entirePackageFiles
 
 def test():
     Dot_Minecraft_Path='D:/MC/NUK3TOWN/.minecraft'
-    os.mkdir('D:/MC/NUK3TOWN/upload')
+    if not os.path.isdir('D:/MC/NUK3TOWN/upload'):
+        os.mkdir('D:/MC/NUK3TOWN/upload')
     dict_a=Minecraft_directory_search(Dot_Minecraft_Path)
     print dict_a.keys()
     select=raw_input('Select version: ')
@@ -541,7 +472,8 @@ def test():
 def main():
     Dot_Minecraft_Path=os.getcwd()+'/.minecraft'
     upload_path=os.getcwd()+'/upload'
-    os.mkdir(upload_path)
+    if not os.path.isdir(upload_path):
+        os.mkdir(upload_path)
     dict_a=Minecraft_directory_search(Dot_Minecraft_Path)
     print dict_a.keys()
     select=raw_input('Select version: ')
@@ -551,4 +483,4 @@ def main():
     json_dump(upload_path,Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
     print 'Complete!'
 
-main()
+test()
