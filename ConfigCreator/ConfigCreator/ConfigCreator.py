@@ -1,8 +1,6 @@
 import zipfile, os, json, hashlib, sys, threading
 from threading import Thread
 
-Templete=json.load(open('Example.json','r'))
-
 def zip_folder(threadID,destination,file_name,folder_location):      #Example: zip_folder('D:/','sample.zip','D:/test/')
     if os.path.exists(destination):
         if os.path.exists(destination+'/'+file_name):
@@ -152,9 +150,10 @@ def Minecraft_directory_search(Dot_Minecraft_Path):       #Minecraft_directory_s
             if versions_address:
                 for different_versions_folder in versions_address:
                     if os.path.isdir(Dot_Minecraft_Path+'/versions/'+different_versions_folder):
-                        temp_dict={'Jar_file_config':[]}
+                        temp_dict={}
                         Jar_file_found=False
                         Native_file_found=False
+                        Json_file_found=False
                         for temp2 in os.listdir(Dot_Minecraft_Path+'/versions/'+different_versions_folder):
                             if os.path.isdir(Dot_Minecraft_Path+'/versions/'+different_versions_folder+'/'+temp2):
                                 for dlls in os.listdir(Dot_Minecraft_Path+'/versions/'+different_versions_folder+'/'+temp2):       #Find native dll file
@@ -174,24 +173,23 @@ def Minecraft_directory_search(Dot_Minecraft_Path):       #Minecraft_directory_s
                                     temp_dict['Jar_file']=Dot_Minecraft_Path+'/versions/'+different_versions_folder+'/'+temp2
                                     Jar_file_found=True
                                 if os.path.splitext(temp2)[1]=='.json':      #Find json file for the jar file, if exist. It contained the address for downloading the libraries.
-                                    temp_dict['Jar_file_config'].append(Dot_Minecraft_Path+'/versions/'+different_versions_folder+'/'+temp2)
-                        if Jar_file_found:
-                            versions_list[different_versions_folder]=temp_dict
-                            if not Native_file_found:
-                                versions_list[different_versions_folder]['Native_files_folder']=None
-                            if not versions_list[different_versions_folder]['Jar_file_config']:
-                                if not versions_list[different_versions_folder]['Native_files_folder']:
-                                    sys.stderr.write('Native files and lists for {} are missing'.format(different_versions_folder))
-                                    versions_list[different_versions_folder]['Missing_file']=True
-                                else:
-                                    versions_list[different_versions_folder]['Jar_file_config']=None
-                                    sys.stderr.write('Warning: Dependent file list for {} is missing. Make sure it is in the same folder as the jar file!'.format(different_versions_folder))
-                            elif len(versions_list[different_versions_folder]['Jar_file_config'])>1:
-                                for i in versions_list[different_versions_folder]['Jar_file_config']:
-                                    if os.path.splitext(os.path.basename(i))[0]==os.path.splitext(os.path.basename(versions_list[different_versions_folder]['Jar_file']))[0]:
-                                        versions_list[different_versions_folder]['Jar_file_config']=i
-                            elif len(versions_list[different_versions_folder]['Jar_file_config'])==1:
-                                versions_list[different_versions_folder]['Jar_file_config']=versions_list[different_versions_folder]['Jar_file_config'][0]
+                                    temp_dict['Jar_file_config']=Dot_Minecraft_Path+'/versions/'+different_versions_folder+'/'+temp2
+                                    Json_file_found=True
+
+                        # Throw out the missing version
+                        if not Jar_file_found and not Native_file_found and not Json_file_found:
+                            sys.stderr.write('{} is missing important file: Natives, Jar, Config.'.format(different_versions_folder))
+                            continue
+                        elif not Jar_file_found and not Json_file_found:
+                            sys.stderr.write('{} is missing important file: Jar, Config.'.format(different_versions_folder))
+                            continue
+                        if not Jar_file_found:
+                            temp_dict['Jar_file']=None
+                        if not Native_file_found:
+                            temp_dict['Native_files_folder']=None
+                        if not Json_file_found:
+                            temp_dict['Jar_file_config']=None
+                        versions_list[different_versions_folder]=temp_dict.copy()
             del different_versions_folder,temp2
             print versions_list
             return versions_list
@@ -203,11 +201,12 @@ def libraries_search(Dot_Minecraft_Path,selected_version_keyname,Full_version_in
     depend_list=[selected_version_keyname]
     libraries_folder_path=[]
     count=0   # Make sure the main class is the first one
-    count1=0
+    count1=0   # Reserve for id recongize
+    count2=0    # Find the main jar file if possible
     # Get the whole library list out.
     for inheritFrom in depend_list:
         if Full_version_info_list.has_key(inheritFrom):
-            if Full_version_info_list[inheritFrom]['Jar_file_config']:
+            if Full_version_info_list[inheritFrom]['Jar_file_config'] and not Full_version_info_list[inheritFrom]['Jar_file_config']==None:
                 temp=json.load(open(Full_version_info_list[inheritFrom]['Jar_file_config'],'r'))
                 if temp.has_key('inheritsFrom'):
                     depend_list.append(temp['inheritsFrom'])
@@ -258,6 +257,11 @@ def libraries_search(Dot_Minecraft_Path,selected_version_keyname,Full_version_in
                     Full_version_info_list[selected_version_keyname]['version']=temp['assets']    # Lazy way to get version number >o<
                 if temp.has_key('id') and count1<1:
                     Full_version_info_list[selected_version_keyname]['instanceName']=temp['id']
+                if temp.has_key('jar') and count2<1:       # Fix the problem that may ignore the version only have config in the folder
+                    if Full_version_info_list[selected_version_keyname]['Jar_file']!=None:
+                        pass
+                    elif Full_version_info_list[selected_version_keyname]['Jar_file']==None:
+                        Full_version_info_list[selected_version_keyname]['Jar_file']=os.path.split(Full_version_info_list[temp['jar']]['Jar_file_config'])[0]+'/'+temp['jar']+'.jar'
             else:
                 sys.stderr.write('Could not find the json file for '+inheritFrom+' , Process Abort!')
                 return -1
@@ -376,7 +380,9 @@ def calculate_file_to_zip(Dot_Minecraft_Path,Full_version_dict,selected_version)
     return (file_list,folder_list)
 
 def json_dump(upload_path,Dot_Minecraft_Path,Full_version_dict,selected_version,entirePackageFiles):
-    json_structure=Templete
+    Templete=json.load(open(os.path.split(Dot_Minecraft_Path)[0]+'/'+'Example.json','r'))
+
+    json_structure=Templete.copy()
     startupArguments=json_structure['startupArguments']
     startupArguments['libraryPaths']=Full_version_dict[selected_version]['libraries_path']
     startupArguments['nativespath']='natives'
@@ -474,26 +480,28 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
     def file_processing(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list,folder_exclude_in_zip=False):
         temp=section_sample.copy()
         return_value=zip_file(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list,folder_exclude_in_zip)
-        if file_name=='others.zip':
-            temp['localPath']=''
-        else:
-            temp['localPath']=os.path.splitext(file_name)[0]+'/'
-        temp['name']=os.path.splitext(file_name)[0]
-        temp['md5']=return_value[1]
-        threadLock.acquire()
-        entirePackageFiles.append(temp)
-        threadLock.release()
+        if return_value!=1:
+            if file_name=='others.zip':
+                temp['localPath']=''
+            else:
+                temp['localPath']=os.path.splitext(file_name)[0]+'/'
+            temp['name']=os.path.splitext(file_name)[0]
+            temp['md5']=return_value[1]
+            threadLock.acquire()
+            entirePackageFiles.append(temp)
+            threadLock.release()
         print 'Thread-{} exiting! Result: {}'.format(threadID,return_value)
 
     def folder_processing(threadID,destination,file_name,folder_location):
         temp=section_sample.copy()
         return_value=zip_folder(threadID,destination,file_name,folder_location)
-        temp['localPath']=os.path.splitext(file_name)[0]+'/'
-        temp['name']=os.path.splitext(file_name)[0]
-        temp['md5']=return_value[1]
-        threadLock.acquire()
-        entirePackageFiles.append(temp)
-        threadLock.release()
+        if return_value!=1:
+            temp['localPath']=os.path.splitext(file_name)[0]+'/'
+            temp['name']=os.path.splitext(file_name)[0]
+            temp['md5']=return_value[1]
+            threadLock.acquire()
+            entirePackageFiles.append(temp)
+            threadLock.release()
         print 'Thread-{} exiting! Result: {}'.format(threadID,return_value)
 
     natives=Thread(target=folder_processing,args=(0,destination,'natives.zip',folder_list['natives']))
@@ -519,13 +527,15 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
     return entirePackageFiles
 
 def test():
-    dict_a=Minecraft_directory_search('D:/MC/doubi 2.0/.minecraft')
+    Dot_Minecraft_Path='D:/MC/NUK3TOWN/.minecraft'
+    os.mkdir('D:/MC/NUK3TOWN/upload')
+    dict_a=Minecraft_directory_search(Dot_Minecraft_Path)
     print dict_a.keys()
     select=raw_input('Select version: ')
-    dict_a=libraries_search('D:/MC/doubi 2.0/.minecraft',select,dict_a)
-    file_tuple=calculate_file_to_zip('D:/MC/doubi 2.0/.minecraft',dict_a,select)
-    entirePackageFiles=zipping('D:/MC/doubi 2.0/.minecraft','D:/MC/doubi 2.0/upload',file_tuple)
-    json_dump('D:/MC/doubi 2.0/.minecraft',dict_a,select,entirePackageFiles)
+    dict_a=libraries_search(Dot_Minecraft_Path,select,dict_a)
+    file_tuple=calculate_file_to_zip(Dot_Minecraft_Path,dict_a,select)
+    entirePackageFiles=zipping(Dot_Minecraft_Path,'D:/MC/NUK3TOWN/upload',file_tuple)
+    json_dump('D:/MC/NUK3TOWN/upload',Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
 
 
 def main():
