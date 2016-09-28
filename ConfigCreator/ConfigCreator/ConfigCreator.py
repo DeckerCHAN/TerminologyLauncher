@@ -79,11 +79,11 @@ def zip_file(threadID,Dot_Minecraft_Path,destination,file_name,file_or_list,fold
             print 'Thread-'+str(threadID)+': '+'md5 for {} : {}'.format(file_or_list,md5_value)
             file_in_zip_list[file_or_list[len(Dot_Minecraft_Path):]]=md5_value
             print 'Thread-'+str(threadID)+': '+'Compressing :'+file_or_list
-            File.write(file_or_list,file[len(Dot_Minecraft_Path):])
+            File.write(file_or_list,file_or_list[len(Dot_Minecraft_Path):])
         elif folder_exclude_in_zip:
-            md5_value=md5_generator(file)
-            print 'Thread-'+str(threadID)+': '+'md5 for {}: {}'.format(file,md5_value)
-            file_in_zip_list[file[len(Dot_Minecraft_Path):]]=md5_value
+            md5_value=md5_generator(file_or_list)
+            print 'Thread-'+str(threadID)+': '+'md5 for {}: {}'.format(file_or_list,md5_value)
+            file_in_zip_list[file_or_list[len(Dot_Minecraft_Path):]]=md5_value
             print 'Thread-'+str(threadID)+': '+'Compressing: '+file_or_list
             file_in_zip_position=file_or_list[len(Dot_Minecraft_Path)+1:]
             file_in_zip_position=file_in_zip_position.find('/')+len(Dot_Minecraft_Path)+1
@@ -461,8 +461,21 @@ def test():
     if not os.path.isdir('D:/MC/NUK3TOWN/upload'):
         os.mkdir('D:/MC/NUK3TOWN/upload')
     dict_a=Minecraft_directory_search(Dot_Minecraft_Path)
-    print dict_a.keys()
+    selection_list=zip([a for a in string.lowercase[:len(dict_a.keys())]],dict_a.keys())
+    for option, version in selection_list:
+        print option+': '+version
     select=raw_input('Select version: ')
+    found_version=False
+    for option, version in selection_list:
+        if select==option:
+            select=version
+            found_version=True
+            break
+        else:
+            continue
+    if not found_version: 
+        print 'Your option is wrong! Please restart the program！'
+        return -1
     dict_a=libraries_search(Dot_Minecraft_Path,select,dict_a)
     file_tuple=calculate_file_to_zip(Dot_Minecraft_Path,dict_a,select)
     entirePackageFiles=zipping(Dot_Minecraft_Path,'D:/MC/NUK3TOWN/upload',file_tuple)
@@ -496,4 +509,4 @@ def main():
     json_dump(upload_path,Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
     print 'Complete!'
 
-test()
+main()
