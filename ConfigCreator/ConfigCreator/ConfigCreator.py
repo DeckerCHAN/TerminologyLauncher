@@ -398,7 +398,10 @@ def json_dump(upload_path,Dot_Minecraft_Path,Full_version_dict,selected_version,
     json_structure['startupArguments']=startupArguments
 
     #os.mknod(upload_path+json_structure['instanceName']+'.json')
-    json_file=open(upload_path+'/'+json_structure['instanceName']+'.json','w+')
+    if not json_structure['instanceName']:
+        json_file=open(upload_path+'/'+selected_version+'.json','w+')
+    else:
+        json_file=open(upload_path+'/'+json_structure['instanceName']+'.json','w+')
     json_file.write(json.dumps(json_structure, indent=4))
     json_file.close()
     return json_structure
@@ -456,6 +459,77 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
 
     return entirePackageFiles
 
+class upload():
+    def __init__(self):
+        print 'Initializing upload sdks...'
+        from upload_sdk import upyun
+        from upload_sdk.ftp import ftp
+        print 'Initialized!'
+        self.upyun=upyun
+        self.ftp=ftp
+
+    def Ftp(self,address,username=None, password=None,local_path='',upload_path='/'):
+        '''A simplfy function for uploading files through ftp
+        Arguments: address, username & password (default is None), local_path, upload_path (default is /)
+        '''
+        ftp_object=self.ftp
+        ftp_object=ftp_object.ftp_upload(address, username, password)
+        ftp_object.login()
+        ftp_object.retrlines('LIST')
+
+    def Upyun(self, bucket, username=None, password=None, secret=None, local_path='', upload_path=''):
+        '''Upload function for Upyun
+        Arguments: 
+            bucket: the service name that you are going to upload to. 
+            username & password: the OPERATOR username and password
+            secret: (optional) A bunch of keys allow the clinet directly transfer file to the service. 
+            local_path & upload_path
+        '''
+        if not upload_path:
+            upload_path='/'+os.path.split(local_path)[1]
+
+        upyun_object=self.upyun
+        try:
+            upyun_object=upyun_object.UpYun(bucket, username, password, secret)
+            if secret:
+                with open(local_path, 'rb') as __file:
+                    result=upyun_object.put(upload_path, __file, checksum=True, multipart=True, block_size=1024*1024, params='Uploading ')
+                    print result
+                    return result
+            elif not secret:
+                from upload_sdk.upyun import FileStore
+                from upload_sdk.upyun import print_reporter
+                with open(local_path, 'rb') as __file:
+                    result=upyun_object.put(upload_path, __file, checksum=True, need_resume=True,store=FileStore(), params='Uploading ')
+                    print result
+                    return result
+        except self.upyun.UpYunServiceException as se:
+            print 'Except an UpYunServiceException ...'
+            print 'Request Id: ' + se.request_id
+            print 'HTTP Status Code: ' + str(se.status)
+            print 'Error Message:    ' + se.msg + '\n'
+        except self.upyun.UpYunClientException as ce:
+            print 'Except an UpYunClientException ...'
+            print 'Error Message: ' + ce.msg + '\n'
+'''
+class ProgressBarHandler(object):
+    ''''''Work with class upload''''''
+    def __init__(self, totalsize, params):
+        widgets = [params, Percentage(), ' ',
+                   Bar(marker='=', left='[', right=']'), ' ',
+                   ETA(), ' ', FileTransferSpeed()]
+        self.pbar = ProgressBar(widgets=widgets, maxval=totalsize).start()
+
+    def update(self, readsofar):
+        self.pbar.update(readsofar)
+
+    def finish(self):
+        self.pbar.finish()
+'''
+
+def pause():
+    input('Press any key to continue...')
+
 def test():
     Dot_Minecraft_Path='D:/MC/NUK3TOWN/.minecraft'
     if not os.path.isdir('D:/MC/NUK3TOWN/upload'):
@@ -508,5 +582,8 @@ def main():
     entirePackageFiles=zipping(Dot_Minecraft_Path,upload_path,file_tuple)
     json_dump(upload_path,Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
     print 'Complete!'
+    pause()
 
-main()
+instance=upload()
+instance.Ftp(address='192.168.1.131',local_path='/')
+instance.Upyun('libertydome',username='upload',password='uploadSDK',local_path='D:/a.txt')

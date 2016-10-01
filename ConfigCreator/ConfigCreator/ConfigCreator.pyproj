@@ -23,9 +23,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ConfigCreator.py" />
+    <Compile Include="upload_sdk\ftp\ftp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="upload_sdk\ftp\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="upload_sdk\upyun\av.py" />
+    <Compile Include="upload_sdk\upyun\form.py" />
+    <Compile Include="upload_sdk\upyun\modules\check.py" />
+    <Compile Include="upload_sdk\upyun\modules\compat.py" />
+    <Compile Include="upload_sdk\upyun\modules\exception.py" />
+    <Compile Include="upload_sdk\upyun\modules\httpipe.py" />
+    <Compile Include="upload_sdk\upyun\modules\sign.py" />
+    <Compile Include="upload_sdk\upyun\modules\__init__.py" />
+    <Compile Include="upload_sdk\upyun\multi.py" />
+    <Compile Include="upload_sdk\upyun\rest.py" />
+    <Compile Include="upload_sdk\upyun\resume.py" />
+    <Compile Include="upload_sdk\upyun\upyun.py" />
+    <Compile Include="upload_sdk\upyun\__init__.py" />
+    <Compile Include="upload_sdk\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Example.json" />
+    <Content Include="upload_sdk\upyun\av.pyc" />
+    <Content Include="upload_sdk\upyun\form.pyc" />
+    <Content Include="upload_sdk\upyun\modules\check.pyc" />
+    <Content Include="upload_sdk\upyun\modules\compat.pyc" />
+    <Content Include="upload_sdk\upyun\modules\exception.pyc" />
+    <Content Include="upload_sdk\upyun\modules\httpipe.pyc" />
+    <Content Include="upload_sdk\upyun\modules\sign.pyc" />
+    <Content Include="upload_sdk\upyun\modules\__init__.pyc" />
+    <Content Include="upload_sdk\upyun\multi.pyc" />
+    <Content Include="upload_sdk\upyun\rest.pyc" />
+    <Content Include="upload_sdk\upyun\resume.pyc" />
+    <Content Include="upload_sdk\upyun\upyun.pyc" />
+    <Content Include="upload_sdk\upyun\__init__.pyc" />
+    <Content Include="upload_sdk\__init__.pyc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="upload_sdk\" />
+    <Folder Include="upload_sdk\ftp\" />
+    <Folder Include="upload_sdk\upyun\" />
+    <Folder Include="upload_sdk\upyun\modules\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
