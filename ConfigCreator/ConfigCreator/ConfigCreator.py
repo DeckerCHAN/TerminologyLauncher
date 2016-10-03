@@ -571,7 +571,7 @@ def upload_section(entirePackageFiles, zip_file_path):
             global download_address
             download_address={}
             for temp in zip_file_path:
-                instance=ftp_upload(address, port, username, password, temp)
+                instance=ftp_upload(address, port, username, password, temp, upload_path+'/'+os.path.split(temp)[1])
                 instance.start()
                 objects.append(instance)
             for temp in objects:
