@@ -20,6 +20,8 @@ __author__ = 'Monkey Zhang (timebug)'
 __license__ = 'MIT License: http://www.opensource.org/licenses/mit-license.php'
 __copyright__ = 'Copyright 2015 UPYUN'
 
+print 'upyun SDK version V{}'.format(__version__)
+
 __all__ = [
     'UpYun', 'UpYunServiceException', 'UpYunClientException',
     'ED_AUTO', 'ED_TELECOM', 'ED_CNC', 'ED_CTT', '__version__',

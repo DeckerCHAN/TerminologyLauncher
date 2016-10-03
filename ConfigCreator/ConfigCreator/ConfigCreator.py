@@ -409,6 +409,7 @@ def json_dump(upload_path,Dot_Minecraft_Path,Full_version_dict,selected_version,
 def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
     file_dict,folder_dict=file_and_folder_tuple
     entirePackageFiles=[]
+    zip_file_path=[]
     section_sample={'downloadLink':'','md5':'','name':'','localPath':''}
     threadLock=threading.Lock()
 
@@ -424,6 +425,7 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
             temp['md5']=return_value[1]
             threadLock.acquire()
             entirePackageFiles.append(temp)
+            zip_file_path.append(destination+'/'+file_name)
             threadLock.release()
         print 'Thread-{} exiting! Result: {}'.format(threadID,return_value)
 
@@ -436,6 +438,7 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
             temp['md5']=return_value[1]
             threadLock.acquire()
             entirePackageFiles.append(temp)
+            zip_file_path.append(destination+'/'+file_name)
             threadLock.release()
         print 'Thread-{} exiting! Result: {}'.format(threadID,return_value)
 
@@ -457,27 +460,45 @@ def zipping(Dot_Minecraft_Path,destination,file_and_folder_tuple):
     for object in objects.keys():
         objects[object].join()
 
-    return entirePackageFiles
+    return (entirePackageFiles,zip_file_path)
 
-class upload():
-    def __init__(self):
+class ftp_upload(threading.Thread):
+    def __init__(self,address,port=21,username=None, password=None,local_path='',upload_path=''):
         print 'Initializing upload sdks...'
-        from upload_sdk import upyun
         from upload_sdk.ftp import ftp
-        print 'Initialized!'
-        self.upyun=upyun
         self.ftp=ftp
+        print 'Initialized!'
+        threading.Thread.__init__(self)
 
-    def Ftp(self,address,username=None, password=None,local_path='',upload_path='/'):
+        self.__address=address
+        self.__port=port
+        self.__username=username
+        self.__password=password
+        self.__local_path=local_path
+        self.__upload_path=upload_path
+
+    def Ftp(self):
         '''A simplfy function for uploading files through ftp
         Arguments: address, username & password (default is None), local_path, upload_path (default is /)
         '''
+        if not self.__port:
+            self.__port=21         # Related to the problem that if port = '', ftp will raise socket error. Link: http://www.programgo.com/article/14342614841/
         ftp_object=self.ftp
-        ftp_object=ftp_object.ftp_upload(address, username, password)
-        ftp_object.login()
-        ftp_object.retrlines('LIST')
+        ftp_object=ftp_object.ftp_upload(self.__port, self.__address,local_path=self.__local_path,upload_path=self.__upload_path)
+        __download_addr=ftp_object.upload()
+        return __download_addr
+    def run(self):
+        __download_addr=self.Ftp()
+        download_address[os.path.split(self.__local_path)[1]]=__download_addr
+        print 'Job {} Done!'.format(os.path.split(self.__local_path)[1])
+class upyun_upload():
+    def __init__(self):
+        print 'Initializing upload sdks...'
+        from upload_sdk import upyun
+        self.upyun=upyun
+        print 'Initialized!'
 
-    def Upyun(self, bucket, username=None, password=None, secret=None, local_path='', upload_path=''):
+    def Upyun(self, bucket, domain='.b0.upaiyun.com', username=None, password=None, secret=None, local_path='', upload_directory=''):
         '''Upload function for Upyun
         Arguments: 
             bucket: the service name that you are going to upload to. 
@@ -485,24 +506,28 @@ class upload():
             secret: (optional) A bunch of keys allow the clinet directly transfer file to the service. 
             local_path & upload_path
         '''
-        if not upload_path:
+        if not upload_directory:
             upload_path='/'+os.path.split(local_path)[1]
+        elif upload_directory:
+            upload_path=upload_directory+'/'+os.path.split(local_path)[1]
 
         upyun_object=self.upyun
         try:
             upyun_object=upyun_object.UpYun(bucket, username, password, secret)
+            from upload_sdk.upyun import print_reporter
             if secret:
+                print 'Begin upload with multipart: '+local_path
                 with open(local_path, 'rb') as __file:
-                    result=upyun_object.put(upload_path, __file, checksum=True, multipart=True, block_size=1024*1024, params='Uploading ')
-                    print result
-                    return result
+                    result=upyun_object.put(upload_path, __file, checksum=True, multipart=True, block_size=1024*1024, reporter=print_reporter, params='Uploading ')
+                    print 'Success upload {}'.format(os.path.split(local_path)[1])
+                    return (result,bucket+domain+upload_path)
             elif not secret:
                 from upload_sdk.upyun import FileStore
-                from upload_sdk.upyun import print_reporter
+                print 'Begin upload: '+local_path
                 with open(local_path, 'rb') as __file:
-                    result=upyun_object.put(upload_path, __file, checksum=True, need_resume=True,store=FileStore(), params='Uploading ')
-                    print result
-                    return result
+                    result=upyun_object.put(upload_path, __file, checksum=True, need_resume=True,store=FileStore(),reporter=print_reporter, params='Uploading ')
+                    print 'Success upload {}'.format(os.path.split(local_path)[1])
+                    return (result,bucket+domain+upload_path)
         except self.upyun.UpYunServiceException as se:
             print 'Except an UpYunServiceException ...'
             print 'Request Id: ' + se.request_id
@@ -511,24 +536,72 @@ class upload():
         except self.upyun.UpYunClientException as ce:
             print 'Except an UpYunClientException ...'
             print 'Error Message: ' + ce.msg + '\n'
-'''
-class ProgressBarHandler(object):
-    ''''''Work with class upload''''''
-    def __init__(self, totalsize, params):
-        widgets = [params, Percentage(), ' ',
-                   Bar(marker='=', left='[', right=']'), ' ',
-                   ETA(), ' ', FileTransferSpeed()]
-        self.pbar = ProgressBar(widgets=widgets, maxval=totalsize).start()
 
-    def update(self, readsofar):
-        self.pbar.update(readsofar)
+    def run(self, bucket, domain='.b0.upaiyun.com', username=None, password=None, secret=None, local_path='', upload_path=''):
+        self.Upyun(bucket, domain, username, password, secret, local_path, upload_path)
 
-    def finish(self):
-        self.pbar.finish()
-'''
+def upload_section(entirePackageFiles, zip_file_path):
+    modules=['ftp','upyun']
+    objects=[]
+    lock=threading.Lock()
+    for letter,module in zip(string.ascii_lowercase[:len(modules)],modules):
+        print letter+': '+module
+    selection=raw_input('Please select platform: ')
+    match=False
+    for letter,module in zip(string.ascii_lowercase[:len(modules)],modules):
+        if selection==letter:
+            selection=module
+            match=True
+    if not match:
+        print 'Incorrect input. Please enter another option!'
+        entirePackageFiles=upload_section(entirePackageFiles, zip_file_path)
+    elif match:
+        if selection==modules[0]:
+            address=raw_input('Please enter the domain/ip address: ')
+            port=raw_input('Please enter the port (default: 21): ')
+            if port:
+                port=int(port)
+            username=raw_input('Please enter the username (if annoymous, ingore it): ')
+            if username:
+                password=raw_input('Please enter the password: ')
+            elif not username:
+                username=None
+                password=None
+            upload_path=raw_input('Upload to which directory (default: /)? ')
+            global download_address
+            download_address={}
+            for temp in zip_file_path:
+                instance=ftp_upload(address, port, username, password, temp)
+                instance.start()
+                objects.append(instance)
+            for temp in objects:
+                temp.join()
+            for keys in download_address:
+                for dicts,index in zip(entirePackageFiles,range(len(entirePackageFiles))):
+                    if dicts['name']==os.path.splitext(keys)[0]:
+                        entirePackageFiles[index]['downloadLink']=download_address[keys]
+        if selection==modules[1]:
+            bucket=raw_input('Please enter the service name: ')
+            domain=raw_input('Please enter the domain (default: .b0.upaiyun.com)')
+            username=raw_input('Please enter the operator name: ')
+            password=raw_input('Please enter the password: ')
+            secret=raw_input('Enter the form key if available: ')
+            upload_path=raw_input('Upload to which directory (default: /)? ')
+            for temp in zip_file_path:
+                instance=upyun_upload()
+                try:
+                    result=instance.Upyun(bucket, domain, username, password, secret, temp, upload_path)
+                    for dicts,index in zip(entirePackageFiles,range(len(entirePackageFiles))):
+                        if dicts['name']==os.path.splitext(os.path.split(temp)[1])[0]:
+                            entirePackageFiles[index]['downloadLink']=result[1]
+                except:
+                    print 'Exception caught from Job {}! Pass...'.format(temp)
+                    continue
+    return entirePackageFiles
 
 def pause():
-    input('Press any key to continue...')
+    input('Press [Enter] to continue...')
+
 
 def test():
     Dot_Minecraft_Path='D:/MC/NUK3TOWN/.minecraft'
@@ -578,12 +651,12 @@ def main():
         print 'Your option is wrong! Please restart the program！'
         return -1
     dict_a=libraries_search(Dot_Minecraft_Path,select,dict_a)
-    file_tuple=calculate_file_to_zip(Dot_Minecraft_Path,dict_a,select)
-    entirePackageFiles=zipping(Dot_Minecraft_Path,upload_path,file_tuple)
+    file_and_tuple=calculate_file_to_zip(Dot_Minecraft_Path,dict_a,select)
+    entirePackageFiles,zip_file_path=zipping(Dot_Minecraft_Path,upload_path,file_and_tuple)
+    entirePackageFiles=upload_section(entirePackageFiles,zip_file_path)
     json_dump(upload_path,Dot_Minecraft_Path,dict_a,select,entirePackageFiles)
     print 'Complete!'
     pause()
 
-instance=upload()
-instance.Ftp(address='192.168.1.131',local_path='/')
-instance.Upyun('libertydome',username='upload',password='uploadSDK',local_path='D:/a.txt')
+main()
+#print upload_section([{'name':'ll'}],['E:/ll.mp4'])
