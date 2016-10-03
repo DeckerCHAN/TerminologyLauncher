@@ -1,0 +1,44 @@
+{
+  "icon": "",
+  "background": "",
+  "updatePath": "",
+  "version": "V1.0",
+  "generation": 2,
+  "instanceName": "",
+  "description": "",
+  "author": "",
+  "fileSystem": {
+    "entirePackageFiles": [
+      {
+        "downloadLink": "",
+        "md5": "",
+        "name": "",
+        "localPath": ""
+      }
+    ],
+    "customFiles": []
+  },
+  "startupArguments": {
+    "jvmArguments": [
+      "-XX:+UseConcMarkSweepGC",
+      "-XX:+CMSIncrementalMode",
+      "-XX:-UseAdaptiveSizePolicy",
+      "-Xmn128M",
+      "-XX:MaxPermSize=256M",
+      "-Dfml.ignoreInvalidMinecraftCertificates=true",
+      "-Dfml.ignorePatchDiscrepancies=true"
+    ],
+    "miniumMemoryMegaSize": 0,
+    "nativespath": "natives",
+    "libraryPaths": [
+    ],
+    "mainJarPath": "",
+    "mainClass": "net.minecraft.launchwrapper.Launch",
+    "version": "",
+    "assetsDir": "assets",
+    "assetIndex": "",
+    "userType": "mojang",
+    "tweakClasses": [
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ProfilingTarget xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectTarget>
+    <TargetProject>7c3db9b1-9786-4909-bc3c-4e6180178f8a</TargetProject>
+    <FriendlyName>ConfigCreator</FriendlyName>
+  </ProjectTarget>
+  <Reports>
+    <Report>
+      <Filename>C:\Users\Gordon's\AppData\Local\Temp\ConfigCreator_20161001.vsp</Filename>
+    </Report>
+  </Reports>
+</ProfilingTarget>
