@@ -2,10 +2,10 @@ version: ci-{build}
 skip_tags: true
 os: Visual Studio 2015
 configuration: Release
+install:
+  - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
 before_build:
   - nuget restore
-after_build:
-  - version.cmd
 build:
   project: TerminologyLauncher.sln
   verbosity: normal
