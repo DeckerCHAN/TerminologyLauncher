@@ -4,7 +4,6 @@ os: Visual Studio 2015
 configuration: Release
 install:
   - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
-  - cmd: echo %app_version%
 before_build:
   - nuget restore
 build:
@@ -12,7 +11,7 @@ build:
   verbosity: normal
 artifacts:
   - path: TerminologyLauncher/bin/Release
-    name: TerminologyLauncher{build}
+    name: TerminologyLauncher%app_version%
 test: off
 nuget:
   account_feed: true
