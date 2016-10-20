@@ -10,7 +10,7 @@ build:
   project: TerminologyLauncher[DEBUG]\TerminologyLauncher[DEBUG].csproj
   verbosity: normal
 artifacts:
-  - path: bin
+  - path: TerminologyLauncher/bin
     name: TerminologyLauncher
 test: off
 nuget:
