@@ -5,7 +5,8 @@ configuration: Release
 install:
   - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
   - cmd: for /f %%i in ('PowerShell -File get-build.ps1') do set app_build=%%i
-  - cmd: echo %app_build%
+  - cmd: set file_suffix=%app_version%%app_build%
+  - cmd: echo %file_suffix%
 before_build:
   - nuget restore
 build:
