@@ -7,3 +7,6 @@ build:
 test: off
 artifacts:
 - path: '*.zip'
+nuget:
+  account_feed: true
+  project_feed: true
