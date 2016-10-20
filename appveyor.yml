@@ -4,12 +4,14 @@ os: Visual Studio 2015
 configuration: Release
 before_build:
   - nuget restore
+after_build:
+  - dir
 build:
-  project: TerminologyLauncher[DEBUG]\TerminologyLauncher[DEBUG].csproj
+  project: TerminologyLauncher.sln
   verbosity: normal
 artifacts:
-  - path: bin
-    name: TerminologyLauncher
+  - path: TerminologyLauncher/bin/Release
+    name: TerminologyLauncher{build}
 test: off
 nuget:
   account_feed: true
