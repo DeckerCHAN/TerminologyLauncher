@@ -157,7 +157,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
                 var field = new FieldReference<string>(javaRuntimeEntitiesKP.Keys.First());
-                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java exe"), TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"), javaRuntimeEntitiesKP.Keys, field);
+                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java"), TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"), javaRuntimeEntitiesKP.Keys, field);
                 if (result == null || result.Value == false)
                 {
                     return false;
