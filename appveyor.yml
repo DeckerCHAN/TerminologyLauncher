@@ -1,0 +1,9 @@
+version: 1.5.0.{build}
+skip_tags: true
+configuration: Debug
+build:
+  project: TerminologyLauncher/TerminologyLauncher.csproj
+  verbosity: normal
+test: off
+artifacts:
+- path: '*.zip'
