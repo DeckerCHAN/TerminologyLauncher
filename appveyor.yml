@@ -5,6 +5,7 @@ configuration: Release
 install:
   - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
   - cmd: for /f %%i in ('PowerShell -File get-build.ps1') do set app_build=%%i
+  - cmd: set file_name=!%app_version%%app_build2%!
 before_build:
   - nuget restore
 build:
@@ -12,7 +13,7 @@ build:
   verbosity: normal
 artifacts:
   - path: TerminologyLauncher/bin/Release
-    name: "TerminologyLauncher%app_build%%app_version%"
+    name: TerminologyLauncher%file_name%
 test: off
 nuget:
   account_feed: true
