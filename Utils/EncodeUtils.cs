@@ -7,20 +7,14 @@ namespace TerminologyLauncher.Utils
 {
     public static class EncodeUtils
     {
-        public static Encoding NoneBomUTF8
-        {
-            get
-            {
-                return new UTF8Encoding(false);
-            }
-        }
+        public static Encoding NoneBomUTF8 => new UTF8Encoding(false);
 
-        public static String CalculateFileMd5(String filePath)
+        public static string CalculateFileMd5(string filePath)
         {
             if (!File.Exists(filePath) || File.GetAttributes(filePath).HasFlag(FileAttributes.Directory))
             {
                 throw new FileNotFoundException(
-                    String.Format("Cannot calculate file Md5 for {0} if file not exists or it is a directory!", filePath));
+                    $"Cannot calculate file Md5 for {filePath} if file not exists or it is a directory!");
             }
             using (var md5 = MD5.Create())
             {
@@ -31,9 +25,9 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static String CalculateStringMd5(String content)
+        public static string CalculateStringMd5(string content)
         {
-            if (String.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(content))
             {
                 throw new Exception("Empty string is not allowed!");
             }
@@ -43,7 +37,7 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static String ToHex(this byte[] bytes, bool upperCase)
+        public static string ToHex(this byte[] bytes, bool upperCase)
         {
             var result = new StringBuilder(bytes.Length * 2);
 
@@ -53,7 +47,7 @@ namespace TerminologyLauncher.Utils
             return result.ToString();
         }
 
-        public static Boolean CheckFileMd5(String filePath, String md5)
+        public static bool CheckFileMd5(string filePath, string md5)
         {
             return CalculateFileMd5(filePath).ToUpper().Equals(md5.ToUpper());
         }

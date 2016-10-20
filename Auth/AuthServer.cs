@@ -1,17 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using TerminologyLauncher.Auth.Logins;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.Account;
-using TerminologyLauncher.Entities.Account.Authentication.Authenticate;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
-using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.Auth
 {
@@ -21,7 +15,7 @@ namespace TerminologyLauncher.Auth
         public Timer RefreshTimer { get; set; }
         public PlayerEntity CurrentPlayer { get; private set; }
         public DirectoryInfo ProfileDirectoryInfo { get; set; }
-        public AuthServer(String authConfigPath)
+        public AuthServer(string authConfigPath)
         {
             TerminologyLogger.GetLogger().Info("Initializing auth server.");
             this.Config = new Config(new FileInfo(authConfigPath));
@@ -35,9 +29,9 @@ namespace TerminologyLauncher.Auth
 
 
 
-        public LoginResultType OfficialAuth(String username, String password)
+        public LoginResultType OfficialAuth(string username, string password)
         {
-            TerminologyLogger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in official mode.", username));
+            TerminologyLogger.GetLogger().Debug($"Auth server authenticating user{username} in official mode.");
             var mojangLogin = new MojangLogin(username, password, this.ProfileDirectoryInfo, this.Config);
             var result = mojangLogin.ExecuteLogin();
             if (result == LoginResultType.Success)
@@ -52,9 +46,9 @@ namespace TerminologyLauncher.Auth
             throw new NotImplementedException();
         }
 
-        public LoginResultType OfflineAuth(String username)
+        public LoginResultType OfflineAuth(string username)
         {
-            TerminologyLogger.GetLogger().Debug(String.Format("Auth server authenticating user{0} in offline mode.", username));
+            TerminologyLogger.GetLogger().Debug($"Auth server authenticating user{username} in offline mode.");
             var offlineLogin = new OfflineLogin(username, this.ProfileDirectoryInfo, this.Config);
             var result = offlineLogin.ExecuteLogin();
             if (result == LoginResultType.Success)

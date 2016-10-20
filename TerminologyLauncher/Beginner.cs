@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using TerminologyLauncher.Core;
@@ -12,7 +11,7 @@ namespace TerminologyLauncher
     public static class Beginner
     {
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+        public static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 
         public static void Start()
         {
@@ -45,7 +44,7 @@ namespace TerminologyLauncher
                     var reportor = new CrashReportor(ex);
                     reportor.DoReport();
 
-                    Console.WriteLine("!!!CRASH!!!More detail at {0}", reportor.ReportFileInfo.FullName);
+                    Console.WriteLine($"!!!CRASH!!!More detail at {reportor.ReportFileInfo.FullName}");
 
                 }
                 catch (Exception)
@@ -56,7 +55,7 @@ namespace TerminologyLauncher
             }
         }
 
-        private static Boolean RuntimeDotNetHigherThan45()
+        private static bool RuntimeDotNetHigherThan45()
         {
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
             {

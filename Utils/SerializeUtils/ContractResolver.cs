@@ -8,7 +8,7 @@ namespace TerminologyLauncher.Utils.SerializeUtils
 
         protected override string ResolvePropertyName(string propertyName)
         {
-            return Char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
+            return char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
         }
 
     }

@@ -4,6 +4,6 @@ namespace TerminologyLauncher.Entities.Account.Authentication.Validate
 {
     public class ValidatePayload
     {
-        public String AccessToken { get; set; }
+        public string AccessToken { get; set; }
     }
 }

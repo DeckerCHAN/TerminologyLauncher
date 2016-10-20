@@ -4,7 +4,7 @@ namespace TerminologyLauncher.Utils.ProgressService
 {
     public class LeafNodeProgress : Progress
     {
-        public LeafNodeProgress(String taskName)
+        public LeafNodeProgress(string taskName)
             : base(taskName)
         {
             base.Percent = 0;

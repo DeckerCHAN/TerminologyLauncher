@@ -28,8 +28,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             catch (Exception ex)
             {
                 TerminologyLogger.GetLogger()
-                .ErrorFormat("Cannot remove this instance because {0}", ex);
-                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch", String.Format("Caused by an error, we cannot remove this instance right now. Detail: {0}", ex.Message));
+                    .ErrorFormat($"Cannot remove this instance because {ex}");
+                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                    $"Caused by an error, we cannot remove this instance right now. Detail: {ex.Message}");
 
                 throw;
             }

@@ -33,7 +33,7 @@ namespace TerminologyLauncher.Utils
             public int ThreadCount;
         }
 
-        public static Int64 GetPhysicalAvailableMemoryInMiB()
+        public static long GetPhysicalAvailableMemoryInMiB()
         {
             PerformanceInformation pi = new PerformanceInformation();
             if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
@@ -47,7 +47,7 @@ namespace TerminologyLauncher.Utils
 
         }
 
-        public static Int64 GetTotalMemoryInMiB()
+        public static long GetTotalMemoryInMiB()
         {
             PerformanceInformation pi = new PerformanceInformation();
             if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
@@ -61,12 +61,12 @@ namespace TerminologyLauncher.Utils
 
         }
 
-        public static String GetCurrentLanguageName()
+        public static string GetCurrentLanguageName()
         {
             return CultureInfo.InstalledUICulture.Name;
         }
 
-        public static String GetNetVersionFromRegistry()
+        public static string GetNetVersionFromRegistry()
         {
             try
             {
@@ -142,11 +142,11 @@ namespace TerminologyLauncher.Utils
             }
         }
 
-        public static String GetOsVersion()
+        public static string GetOsVersion()
         {
             var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
                         select x.GetPropertyValue("Caption")).FirstOrDefault();
-            return name != null ? String.Format("{0} ({1})", name, Environment.OSVersion) : "Unknown";
+            return name != null ? $"{name} ({Environment.OSVersion})" : "Unknown";
         }
     }
 }

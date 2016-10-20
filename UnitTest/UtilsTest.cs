@@ -17,7 +17,7 @@ namespace TerminologyLauncher.UnitTest
             Assert.IsNotNull(stream);
             var content = new StreamReader(stream).ReadToEnd();
             Console.WriteLine(content);
-            Assert.IsTrue(String.IsNullOrEmpty(content));
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
 
         [TestMethod]

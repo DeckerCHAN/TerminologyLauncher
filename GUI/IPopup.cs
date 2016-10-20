@@ -8,10 +8,10 @@ namespace TerminologyLauncher.GUI
 {
     public interface IPopup
     {
-        void PopupNotifyDialog(String title, String content);
-        Boolean? PopupConfirmDialog(String title, String content);
-        Boolean? PopupSingleSelectDialog(String title, String fieldName, IEnumerable<String> options, FieldReference<String> selection);
-        Boolean? PopupSingleLineInputDialog(String title, String fieldName, FieldReference<String> content);
+        void PopupNotifyDialog(string title, string content);
+        bool? PopupConfirmDialog(string title, string content);
+        bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection);
+        bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content);
         ProgressWindow BeginPopupProgressWindow(Progress progress);
     }
 }

@@ -4,6 +4,6 @@ namespace TerminologyLauncher.Entities.FileRepository
 {
     public class FileRepositoryEntity
     {
-        public List<RepositoryFileEntity> Files { get; set; }
+        public List<RepositoryItemEntity> Files { get; set; }
     }
 }

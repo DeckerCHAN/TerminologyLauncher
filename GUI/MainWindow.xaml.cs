@@ -16,7 +16,7 @@ using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
-using TerminologyLauncher.I18n.TranslationObjects.GUITranslations;
+using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -31,15 +31,7 @@ namespace TerminologyLauncher.GUI
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
-        public MainWindowTranslation Translation
-        {
-            get
-            {
-                return
-                    I18n.TranslationProvider.TranslationProviderInstance.TranslationObject.GuiTranslation
-                        .MainWindowTranslation;
-            }
-        }
+        public string MainWindowTitleTranslation => TranslationManager.GetManager.Localize("MainWindowTitle", "Terminology Launcher");
 
         public PlayerEntity Player
         {
@@ -51,7 +43,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public String CoreVersion
+        public string CoreVersion
         {
             get { return this.CoreVersionValue; }
             set
@@ -80,6 +72,26 @@ namespace TerminologyLauncher.GUI
                 this.OnPropertyChanged();
             }
         }
+
+        public string AddInstanceTranslation => TranslationManager.GetManager.Localize("AddInstance", "Add new instance");
+
+        public string RemoveInstanceTranslation => TranslationManager.GetManager.Localize("RemoveInstance", "Remove select instance");
+
+        public string OfficialLoginTranslation => TranslationManager.GetManager.Localize("OfficialLogin", "Official Mode");
+
+        public string OfflineLoginTranslation => TranslationManager.GetManager.Localize("OfflineLogin", "Offline Mode");
+
+        public string InstanceNameFieldTranslation => TranslationManager.GetManager.Localize("InstanceNameField", "Name:");
+
+        public string InstanceAuthorFieldTranslation => TranslationManager.GetManager.Localize("InstanceAuthorField", "Author:");
+
+        public string InstanceDescribeFieldTranslation => TranslationManager.GetManager.Localize("InstanceDescribeField", "Describe:");
+
+        public string InstanceVersionFieldTranslation => TranslationManager.GetManager.Localize("InstanceVersionField", "Version:");
+
+        public string UpdateInstanceButtonTranslation => TranslationManager.GetManager.Localize("UpdateInstanceButton", "Update");
+
+        public object LaunchInstanceButtonTranslation => TranslationManager.GetManager.Localize("LaunchInstanceButtonTranslation", "Launch");
 
         public MainWindow(Config config)
         {
@@ -131,9 +143,9 @@ namespace TerminologyLauncher.GUI
             });
         }
 
-        public Boolean? PopupConfirmDialog(string title, string content)
+        public bool? PopupConfirmDialog(string title, string content)
         {
-            Boolean? result = false;
+            bool? result = false;
             this.Dispatcher.Invoke(() =>
             {
                 var confirm = new ConfirmWindow(this, title, content);
@@ -142,9 +154,9 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        public Boolean? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<String> selection)
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
         {
-            Boolean? result = false;
+            bool? result = false;
             this.Dispatcher.Invoke(() =>
             {
                 var selectWindow = new SingleSelectWindow(this, title, fieldName, options, selection);
@@ -153,9 +165,9 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        public Boolean? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<String> content)
+        public bool? PopupSingleLineInputDialog(string title, string fieldName, FieldReference<string> content)
         {
-            Boolean? result = null;
+            bool? result = null;
             this.Dispatcher.Invoke(() =>
             {
                 var inputWindow = new SingleLineInputWindow(this, title, fieldName, content);

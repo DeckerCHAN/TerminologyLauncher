@@ -18,10 +18,10 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.IsVisibleChanged += this.HandleEvent;
         }
-        public void HandleEvent(Object sender, DependencyPropertyChangedEventArgs e)
+        public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
             var window = sender as LoginWindow;
-            TerminologyLogger.GetLogger().InfoFormat("Login window is going to {0}!", window.Visibility);
+            TerminologyLogger.GetLogger().InfoFormat($"Login window is going to {window.Visibility}!");
             switch (window.Visibility)
             {
                 case Visibility.Hidden:

@@ -7,8 +7,8 @@ namespace TerminologyLauncher.Auth.Logins
 {
     public abstract class Login
     {
-        public String UserName { get; set; }
-        public String Password { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
         protected Config Config { get; set; }
         public DirectoryInfo ProfileRootDirectoryInfo { get; set; }
         public PlayerEntity Player { get; set; }

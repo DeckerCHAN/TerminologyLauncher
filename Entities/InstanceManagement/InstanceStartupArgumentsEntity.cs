@@ -5,18 +5,18 @@ namespace TerminologyLauncher.Entities.InstanceManagement
 {
     public class InstanceStartupArgumentsEntity
     {
-        public List<String> JvmArguments { get; set; }
-        public Int64 MiniumMemoryMegaSize { get; set; }
-        public String Nativespath { get; set; }
-        public List<String> LibraryPaths { get; set; }
-        public String MainJarPath { get; set; }
-        public String MainClass { get; set; }
-        public String Version { get; set; }
-        public String AssetsDir { get; set; }
-        public String AssetIndex { get; set; }
-        public String UserProperties { get; set; }
-        public String UserType { get; set; }
-        public List<String> TweakClasses { get; set; }
+        public List<string> JvmArguments { get; set; }
+        public long MiniumMemoryMegaSize { get; set; }
+        public string Nativespath { get; set; }
+        public List<string> LibraryPaths { get; set; }
+        public string MainJarPath { get; set; }
+        public string MainClass { get; set; }
+        public string Version { get; set; }
+        public string AssetsDir { get; set; }
+        public string AssetIndex { get; set; }
+        public string UserProperties { get; set; }
+        public string UserType { get; set; }
+        public List<string> TweakClasses { get; set; }
 
     }
 }

@@ -4,9 +4,9 @@ namespace TerminologyLauncher.Entities.Account
 {
     public class LoginEntity
     {
-        public String UserName { get; set; }
-        public String Password { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
         public LoginType LoginType { get; set; }
-        public Boolean PerserveLogin { get; set; }
+        public bool PerserveLogin { get; set; }
     }
 }

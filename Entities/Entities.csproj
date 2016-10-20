@@ -64,7 +64,7 @@
     <Compile Include="Account\PlayerEntity.cs" />
     <Compile Include="Account\AdditionalInfo\AdditionalInfoEntity.cs" />
     <Compile Include="FileRepository\FileRepositoryEntity.cs" />
-    <Compile Include="FileRepository\RepositoryFileEntity.cs" />
+    <Compile Include="FileRepository\RepositoryItemEntity.cs" />
     <Compile Include="InstanceManagement\InstanceInfoEntity.cs" />
     <Compile Include="InstanceManagement\InstanceBankEntity.cs" />
     <Compile Include="InstanceManagement\FileSystem\CustomFileEntity.cs" />

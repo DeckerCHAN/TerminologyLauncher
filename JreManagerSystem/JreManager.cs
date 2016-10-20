@@ -10,7 +10,7 @@ namespace TerminologyLauncher.JreManagerSystem
 {
     public class JreManager
     {
-        private Dictionary<String, JavaRuntimeEntity> AvailableJavaRuntimeValue;
+        private Dictionary<string, JavaRuntimeEntity> AvailableJavaRuntimeValue;
         public Config Config { get; set; }
 
         public JavaRuntimeEntity JavaRuntime
@@ -33,7 +33,7 @@ namespace TerminologyLauncher.JreManagerSystem
             }
         }
 
-        public Dictionary<String, JavaRuntimeEntity> AvailableJavaRuntimes
+        public Dictionary<string, JavaRuntimeEntity> AvailableJavaRuntimes
         {
             get
             {
@@ -42,12 +42,12 @@ namespace TerminologyLauncher.JreManagerSystem
             private set { this.AvailableJavaRuntimeValue = value; }
         }
 
-        public List<String> SearchPaths { get; private set; }
+        public List<string> SearchPaths { get; private set; }
 
-        public JreManager(String configPath)
+        public JreManager(string configPath)
         {
             this.Config = new Config(new FileInfo(configPath));
-            this.SearchPaths = this.Config.GetConfigObject<List<String>>("javaSearchPaths");
+            this.SearchPaths = this.Config.GetConfigObject<List<string>>("javaSearchPaths");
 
 
             var javaPaths = this.SearchPaths.Where(Directory.Exists)
@@ -67,12 +67,13 @@ namespace TerminologyLauncher.JreManagerSystem
                         JavaWPath = Path.Combine(Path.GetDirectoryName(javaPath), "javaw.exe"),
                         JavaDetails = JavaUtils.GetJavaDetails(javaPath)
                     };
-                    this.AvailableJavaRuntimes.Add(String.Format("{0}:{1}", runtimeEntity.JavaDetails.JavaVersion,
-                        runtimeEntity.JavaDetails.JavaType), runtimeEntity);
+                    this.AvailableJavaRuntimes.Add(
+                        $"{runtimeEntity.JavaDetails.JavaVersion}:{runtimeEntity.JavaDetails.JavaType}", runtimeEntity);
                 }
                 catch (Exception ex)
                 {
-                    Logging.TerminologyLogger.GetLogger().WarnFormat("Cannot indentify this java caused by {0}. Ignored!", ex.Message);
+                    Logging.TerminologyLogger.GetLogger()
+                        .WarnFormat($"Cannot indentify this java caused by {ex.Message}. Ignored!");
                 }
             }
         }

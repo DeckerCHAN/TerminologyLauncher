@@ -42,7 +42,7 @@ namespace TerminologyLauncher.UnitTest
         public void DownloadStringTest()
         {
             var content = DownloadUtils.GetWebContent("http://www.baidu.com");
-            Assert.IsFalse(String.IsNullOrEmpty(content));
+            Assert.IsFalse(string.IsNullOrEmpty(content));
         }
     }
 }
