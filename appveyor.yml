@@ -4,7 +4,7 @@ os: Visual Studio 2015
 configuration: Release
 install:
   - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
-  - cmd: echo app_version
+  - cmd: echo %app_version%
 before_build:
   - nuget restore
 build:
