@@ -7,11 +7,11 @@ before_build:
 after_build:
   - dir
 build:
-  project: TerminologyLauncher[DEBUG]\TerminologyLauncher[DEBUG].csproj
+  project: TerminologyLauncher.sln
   verbosity: normal
 artifacts:
-  - path: TerminologyLauncher/bin
-    name: TerminologyLauncher
+  - path: TerminologyLauncher/bin/Release
+    name: TerminologyLauncher{build}
 test: off
 nuget:
   account_feed: true
