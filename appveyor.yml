@@ -5,7 +5,7 @@ configuration: Release
 before_build:
   - nuget restore
 after_build:
-  - dir
+  - version.cmd
 build:
   project: TerminologyLauncher.sln
   verbosity: normal
