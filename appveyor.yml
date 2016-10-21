@@ -3,9 +3,9 @@ skip_tags: true
 os: Visual Studio 2015
 configuration: Release
 install:
-  - cmd: for /f %%i in ('PowerShell -File get-version.ps1') do set app_version=%%i
-  - cmd: for /f %%i in ('PowerShell -File get-build.ps1') do set app_build=%%i
-  - cmd: set file_suffix=%app_version%%app_build%
+  - cmd: set app_version=('PowerShell -File get-version.ps1')
+  - cmd: set app_build=('PowerShell -File get-build.ps1')
+  - cmd: set file_name=%app_version%%app_build2%
   - cmd: echo %file_suffix%
 before_build:
   - nuget restore
@@ -14,7 +14,7 @@ build:
   verbosity: normal
 artifacts:
   - path: TerminologyLauncher/bin/Release
-    name: TerminologyLauncher%file_name%
+    name: TerminologyLauncher%file_suffix%
 test: off
 nuget:
   account_feed: true
