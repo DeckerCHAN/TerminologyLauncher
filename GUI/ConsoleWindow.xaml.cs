@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.GUI.Properties;
+using TerminologyLauncher.I18n;
 
 namespace TerminologyLauncher.GUI
 {
@@ -16,6 +17,9 @@ namespace TerminologyLauncher.GUI
     public sealed partial class ConsoleWindow : INotifyPropertyChanged
     {
         private Process ProcessValue;
+
+        public string ConsoleWindowTitleTranslation
+    => TranslationManager.GetManager.Localize("ConsoleWindowTitle", "Console");
 
         public Process Process
         {
