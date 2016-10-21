@@ -6,7 +6,7 @@ A mod pack intergeted Minecraft lanucher.
 
 Master: [![Master status](https://ci.appveyor.com/api/projects/status/f7esldu0ruow1hgv?svg=true&branch=master)](https://ci.appveyor.com/project/DeckerCHAN/terminologylauncher/branch/master)
 
-Master: [![Master status](https://ci.appveyor.com/api/projects/status/f7esldu0ruow1hgv?svg=true&branch=develop)](https://ci.appveyor.com/project/DeckerCHAN/terminologylauncher/branch/develop)
+Develop: [![Master status](https://ci.appveyor.com/api/projects/status/f7esldu0ruow1hgv?svg=true&branch=develop)](https://ci.appveyor.com/project/DeckerCHAN/terminologylauncher/branch/develop)
 ## Usage
 
 1. Ensure you have .NET framework 4.5 or higher. If not, you may download it through [official page](https://www.microsoft.com/en-us/download/details.aspx?id=30653).
