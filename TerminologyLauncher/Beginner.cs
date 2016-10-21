@@ -24,10 +24,12 @@ namespace TerminologyLauncher
 
             try
             {
-                if ((Process.GetProcessesByName("TerminologyLauncher").Length + Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
+                if ((Process.GetProcessesByName("TerminologyLauncher").Length +
+                     Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 1)
                 {
                     Console.WriteLine("You cannot run nore than one Terminology Launcher at same time!");
-                    MessageBox(new IntPtr(0), "You cannot run nore than one Terminology Launcher at same time!", "Launcher already running", 0);
+                    MessageBox(new IntPtr(0), "You cannot run nore than one Terminology Launcher at same time!",
+                        "Launcher already running", 0);
                     return;
                 }
                 Application.EnableVisualStyles();
@@ -45,11 +47,9 @@ namespace TerminologyLauncher
                     reportor.DoReport();
 
                     Console.WriteLine($"!!!CRASH!!!More detail at {reportor.ReportFileInfo.FullName}");
-
                 }
                 catch (Exception)
                 {
-
                     //ignore.
                 }
             }
@@ -57,12 +57,14 @@ namespace TerminologyLauncher
 
         private static bool RuntimeDotNetHigherThan45()
         {
-            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
+            using (
+                RegistryKey ndpKey =
+                    RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+                        .OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
             {
                 int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
                 return releaseKey >= 378389;
             }
         }
-
     }
 }

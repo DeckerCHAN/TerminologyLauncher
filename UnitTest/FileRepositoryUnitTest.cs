@@ -17,7 +17,8 @@ namespace TerminologyLauncher.UnitTest
                 downloadFile.Delete();
             }
             DownloadUtils.DownloadFile(
-                "http://59.67.148.46/files/506400000010EC32/dldir1.qq.com/qqfile/qq/QQ7.3/15056/QQ7.3.exe", downloadFile.FullName);
+                "http://59.67.148.46/files/506400000010EC32/dldir1.qq.com/qqfile/qq/QQ7.3/15056/QQ7.3.exe",
+                downloadFile.FullName);
             Assert.IsTrue(downloadFile.Exists);
         }
 
@@ -34,8 +35,8 @@ namespace TerminologyLauncher.UnitTest
         public void DownloadZipTest()
         {
             DownloadUtils.DownloadAndExtractZippedFile("http://www.colorado.edu/conflict/peace/download/peace.zip",
-                Path.Combine(new[] { Environment.CurrentDirectory, Path.Combine("ZIPFOLDER","Zepped") }));
-            Assert.IsTrue(new DirectoryInfo(Path.Combine(new[] { Environment.CurrentDirectory, "ZIPFOLDER" })).Exists);
+                Path.Combine(new[] {Environment.CurrentDirectory, Path.Combine("ZIPFOLDER", "Zepped")}));
+            Assert.IsTrue(new DirectoryInfo(Path.Combine(new[] {Environment.CurrentDirectory, "ZIPFOLDER"})).Exists);
         }
 
         [TestMethod]

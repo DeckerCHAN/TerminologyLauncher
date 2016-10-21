@@ -34,7 +34,8 @@ namespace TerminologyLauncher.Core
 
         public string CoreVersion => ResourceUtils.ReadEmbedFileAsString("TerminologyLauncher.Core.Version.txt");
 
-        public int BuildVersion => Convert.ToInt32(ResourceUtils.ReadEmbedFileAsString("TerminologyLauncher.Core.Build.txt"));
+        public int BuildVersion
+            => Convert.ToInt32(ResourceUtils.ReadEmbedFileAsString("TerminologyLauncher.Core.Build.txt"));
 
         public Config CoreConfig { get; set; }
         public UiControl UiControl { get; set; }
@@ -46,6 +47,7 @@ namespace TerminologyLauncher.Core
         public JreManager JreManager { get; set; }
         public Process GameProcess { get; set; }
         public Dispatcher EngineDispatcher { get; private set; }
+
         public Engine()
         {
             TerminologyLogger.GetLogger().InfoFormat($"Os version:{Environment.NewLine + MachineUtils.GetOsVersion()}");
@@ -60,6 +62,7 @@ namespace TerminologyLauncher.Core
             this.Handlers = new Dictionary<string, HandlerBase>();
             TerminologyLogger.GetLogger().Info("Engine Initialized!");
         }
+
         public void Run()
         {
             this.RegisterHandlers();
@@ -103,10 +106,11 @@ namespace TerminologyLauncher.Core
                 TerminologyLogger.GetLogger().Info("Engine extra component initializing...");
                 this.FileRepo = new FileRepository(this.CoreConfig.GetConfigString("fileRepositoryConfig"));
                 this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
-                this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"), this.FileRepo, this.JreManager);
-                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"), this.CoreVersion, this.BuildVersion);
+                this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"),
+                    this.FileRepo, this.JreManager);
+                this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"),
+                    this.CoreVersion, this.BuildVersion);
                 TerminologyLogger.GetLogger().Info("Engine extra component initialized...");
-
             }
             catch (Exception ex)
             {

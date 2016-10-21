@@ -33,17 +33,15 @@ namespace TerminologyLauncher.Updater
             }
 
 
-
             var sourceFolder = new DirectoryInfo(args[0]);
             var targetFolder = new DirectoryInfo(args[1]);
 
             CopyAllFilesToDirectory(sourceFolder.FullName, targetFolder.FullName);
 
-            var newProcess = new Process { StartInfo = { FileName = args[2] } };
+            var newProcess = new Process {StartInfo = {FileName = args[2]}};
             newProcess.Start();
 
             Console.WriteLine("Done...Press any key to continue...");
-
         }
 
         public static void CopyAllFilesToDirectory(string sourceDir, string targetDir)

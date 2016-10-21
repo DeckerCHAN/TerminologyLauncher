@@ -57,12 +57,18 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow
         }
 
 
-        internal ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
+        internal ConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs,
+            IEnumerable<ItemSelectConfigObject> itemSelectConfigs,
+            IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
             this.InitializeComponent();
-            this.TextInputConfigObjects = new ObservableCollection<TextInputConfigObject>(textInputConfigs??new List<TextInputConfigObject>());
-            this.RangeRestrictedSelectObjects =new ObservableCollection<RangeRestrictedSelectConfigObject>(rangeRestrictedSelectConfigs??new List<RangeRestrictedSelectConfigObject>());
-            this.ItemSelectConfigObjects =new ObservableCollection<ItemSelectConfigObject>(itemSelectConfigs??new List<ItemSelectConfigObject>());
+            this.TextInputConfigObjects =
+                new ObservableCollection<TextInputConfigObject>(textInputConfigs ?? new List<TextInputConfigObject>());
+            this.RangeRestrictedSelectObjects =
+                new ObservableCollection<RangeRestrictedSelectConfigObject>(rangeRestrictedSelectConfigs ??
+                                                                            new List<RangeRestrictedSelectConfigObject>());
+            this.ItemSelectConfigObjects =
+                new ObservableCollection<ItemSelectConfigObject>(itemSelectConfigs ?? new List<ItemSelectConfigObject>());
             this.OnPropertyChanged();
         }
 

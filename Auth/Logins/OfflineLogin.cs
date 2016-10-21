@@ -9,7 +9,6 @@ namespace TerminologyLauncher.Auth.Logins
 {
     public class OfflineLogin : Login
     {
-
         public string PlayerId { get; set; }
 
         private bool isValidUserName(string userName)
@@ -21,12 +20,12 @@ namespace TerminologyLauncher.Auth.Logins
 
         public override LoginResultType ExecuteLogin()
         {
-            if (string.IsNullOrEmpty(this.UserName) || this.UserName.Length < 4||!this.isValidUserName(this.UserName))
+            if (string.IsNullOrEmpty(this.UserName) || this.UserName.Length < 4 || !this.isValidUserName(this.UserName))
             {
                 return LoginResultType.IncompleteOfArguments;
             }
             var userProfileFolder =
-              new DirectoryInfo(Path.Combine(this.ProfileRootDirectoryInfo.FullName, this.UserName));
+                new DirectoryInfo(Path.Combine(this.ProfileRootDirectoryInfo.FullName, this.UserName));
             FolderUtils.CreateDirectoryIfNotExists(userProfileFolder);
 
             var userAvatarFileInfo = new FileInfo(Path.Combine(userProfileFolder.FullName, this.UserName + ".png"));
@@ -39,7 +38,6 @@ namespace TerminologyLauncher.Auth.Logins
             }
 
 
-
             this.Player = new PlayerEntity()
             {
                 PlayerName = this.UserName,
@@ -48,7 +46,6 @@ namespace TerminologyLauncher.Auth.Logins
                 ClientToken = Guid.NewGuid().ToString("N"),
                 LoginType = LoginType.OfflineMode,
                 PlayerAvatarImagePath = userAvatarFileInfo.FullName
-
             };
             return LoginResultType.Success;
         }

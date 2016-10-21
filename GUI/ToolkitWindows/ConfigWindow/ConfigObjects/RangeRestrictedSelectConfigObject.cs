@@ -33,7 +33,8 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             get { return this.RealValue; }
             set
             {
-                if (value > this.Maxium || value < this.Minium) throw new InvalidOperationException("Could not set value higher than maxium or less than minium");
+                if (value > this.Maxium || value < this.Minium)
+                    throw new InvalidOperationException("Could not set value higher than maxium or less than minium");
                 this.RealValue = value;
                 this.OnPropertyChanged();
             }

@@ -14,7 +14,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow
     public sealed partial class NotifyWindow : INotifyPropertyChanged
     {
         private string ContentStringValue;
-  
+
         public string ContentString
         {
             get { return this.ContentStringValue; }

@@ -9,6 +9,7 @@ namespace TerminologyLauncher.Utils.ProgressService
         {
             base.Percent = 0;
         }
+
         public override double Percent
         {
             get { return base.Percent; }

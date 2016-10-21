@@ -10,7 +10,6 @@ namespace TerminologyLauncher.Test
         [MTAThread]
         static void Main(string[] args)
         {
-            
         }
     }
 }

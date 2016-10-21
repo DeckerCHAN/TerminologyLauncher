@@ -9,12 +9,12 @@ using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Logging
 {
-
     public static class TerminologyLogger
     {
         private static bool _isLoaded = false;
 
         private static MemoryAppender MemoryAppender;
+
         public static ILog GetLogger()
         {
             if (!_isLoaded)
@@ -45,8 +45,6 @@ namespace TerminologyLauncher.Logging
                 }
                 return content.ToString();
             }
-
         }
     }
-
 }

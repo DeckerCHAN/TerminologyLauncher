@@ -48,13 +48,8 @@ namespace TerminologyLauncher.GUI.Animations
         {
             window.Opacity = 1D;
             var board = CreateFadeOutStoryboard(duration);
-            board.Completed += (s, e) =>
-            {
-                window.Hide();
-            };
+            board.Completed += (s, e) => { window.Hide(); };
             board.Begin(window);
-
-
         }
     }
 }

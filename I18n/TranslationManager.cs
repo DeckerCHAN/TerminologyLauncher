@@ -27,8 +27,10 @@ namespace TerminologyLauncher.I18n
         private TranslationManager()
         {
             this.CurrentLanguageName = MachineUtils.GetCurrentLanguageName();
-            this.TranslatonFileInfo = new FileInfo(Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName, "Translations",
-                $"{this.CurrentLanguageName}.ln"));
+            this.TranslatonFileInfo =
+                new FileInfo(Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName,
+                    "Translations",
+                    $"{this.CurrentLanguageName}.ln"));
             if (!this.TranslatonFileInfo.Exists)
             {
                 FolderUtils.CreateDirectoryIfNotExists(this.TranslatonFileInfo.Directory);
@@ -45,9 +47,9 @@ namespace TerminologyLauncher.I18n
             }
             var callingMethod = new StackTrace().GetFrame(1).GetMethod();
             var key = $"{callingMethod.ReflectedType.Namespace}.{callingMethod.ReflectedType.Name}.{callingMethod.Name}.{identity}"
-                    .Split('.')
-                    .Where(s => !new Regex("[<|>]", RegexOptions.IgnoreCase).Match(s).Success)
-                    .Aggregate((sa, sb) => $"{sa}.{sb}");
+                .Split('.')
+                .Where(s => !new Regex("[<|>]", RegexOptions.IgnoreCase).Match(s).Success)
+                .Aggregate((sa, sb) => $"{sa}.{sb}");
 
 
             if (this.TranslationDictionary.ContainsKey(key))
@@ -68,7 +70,6 @@ namespace TerminologyLauncher.I18n
 
             this.SaveFile();
             return defaultContent;
-
         }
 
         public void LoadFile()
@@ -112,7 +113,6 @@ namespace TerminologyLauncher.I18n
                     }
                 }
             }
-
         }
     }
 }

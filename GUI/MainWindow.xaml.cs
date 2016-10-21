@@ -31,7 +31,8 @@ namespace TerminologyLauncher.GUI
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
-        public string MainWindowTitleTranslation => TranslationManager.GetManager.Localize("MainWindowTitle", "Terminology Launcher");
+        public string MainWindowTitleTranslation
+            => TranslationManager.GetManager.Localize("MainWindowTitle", "Terminology Launcher");
 
         public PlayerEntity Player
         {
@@ -73,25 +74,34 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public string AddInstanceTranslation => TranslationManager.GetManager.Localize("AddInstance", "Add new instance");
+        public string AddInstanceTranslation
+            => TranslationManager.GetManager.Localize("AddInstance", "Add new instance");
 
-        public string RemoveInstanceTranslation => TranslationManager.GetManager.Localize("RemoveInstance", "Remove select instance");
+        public string RemoveInstanceTranslation
+            => TranslationManager.GetManager.Localize("RemoveInstance", "Remove select instance");
 
-        public string OfficialLoginTranslation => TranslationManager.GetManager.Localize("OfficialLogin", "Official Mode");
+        public string OfficialLoginTranslation
+            => TranslationManager.GetManager.Localize("OfficialLogin", "Official Mode");
 
         public string OfflineLoginTranslation => TranslationManager.GetManager.Localize("OfflineLogin", "Offline Mode");
 
-        public string InstanceNameFieldTranslation => TranslationManager.GetManager.Localize("InstanceNameField", "Name:");
+        public string InstanceNameFieldTranslation
+            => TranslationManager.GetManager.Localize("InstanceNameField", "Name:");
 
-        public string InstanceAuthorFieldTranslation => TranslationManager.GetManager.Localize("InstanceAuthorField", "Author:");
+        public string InstanceAuthorFieldTranslation
+            => TranslationManager.GetManager.Localize("InstanceAuthorField", "Author:");
 
-        public string InstanceDescribeFieldTranslation => TranslationManager.GetManager.Localize("InstanceDescribeField", "Describe:");
+        public string InstanceDescribeFieldTranslation
+            => TranslationManager.GetManager.Localize("InstanceDescribeField", "Describe:");
 
-        public string InstanceVersionFieldTranslation => TranslationManager.GetManager.Localize("InstanceVersionField", "Version:");
+        public string InstanceVersionFieldTranslation
+            => TranslationManager.GetManager.Localize("InstanceVersionField", "Version:");
 
-        public string UpdateInstanceButtonTranslation => TranslationManager.GetManager.Localize("UpdateInstanceButton", "Update");
+        public string UpdateInstanceButtonTranslation
+            => TranslationManager.GetManager.Localize("UpdateInstanceButton", "Update");
 
-        public object LaunchInstanceButtonTranslation => TranslationManager.GetManager.Localize("LaunchInstanceButtonTranslation", "Launch");
+        public object LaunchInstanceButtonTranslation
+            => TranslationManager.GetManager.Localize("LaunchInstanceButtonTranslation", "Launch");
 
         public MainWindow(Config config)
         {
@@ -121,17 +131,14 @@ namespace TerminologyLauncher.GUI
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void InstanceAddButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void InstanceRemoveButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         public void PopupNotifyDialog(string title, string content)
@@ -154,7 +161,8 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options,
+            FieldReference<string> selection)
         {
             bool? result = false;
             this.Dispatcher.Invoke(() =>
@@ -180,14 +188,9 @@ namespace TerminologyLauncher.GUI
         public ProgressWindow BeginPopupProgressWindow(Progress progress)
         {
             ProgressWindow progressWindow = null;
-            this.Dispatcher.Invoke(() =>
-            {
-                progressWindow = new ProgressWindow(this, progress);
-            });
+            this.Dispatcher.Invoke(() => { progressWindow = new ProgressWindow(this, progress); });
             this.Dispatcher.InvokeAsync(() => { progressWindow.Show(); });
             return progressWindow;
         }
     }
-
-
 }

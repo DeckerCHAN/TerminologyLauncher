@@ -33,13 +33,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.InstancesFolder = new DirectoryInfo(this.Config.GetConfigString("instancesFolderPath"));
 
 
-
             if (!this.InstancesFolder.Exists)
             {
                 this.InstancesFolder.Create();
             }
             this.LoadInstancesFromBankFile();
         }
+
         public Config Config { get; set; }
         public int SupportGeneration => 2;
         public DirectoryInfo InstancesFolder { get; set; }
@@ -54,7 +54,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             get
             {
-                return this.InstanceBank.InstancesInfoList.Select(instanceInfo => JsonConverter.Parse<InstanceEntity>(File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)))).Where(instance => instance.Generation.Equals(this.SupportGeneration)).ToList();
+                return
+                    this.InstanceBank.InstancesInfoList.Select(
+                            instanceInfo =>
+                                JsonConverter.Parse<InstanceEntity>(
+                                    File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name))))
+                        .Where(instance => instance.Generation.Equals(this.SupportGeneration))
+                        .ToList();
             }
         }
 
@@ -76,10 +82,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
         public void LoadInstancesFromBankFile()
         {
-
             if (File.Exists(this.Config.GetConfigString("instanceBankFilePath")))
             {
-                this.InstanceBank = JsonConverter.Parse<InstanceBankEntity>(File.ReadAllText(this.Config.GetConfigString("instanceBankFilePath")));
+                this.InstanceBank =
+                    JsonConverter.Parse<InstanceBankEntity>(
+                        File.ReadAllText(this.Config.GetConfigString("instanceBankFilePath")));
             }
             else
             {
@@ -96,8 +103,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             File.WriteAllText(this.Config.GetConfigString("instanceBankFilePath"), content);
         }
 
-
         #region Operation
+
         public string AddInstance(string instanceUrl)
         {
             TerminologyLogger.GetLogger().Info($"Starting to add new instance through {instanceUrl}.");
@@ -120,12 +127,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
             };
 
 
-
             File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(instance));
             this.InstanceBank.InstancesInfoList.Add(instanceInfo);
             this.SaveInstancesBankToFile();
             return $"Added instance:{instance.InstanceName}";
-
         }
 
         public string RemoveInstance(string instanceName)
@@ -142,7 +147,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
 
             return $"Removed instance by instance name:{instanceName}";
-
         }
 
         public string CheckAllInstanceCouldUpdate()
@@ -151,7 +155,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             foreach (var instanceInfoEntity in this.InstanceBank.InstancesInfoList)
             {
                 TerminologyLogger.GetLogger().Info($"Check update {instanceInfoEntity.Name}");
-                var instanceInfo = this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceInfoEntity.Name)));
+                var instanceInfo =
+                    this.InstanceBank.InstancesInfoList.First(x => (x.Name.Equals(instanceInfoEntity.Name)));
 
                 var oldInstanceEntity =
                     JsonConverter.Parse<InstanceEntity>(
@@ -181,7 +186,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     result.Append(", ");
                 }
             }
-            return string.Format(TranslationManager.GetManager.Localize("ExistsInstanceAvailableToUpdate", "Detected {0} are available to update!", 1), result);
+            return
+                string.Format(
+                    TranslationManager.GetManager.Localize("ExistsInstanceAvailableToUpdate",
+                        "Detected {0} are available to update!", 1), result);
         }
 
 
@@ -206,141 +214,156 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 TerminologyLogger.GetLogger()
                     .InfoFormat(
                         $"Instacne {oldInstanceEntity.InstanceName} already at latest version {oldInstanceEntity.Version}");
-                return (string.Format(TranslationManager.GetManager.Localize("InsatnceAtLatestVersion", "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
+                return
+                (string.Format(
+                    TranslationManager.GetManager.Localize("InsatnceAtLatestVersion",
+                        "Instance now in latest version:{0}! Ignore update.", 1), newInstanceEntity.Version));
             }
             var updateSuccessfulInfo = TranslationManager.GetManager.Localize("InstanceUpdateToVersion",
                 "Successful update instance file {0} from version {1} to {2}!", 3);
             switch (instanceInfo.InstanceState)
             {
                 case InstanceState.PerInitialized:
-                    {
-                        this.RemoveInstance(instanceInfo.Name);
-                        this.AddInstance(instanceInfo.UpdateUrl);
-                        progress.Percent = 100D;
-                        TerminologyLogger.GetLogger()
-                            .InfoFormat(
-                                $"Successful updated instance file {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
-                        return string.Format(updateSuccessfulInfo,
-                       newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-
-                    }
+                {
+                    this.RemoveInstance(instanceInfo.Name);
+                    this.AddInstance(instanceInfo.UpdateUrl);
+                    progress.Percent = 100D;
+                    TerminologyLogger.GetLogger()
+                        .InfoFormat(
+                            $"Successful updated instance file {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
+                    return string.Format(updateSuccessfulInfo,
+                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                }
 
                 case InstanceState.Ok:
+                {
+                    //TODO:I'll support instance name change at future version.
+                    if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
                     {
-                        //TODO:I'll support instance name change at future version.
-                        if (!newInstanceEntity.InstanceName.Equals(oldInstanceEntity.InstanceName))
-                        {
-                            throw new Exception("Old instance name not equal with new instance name.");
-                        }
-
-                        var instanceRootFolder = this.GetInstanceRootFolder(oldInstanceEntity.InstanceName);
-
-                        #region Update files
-
-                        #region Entire package
-                        //Difference entire package will cause whole package target folder been delete
-
-
-                        var newEntirePackages = newInstanceEntity.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
-                        var oldEntirePackages = oldInstanceEntity.FileSystem.EntirePackageFiles ?? new List<EntirePackageFileEntity>();
-                        //Delete old entire package
-                        foreach (var oldEntirePackageFileEntity in oldEntirePackages)
-                        {
-                            if (!newEntirePackages.Exists
-                                    (
-                                        x => x.Name.Equals(oldEntirePackageFileEntity.Name) &&
-                                            x.Md5.Equals(oldEntirePackageFileEntity.Md5)
-                                    )
-                                )
-                            {
-                                FolderUtils.DeleteDirectory(Path.Combine(instanceRootFolder.FullName, oldEntirePackageFileEntity.LocalPath));
-                            }
-                        }
-                        //Download new entire package
-                        foreach (var newEntirePackageFileEntity in newEntirePackages)
-                        {
-                            if (!oldEntirePackages.Exists
-                                (
-                                    x =>
-                                        x.Name.Equals(newEntirePackageFileEntity.Name) &&
-                                        x.Md5.Equals(newEntirePackageFileEntity.Md5)
-                                )
-                                )
-                            {
-                                //TODO:Support progress
-                                this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                                    newEntirePackageFileEntity);
-                            }
-                        }
-                        #endregion
-                        progress.Percent = 80D;
-                        #region Official files
-
-                        var newOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
-                        var oldOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
-                        //Delete old official files
-                        foreach (var oldOfficialFileEntity in oldOfficialFiles)
-                        {
-                            if (!newOfficialFiles.Exists(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
-                            {
-                                File.Delete(Path.Combine(instanceRootFolder.FullName, oldOfficialFileEntity.LocalPath));
-                            }
-                        }
-                        //Receive new official files
-                        foreach (var newOfficialFileEntity in newOfficialFiles)
-                        {
-                            if (!oldOfficialFiles.Exists(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
-                            {
-                                this.ReceiveOfficialFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                                    newOfficialFileEntity, this.UsingFileRepository);
-                            }
-                        }
-                        #endregion
-
-                        progress.Percent = 90D;
-                        #region Custom files
-
-                        var newCustomFiles = newInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
-                        var oldCustomFiles = oldInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
-                        foreach (var oldCustomFileEntity in oldCustomFiles)
-                        {
-                            if (
-                                !newCustomFiles.Exists(
-                                    x => x.Name.Equals(oldCustomFileEntity.Name) && x.Md5.Equals(oldCustomFileEntity.Md5)))
-                            {
-                                File.Delete(Path.Combine(instanceRootFolder.FullName, oldCustomFileEntity.LocalPath));
-                            }
-                        }
-                        foreach (var newCustomFileEntity in newCustomFiles)
-                        {
-                            if (!oldCustomFiles.Exists(x => x.Name.Equals(newCustomFileEntity.Name) && x.Md5.Equals(newCustomFileEntity.Md5)))
-                            {
-                                this.ReceiveCustomFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
-                                    newCustomFileEntity);
-                            }
-                        }
-                        #endregion
-                        progress.Percent = 100D;
-                        #endregion
-
-                        instanceInfo.UpdateDate = DateTime.Now.ToString("O");
-                        this.SaveInstancesBankToFile();
-                        File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name), JsonConverter.ConvertToJson(newInstanceEntity));
-                        TerminologyLogger.GetLogger()
-                            .InfoFormat(
-                                $"Successful updated entire instance {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
-                        return string.Format(updateSuccessfulInfo,
-                            newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
-
+                        throw new Exception("Old instance name not equal with new instance name.");
                     }
+
+                    var instanceRootFolder = this.GetInstanceRootFolder(oldInstanceEntity.InstanceName);
+
+                    #region Update files
+
+                    #region Entire package
+
+                    //Difference entire package will cause whole package target folder been delete
+
+
+                    var newEntirePackages = newInstanceEntity.FileSystem.EntirePackageFiles ??
+                                            new List<EntirePackageFileEntity>();
+                    var oldEntirePackages = oldInstanceEntity.FileSystem.EntirePackageFiles ??
+                                            new List<EntirePackageFileEntity>();
+                    //Delete old entire package
+                    foreach (var oldEntirePackageFileEntity in oldEntirePackages)
+                    {
+                        if (!newEntirePackages.Exists
+                            (
+                                x => x.Name.Equals(oldEntirePackageFileEntity.Name) &&
+                                     x.Md5.Equals(oldEntirePackageFileEntity.Md5)
+                            )
+                        )
+                        {
+                            FolderUtils.DeleteDirectory(Path.Combine(instanceRootFolder.FullName,
+                                oldEntirePackageFileEntity.LocalPath));
+                        }
+                    }
+                    //Download new entire package
+                    foreach (var newEntirePackageFileEntity in newEntirePackages)
+                    {
+                        if (!oldEntirePackages.Exists
+                            (
+                                x =>
+                                    x.Name.Equals(newEntirePackageFileEntity.Name) &&
+                                    x.Md5.Equals(newEntirePackageFileEntity.Md5)
+                            )
+                        )
+                        {
+                            //TODO:Support progress
+                            this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                                newEntirePackageFileEntity);
+                        }
+                    }
+
+                    #endregion
+
+                    progress.Percent = 80D;
+
+                    #region Official files
+
+                    var newOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
+                    var oldOfficialFiles = newInstanceEntity.FileSystem.OfficialFiles ?? new List<OfficialFileEntity>();
+                    //Delete old official files
+                    foreach (var oldOfficialFileEntity in oldOfficialFiles)
+                    {
+                        if (!newOfficialFiles.Exists(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
+                        {
+                            File.Delete(Path.Combine(instanceRootFolder.FullName, oldOfficialFileEntity.LocalPath));
+                        }
+                    }
+                    //Receive new official files
+                    foreach (var newOfficialFileEntity in newOfficialFiles)
+                    {
+                        if (!oldOfficialFiles.Exists(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
+                        {
+                            this.ReceiveOfficialFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                                newOfficialFileEntity, this.UsingFileRepository);
+                        }
+                    }
+
+                    #endregion
+
+                    progress.Percent = 90D;
+
+                    #region Custom files
+
+                    var newCustomFiles = newInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
+                    var oldCustomFiles = oldInstanceEntity.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
+                    foreach (var oldCustomFileEntity in oldCustomFiles)
+                    {
+                        if (
+                            !newCustomFiles.Exists(
+                                x => x.Name.Equals(oldCustomFileEntity.Name) && x.Md5.Equals(oldCustomFileEntity.Md5)))
+                        {
+                            File.Delete(Path.Combine(instanceRootFolder.FullName, oldCustomFileEntity.LocalPath));
+                        }
+                    }
+                    foreach (var newCustomFileEntity in newCustomFiles)
+                    {
+                        if (
+                            !oldCustomFiles.Exists(
+                                x => x.Name.Equals(newCustomFileEntity.Name) && x.Md5.Equals(newCustomFileEntity.Md5)))
+                        {
+                            this.ReceiveCustomFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                                newCustomFileEntity);
+                        }
+                    }
+
+                    #endregion
+
+                    progress.Percent = 100D;
+
+                    #endregion
+
+                    instanceInfo.UpdateDate = DateTime.Now.ToString("O");
+                    this.SaveInstancesBankToFile();
+                    File.WriteAllText(this.GetInstnaceFile(instanceInfo.Name),
+                        JsonConverter.ConvertToJson(newInstanceEntity));
+                    TerminologyLogger.GetLogger()
+                        .InfoFormat(
+                            $"Successful updated entire instance {newInstanceEntity.InstanceName} from {oldInstanceEntity.Version} to {newInstanceEntity.Version}!");
+                    return string.Format(updateSuccessfulInfo,
+                        newInstanceEntity.InstanceName, oldInstanceEntity.Version, newInstanceEntity.Version);
+                }
                 default:
-                    {
-                        throw new WrongStateException("Wrong instance state! Just instance which in OK or perinitialized state could update.");
-                        break;
-                    }
-
+                {
+                    throw new WrongStateException(
+                        "Wrong instance state! Just instance which in OK or perinitialized state could update.");
+                    break;
+                }
             }
-
         }
 
         public Process LaunchInstance(InternalNodeProgress progress, string instanceName, PlayerEntity player)
@@ -351,9 +374,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 JsonConverter.Parse<InstanceEntity>(
                     File.ReadAllText(this.GetInstnaceFile(instanceInfo.Name)));
 
-            if (!(instanceInfo.InstanceState == InstanceState.Ok || instanceInfo.InstanceState == InstanceState.PerInitialized))
+            if (
+                !(instanceInfo.InstanceState == InstanceState.Ok ||
+                  instanceInfo.InstanceState == InstanceState.PerInitialized))
             {
-                throw new WrongStateException("Wrong instance state! Just instance which in OK or PerInitialized state could launch.");
+                throw new WrongStateException(
+                    "Wrong instance state! Just instance which in OK or PerInitialized state could launch.");
             }
 
             this.CriticalInstanceFieldCheck(instance);
@@ -365,47 +391,59 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (instanceInfo.InstanceState == InstanceState.PerInitialized)
             {
                 #region entire file.
+
                 if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
                 {
-                    var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
+                    var singlePackageDownloadNodeProgress = 30D/instance.FileSystem.EntirePackageFiles.Count;
                     foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                     {
                         this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(
-                            $"Receiving entire package {entirePackageFile.Name}", singlePackageDownloadNodeProgress),
-                        instance.InstanceName, entirePackageFile);
+                                $"Receiving entire package {entirePackageFile.Name}", singlePackageDownloadNodeProgress),
+                            instance.InstanceName, entirePackageFile);
                     }
                 }
+
                 #endregion
+
                 progress.Percent = 30D;
+
                 #region official files.
+
                 if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
                 {
-                    var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
+                    var singleOfficialDownloadNodeProgress = 30D/instance.FileSystem.OfficialFiles.Count;
                     foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                     {
                         this.ReceiveOfficialFile(
-                            progress.CreateNewLeafSubProgress($"Downloading official file: {officialFileEntity.Name}", singleOfficialDownloadNodeProgress),
+                            progress.CreateNewLeafSubProgress($"Downloading official file: {officialFileEntity.Name}",
+                                singleOfficialDownloadNodeProgress),
                             instance.InstanceName, officialFileEntity, this.UsingFileRepository);
                     }
                 }
+
                 #endregion
+
                 progress.Percent = 60D;
+
                 #region custom files
 
                 if (instance.FileSystem.CustomFiles != null && instance.FileSystem.CustomFiles.Count != 0)
                 {
-                    var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
+                    var singleCustomDownloadNodeProgress = 30D/instance.FileSystem.CustomFiles.Count;
                     foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                     {
                         this.ReceiveCustomFile(
-                           progress.CreateNewLeafSubProgress($"Downloading custom file: {customFileEntity.Name}", singleCustomDownloadNodeProgress),
-                           instance.InstanceName, customFileEntity);
+                            progress.CreateNewLeafSubProgress($"Downloading custom file: {customFileEntity.Name}",
+                                singleCustomDownloadNodeProgress),
+                            instance.InstanceName, customFileEntity);
                     }
                 }
+
                 #endregion
             }
 
             #endregion
+
             progress.Percent = 90D;
 
             instanceInfo.InstanceState = InstanceState.Ok;
@@ -413,7 +451,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
             this.SaveInstancesBankToFile();
 
             //DONE:Build start argument.
-            var startArgument = new StringBuilder();// placer.ReplaceArgument(instance.StartupArguments);
+            var startArgument = new StringBuilder(); // placer.ReplaceArgument(instance.StartupArguments);
             foreach (var jvmArgument in instance.StartupArguments.JvmArguments)
             {
                 startArgument.Append(jvmArgument + " ");
@@ -425,11 +463,11 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 $"-Xmx{Convert.ToInt64(this.Config.GetConfigString("maxMemorySizeMega"))}M -Xms{instance.StartupArguments.MiniumMemoryMegaSize}M" +
                 " ");
 
-            var nativeFolder = new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
+            var nativeFolder =
+                new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.Nativespath));
             if (nativeFolder.Exists)
             {
                 startArgument.Append($"-Djava.library.path=\"{nativeFolder.FullName}\"" + " ");
-
             }
             else
             {
@@ -472,7 +510,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
             startArgument.Append($"--gameDir \"{instanceRootFolder.FullName}\" ");
 
 
-
             var assetsDir =
                 new DirectoryInfo(Path.Combine(instanceRootFolder.FullName, instance.StartupArguments.AssetsDir));
             if (assetsDir.Exists)
@@ -497,9 +534,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
 
 
-
-
-
             //Launch minecraft
             var instanceStartInfo = new ProcessStartInfo
             {
@@ -510,7 +544,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 UseShellExecute = false,
                 RedirectStandardOutput = true
             };
-            var instanceProcess = new Process { StartInfo = instanceStartInfo, EnableRaisingEvents = true };
+            var instanceProcess = new Process {StartInfo = instanceStartInfo, EnableRaisingEvents = true};
             instanceProcess.Start();
             progress.Percent = 100D;
 
@@ -518,10 +552,10 @@ namespace TerminologyLauncher.InstanceManagerSystem
             TerminologyLogger.GetLogger().Info($"Instance {instanceName} launched!");
 
             return this.CurrentInstanceProcess;
-
-
         }
+
         #endregion
+
         #region Toolkits
 
         private DirectoryInfo GetInstanceRootFolder(string instanceName)
@@ -534,7 +568,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return folder;
         }
 
-        private void ReceiveOfficialFile(LeafNodeProgress progress, string instanceName, OfficialFileEntity officialFile, FileRepository usingRepo)
+        private void ReceiveOfficialFile(LeafNodeProgress progress, string instanceName, OfficialFileEntity officialFile,
+            FileRepository usingRepo)
         {
             //Try to find file at file repo 
             var repositoryFile = usingRepo.GetOfficialFile(progress, officialFile.ProvideId);
@@ -543,13 +578,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var targetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, officialFile.LocalPath);
             repositoryFile.CopyTo(targetPositon, true);
             TerminologyLogger.GetLogger().Info($"Successfully put file:{targetPositon}.");
-
         }
 
         private void ReceiveCustomFile(LeafNodeProgress progress, string instanceName, CustomFileEntity customFile)
         {
             var downloadLink = customFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, customFile.LocalPath);
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName,
+                customFile.LocalPath);
             TerminologyLogger.GetLogger().Info(
                 $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
@@ -557,10 +592,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 $"Successfully downloaded file:{downloadTargetPositon} from remote url:{downloadLink}.");
         }
 
-        private void ReceiveEntirePackage(InternalNodeProgress progress, string instanceName, EntirePackageFileEntity entirePackageFile)
+        private void ReceiveEntirePackage(InternalNodeProgress progress, string instanceName,
+            EntirePackageFileEntity entirePackageFile)
         {
             var downloadLink = entirePackageFile.DownloadLink;
-            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName, entirePackageFile.LocalPath ?? string.Empty);
+            var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName,
+                entirePackageFile.LocalPath ?? string.Empty);
             TerminologyLogger.GetLogger().Info(
                 $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
@@ -593,21 +630,25 @@ namespace TerminologyLauncher.InstanceManagerSystem
         {
             if (string.IsNullOrEmpty(instance.InstanceName))
             {
-                throw new SolutionProvidedException("Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
+                throw new SolutionProvidedException(
+                    "Instance is missing instance name! This is somehow critical error and you have to connect author to resolve this!");
             }
             if (!instance.Generation.Equals(this.SupportGeneration))
             {
                 throw new SolutionProvidedException(
-                    $"Current launcher not support {instance.Generation} generation instance.", " Using latest version for both launcher or instance my resolver this problem.");
+                    $"Current launcher not support {instance.Generation} generation instance.",
+                    " Using latest version for both launcher or instance my resolver this problem.");
             }
             if (string.IsNullOrEmpty(instance.UpdatePath))
             {
-                throw new SolutionProvidedException($"Instance {instance.UpdatePath} is missing update url", "This problem should be report to instance author.");
+                throw new SolutionProvidedException($"Instance {instance.UpdatePath} is missing update url",
+                    "This problem should be report to instance author.");
             }
 
             if (string.IsNullOrEmpty(instance.Version))
             {
-                throw new SolutionProvidedException($"Instance {instance.Version} is missing version number.", "This problem should be report to instance author.");
+                throw new SolutionProvidedException($"Instance {instance.Version} is missing version number.",
+                    "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.JvmArguments == null || instance.StartupArguments.JvmArguments.Count == 0)
@@ -618,12 +659,14 @@ namespace TerminologyLauncher.InstanceManagerSystem
             if (string.IsNullOrEmpty(instance.StartupArguments.Nativespath))
             {
                 throw new SolutionProvidedException(
-                    $"Instance {instance.InstanceName} is missing valid native path arguments!", "This problem should be report to instance author.");
+                    $"Instance {instance.InstanceName} is missing valid native path arguments!",
+                    "This problem should be report to instance author.");
             }
 
             if (instance.StartupArguments.MiniumMemoryMegaSize > MachineUtils.GetTotalMemoryInMiB())
             {
-                throw new SolutionProvidedException("Instance require memory over maxium machine memory!", "Extern machine memory may resolve problem.");
+                throw new SolutionProvidedException("Instance require memory over maxium machine memory!",
+                    "Extern machine memory may resolve problem.");
             }
 
             var javaDetail = this.JavaRuntime.JavaDetails;
@@ -631,7 +674,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             {
                 if (instance.StartupArguments.MiniumMemoryMegaSize >= 1600)
                 {
-                    throw new SolutionProvidedException("X86 Java may not allocate memory more then 1.6G!", "Using X64 Jre/Jdk may resolve this problem.");
+                    throw new SolutionProvidedException("X86 Java may not allocate memory more then 1.6G!",
+                        "Using X64 Jre/Jdk may resolve this problem.");
                 }
             }
 
@@ -654,7 +698,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 string.IsNullOrEmpty(instance.StartupArguments.AssetIndex))
             {
                 throw new Exception($"Empty assets arguments for instance {instance.InstanceName} is not allowed!");
-
             }
 
             var cmf = instance.FileSystem.CustomFiles ?? new List<CustomFileEntity>();
@@ -675,7 +718,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 throw new InvalidOperationException($"Instance {instance.InstanceName} already exists!");
             }
             //Localize instance
-            var thisInstanceFolder = new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instance.InstanceName));
+            var thisInstanceFolder =
+                new DirectoryInfo(Path.Combine(this.InstancesFolder.FullName, instance.InstanceName));
             if (thisInstanceFolder.Exists)
             {
                 FolderUtils.DeleteDirectory(thisInstanceFolder.FullName);
@@ -700,7 +744,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
             try
             {
                 DownloadUtils.DownloadFile(instance.Background, bgFile);
-
             }
             catch (WebException)
             {

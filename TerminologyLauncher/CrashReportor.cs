@@ -45,10 +45,7 @@ namespace TerminologyLauncher
                 var resp = webClient.UploadString(this.ReportUrl,
                     $"crash_report={Uri.EscapeDataString(this.Report)}&log={Uri.EscapeDataString(this.Log)}");
                 Console.WriteLine(resp);
-
             }
-
-
         }
     }
 }

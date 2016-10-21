@@ -12,6 +12,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             this.Name = name;
             this.Key = key;
         }
+
         private string RealKey;
         private string RealName;
 

@@ -9,14 +9,13 @@ namespace TerminologyLauncher.GUI.Toolkits
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var imagePath = (string)value;
+            var imagePath = (string) value;
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.UriSource = new Uri(imagePath);
             image.EndInit();
             return image;
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

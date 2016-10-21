@@ -15,6 +15,7 @@ namespace TerminologyLauncher.Auth
         public Timer RefreshTimer { get; set; }
         public PlayerEntity CurrentPlayer { get; private set; }
         public DirectoryInfo ProfileDirectoryInfo { get; set; }
+
         public AuthServer(string authConfigPath)
         {
             TerminologyLogger.GetLogger().Info("Initializing auth server.");
@@ -24,9 +25,7 @@ namespace TerminologyLauncher.Auth
             FolderUtils.RecreateFolder(this.ProfileDirectoryInfo);
 
             TerminologyLogger.GetLogger().Info("Auth server initialized.");
-
         }
-
 
 
         public LoginResultType OfficialAuth(string username, string password)
@@ -60,10 +59,6 @@ namespace TerminologyLauncher.Auth
 
         public void ShutDown()
         {
-
         }
-
-
-
     }
 }

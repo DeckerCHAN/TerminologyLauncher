@@ -14,6 +14,7 @@ namespace TerminologyLauncher.Configs
     {
         public FileInfo JsonFileInfo { get; protected set; }
         public JObject ConfigJObject { get; protected set; }
+
         public Config(FileInfo jsonConfigFile)
         {
             if (!jsonConfigFile.Exists)
@@ -33,7 +34,8 @@ namespace TerminologyLauncher.Configs
                 try
                 {
                     var ass = Assembly.GetCallingAssembly();
-                    var resourceAccessString = ass.GetManifestResourceNames().First(x => x.EndsWith(this.JsonFileInfo.Name));
+                    var resourceAccessString =
+                        ass.GetManifestResourceNames().First(x => x.EndsWith(this.JsonFileInfo.Name));
                     var stream = ResourceUtils.ReadEmbedFileResource(ass, resourceAccessString);
                     var obj = JObject.Parse(new StreamReader(stream).ReadToEnd());
                     var newValue = obj.SelectToken(key);
@@ -48,7 +50,6 @@ namespace TerminologyLauncher.Configs
                 {
                     throw new ConfigurationKeyNotFoundException(this.JsonFileInfo.Name, key);
                 }
-
             }
             else
             {
@@ -72,9 +73,6 @@ namespace TerminologyLauncher.Configs
             }
 
             this.SaveConfig();
-
-
-
         }
 
         public T GetConfigObject<T>(string key)
@@ -90,7 +88,6 @@ namespace TerminologyLauncher.Configs
             {
                 return JsonConvert.DeserializeObject<T>(rowData.ToString());
             }
-
         }
 
         public void SetConfigObject(string key, object obj)
@@ -131,7 +128,5 @@ namespace TerminologyLauncher.Configs
             this.ConfigJObject = JObject.Parse(File.ReadAllText(this.JsonFileInfo.FullName));
             Monitor.Exit(this);
         }
-
-
     }
 }

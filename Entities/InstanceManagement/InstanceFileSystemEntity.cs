@@ -8,7 +8,5 @@ namespace TerminologyLauncher.Entities.InstanceManagement
         public List<EntirePackageFileEntity> EntirePackageFiles { get; set; }
         public List<OfficialFileEntity> OfficialFiles { get; set; }
         public List<CustomFileEntity> CustomFiles { get; set; }
-
-
     }
 }

@@ -8,7 +8,5 @@
         {
             this.Value = value;
         }
-
-
     }
 }

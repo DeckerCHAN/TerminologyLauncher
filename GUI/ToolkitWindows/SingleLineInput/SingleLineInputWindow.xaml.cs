@@ -55,6 +55,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.OnPropertyChanged();
             }
         }
+
         public void CrossThreadClose()
         {
             this.Dispatcher.Invoke(() =>
@@ -63,6 +64,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.Close();
             });
         }
+
         public string FieldName
         {
             get { return this.FieldNameValue; }

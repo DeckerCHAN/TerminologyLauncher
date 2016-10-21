@@ -16,6 +16,7 @@ namespace TerminologyLauncher.GUI
     public sealed partial class ConsoleWindow : INotifyPropertyChanged
     {
         private Process ProcessValue;
+
         public Process Process
         {
             get { return this.ProcessValue; }
@@ -38,6 +39,7 @@ namespace TerminologyLauncher.GUI
         }
 
         private ObservableCollection<string> ProcessLogsValue;
+
         public ObservableCollection<string> ProcessLogs
         {
             get { return this.ProcessLogsValue; }

@@ -17,8 +17,6 @@ using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
 {
-
-
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
@@ -33,25 +31,31 @@ namespace TerminologyLauncher.GUI
 
         public string LoginWindowTranslation => TranslationManager.GetManager.Localize("Title", "Terminology login");
 
-        public string MojangAccountTranslation => TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:");
+        public string MojangAccountTranslation
+            => TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:");
 
-        public string OfflineAccountTranslation => TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:");
+        public string OfflineAccountTranslation
+            => TranslationManager.GetManager.Localize("OfflineAccount", "Offline Login:");
 
-        public string MojangAccountModeTranslation => TranslationManager.GetManager.Localize("OfficialMode", "Official Mode");
+        public string MojangAccountModeTranslation
+            => TranslationManager.GetManager.Localize("OfficialMode", "Official Mode");
 
-        public string OfflineAccountModeTranslation => TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode");
+        public string OfflineAccountModeTranslation
+            => TranslationManager.GetManager.Localize("OfflineMode", "Offline Mode");
 
         public string PasswordTranslation => TranslationManager.GetManager.Localize("Password", "Password:");
 
         public string LoginModeTranslation => TranslationManager.GetManager.Localize("LoginMode", "Login Mode:");
 
-        public string RememberAccountTranslation => TranslationManager.GetManager.Localize("RememberAccount", "Remember account");
+        public string RememberAccountTranslation
+            => TranslationManager.GetManager.Localize("RememberAccount", "Remember account");
 
         public string LoginButtonTranslation => TranslationManager.GetManager.Localize("LoginButtion", "Login");
 
         public string CancelButtonTranslation => TranslationManager.GetManager.Localize("CancelButton", "Cancel");
 
         private string BackgroundImageSourceValue;
+
         public string BackgroundImageSource
         {
             get { return this.BackgroundImageSourceValue; }
@@ -68,14 +72,16 @@ namespace TerminologyLauncher.GUI
         {
             this.Config = config;
 
-            if (!string.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) && File.Exists(this.Config.GetConfigString("loginWindowBackground")))
+            if (!string.IsNullOrEmpty(this.Config.GetConfigString("loginWindowBackground")) &&
+                File.Exists(this.Config.GetConfigString("loginWindowBackground")))
             {
                 var imageFile = new FileInfo(this.Config.GetConfigString("loginWindowBackground"));
                 this.BackgroundImageSource = imageFile.FullName;
             }
             else
             {
-                this.BackgroundImageSource = @"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg";
+                this.BackgroundImageSource =
+                    @"pack://application:,,,/TerminologyLauncher.GUI;component/Resources/login_bg.jpg";
             }
 
             this.InitializeComponent();
@@ -119,7 +125,7 @@ namespace TerminologyLauncher.GUI
                 {
                     UserName = this.UsernameBox.Text,
                     Password = this.PasswordBox.Password,
-                    LoginType = (LoginType)this.LoginModeComboBox.SelectedIndex,
+                    LoginType = (LoginType) this.LoginModeComboBox.SelectedIndex,
                     PerserveLogin = this.IsPerservePassword
                 };
             });
@@ -128,7 +134,6 @@ namespace TerminologyLauncher.GUI
                 throw new Exception("Cannot get valid login entity");
             }
             return login;
-
         }
 
         public void SetLogin(LoginEntity login)
@@ -137,10 +142,9 @@ namespace TerminologyLauncher.GUI
             {
                 this.UsernameBox.Text = login.UserName;
                 this.PasswordBox.Password = login.Password;
-                this.LoginModeComboBox.SelectedIndex = (int)login.LoginType;
+                this.LoginModeComboBox.SelectedIndex = (int) login.LoginType;
                 this.IsPerservePassword = login.PerserveLogin;
             });
-
         }
 
         public void LoginResult(LoginResultType result)
@@ -151,43 +155,46 @@ namespace TerminologyLauncher.GUI
                 switch (result)
                 {
                     case LoginResultType.Success:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case LoginResultType.IncompleteOfArguments:
-                        {
-                            this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("InvalidInput", "Password or username maybe invalid. Please check again."));
-                            break;
-                        }
+                    {
+                        this.PopupNotifyDialog(title,
+                            TranslationManager.GetManager.Localize("InvalidInput",
+                                "Password or username maybe invalid. Please check again."));
+                        break;
+                    }
                     case LoginResultType.WrongPassword:
-                        {
-                            this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("WrongPasswrd", "Password is incorrect."));
-                            break;
-                        }
+                    {
+                        this.PopupNotifyDialog(title,
+                            TranslationManager.GetManager.Localize("WrongPasswrd", "Password is incorrect."));
+                        break;
+                    }
                     case LoginResultType.UserNotExists:
-                        {
-                            this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("UserNotExists", "User name is not exists. Create user before log in."));
-                            break;
-                        }
+                    {
+                        this.PopupNotifyDialog(title,
+                            TranslationManager.GetManager.Localize("UserNotExists",
+                                "User name is not exists. Create user before log in."));
+                        break;
+                    }
                     case LoginResultType.NetworkTimedOut:
-                        {
-                            this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("NetWorkTimeOut", "Can not access server. Please check network."));
-                            break;
-                        }
+                    {
+                        this.PopupNotifyDialog(title,
+                            TranslationManager.GetManager.Localize("NetWorkTimeOut",
+                                "Can not access server. Please check network."));
+                        break;
+                    }
                     default:
-                        {
-                            this.PopupNotifyDialog(title,
-                                TranslationManager.GetManager.Localize("UnknownLoginError", "Unknown fault caused unable to log in."));
-                            break;
-                        }
+                    {
+                        this.PopupNotifyDialog(title,
+                            TranslationManager.GetManager.Localize("UnknownLoginError",
+                                "Unknown fault caused unable to log in."));
+                        break;
+                    }
                 }
                 this.EnableAllInputs(true);
             });
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -203,20 +210,20 @@ namespace TerminologyLauncher.GUI
         {
             var combox = sender as ComboBox;
             var selected = combox.SelectedIndex;
-            this.AccountTypeTitle.Text = selected == 1 ? TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:") : TranslationManager.GetManager.Localize("OfflineAccount", "Offline username:");
+            this.AccountTypeTitle.Text = selected == 1
+                ? TranslationManager.GetManager.Localize("MojangAccount", "Mojang Account:")
+                : TranslationManager.GetManager.Localize("OfflineAccount", "Offline username:");
 
             if (selected == 0)
             {
                 this.AccountPasswordTitle.Visibility = Visibility.Hidden;
                 this.PasswordBox.Visibility = Visibility.Hidden;
-
             }
             else
             {
                 this.AccountPasswordTitle.Visibility = Visibility.Visible;
                 this.PasswordBox.Visibility = Visibility.Visible;
             }
-
         }
 
         private void OnLogining(object serder)
@@ -254,7 +261,8 @@ namespace TerminologyLauncher.GUI
             throw new NotImplementedException();
         }
 
-        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options,
+            FieldReference<string> selection)
         {
             throw new NotImplementedException();
         }
@@ -268,6 +276,5 @@ namespace TerminologyLauncher.GUI
         {
             throw new NotImplementedException();
         }
-
     }
 }

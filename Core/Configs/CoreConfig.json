@@ -1,11 +1,11 @@
 ﻿{
-    "authConfig": "Configs/AuthConfig.json",
-    "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
-    "fileRepositoryConfig": "Configs/FileRepositoryConfig.json",
-    "updateManagerConfig": "Configs/UpdaterConifg.json",
-    "localizationConfig": "Configs/I18N.json",
-    "guiConfig": "Configs/GUI.json",
-    "jreManagerConfig": "Configs/Jre.json",
-    "loginPerserveFilePath": "Login.bin",
-    "usingConsoleWindow": "true"
+  "authConfig": "Configs/AuthConfig.json",
+  "instanceManagerConfig": "Configs/InstanceManagerConfig.json",
+  "fileRepositoryConfig": "Configs/FileRepositoryConfig.json",
+  "updateManagerConfig": "Configs/UpdaterConifg.json",
+  "localizationConfig": "Configs/I18N.json",
+  "guiConfig": "Configs/GUI.json",
+  "jreManagerConfig": "Configs/Jre.json",
+  "loginPerserveFilePath": "Login.bin",
+  "usingConsoleWindow": "true"
 }

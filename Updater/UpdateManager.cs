@@ -16,10 +16,11 @@ namespace TerminologyLauncher.Updater
     {
         public VersionEntity Version { get; set; }
         public Config Config { get; set; }
+
         public UpdateManager(string configPath, string coreVersion, int buildNumber)
         {
             this.Config = new Config(new FileInfo(configPath));
-            this.Version = new VersionEntity() { BuildNumber = buildNumber, CoreVersion = coreVersion };
+            this.Version = new VersionEntity() {BuildNumber = buildNumber, CoreVersion = coreVersion};
         }
 
         public UpdateInfo GetupdateInfo()
@@ -31,7 +32,6 @@ namespace TerminologyLauncher.Updater
             };
             try
             {
-
                 if (updateInfo.LatestVersion.CoreVersion != this.Version.CoreVersion)
                 {
                     for (var i = 0; i < updateInfo.LatestVersion.CoreVersion.ToCharArray().Length; i++)
@@ -69,7 +69,6 @@ namespace TerminologyLauncher.Updater
                         updateInfo.UpdateType = UpdateType.Lower;
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -77,15 +76,18 @@ namespace TerminologyLauncher.Updater
                 updateInfo.UpdateType = UpdateType.Equal;
             }
             return updateInfo;
-
         }
 
 
         private VersionEntity GetLatestVersion()
         {
             Logging.TerminologyLogger.GetLogger().Info("Start to check lanucher update.");
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
-            if (update.LatestVersion == null || string.IsNullOrEmpty(update.LatestVersion.CoreVersion) || update.LatestVersion.BuildNumber.Equals(0) || string.IsNullOrEmpty(update.LatestVersion.DownloadLink) || string.IsNullOrEmpty(update.LatestVersion.Md5))
+            var update =
+                JsonConverter.Parse<UpdateEntity>(
+                    DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
+            if (update.LatestVersion == null || string.IsNullOrEmpty(update.LatestVersion.CoreVersion) ||
+                update.LatestVersion.BuildNumber.Equals(0) || string.IsNullOrEmpty(update.LatestVersion.DownloadLink) ||
+                string.IsNullOrEmpty(update.LatestVersion.Md5))
             {
                 throw new UpdateServerErrorException("Cannot fetch the latest version!");
             }
@@ -101,8 +103,9 @@ namespace TerminologyLauncher.Updater
                 return TranslationManager.GetManager.Localize("NoUpdateAvailable", "No update available.");
             }
 
-            var update = JsonConverter.Parse<UpdateEntity>(DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
-
+            var update =
+                JsonConverter.Parse<UpdateEntity>(
+                    DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
 
 
             var updateTempFolder = Path.Combine(FolderUtils.SystemTempFolder.FullName,
@@ -134,14 +137,16 @@ namespace TerminologyLauncher.Updater
                 CreateNoWindow = false,
                 UseShellExecute = true
             };
-            var updateProcess = new Process { StartInfo = updateProcessInfo };
+            var updateProcess = new Process {StartInfo = updateProcessInfo};
             updateProcess.Start();
 
             progress.Percent = 100D;
-            return string.Format(TranslationManager.GetManager.Localize("FetchedNewUpdateToVersion", "Updating from {0} to {1}! Close launcher to continue.", 2),
-                $"{this.Version.CoreVersion}-{this.Version.BuildNumber}",
-                $"{this.Version.CoreVersion}-{this.Version.BuildNumber}");
+            return
+                string.Format(
+                    TranslationManager.GetManager.Localize("FetchedNewUpdateToVersion",
+                        "Updating from {0} to {1}! Close launcher to continue.", 2),
+                    $"{this.Version.CoreVersion}-{this.Version.BuildNumber}",
+                    $"{this.Version.CoreVersion}-{this.Version.BuildNumber}");
         }
-
     }
 }

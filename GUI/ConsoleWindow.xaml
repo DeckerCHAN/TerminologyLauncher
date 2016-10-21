@@ -4,13 +4,12 @@
         Title="ConsoleWindow" Height="679" Width="1100"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource TerminologyWindowStyle}"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        >
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
+                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -19,15 +18,19 @@
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#4C4EE8E8" Offset="0"/>
-                    <GradientStop Offset="1"/>
+                    <GradientStop Color="#4C4EE8E8" Offset="0" />
+                    <GradientStop Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown"    Height="30" Background="Transparent" >
+            <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown" Height="30"
+                       Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
-                <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
-                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0"
+                           Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}" />
+                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <Button x:Name="CloseButton" x:FieldModifier="public"
+                            Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0"
+                            Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
 
@@ -36,7 +39,8 @@
             <ListView Style="{DynamicResource TerminologyListViewStyle}" ItemsSource="{Binding ProcessLogs}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding}"
+                                   TextWrapping="Wrap" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

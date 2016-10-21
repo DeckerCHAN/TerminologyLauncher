@@ -10,8 +10,8 @@ namespace TerminologyLauncher.Utils.Net
             var request = base.GetWebRequest(address);
             if (request is HttpWebRequest)
             {
-                ((HttpWebRequest)request).KeepAlive = false;
-                ((HttpWebRequest)request).ProtocolVersion = HttpVersion.Version11;
+                ((HttpWebRequest) request).KeepAlive = false;
+                ((HttpWebRequest) request).ProtocolVersion = HttpVersion.Version11;
             }
 
             return request;

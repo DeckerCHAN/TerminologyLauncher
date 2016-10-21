@@ -14,19 +14,20 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
             get { return this.AvailableAvailableSelectionsValue; }
             set
             {
-                this.AvailableAvailableSelectionsValue = value; 
+                this.AvailableAvailableSelectionsValue = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public ItemSelectConfigObject(string name, string key, Dictionary<string, object> availableSelections, string defaultSelectKey)
+        public ItemSelectConfigObject(string name, string key, Dictionary<string, object> availableSelections,
+            string defaultSelectKey)
             : base(name, key)
         {
             this.AvailableSelections = availableSelections;
             this.Selection = this.AvailableSelections.First(x => x.Key.Equals(defaultSelectKey));
         }
 
-        public KeyValuePair<string,object> Selection
+        public KeyValuePair<string, object> Selection
         {
             get { return this.RealSelection; }
             set

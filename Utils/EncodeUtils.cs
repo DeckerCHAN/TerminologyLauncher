@@ -39,7 +39,7 @@ namespace TerminologyLauncher.Utils
 
         public static string ToHex(this byte[] bytes, bool upperCase)
         {
-            var result = new StringBuilder(bytes.Length * 2);
+            var result = new StringBuilder(bytes.Length*2);
 
             foreach (var t in bytes)
                 result.Append(t.ToString(upperCase ? "X2" : "x2"));
@@ -64,6 +64,4 @@ namespace TerminologyLauncher.Utils
             return Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
-
-
 }

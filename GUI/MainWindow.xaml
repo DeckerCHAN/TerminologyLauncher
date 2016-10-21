@@ -3,83 +3,102 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:account="clr-namespace:TerminologyLauncher.Entities.Account;assembly=TerminologyLauncher.Entities"
         xmlns:toolkits="clr-namespace:TerminologyLauncher.GUI.Toolkits"
-        Title="MainWindowWindow" Width="1194" Height="718" 
+        Title="MainWindowWindow" Width="1194" Height="718"
         Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        >
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
+                <ResourceDictionary Source="Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Border CornerRadius="8">
         <Border.Resources>
-            <toolkits:ImageInMemoryConverter x:Key="ImageLocalConverter"/>
+            <toolkits:ImageInMemoryConverter x:Key="ImageLocalConverter" />
         </Border.Resources>
         <Border.Background>
-            <ImageBrush Opacity="0.5" ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}" Stretch="UniformToFill"></ImageBrush>
+            <ImageBrush Opacity="0.5"
+                        ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}"
+                        Stretch="UniformToFill" />
         </Border.Background>
         <DockPanel>
             <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#4C4EE8E8" Offset="0"/>
-                        <GradientStop Offset="1"/>
+                        <GradientStop Color="#4C4EE8E8" Offset="0" />
+                        <GradientStop Offset="1" />
                     </LinearGradientBrush>
                 </Border.Background>
-                <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
+                <DockPanel Height="30" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"><Run  Text="{Binding Path=MainWindowTitleTranslation,Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding CoreVersion}"/></TextBlock>
-                    <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
-                        <Button x:Name="ConfigButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadConfigButtonStyle}"/>
-                        <Button x:Name="UpdateButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadUpdateButtonStyle}"/>
-                        <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}"/>
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}">
+                        <Run Text="{Binding Path=MainWindowTitleTranslation,Mode=OneWay}" /><Run Text=" " />
+                        <Run Text="{Binding CoreVersion}" />
+                    </TextBlock>
+                    <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal"
+                                HorizontalAlignment="Right" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+                        <Button x:Name="ConfigButton" x:FieldModifier="public"
+                                Style="{DynamicResource TerminologyHeadConfigButtonStyle}" />
+                        <Button x:Name="UpdateButton" x:FieldModifier="public"
+                                Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" />
+                        <Button x:Name="CloseButton" x:FieldModifier="public"
+                                Style="{DynamicResource TerminologyHeadCloseButtonStyle}" />
                     </StackPanel>
 
                 </DockPanel>
 
             </Border>
             <Canvas DockPanel.Dock="Bottom" Opacity="0.95">
-                <Border Background="#333333" Width="230" Height="578" CornerRadius="12" Canvas.Left="24" Canvas.Top="64" >
+                <Border Background="#333333" Width="230" Height="578" CornerRadius="12" Canvas.Left="24"
+                        Canvas.Top="64">
                     <Border.Padding>
                         <Thickness>5,9</Thickness>
                     </Border.Padding>
 
                     <DockPanel>
-                        <Grid DockPanel.Dock="Bottom" Height="80" >
+                        <Grid DockPanel.Dock="Bottom" Height="80">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="5*"/>
-                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="5*" />
                             </Grid.RowDefinitions>
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
-                                <Button x:Name="InstanceAddButton" x:FieldModifier="public" Content="{Binding Path=AddInstanceTranslation}" Style="{DynamicResource TerminologyConfirmButtonStyle}"  Click="InstanceAddButton_Click"></Button>
+                                <Button x:Name="InstanceAddButton" x:FieldModifier="public"
+                                        Content="{Binding Path=AddInstanceTranslation}"
+                                        Style="{DynamicResource TerminologyConfirmButtonStyle}"
+                                        Click="InstanceAddButton_Click" />
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
-                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public" Content="{Binding Path=RemoveInstanceTranslation}" Style="{DynamicResource TerminologyCancelButtonStyle}"  Click="InstanceRemoveButton_Click" ></Button>
+                                <Button x:Name="InstanceRemoveButton" x:FieldModifier="public"
+                                        Content="{Binding Path=RemoveInstanceTranslation}"
+                                        Style="{DynamicResource TerminologyCancelButtonStyle}"
+                                        Click="InstanceRemoveButton_Click" />
                             </Border>
                         </Grid>
 
                         <ListBox
                             DockPanel.Dock="Top"
                             Name="InstanceListBox"
-                            SelectionChanged="Selector_OnSelectionChanged" 
-                            Style="{DynamicResource TerminologyListBox}" 
+                            SelectionChanged="Selector_OnSelectionChanged"
+                            Style="{DynamicResource TerminologyListBox}"
                             SelectedItem="{Binding SelectInstance,Mode=OneWayToSource}"
-                            FontSize="16" 
-                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                            FontSize="16"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ItemsSource="{Binding InstanceList}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel  Height="60">
-                                        <Image Height="50" DockPanel.Dock="Left" Source="{Binding Icon,Converter={StaticResource ImageLocalConverter}}"></Image>
+                                    <DockPanel Height="60">
+                                        <Image Height="50" DockPanel.Dock="Left"
+                                               Source="{Binding Icon,Converter={StaticResource ImageLocalConverter}}" />
                                         <Border Margin="5,0,0,0">
                                             <DockPanel>
-                                                <TextBlock  DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18" FontWeight="Bold" Margin="0,8,0,0" Text="{Binding Path=InstanceName,Mode=OneWay}"></TextBlock>
-                                                <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="16" Text="{Binding Path=Author,Mode=OneWay}"></TextBlock>
+                                                <TextBlock DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18"
+                                                           FontWeight="Bold" Margin="0,8,0,0"
+                                                           Text="{Binding Path=InstanceName,Mode=OneWay}" />
+                                                <TextBlock DockPanel.Dock="Bottom" FontFamily="SimHei" FontSize="16"
+                                                           Text="{Binding Path=Author,Mode=OneWay}" />
                                             </DockPanel>
                                         </Border>
                                     </DockPanel>
@@ -89,12 +108,16 @@
 
                     </DockPanel>
                 </Border>
-                <Border Background="#333333" Width="262" Height="70"  Canvas.Left="889" Canvas.Top="64" ClipToBounds="True">
+                <Border Background="#333333" Width="262" Height="70" Canvas.Left="889" Canvas.Top="64"
+                        ClipToBounds="True">
                     <Canvas>
-                        <Image Source="{Binding Path=Player.PlayerAvatarImagePath,Mode=OneWay}" Width="60" Height="50" Canvas.Left="20" Canvas.Top="10" Stretch="Fill"/>
-                        <TextBlock Text="{Binding Path=Player.PlayerName}" Style="{StaticResource TerminologyTextBlockStyle}" FontSize="17" Canvas.Left="105" Canvas.Top="10" FontWeight="Bold"></TextBlock>
-                        <TextBlock  FontSize="13" Canvas.Left="105" Canvas.Top="37">
-                            <TextBlock.Style >
+                        <Image Source="{Binding Path=Player.PlayerAvatarImagePath,Mode=OneWay}" Width="60" Height="50"
+                               Canvas.Left="20" Canvas.Top="10" Stretch="Fill" />
+                        <TextBlock Text="{Binding Path=Player.PlayerName}"
+                                   Style="{StaticResource TerminologyTextBlockStyle}" FontSize="17" Canvas.Left="105"
+                                   Canvas.Top="10" FontWeight="Bold" />
+                        <TextBlock FontSize="13" Canvas.Left="105" Canvas.Top="37">
+                            <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource TerminologyTextBlockStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=Player.LoginType}">
@@ -102,7 +125,8 @@
                                                 <account:LoginType>OfficialMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
-                                                <Setter  Property="TextBlock.Text" Value="{Binding Path=OfficialLoginTranslation}"></Setter>
+                                                <Setter Property="TextBlock.Text"
+                                                        Value="{Binding Path=OfficialLoginTranslation}" />
                                             </DataTrigger.Setters>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=Player.LoginType}">
@@ -110,7 +134,8 @@
                                                 <account:LoginType>OfflineMode</account:LoginType>
                                             </DataTrigger.Value>
                                             <DataTrigger.Setters>
-                                                <Setter  Property="TextBlock.Text" Value="{Binding Path= OfflineLoginTranslation}"></Setter>
+                                                <Setter Property="TextBlock.Text"
+                                                        Value="{Binding Path= OfflineLoginTranslation}" />
                                             </DataTrigger.Setters>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -121,84 +146,95 @@
 
                     </Canvas>
                 </Border>
-                <Border Background="#333333" Width="866" Height="478"  Canvas.Left="285" Canvas.Top="164">
+                <Border Background="#333333" Width="866" Height="478" Canvas.Left="285" Canvas.Top="164">
                     <Grid>
                         <Grid.Style>
                             <Style>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectInstance}">
                                         <DataTrigger.Value>
-                                            <x:Null></x:Null>
+                                            <x:Null />
                                         </DataTrigger.Value>
                                         <DataTrigger.Setters>
-                                            <Setter Property="ScrollViewer.Visibility" Value="Hidden"></Setter>
+                                            <Setter Property="ScrollViewer.Visibility" Value="Hidden" />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <ScrollViewer VerticalAlignment="Stretch"
                                       Grid.Column="0"
                                       Grid.Row="0"
                                       Style="{DynamicResource TerminologyScrollViewerStyle}"
-                                      HorizontalScrollBarVisibility="Disabled" 
+                                      HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto">
                             <StackPanel Orientation="Vertical">
 
                                 <StackPanel.Resources>
-                                    <Style x:Key="DetailTitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
-                                        <Setter Property="Margin" Value="15,10,0,20"></Setter>
-                                        <Setter Property="FontSize" Value="22"></Setter>
+                                    <Style x:Key="DetailTitleTextBlockStyle" TargetType="{x:Type TextBlock}"
+                                           BasedOn="{StaticResource TerminologyTextBlockStyle}">
+                                        <Setter Property="Margin" Value="15,10,0,20" />
+                                        <Setter Property="FontSize" Value="22" />
                                     </Style>
 
-                                    <Style x:Key="DetailContentTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TerminologyTextBlockStyle}">
-                                        <Setter Property="Margin" Value="30,0,0,5"></Setter>
-                                        <Setter Property="FontSize" Value="16"></Setter>
+                                    <Style x:Key="DetailContentTextBlockStyle" TargetType="{x:Type TextBlock}"
+                                           BasedOn="{StaticResource TerminologyTextBlockStyle}">
+                                        <Setter Property="Margin" Value="30,0,0,5" />
+                                        <Setter Property="FontSize" Value="16" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <TextBlock Text="{Binding Path=InstanceNameFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
-                                <TextBlock 
-                                    Text="{Binding SelectInstance.InstanceName}" 
-                                    Style="{DynamicResource DetailContentTextBlockStyle}" 
-                                    ></TextBlock>
+                                <TextBlock Text="{Binding Path=InstanceNameFieldTranslation}"
+                                           Style="{DynamicResource DetailTitleTextBlockStyle}" />
+                                <TextBlock
+                                    Text="{Binding SelectInstance.InstanceName}"
+                                    Style="{DynamicResource DetailContentTextBlockStyle}" />
 
-                                <TextBlock FontSize="20" Text="{Binding Path=InstanceAuthorFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
-                                <TextBlock 
+                                <TextBlock FontSize="20" Text="{Binding Path=InstanceAuthorFieldTranslation}"
+                                           Style="{DynamicResource DetailTitleTextBlockStyle}" />
+                                <TextBlock
                                     TextWrapping="Wrap"
-                                    Text="{Binding SelectInstance.Author}" 
-                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+                                    Text="{Binding SelectInstance.Author}"
+                                    Style="{DynamicResource DetailContentTextBlockStyle}" />
 
 
-                                <TextBlock FontSize="20" Text="{Binding Path=InstanceDescribeFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
-                                <TextBlock 
+                                <TextBlock FontSize="20" Text="{Binding Path=InstanceDescribeFieldTranslation}"
+                                           Style="{DynamicResource DetailTitleTextBlockStyle}" />
+                                <TextBlock
                                     TextWrapping="Wrap"
-                                    Text="{Binding SelectInstance.Description}" 
-                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+                                    Text="{Binding SelectInstance.Description}"
+                                    Style="{DynamicResource DetailContentTextBlockStyle}" />
 
 
-                                <TextBlock FontSize="20" Text="{Binding Path=InstanceVersionFieldTranslation}" Style="{DynamicResource DetailTitleTextBlockStyle}" ></TextBlock>
-                                <TextBlock 
+                                <TextBlock FontSize="20" Text="{Binding Path=InstanceVersionFieldTranslation}"
+                                           Style="{DynamicResource DetailTitleTextBlockStyle}" />
+                                <TextBlock
                                     TextWrapping="Wrap"
-                                    Text="{Binding SelectInstance.Version}" 
-                                    Style="{DynamicResource DetailContentTextBlockStyle}"></TextBlock>
+                                    Text="{Binding SelectInstance.Version}"
+                                    Style="{DynamicResource DetailContentTextBlockStyle}" />
 
                             </StackPanel>
                         </ScrollViewer>
-                        <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="UpdateInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="{Binding Path=UpdateInstanceButtonTranslation}" Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}" Background="#FFFFDC00" ></Button>
-                            <Button x:Name="LaunchInstanceButton" Width="212"  Height="32" Margin="5" x:FieldModifier="public" Content="{Binding Path=LaunchInstanceButtonTranslation}" Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" ></Button>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="UpdateInstanceButton" Width="212" Height="32" Margin="5"
+                                    x:FieldModifier="public" Content="{Binding Path=UpdateInstanceButtonTranslation}"
+                                    Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}"
+                                    Background="#FFFFDC00" />
+                            <Button x:Name="LaunchInstanceButton" Width="212" Height="32" Margin="5"
+                                    x:FieldModifier="public" Content="{Binding Path=LaunchInstanceButtonTranslation}"
+                                    Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" />
 
 
                         </StackPanel>
                     </Grid>
                 </Border>
-                <TextBlock Canvas.Left="285" TextWrapping="Wrap" Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}" Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="64" Height="70" Width="581" FontSize="48">
-
-                </TextBlock>
+                <TextBlock Canvas.Left="285" TextWrapping="Wrap"
+                           Text="{Binding  Path=SelectInstance.InstanceName,Mode=OneWay}"
+                           Style="{DynamicResource TerminologyTextBlockStyle}" Canvas.Top="64" Height="70" Width="581"
+                           FontSize="48" />
 
             </Canvas>
         </DockPanel>

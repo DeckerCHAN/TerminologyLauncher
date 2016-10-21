@@ -7,6 +7,6 @@ namespace TerminologyLauncher.Entities.Account.AdditionalInfo
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public List<PropertiyEntity> Properties { get; set; } 
+        public List<PropertiyEntity> Properties { get; set; }
     }
 }

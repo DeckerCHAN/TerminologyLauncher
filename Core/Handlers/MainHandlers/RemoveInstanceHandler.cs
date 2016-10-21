@@ -22,8 +22,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 var message = this.Engine.InstanceManager.RemoveInstance(instanceName);
 
-                this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-
+                this.Engine.UiControl.MainWindow.InstanceList =
+                    new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
             }
             catch (Exception ex)
             {

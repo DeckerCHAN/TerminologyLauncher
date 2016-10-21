@@ -20,6 +20,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         private ObservableCollection<string> SelectItemsValue;
         private FieldReference<string> SelectItemValue;
         private bool IsCanceled { get; set; }
+
         public string FieldName
         {
             get { return this.FieldNameValue; }
@@ -37,7 +38,6 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
         }
 
 
-
         public ObservableCollection<string> SelectItems
         {
             get { return this.SelectItemsValue; }
@@ -50,7 +50,8 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleSelect
 
         public string ConfirmButtonTranslation => TranslationManager.GetManager.Localize("ConfirmButton", "Confirm");
 
-        internal SingleSelectWindow(Window owner, string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        internal SingleSelectWindow(Window owner, string title, string fieldName, IEnumerable<string> options,
+            FieldReference<string> selection)
         {
             this.SelectItemValue = selection;
             this.SelectItems = new ObservableCollection<string>();

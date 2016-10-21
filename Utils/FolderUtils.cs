@@ -7,11 +7,15 @@ namespace TerminologyLauncher.Utils
     public static class FolderUtils
     {
         public static readonly DirectoryInfo SystemTempFolder = new DirectoryInfo(Path.GetTempPath());
-        public static readonly DirectoryInfo ExecutorFolder = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+
+        public static readonly DirectoryInfo ExecutorFolder =
+            new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+
         public static void RecreateFolder(string path)
         {
             RecreateFolder(new DirectoryInfo(path));
         }
+
         public static void RecreateFolder(DirectoryInfo directoryInfo)
         {
             if (!directoryInfo.Exists)

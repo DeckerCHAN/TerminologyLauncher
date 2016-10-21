@@ -4,8 +4,8 @@ namespace TerminologyLauncher.GUI
 {
     public interface IFade
     {
-        Storyboard FadeInStoryboard { get;  }
-        Storyboard FadeOutStoryboard { get;  }
+        Storyboard FadeInStoryboard { get; }
+        Storyboard FadeOutStoryboard { get; }
         void FadeInShow();
         void FadeOutHide();
     }
