@@ -32,9 +32,9 @@ namespace TerminologyLauncher.Core
 
         #endregion
 
-        public string CoreVersion => "A2";
+        public string CoreVersion => ResourceUtils.ReadEmbedFileAsString("TerminologyLauncher.Core.Version.txt");
 
-        public int BuildVersion => 1339;
+        public int BuildVersion => Convert.ToInt32(ResourceUtils.ReadEmbedFileAsString("TerminologyLauncher.Core.Build.txt"));
 
         public Config CoreConfig { get; set; }
         public UiControl UiControl { get; set; }
