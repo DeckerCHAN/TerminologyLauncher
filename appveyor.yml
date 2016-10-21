@@ -12,7 +12,7 @@ build:
   verbosity: normal
 artifacts:
   - path: TerminologyLauncher/bin/Release
-    name: TerminologyLauncherecho %app_version%%app_build%
+    name: TerminologyLauncherecho%app_version%%app_build%
 test: off
 nuget:
   account_feed: true
