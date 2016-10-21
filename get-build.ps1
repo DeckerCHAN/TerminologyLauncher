@@ -1,16 +1,7 @@
-$assemblyFile = "Core\Engine.cs"
-
-$RegularExpression = [regex] '(?<=public\sstring\sCoreVersion\s\=\>\s)(.*)(?=\;)'
+$assemblyFile = "Core\Build.txt"
     
 
 # Get the Content of the file and store it in the  variable 
 $fileContent = Get-Content $assemblyFile
-#$fileContent
 
-foreach($content in $fileContent)
-{
-    $match = [System.Text.RegularExpressions.Regex]::Match($content, $RegularExpression)
-    if($match.Success) {
-      $match.groups[1].value 
-    }
-}
+Write-Host $fileContent

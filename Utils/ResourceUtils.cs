@@ -6,6 +6,16 @@ namespace TerminologyLauncher.Utils
 {
     public static class ResourceUtils
     {
+        public static string ReadEmbedFileAsString(string link)
+        {
+            var stream = ReadEmbedFileResource(Assembly.GetCallingAssembly(), link);
+            var result = string.Empty;
+            using (var reader = new StreamReader(stream))
+            {
+                result = reader.ReadToEnd();
+            }
+            return result;
+        }
         public static Stream ReadEmbedFileResource(string link)
         {
             var currentAssembly = Assembly.GetCallingAssembly();
