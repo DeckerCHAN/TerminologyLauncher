@@ -98,7 +98,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                                         break;
                                     case UpdateType.Lower:
                                         message =
-                                            $"You are using the test version or pre-release version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}). DO NOT DISTRIBUTE THIS VERSION!";
+                                            $"You are using the test version or pre-release version({this.Engine.UpdateManager.Version.CoreVersion}-{this.Engine.UpdateManager.Version.BuildNumber}). DO NOT DISTRIBUTE THIS VERSION!";
                                         break;
                                     default:
                                         break;
