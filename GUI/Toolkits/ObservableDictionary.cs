@@ -183,14 +183,12 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            if (this.CollectionChanged != null)
-                this.CollectionChanged(this, args);
+            this.CollectionChanged?.Invoke(this, args);
         }
 
         private void OnPropertyChanged(string name)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         private bool RemoveEntry(TKey key)

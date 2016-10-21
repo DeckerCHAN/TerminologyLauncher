@@ -202,8 +202,7 @@ namespace TerminologyLauncher.GUI
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void LoginMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -228,8 +227,7 @@ namespace TerminologyLauncher.GUI
 
         private void OnLogining(object serder)
         {
-            var handler = this.Logining;
-            if (handler != null) handler(serder, EventArgs.Empty);
+            this.Logining?.Invoke(serder, EventArgs.Empty);
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

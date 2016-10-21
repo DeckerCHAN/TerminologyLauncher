@@ -33,10 +33,7 @@ namespace TerminologyLauncher.Utils.ProgressService
 
         protected void OnProgressChanged()
         {
-            if (this.ProgressChanged != null)
-            {
-                this.ProgressChanged(this);
-            }
+            this.ProgressChanged?.Invoke(this);
         }
     }
 }
