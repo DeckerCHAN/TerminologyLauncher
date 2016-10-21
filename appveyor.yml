@@ -11,7 +11,7 @@ build:
   project: TerminologyLauncher.sln
   verbosity: normal
 artifacts:
-  - path: TerminologyLauncher/bin/Release
+  - path: TerminologyLauncher[DEBUG]/bin/Release
     name: TerminologyLauncherecho%app_version%%app_build%
 test: off
 nuget:
