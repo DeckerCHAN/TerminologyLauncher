@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\NoAvailableUpdateException.cs" />
     <Compile Include="Exceptions\WrongStateException.cs" />
+    <Compile Include="InstanceCreator.cs" />
     <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
