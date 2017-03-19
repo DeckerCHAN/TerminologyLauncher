@@ -69,7 +69,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ConfigWindow\ConfigWindow.xaml">
+    <Page Include="Windows\ConfigWindow\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,11 +124,11 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="Toolkits\FieldReference.cs" />
-    <Compile Include="ConfigWindow\ConfigObjects\ConfigObject.cs" />
-    <Compile Include="ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
-    <Compile Include="ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
-    <Compile Include="ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
-    <Compile Include="ConfigWindow\ConfigWindow.xaml.cs">
+    <Compile Include="Windows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindow\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ConsoleWindow.xaml.cs">
