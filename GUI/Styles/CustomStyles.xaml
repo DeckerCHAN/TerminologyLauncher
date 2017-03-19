@@ -113,6 +113,39 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TerminologyHeadAddButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border"
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush
+                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_add_default.png" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush
+                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_add_hover.png" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="TerminologyHeadUpdateButtonStyle" TargetType="{x:Type Button}"
            BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
         <Setter Property="Template">
@@ -642,7 +675,7 @@
     </Style>
 
     <!-- ListBox -->
-    <Style x:Key="TerminologyListBox" TargetType="{x:Type ListBox}">
+    <Style x:Key="TerminologyListBoxStyle" TargetType="{x:Type ListBox}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />

@@ -40,10 +40,13 @@
                     </TextBlock>
                     <StackPanel Background="Transparent" DockPanel.Dock="Right" Orientation="Horizontal"
                                 HorizontalAlignment="Right" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+
                         <Button x:Name="ConfigButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadConfigButtonStyle}" />
                         <Button x:Name="UpdateButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" />
+                        <Button x:Name="AddInstanceButton" x:FieldModifier="public"
+                                Style="{DynamicResource TerminologyHeadAddButtonStyle}" />
                         <Button x:Name="CloseButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadCloseButtonStyle}" />
                     </StackPanel>
@@ -82,7 +85,7 @@
                             DockPanel.Dock="Top"
                             Name="InstanceListBox"
                             SelectionChanged="Selector_OnSelectionChanged"
-                            Style="{DynamicResource TerminologyListBox}"
+                            Style="{DynamicResource TerminologyListBoxStyle}"
                             SelectedItem="{Binding SelectInstance,Mode=OneWayToSource}"
                             FontSize="16"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"

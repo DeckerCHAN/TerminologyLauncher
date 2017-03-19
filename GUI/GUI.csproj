@@ -61,11 +61,15 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="InstanceCreateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml">
+    <Page Include="ConfigWindow\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -74,10 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ToolkitWindows\ConfirmWindow\ConfirmWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolkitWindows\InstanceMakerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,7 +114,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Animations\Fade.cs" />
-    <Compile Include="IFade.cs" />
+    <Compile Include="InstanceCreateWindow.xaml.cs">
+      <DependentUpon>InstanceCreateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IPopup.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -122,11 +124,11 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="Toolkits\FieldReference.cs" />
-    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
-    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
-    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
-    <Compile Include="ToolkitWindows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
-    <Compile Include="ToolkitWindows\ConfigWindow\ConfigWindow.xaml.cs">
+    <Compile Include="ConfigWindow\ConfigObjects\ConfigObject.cs" />
+    <Compile Include="ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
+    <Compile Include="ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
+    <Compile Include="ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
+    <Compile Include="ConfigWindow\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConsoleWindow.xaml.cs">
@@ -135,9 +137,6 @@
     <Compile Include="Toolkits\ObservableDictionary.cs" />
     <Compile Include="ToolkitWindows\ConfirmWindow\ConfirmWindow.xaml.cs">
       <DependentUpon>ConfirmWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolkitWindows\InstanceMakerWindow.xaml.cs">
-      <DependentUpon>InstanceMakerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolkitWindows\NotifyWindow\NotifyWindow.xaml.cs">
       <DependentUpon>NotifyWindow.xaml</DependentUpon>
@@ -241,7 +240,15 @@
   <ItemGroup>
     <Resource Include="Resources\icon_config_default.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\icon_add_default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon_add_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Windows\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

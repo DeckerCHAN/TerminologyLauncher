@@ -188,7 +188,7 @@ namespace TerminologyLauncher.GUI
         {
             ProgressWindow progressWindow = null;
             this.Dispatcher.Invoke(() => { progressWindow = new ProgressWindow(this, progress); });
-            this.Dispatcher.InvokeAsync(() => { progressWindow.Show(); });
+            this.Dispatcher.InvokeAsync(() => progressWindow.Show());
             return progressWindow;
         }
     }
