@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TerminologyLauncher.GUI.Properties;
 
-namespace TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects
+namespace TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects
 {
     public abstract class ConfigObject : INotifyPropertyChanged
     {

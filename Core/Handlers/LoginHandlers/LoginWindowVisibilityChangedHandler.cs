@@ -7,6 +7,7 @@ using TerminologyLauncher.GUI;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
 using TerminologyLauncher.Utils.SerializeUtils;
+using LoginWindow = TerminologyLauncher.GUI.Windows.LoginWindow;
 
 namespace TerminologyLauncher.Core.Handlers.LoginHandlers
 {

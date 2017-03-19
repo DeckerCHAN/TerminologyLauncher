@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -19,7 +18,7 @@ using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils.ProgressService;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

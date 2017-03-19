@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;

@@ -15,7 +15,7 @@ using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Utils.ProgressService;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.Windows
 {
     /// <summary>
     /// Interaction logic for LoginWindow.xaml

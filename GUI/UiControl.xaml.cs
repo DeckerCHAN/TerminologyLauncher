@@ -6,12 +6,12 @@ using System.Windows.Media.Animation;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.GUI.Animations;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.GUI.Windows.ConfigWindow;
+using TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -21,17 +21,17 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class UiControl : IPopup
     {
-        public new MainWindow MainWindow { get; set; }
-        public LoginWindow LoginWindow { get; set; }
-        public ConsoleWindow ConsoleWindow { get; set; }
+        public new Windows.MainWindow MainWindow { get; set; }
+        public Windows.LoginWindow LoginWindow { get; set; }
+        public Windows.ConsoleWindow ConsoleWindow { get; set; }
         public Config Config { get; set; }
 
         public UiControl(string configPath)
         {
             this.Config = new Config(new FileInfo(configPath));
-            this.MainWindow = new MainWindow(this.Config);
-            this.LoginWindow = new LoginWindow(this.Config);
-            this.ConsoleWindow = new ConsoleWindow(this.Config);
+            this.MainWindow = new Windows.MainWindow(this.Config);
+            this.LoginWindow = new Windows.LoginWindow(this.Config);
+            this.ConsoleWindow = new Windows.ConsoleWindow(this.Config);
         }
 
         public Storyboard FadeInStoryboard => Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500));

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using TerminologyLauncher.GUI;
 using TerminologyLauncher.Utils.SerializeUtils;
+using InstanceCreateWindow = TerminologyLauncher.GUI.Windows.InstanceCreateWindow;
 
 namespace TerminologyLauncher.Test
 {

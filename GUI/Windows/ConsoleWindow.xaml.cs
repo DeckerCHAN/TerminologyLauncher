@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -9,7 +8,7 @@ using TerminologyLauncher.Configs;
 using TerminologyLauncher.GUI.Properties;
 using TerminologyLauncher.I18n;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.Windows
 {
     /// <summary>
     /// Interaction logic for ConsoleWindow.xaml

@@ -90,7 +90,7 @@ namespace TerminologyLauncher.GUI.Annotations
         /// </param>
         public StringFormatMethodAttribute(string formatParameterName)
         {
-            FormatParameterName = formatParameterName;
+            this.FormatParameterName = formatParameterName;
         }
 
         public string FormatParameterName { get; private set; }
@@ -105,7 +105,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public ValueProviderAttribute(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [NotNull]
@@ -173,7 +173,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public NotifyPropertyChangedInvocatorAttribute(string parameterName)
         {
-            ParameterName = parameterName;
+            this.ParameterName = parameterName;
         }
 
         public string ParameterName { get; private set; }
@@ -232,8 +232,8 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
         {
-            Contract = contract;
-            ForceFullStates = forceFullStates;
+            this.Contract = contract;
+            this.ForceFullStates = forceFullStates;
         }
 
         public string Contract { get; private set; }
@@ -258,7 +258,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public LocalizationRequiredAttribute(bool required)
         {
-            Required = required;
+            this.Required = required;
         }
 
         public bool Required { get; private set; }
@@ -304,7 +304,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public BaseTypeRequiredAttribute([NotNull] Type baseType)
         {
-            BaseType = baseType;
+            this.BaseType = baseType;
         }
 
         [NotNull]
@@ -335,8 +335,8 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
         public ImplicitUseKindFlags UseKindFlags { get; private set; }
@@ -367,8 +367,8 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
         [UsedImplicitly]
@@ -429,7 +429,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public PublicAPIAttribute([NotNull] string comment)
         {
-            Comment = comment;
+            this.Comment = comment;
         }
 
         public string Comment { get; private set; }
@@ -474,7 +474,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public PathReferenceAttribute([PathReference] string basePath)
         {
-            BasePath = basePath;
+            this.BasePath = basePath;
         }
 
         public string BasePath { get; private set; }
@@ -567,7 +567,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcAreaMasterLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -578,7 +578,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcAreaPartialViewLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -589,7 +589,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcAreaViewLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -600,7 +600,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcMasterLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -611,7 +611,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcPartialViewLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -622,7 +622,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspMvcViewLocationFormatAttribute(string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         public string Format { get; private set; }
@@ -643,7 +643,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public AspMvcActionAttribute(string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         public string AnonymousProperty { get; private set; }
@@ -663,7 +663,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public AspMvcAreaAttribute(string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         public string AnonymousProperty { get; private set; }
@@ -684,7 +684,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public AspMvcControllerAttribute(string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         public string AnonymousProperty { get; private set; }
@@ -793,7 +793,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public HtmlElementAttributesAttribute(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public string Name { get; private set; }
@@ -804,7 +804,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public HtmlAttributeValueAttribute([NotNull] string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [NotNull]
@@ -830,7 +830,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public CollectionAccessAttribute(CollectionAccessType collectionAccessType)
         {
-            CollectionAccessType = collectionAccessType;
+            this.CollectionAccessType = collectionAccessType;
         }
 
         public CollectionAccessType CollectionAccessType { get; private set; }
@@ -872,7 +872,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AssertionConditionAttribute(AssertionConditionType conditionType)
         {
-            ConditionType = conditionType;
+            this.ConditionType = conditionType;
         }
 
         public AssertionConditionType ConditionType { get; private set; }
@@ -961,8 +961,8 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspChildControlTypeAttribute(string tagName, Type controlType)
         {
-            TagName = tagName;
-            ControlType = controlType;
+            this.TagName = tagName;
+            this.ControlType = controlType;
         }
 
         public string TagName { get; private set; }
@@ -989,7 +989,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public AspRequiredAttributeAttribute([NotNull] string attribute)
         {
-            Attribute = attribute;
+            this.Attribute = attribute;
         }
 
         public string Attribute { get; private set; }
@@ -1002,7 +1002,7 @@ namespace TerminologyLauncher.GUI.Annotations
 
         public AspTypePropertyAttribute(bool createConstructorReferences)
         {
-            CreateConstructorReferences = createConstructorReferences;
+            this.CreateConstructorReferences = createConstructorReferences;
         }
     }
 
@@ -1011,7 +1011,7 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public RazorImportNamespaceAttribute(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public string Name { get; private set; }
@@ -1022,8 +1022,8 @@ namespace TerminologyLauncher.GUI.Annotations
     {
         public RazorInjectionAttribute(string type, string fieldName)
         {
-            Type = type;
-            FieldName = fieldName;
+            this.Type = type;
+            this.FieldName = fieldName;
         }
 
         public string Type { get; private set; }

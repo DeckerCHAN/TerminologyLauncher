@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.I18n;
 
-namespace TerminologyLauncher.GUI
+namespace TerminologyLauncher.GUI.Windows
 {
     /// <summary>
     /// Interaction logic for InstanceCreateWindow.xaml
@@ -59,7 +50,13 @@ namespace TerminologyLauncher.GUI
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+           
+            this.CrossThreadClose();
+        }
+
+        public void CrossThreadClose()
+        {
+            this.Dispatcher.Invoke(this.Close);
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
