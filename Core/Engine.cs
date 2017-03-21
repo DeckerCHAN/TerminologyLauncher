@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Threading;
 using TerminologyLauncher.Auth;
 using TerminologyLauncher.Configs;
@@ -86,17 +87,19 @@ namespace TerminologyLauncher.Core
         public void RegisterHandlers()
         {
             TerminologyLogger.GetLogger().Debug("Engine Register events.");
-            //DONE:Using IHandler interface, let handlers register their events duding ctor.
-            this.Handlers.Add("WINDOWS_CLOSE", new CloseHandler(this));
-            this.Handlers.Add("LOGIN", new LoginHandlerBase(this));
-            this.Handlers.Add("LOGIN_WINDOW_VISIBILITY_CHANGED", new LoginWindowVisibilityChangedHandler(this));
-            this.Handlers.Add("MAIN_WINDOW_VISIBILITY_CHANGED", new MainWindowVisibilityChangedHandler(this));
-            this.Handlers.Add("ADD_NEW_INSTANCE", new AddInstanceHandler(this));
-            this.Handlers.Add("REMOVE_AN_INSTANCE", new RemoveInstanceHandler(this));
-            this.Handlers.Add("LAUNCH_AN_INSTANCE", new LaunchInstanceHandler(this));
-            this.Handlers.Add("UPDATE_AN_INSTANCE", new UpdateInstanceHandler(this));
-            this.Handlers.Add("UPDATE_APPLICATION", new UpdateApplicationHandler(this));
-            this.Handlers.Add("CONFIG", new ConfigHandler(this));
+
+            //Get all types who impl/extend Hadler Base
+            foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof(HandlerBase).IsAssignableFrom(p)))
+            {
+                if (type.IsAbstract || type.IsInterface)
+                {
+                    continue;
+                }
+                var h = (HandlerBase) Activator.CreateInstance(type,this);
+                this.Handlers.Add(h.Name, h);
+            }
         }
 
         public void PostInitializeComponents()

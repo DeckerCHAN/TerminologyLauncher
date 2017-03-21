@@ -35,5 +35,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 throw;
             }
         }
+
+        public override string Name => "REMOVE_INSTANCE";
     }
 }

@@ -19,5 +19,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             this.Engine.UiControl.LoginWindow.CancleButton.Click += this.HandleEvent;
             this.Engine.UiControl.MainWindow.CloseButton.Click += this.HandleEvent;
         }
+
+        public override string Name => "WINDOWS_CLOSE";
     }
 }

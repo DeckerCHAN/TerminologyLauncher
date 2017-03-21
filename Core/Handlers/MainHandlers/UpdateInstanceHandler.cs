@@ -65,5 +65,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             });
             progressWindow.ShowDialog();
         }
+
+        public override string Name => "UPDATE_INSTANCE";
     }
 }

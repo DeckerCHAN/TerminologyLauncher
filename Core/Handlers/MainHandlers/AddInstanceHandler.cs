@@ -81,5 +81,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                             "Caused by an error, we cannot add this instance right now. Detail: {0}", 1), ex.Message));
             }
         }
+
+        public override string Name => "ADD_NEW_INSTANCE";
     }
 }

@@ -87,5 +87,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             this.Engine.UiControl.LoginWindow.LoginResult(reason);
         }
+
+        public override string Name => "LOGIN";
     }
 }

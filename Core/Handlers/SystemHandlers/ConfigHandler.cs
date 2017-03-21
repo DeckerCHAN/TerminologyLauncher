@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
@@ -69,5 +69,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     $"Caused by an internal error, we cannot update right now. Detail: {ex.Message}");
             }
         }
+
+        public override string Name => "CONFIG";
     }
 }

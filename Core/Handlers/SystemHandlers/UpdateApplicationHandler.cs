@@ -69,5 +69,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 throw;
             }
         }
+
+        public override string Name => "UPDATE_APPLICATION";
     }
 }

@@ -217,5 +217,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
             return true;
         }
+
+        public override string Name => "MAIN_WINDOW_VISIBILITY_CHANGED";
     }
 }

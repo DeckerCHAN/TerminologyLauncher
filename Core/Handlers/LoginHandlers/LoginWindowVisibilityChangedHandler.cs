@@ -61,5 +61,7 @@ namespace TerminologyLauncher.Core.Handlers.LoginHandlers
         {
             throw new NotSupportedException();
         }
+
+        public override string Name => "LOGIN_WINDOW_VISIBILITY_CHANGED";
     }
 }

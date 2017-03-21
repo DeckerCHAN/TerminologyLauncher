@@ -87,5 +87,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             });
             progressWindow.ShowDialog();
         }
+
+        public override string Name => "LAUNCH_AN_INSTANCE";
     }
 }

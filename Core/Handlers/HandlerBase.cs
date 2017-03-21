@@ -6,10 +6,13 @@ namespace TerminologyLauncher.Core.Handlers
     {
         protected Engine Engine { get; set; }
 
-        public HandlerBase(Engine engine)
+        public abstract String Name { get; }
+
+        protected HandlerBase(Engine engine)
         {
             this.Engine = engine;
         }
+
 
         public abstract void HandleEvent(object sender, EventArgs e);
     }
