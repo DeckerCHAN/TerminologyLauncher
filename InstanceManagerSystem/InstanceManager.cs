@@ -361,7 +361,6 @@ namespace TerminologyLauncher.InstanceManagerSystem
                 {
                     throw new WrongStateException(
                         "Wrong instance state! Just instance which in OK or perinitialized state could update.");
-                    break;
                 }
             }
         }
