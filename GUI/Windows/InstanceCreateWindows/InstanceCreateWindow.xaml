@@ -1,4 +1,4 @@
-﻿<Window x:Class="TerminologyLauncher.GUI.Windows.InstanceCreateWindow"
+﻿<Window x:Class="TerminologyLauncher.GUI.Windows.InstanceCreateWindows.InstanceCreateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -42,13 +42,12 @@
         <Border Padding="25">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Height="Auto">
-                    <Button x:Name="UpdateInstanceButton" Width="212" Height="32" Margin="5"
-                            x:FieldModifier="public" Content="{Binding Path=UpdateInstanceButtonTranslation}"
-                            Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}"
-                            Background="#FFFFDC00" />
-                    <Button x:Name="LaunchInstanceButton" Width="212" Height="32" Margin="5"
-                            x:FieldModifier="public" Content="{Binding Path=LaunchInstanceButtonTranslation}"
-                            Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" />
+                    <Button x:Name="InstanceVerificationButton" Width="212" Height="32" Margin="5"
+                            x:FieldModifier="public" Content="{Binding Path=InstanceVerificationButtonTranslation}" 
+                            Style="{DynamicResource TerminologyYellowButtonStyle}"  />
+                    <Button x:Name="GenerateInstanceFileButton" Width="212" Height="32" Margin="5"
+                            x:FieldModifier="public" Content="{Binding Path=GenerateInstanceFileButtonTranslation}"
+                            Style="{DynamicResource TerminologyBlueButtonStyle}"  />
 
 
                 </StackPanel>

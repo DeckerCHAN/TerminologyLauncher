@@ -9,7 +9,7 @@ using TerminologyLauncher.Entities.InstanceManagement.FileSystem;
 using TerminologyLauncher.GUI.Annotations;
 using TerminologyLauncher.I18n;
 
-namespace TerminologyLauncher.GUI.Windows
+namespace TerminologyLauncher.GUI.Windows.InstanceCreateWindows
 {
     /// <summary>
     /// Interaction logic for InstanceCreateWindow.xaml
@@ -42,10 +42,16 @@ namespace TerminologyLauncher.GUI.Windows
         }
 
 
-        public object InstanceCreateWindowTitleTranslation => TranslationManager.GetManager.Localize("InstanceCreateWindowTitle", "Create My Instance");
+        public object InstanceCreateWindowTitleTranslation => TranslationManager.GetManager.Localize("InstanceCreateWindowTitle", "Create New Instance");
+
+        public object InstanceVerificationButtonTranslation => TranslationManager.GetManager.Localize("InstanceVerificationButton", "Create My Instance");
+
+        public object GenerateInstanceFileButtonTranslation => TranslationManager.GetManager.Localize("GenerateInstanceFileButton", "Get Instance File");
+
+
         private void HeadBarPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
         }
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
