@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects
+namespace TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects
 {
     public class RangeRestrictedSelectConfigObject : ConfigObject
     {

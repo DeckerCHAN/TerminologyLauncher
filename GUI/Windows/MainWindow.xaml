@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/CustomStyles.xaml" />
+                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -45,7 +45,7 @@
                                 Style="{DynamicResource TerminologyHeadConfigButtonStyle}" />
                         <Button x:Name="UpdateButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" />
-                        <Button x:Name="AddInstanceButton" x:FieldModifier="public"
+                        <Button x:Name="CreateInstanceButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadAddButtonStyle}" />
                         <Button x:Name="CloseButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyHeadCloseButtonStyle}" />
@@ -70,13 +70,13 @@
                             <Border Grid.Column="0" Grid.Row="0" Padding="4">
                                 <Button x:Name="InstanceAddButton" x:FieldModifier="public"
                                         Content="{Binding Path=AddInstanceTranslation}"
-                                        Style="{DynamicResource TerminologyConfirmButtonStyle}"
+                                        Style="{DynamicResource TerminologyGreenButtonStyle}"
                                         Click="InstanceAddButton_Click" />
                             </Border>
                             <Border Grid.Column="0" Grid.Row="1" Padding="4">
                                 <Button x:Name="InstanceRemoveButton" x:FieldModifier="public"
                                         Content="{Binding Path=RemoveInstanceTranslation}"
-                                        Style="{DynamicResource TerminologyCancelButtonStyle}"
+                                        Style="{DynamicResource TerminologyRedButtonStyle}"
                                         Click="InstanceRemoveButton_Click" />
                             </Border>
                         </Grid>
@@ -224,11 +224,10 @@
                         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button x:Name="UpdateInstanceButton" Width="212" Height="32" Margin="5"
                                     x:FieldModifier="public" Content="{Binding Path=UpdateInstanceButtonTranslation}"
-                                    Foreground="DarkSlateGray" Style="{DynamicResource TerminologyButtonStyle}"
-                                    Background="#FFFFDC00" />
+                                     Style="{DynamicResource TerminologyYellowButtonStyle}"/>
                             <Button x:Name="LaunchInstanceButton" Width="212" Height="32" Margin="5"
                                     x:FieldModifier="public" Content="{Binding Path=LaunchInstanceButtonTranslation}"
-                                    Style="{DynamicResource TerminologyButtonStyle}" Background="DeepSkyBlue" />
+                                    Style="{DynamicResource TerminologyBlueButtonStyle}"  />
 
 
                         </StackPanel>

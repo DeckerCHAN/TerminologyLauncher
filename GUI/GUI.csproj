@@ -61,7 +61,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Windows\InstanceCreateWindow.xaml">
+    <Page Include="Windows\InstanceCreateWindows\InstanceCreateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -69,7 +69,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ConfigWindow\ConfigWindow.xaml">
+    <Page Include="Windows\ConfigWindows\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,7 +114,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Animations\Fade.cs" />
-    <Compile Include="Windows\InstanceCreateWindow.xaml.cs">
+    <Compile Include="Windows\InstanceCreateWindows\InstanceCreateWindow.xaml.cs">
       <DependentUpon>InstanceCreateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IPopup.cs" />
@@ -124,11 +124,11 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Toolkits\ImageInMemoryConverter.cs" />
     <Compile Include="Toolkits\FieldReference.cs" />
-    <Compile Include="Windows\ConfigWindow\ConfigObjects\ConfigObject.cs" />
-    <Compile Include="Windows\ConfigWindow\ConfigObjects\ItemSelectConfigObject.cs" />
-    <Compile Include="Windows\ConfigWindow\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
-    <Compile Include="Windows\ConfigWindow\ConfigObjects\TextInputConfigObject.cs" />
-    <Compile Include="Windows\ConfigWindow\ConfigWindow.xaml.cs">
+    <Compile Include="Windows\ConfigWindows\ConfigObjects\ConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindows\ConfigObjects\ItemSelectConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindows\ConfigObjects\RangeRestrictedSelectConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindows\ConfigObjects\TextInputConfigObject.cs" />
+    <Compile Include="Windows\ConfigWindows\ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ConsoleWindow.xaml.cs">

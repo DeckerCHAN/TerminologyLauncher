@@ -41,10 +41,10 @@
                 </ScrollViewer>
             </Border>
             <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation,Mode=OneTime}"
-                    Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="163" Canvas.Top="128"
+                    Style="{DynamicResource TerminologyGreenButtonStyle}" Canvas.Left="163" Canvas.Top="128"
                     Height="30" Width="102" FontSize="16" Click="ConfirmButton_OnClick" />
             <Button x:Name="CancelButton" Content="{Binding Path=CancelButtonTranslation,Mode=OneTime}"
-                    Style="{DynamicResource TerminologyCancelButtonStyle}" Canvas.Left="294" Canvas.Top="128"
+                    Style="{DynamicResource TerminologyRedButtonStyle}" Canvas.Left="294" Canvas.Top="128"
                     Height="30" Width="102" FontSize="16" Click="CancelButton_OnClick" />
 
         </Canvas>

@@ -481,6 +481,7 @@
         <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="20px"></Setter>
         <Setter Property="Padding" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -520,16 +521,28 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="TerminologyConfirmButtonStyle"
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyGreenButtonStyle"
            BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="LightGreen" />
         <Setter Property="Foreground" Value="DarkSlateGray" />
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="TerminologyCancelButtonStyle"
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyRedButtonStyle"
            BasedOn="{StaticResource TerminologyButtonStyle}">
         <Setter Property="Background" Value="Tomato" />
         <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyYellowButtonStyle"
+           BasedOn="{StaticResource TerminologyButtonStyle}">
+        <Setter Property="Background" Value="#FFDC00" />
+        <Setter Property="Foreground" Value="#2F4F4F" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="TerminologyBlueButtonStyle"
+           BasedOn="{StaticResource TerminologyButtonStyle}">
+        <Setter Property="Background" Value="#00BFFF" />
+        <Setter Property="Foreground" Value="#2a5547" />
     </Style>
 
     <!-- CheckBox-->

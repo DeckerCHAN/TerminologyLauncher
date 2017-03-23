@@ -58,7 +58,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation}"
-                    Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="364" Canvas.Top="99"
+                    Style="{DynamicResource TerminologyGreenButtonStyle}" Canvas.Left="364" Canvas.Top="99"
                     Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 
         </Canvas>

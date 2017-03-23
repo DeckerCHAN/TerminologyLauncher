@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects
+namespace TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects
 {
     public class ItemSelectConfigObject : ConfigObject
     {

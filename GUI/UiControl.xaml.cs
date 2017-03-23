@@ -10,8 +10,9 @@ using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
-using TerminologyLauncher.GUI.Windows.ConfigWindow;
-using TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.ConfigWindows;
+using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.InstanceCreateWindows;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -123,6 +124,7 @@ namespace TerminologyLauncher.GUI
             }
         }
 
+        //TODO: Build config window in construction!
         public bool? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs,
             IEnumerable<ItemSelectConfigObject> itemSelectConfigs,
             IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
@@ -137,8 +139,12 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        private void App_OnStartup(object sender, StartupEventArgs e)
+        public void StartInstanceCreateWindow()
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                new InstanceCreateWindow().ShowDialog();
+            });
         }
 
         private void UiControl_OnExit(object sender, ExitEventArgs e)

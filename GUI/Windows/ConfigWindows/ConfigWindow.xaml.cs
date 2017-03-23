@@ -6,10 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TerminologyLauncher.GUI.Properties;
-using TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
 using TerminologyLauncher.I18n;
 
-namespace TerminologyLauncher.GUI.Windows.ConfigWindow
+namespace TerminologyLauncher.GUI.Windows.ConfigWindows
 {
     /// <summary>
     /// Interaction logic for ConfigWindow.xaml

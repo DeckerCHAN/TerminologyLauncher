@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using TerminologyLauncher.GUI.Properties;
 
-namespace TerminologyLauncher.GUI.Windows.ConfigWindow.ConfigObjects
+namespace TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects
 {
     public abstract class ConfigObject : INotifyPropertyChanged
     {
