@@ -97,8 +97,9 @@ namespace TerminologyLauncher.Core
                 {
                     continue;
                 }
-                var h = (HandlerBase) Activator.CreateInstance(type,this);
+                var h = (HandlerBase) Activator.CreateInstance(type, this);
                 this.Handlers.Add(h.Name, h);
+                TerminologyLogger.GetLogger().InfoFormat($"Successfuly loadded Handler: {h.Name}");
             }
         }
 
