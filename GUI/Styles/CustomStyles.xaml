@@ -45,10 +45,6 @@
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
         <Setter Property="Margin" Value="0,10,15,0" />
-    </Style>
-
-    <Style x:Key="TerminologyHeadCloseButtonStyle" TargetType="{x:Type Button}"
-           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -59,119 +55,85 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_close_default.png" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Opacity" Value="0.6" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_close_hover.png" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Opacity" Value="0.8" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="TerminologyHeadCloseButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush
+                    ImageSource="/TerminologyLauncher.GUI;component/Resources/icons/delete_icon_32.png" />
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="TerminologyHeadConfigButtonStyle" TargetType="{x:Type Button}"
            BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
-        <Setter Property="Template">
+        <Setter Property="Background">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Name="border"
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="False">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_config_default.png" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_config_hover.png" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                <ImageBrush
+                    ImageSource="/TerminologyLauncher.GUI;component/Resources/icons/wrench_plus_2_icon_32.png" />
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="TerminologyHeadAddButtonStyle" TargetType="{x:Type Button}"
            BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
-        <Setter Property="Template">
+        <Setter Property="Background">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Name="border"
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="False">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_add_default.png" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_add_hover.png" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                <ImageBrush
+                    ImageSource="/TerminologyLauncher.GUI;component/Resources/icons/round_plus_icon_32.png" />
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="TerminologyHeadUpdateButtonStyle" TargetType="{x:Type Button}"
            BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush
+                    ImageSource="/TerminologyLauncher.GUI;component/Resources/icons/round_and_up_icon_32.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}"  x:Key="TerminologyViewOnlyTextBoxStyle">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}" />
+        <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}" />
+        <Setter Property="Padding" Value="2,2,2,1" />
+        <Setter Property="TextWrapping" Value="NoWrap"></Setter>
+        <Setter Property="AcceptsReturn" Value="True"></Setter>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
+        <Setter Property="IsReadOnly" Value="True"></Setter>
+        <Setter Property="FontSize" Value="17"></Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Name="border"
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="Bd"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost" Style="{DynamicResource TerminologyScrollViewerStyle}" Padding="{TemplateBinding Padding}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="False">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_update_default.png" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <ImageBrush
-                                        ImageSource="/TerminologyLauncher.GUI;component/Resources/icon_update_hover.png" />
-                                </Setter.Value>
-                            </Setter>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledForeground}" />
+                            <Setter Property="BorderBrush" TargetName="Bd"
+                                    Value="{StaticResource CommonDisabledBoxBorder}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -237,6 +199,33 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <!-- Treeview-->
+    <Style x:Key="TerminologyTreeviewStyle" TargetType="TreeView">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TreeView">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="1"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer Style="{DynamicResource TerminologyScrollViewerStyle}" Focusable="False"
+                          CanContentScroll="False"
+                           Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TerminologyTreeviewItemStyle" TargetType="TreeViewItem">
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="FontFamily" Value="Microsoft YaHei" />
     </Style>
     <!-- Combox-->
     <Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
@@ -481,7 +470,7 @@
         <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="20px"></Setter>
+        <Setter Property="FontSize" Value="20px" />
         <Setter Property="Padding" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
