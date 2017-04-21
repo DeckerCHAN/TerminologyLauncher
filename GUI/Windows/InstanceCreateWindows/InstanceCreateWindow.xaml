@@ -3,7 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:entities="clr-namespace:TerminologyLauncher.Entities.InstanceManagement.FileSystem;assembly=TerminologyLauncher.Entities"
+        xmlns:local="clr-namespace:TerminologyLauncher.GUI.Windows.InstanceCreateWindows"
+        xmlns:entities="clr-namespace:TerminologyLauncher.Entities.InstanceManagement;assembly=TerminologyLauncher.Entities"
+        xmlns:fileSystem="clr-namespace:TerminologyLauncher.Entities.InstanceManagement.FileSystem;assembly=TerminologyLauncher.Entities"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="InstanceCreateWindow" Height="679" Width="1100"
         WindowStartupLocation="CenterScreen"
@@ -11,6 +14,8 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
+
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
@@ -18,6 +23,9 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
+        <DockPanel.Resources>
+            <local:InstanceToJsonConverter x:Key="JsonConverter" />
+        </DockPanel.Resources>
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -33,7 +41,7 @@
                            Text="{Binding Path=InstanceCreateWindowTitleTranslation,Mode=OneWay}" />
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0"
+                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
                             Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
@@ -43,42 +51,507 @@
             <DockPanel>
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Height="Auto">
                     <Button x:Name="InstanceVerificationButton" Width="212" Height="32" Margin="5"
-                            x:FieldModifier="public" Content="{Binding Path=InstanceVerificationButtonTranslation}" 
-                            Style="{DynamicResource TerminologyYellowButtonStyle}"  />
+                            x:FieldModifier="public" Content="{Binding Path=InstanceVerificationButtonTranslation}"
+                            Style="{DynamicResource TerminologyYellowButtonStyle}" />
                     <Button x:Name="GenerateInstanceFileButton" Width="212" Height="32" Margin="5"
                             x:FieldModifier="public" Content="{Binding Path=GenerateInstanceFileButtonTranslation}"
-                            Style="{DynamicResource TerminologyBlueButtonStyle}"  />
+                            Style="{DynamicResource TerminologyBlueButtonStyle}"
+                            Click="GenerateInstanceFileButton_Click" />
 
 
                 </StackPanel>
                 <Border DockPanel.Dock="Top">
-                    <ListBox Name="InstanceListBox"
-                             SelectionChanged="Selector_OnSelectionChanged"
-                             Style="{DynamicResource TerminologyListBoxStyle}"
-                             SelectedItem="{Binding FileList,Mode=OneWayToSource}"
-                             FontSize="16"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ItemsSource="{Binding InstanceList}">
+                    <DockPanel>
 
-                        <!--                        <ListBox.Resources>-->
-                        <!--                            <DataTemplate DataType="{x:Type entities:EntirePackageFileEntity}">-->
-                        <!--                                <TextBlock Text="{Binding Name}" Foreground="Yellow"/>-->
-                        <!--                            </DataTemplate>-->
-                        <!--                            <DataTemplate DataType="{x:Type entities:CustomFileEntity}">-->
-                        <!--                                <TextBlock Text="{Binding Name}" Foreground="Red"/>-->
-                        <!--                            </DataTemplate>-->
-                        <!--                        </ListBox.Resources>-->
+                        <TreeView Width="650" DockPanel.Dock="Left" Style="{DynamicResource TerminologyTreeviewStyle}">
 
-                        <ListBoxItem  HorizontalAlignment="Stretch" Padding="5,15" Background="#4C01FFFF">
-                            <TextBlock Text="Some eneity" Style="{DynamicResource TerminologyTextBlockStyle}" />
-                        </ListBoxItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Instance Name:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.InstanceName,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Icon:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.Icon,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Background:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.Background,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Upgrade Path:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.UpdatePath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Version:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.Version,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Generation:" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBlockStyle}"
+                                                 Text="{Binding Path=Instance.Generation,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Description:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.Description,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                   Text="Author:" />
+                                        <TextBox Margin="10,0,0,0"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
+                                                 Text="{Binding Path=Instance.Author,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                 SourceUpdated="OnInstanceUpdated" />
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <!--File System-->
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}" Header="Files">
+                                <TreeViewItem
+                                    Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                    ItemsSource="{Binding Path=Instance.FileSystem.EntirePackageFiles,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                    SourceUpdated="OnInstanceUpdated">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Package Files:" />
+                                            <Button Margin="10,0,0,0"
+                                                    Style="{StaticResource TerminologyRoundPlusIconButtonStyle}"
+                                                    Click="AddNewPackageFileButton_OnClick" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                    <TreeViewItem.ItemTemplate>
+                                        <DataTemplate DataType="fileSystem:EntirePackageFileEntity">
+                                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                <TreeViewItem.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                   Text="{Binding Path=Name}" />
+                                                        <Button Margin="10,0,0,0"
+                                                                Style="{StaticResource TerminologyRoundMinusIconButtonStyle}" />
+                                                    </StackPanel>
+                                                </TreeViewItem.Header>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Name:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=Name,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Download Link:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=DownloadLink,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Local Path:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=LocalPath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="MD5:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=Md5,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                        </DataTemplate>
+                                    </TreeViewItem.ItemTemplate>
 
-                        <ListBoxItem HorizontalAlignment="Stretch" Padding="5,15" Background="#4CAEFF01">
-                            <TextBlock Text="Some eneity" Style="{DynamicResource TerminologyTextBlockStyle}" />
-                        </ListBoxItem>
 
-                    </ListBox>
+                                </TreeViewItem>
+                                <TreeViewItem
+                                    Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                    ItemsSource="{Binding Instance.FileSystem.OfficialFiles}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Official Files:" />
+                                            <Button Margin="10,0,0,0"
+                                                    Style="{StaticResource TerminologyRoundPlusIconButtonStyle}" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                    <TreeViewItem.ItemTemplate>
+                                        <DataTemplate DataType="fileSystem:OfficialFileEntity">
+                                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                                          Header="{Binding Name}">
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Name:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=Name,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Download Link:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=ProvideId,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Local Path:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=LocalPath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                        </DataTemplate>
+                                    </TreeViewItem.ItemTemplate>
 
+
+                                </TreeViewItem>
+                                <TreeViewItem
+                                    Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                    ItemsSource="{Binding Instance.FileSystem.CustomFiles}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Single Files:" />
+                                            <Button Margin="10,0,0,0"
+                                                    Style="{StaticResource TerminologyRoundPlusIconButtonStyle}" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                    <TreeViewItem.ItemTemplate>
+                                        <DataTemplate DataType="fileSystem:CustomFileEntity">
+                                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                                          Header="{Binding Name}">
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Name:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=Name,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Download Link:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=DownloadLink,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="Local Path:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=LocalPath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                    <TreeViewItem.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource TerminologyTextBlockStyle}"
+                                                                Text="MD5:" />
+                                                            <TextBox Margin="10,0,0,0"
+                                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                     Text="{Binding Path=Md5,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                                     SourceUpdated="OnInstanceUpdated" />
+                                                        </StackPanel>
+                                                    </TreeViewItem.Header>
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                        </DataTemplate>
+                                    </TreeViewItem.ItemTemplate>
+
+
+                                </TreeViewItem>
+
+                            </TreeViewItem>
+                            <!--Start Up Arguments-->
+                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}" Header="Start Up Arguments">
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Icon:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.AssetIndex,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Assets Dir:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.AssetsDir,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Library Paths:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.LibraryPaths,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Main Class:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.MainClass,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Main Jar Path:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.MainJarPath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Minium Memory Mega Size:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.MiniumMemoryMegaSize,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Natives Path:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.Nativespath,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="User Properties:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.UserProperties,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="User Type:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.UserType,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+                                <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Version:" />
+                                            <TextBox Margin="10,0,0,0"
+                                                     Style="{StaticResource TerminologyTextBoxStyle}"
+                                                     Text="{Binding Path=Instance.StartupArguments.Version,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                                     SourceUpdated="OnInstanceUpdated" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+
+
+                                <TreeViewItem
+                                    Style="{DynamicResource TerminologyTreeviewItemStyle}"
+                                    ItemsSource="{Binding Path=Instance.StartupArguments.LibraryPaths,Mode=TwoWay,NotifyOnSourceUpdated=True}"
+                                    SourceUpdated="OnInstanceUpdated">
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}"
+                                                       Text="Library Paths:" />
+                                            <Button Margin="10,0,0,0"
+                                                    Style="{StaticResource TerminologyRoundPlusIconButtonStyle}"
+                                                    Click="AddNewPackageFileButton_OnClick" />
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                    <TreeViewItem.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type system:String}" >
+                                            <TreeViewItem Style="{DynamicResource TerminologyTreeviewItemStyle}">
+                                                <TreeViewItem.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBox Style="{StaticResource TerminologyTextBoxStyle}"
+                                                                   Text="{Binding}" />
+                                                        <Button Margin="10,0,0,0"
+                                                                Style="{StaticResource TerminologyRoundMinusIconButtonStyle}" />
+                                                    </StackPanel>
+                                                </TreeViewItem.Header>
+                                            </TreeViewItem>
+                                        </DataTemplate>
+                                    </TreeViewItem.ItemTemplate>
+
+
+                                </TreeViewItem>
+
+
+                            </TreeViewItem>
+                        </TreeView>
+
+                        <TextBox x:Name="JsonViewTextBox"
+                                 Style="{DynamicResource TerminologyViewOnlyTextBoxStyle}"
+                                 Text="{Binding Path=Instance,Mode=OneWay,Converter={StaticResource JsonConverter}}" />
+                    </DockPanel>
                 </Border>
 
             </DockPanel>

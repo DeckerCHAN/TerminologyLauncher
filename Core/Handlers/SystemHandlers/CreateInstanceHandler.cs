@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 {
@@ -12,7 +13,14 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 
         public override void HandleEvent(object sender, EventArgs e)
         {
-            this.Engine.UiControl.StartInstanceCreateWindow();
+            if (this.Engine.UiControl.MainWindow.SelectInstance == null)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                this.Engine.UiControl.StartInstanceCreateWindow(this.Engine.UiControl.MainWindow.SelectInstance);
+            }
         }
 
 
