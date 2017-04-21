@@ -259,7 +259,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     //Delete old entire package
                     foreach (var oldEntirePackageFileEntity in oldEntirePackages)
                     {
-                        if (!newEntirePackages.Exists
+                        if (!newEntirePackages.Any
                             (
                                 x => x.Name.Equals(oldEntirePackageFileEntity.Name) &&
                                      x.Md5.Equals(oldEntirePackageFileEntity.Md5)
@@ -273,7 +273,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     //Download new entire package
                     foreach (var newEntirePackageFileEntity in newEntirePackages)
                     {
-                        if (!oldEntirePackages.Exists
+                        if (!oldEntirePackages.Any
                             (
                                 x =>
                                     x.Name.Equals(newEntirePackageFileEntity.Name) &&
@@ -298,7 +298,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     //Delete old official files
                     foreach (var oldOfficialFileEntity in oldOfficialFiles)
                     {
-                        if (!newOfficialFiles.Exists(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
+                        if (!newOfficialFiles.Any(x => x.ProvideId.Equals(oldOfficialFileEntity.ProvideId)))
                         {
                             File.Delete(Path.Combine(instanceRootFolder.FullName, oldOfficialFileEntity.LocalPath));
                         }
@@ -306,7 +306,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     //Receive new official files
                     foreach (var newOfficialFileEntity in newOfficialFiles)
                     {
-                        if (!oldOfficialFiles.Exists(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
+                        if (!oldOfficialFiles.Any(x => x.ProvideId.Equals(newOfficialFileEntity.ProvideId)))
                         {
                             this.ReceiveOfficialFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
                                 newOfficialFileEntity, this.UsingFileRepository);
@@ -324,7 +324,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var oldCustomFileEntity in oldCustomFiles)
                     {
                         if (
-                            !newCustomFiles.Exists(
+                            !newCustomFiles.Any(
                                 x => x.Name.Equals(oldCustomFileEntity.Name) && x.Md5.Equals(oldCustomFileEntity.Md5)))
                         {
                             File.Delete(Path.Combine(instanceRootFolder.FullName, oldCustomFileEntity.LocalPath));
@@ -333,7 +333,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
                     foreach (var newCustomFileEntity in newCustomFiles)
                     {
                         if (
-                            !oldCustomFiles.Exists(
+                            !oldCustomFiles.Any(
                                 x => x.Name.Equals(newCustomFileEntity.Name) && x.Md5.Equals(newCustomFileEntity.Md5)))
                         {
                             this.ReceiveCustomFile(new LeafNodeProgress("Ignore"), newInstanceEntity.InstanceName,
