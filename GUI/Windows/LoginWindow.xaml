@@ -33,7 +33,7 @@
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"
                             MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyHeadCloseButtonStyle}" />
+                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" />
                 </StackPanel>
 
             </DockPanel>

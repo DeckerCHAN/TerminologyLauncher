@@ -41,7 +41,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
     </Style>
 
-    <Style x:Key="TerminologyHeadControlButtonStyle" TargetType="{x:Type  Button}">
+    <Style x:Key="TerminologyTinyIconButtonStyle" TargetType="{x:Type  Button}">
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
         <Setter Property="Margin" Value="0,10,15,0" />
@@ -67,8 +67,8 @@
     </Style>
 
 
-    <Style x:Key="TerminologyHeadCloseButtonStyle" TargetType="{x:Type Button}"
-           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+    <Style x:Key="TerminologyCloseIconButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyTinyIconButtonStyle}">
         <Setter Property="Background">
             <Setter.Value>
                 <ImageBrush
@@ -77,8 +77,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TerminologyHeadConfigButtonStyle" TargetType="{x:Type Button}"
-           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+    <Style x:Key="TerminologyConfigIconButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyTinyIconButtonStyle}">
         <Setter Property="Background">
             <Setter.Value>
                 <ImageBrush
@@ -87,8 +87,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TerminologyHeadAddButtonStyle" TargetType="{x:Type Button}"
-           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+    <Style x:Key="TerminologyRoundPlusIconButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyTinyIconButtonStyle}">
         <Setter Property="Background">
             <Setter.Value>
                 <ImageBrush
@@ -97,8 +97,18 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TerminologyHeadUpdateButtonStyle" TargetType="{x:Type Button}"
-           BasedOn="{StaticResource TerminologyHeadControlButtonStyle}">
+    <Style x:Key="TerminologyRoundMinusIconButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyTinyIconButtonStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush
+                    ImageSource="/TerminologyLauncher.GUI;component/Resources/icons/round_minus_icon_32.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TerminologyUpdateIconButtonStyle" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource TerminologyTinyIconButtonStyle}">
         <Setter Property="Background">
             <Setter.Value>
                 <ImageBrush

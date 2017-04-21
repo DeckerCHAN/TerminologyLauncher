@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Animation;
 using TerminologyLauncher.Configs;
+using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Animations;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
@@ -139,11 +140,11 @@ namespace TerminologyLauncher.GUI
             return result;
         }
 
-        public void StartInstanceCreateWindow()
+        public void StartInstanceCreateWindow(InstanceEntity instance)
         {
             this.Dispatcher.Invoke(() =>
             {
-                new InstanceCreateWindow().ShowDialog();
+                new InstanceCreateWindow(instance).ShowDialog();
             });
         }
 

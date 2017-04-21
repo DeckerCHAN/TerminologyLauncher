@@ -42,13 +42,13 @@
                                 HorizontalAlignment="Right" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
 
                         <Button x:Name="ConfigButton" x:FieldModifier="public"
-                                Style="{DynamicResource TerminologyHeadConfigButtonStyle}" />
+                                Style="{DynamicResource TerminologyConfigIconButtonStyle}" />
                         <Button x:Name="UpdateButton" x:FieldModifier="public"
-                                Style="{DynamicResource TerminologyHeadUpdateButtonStyle}" />
+                                Style="{DynamicResource TerminologyUpdateIconButtonStyle}" />
                         <Button x:Name="CreateInstanceButton" x:FieldModifier="public"
-                                Style="{DynamicResource TerminologyHeadAddButtonStyle}" />
+                                Style="{DynamicResource TerminologyRoundPlusIconButtonStyle}" />
                         <Button x:Name="CloseButton" x:FieldModifier="public"
-                                Style="{DynamicResource TerminologyHeadCloseButtonStyle}" />
+                                Style="{DynamicResource TerminologyCloseIconButtonStyle}" />
                     </StackPanel>
 
                 </DockPanel>
