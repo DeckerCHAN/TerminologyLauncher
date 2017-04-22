@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyUtils.cs" />
     <Compile Include="DownloadUtils.cs" />
     <Compile Include="Exceptions\SolutionProvidedException.cs" />
     <Compile Include="FolderUtils.cs" />
