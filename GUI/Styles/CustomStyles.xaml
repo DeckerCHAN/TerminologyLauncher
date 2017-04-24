@@ -60,6 +60,9 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Opacity" Value="0.8" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.2" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -117,17 +120,17 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type TextBox}"  x:Key="TerminologyViewOnlyTextBoxStyle">
+    <Style TargetType="{x:Type TextBox}" x:Key="TerminologyViewOnlyTextBoxStyle">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}" />
         <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}" />
         <Setter Property="Padding" Value="2,2,2,1" />
-        <Setter Property="TextWrapping" Value="NoWrap"></Setter>
-        <Setter Property="AcceptsReturn" Value="True"></Setter>
-        <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
-        <Setter Property="IsReadOnly" Value="True"></Setter>
-        <Setter Property="FontSize" Value="17"></Setter>
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="FontSize" Value="17" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -136,7 +139,8 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}"
                             SnapsToDevicePixels="true">
-                        <ScrollViewer x:Name="PART_ContentHost" Style="{DynamicResource TerminologyScrollViewerStyle}" Padding="{TemplateBinding Padding}"
+                        <ScrollViewer x:Name="PART_ContentHost" Style="{DynamicResource TerminologyScrollViewerStyle}"
+                                      Padding="{TemplateBinding Padding}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -223,8 +227,8 @@
                             Padding="1"
                             SnapsToDevicePixels="true">
                         <ScrollViewer Style="{DynamicResource TerminologyScrollViewerStyle}" Focusable="False"
-                          CanContentScroll="False"
-                           Padding="{TemplateBinding Padding}">
+                                      CanContentScroll="False"
+                                      Padding="{TemplateBinding Padding}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
