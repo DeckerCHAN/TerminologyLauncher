@@ -9,12 +9,15 @@ namespace TerminologyLauncher.Test
 {
     class Program
     {
+        /// <summary>
+        /// This is entry point for test.
+        /// Keep this file and never add it to commit.
+        /// </summary>
+        /// <param name="args">Paramaters</param>
         [STAThread]
         static void Main(string[] args)
         {
-            InstanceCreateWindow window = new InstanceCreateWindow();
-            window.Show();
-            Console.ReadKey();
+            Console.Write("Testing!");
         }
     }
 }
