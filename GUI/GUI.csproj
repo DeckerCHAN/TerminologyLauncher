@@ -178,6 +178,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Configs\GUI.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -188,12 +189,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_close_default.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_close_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Configs\Configs.csproj">
@@ -228,24 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\default_avatar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_update_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_update_default.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_config_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_config_default.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_add_default.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon_add_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icons\2x2_grid_icon_32.png" />
