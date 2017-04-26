@@ -26,7 +26,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             var confim =
                 this.Engine.UiControl.MainWindow.PopupSingleLineInputDialog(
                     TranslationManager.GetManager.Localize("Title", "Add a Instance"),
-                    TranslationManager.GetManager.Localize("InstanceUrl", "Instance URL:"), result);
+                    TranslationManager.GetManager.Localize("InstanceUrl", "Instance URL"), result);
             if (confim == null || confim.Value == false)
             {
                 TerminologyLogger.GetLogger().Info("Empty input or user canceled. Ignore!");
