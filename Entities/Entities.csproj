@@ -76,6 +76,7 @@
     <Compile Include="InstanceManagement\FileSystem\OfficialFileEntity.cs" />
     <Compile Include="InstanceManagement\InstanceStartupArgumentsEntity.cs" />
     <Compile Include="InstanceManagement\InstanceState.cs" />
+    <Compile Include="InstanceManagement\LocallizedInstanceEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\IComponent.cs" />
     <Compile Include="System\Java\JavaDetails.cs" />

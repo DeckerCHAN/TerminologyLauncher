@@ -52,13 +52,13 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         }
 
                         this.Engine.UiControl.MainWindow.InstanceList =
-                            new ObservableCollection<InstanceEntity>(
-                                this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                            new ObservableCollection<LocalizedInstanceEntity>(
+                                this.Engine.InstanceManager.LocalizedInstanceList);
 
                         if (this.Engine.InstanceManager.Instances.Count == 0)
                         {
                             var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
-                            if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
+                            addHandler?.HandleEvent(new object(), new EventArgs());
                         }
                         else
                         {

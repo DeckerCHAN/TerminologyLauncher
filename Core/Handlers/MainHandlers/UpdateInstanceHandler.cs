@@ -36,8 +36,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     progressWindow.CrossThreadClose();
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Successful updated", message);
                     this.Engine.UiControl.MainWindow.InstanceList =
-                        new ObservableCollection<InstanceEntity>(
-                            this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                        new ObservableCollection<LocalizedInstanceEntity>(
+                            this.Engine.InstanceManager.LocalizedInstanceList);
                 }
                 catch (NoAvailableUpdateException ex)
                 {

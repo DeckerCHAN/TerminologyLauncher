@@ -23,7 +23,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 var message = this.Engine.InstanceManager.RemoveInstance(instanceName);
 
                 this.Engine.UiControl.MainWindow.InstanceList =
-                    new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                    new ObservableCollection<LocalizedInstanceEntity>(this.Engine.InstanceManager.LocalizedInstanceList);
             }
             catch (Exception ex)
             {

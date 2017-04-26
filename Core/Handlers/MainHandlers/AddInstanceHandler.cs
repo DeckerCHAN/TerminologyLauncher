@@ -36,7 +36,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             {
                 var message = this.Engine.InstanceManager.AddInstance(result.Value);
                 this.Engine.UiControl.MainWindow.InstanceList =
-                    new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                    new ObservableCollection<LocalizedInstanceEntity>(this.Engine.InstanceManager.LocalizedInstanceList);
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Successful", message);
             }
             catch (WebException ex)
