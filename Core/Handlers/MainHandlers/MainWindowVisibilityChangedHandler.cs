@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
+using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
@@ -154,7 +156,7 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 var result =
                     this.Engine.UiControl.PopupSingleSelectDialog(
                         TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java"),
-                        TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"),
+                        TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe"),
                         javaRuntimeEntitiesKP.Keys, field);
                 if (result == null || result.Value == false)
                 {
@@ -180,40 +182,48 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
                 if (result == null || result.Value == false)
                 {
-                    {
-                        try
-                        {
-                            var javaBinFolder = new DirectoryInfo(field.Value);
-                            var jre = new JavaRuntimeEntity
-                            {
-                                JavaDetails =
-                                    JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
-                                JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
-                                JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
-                            };
-                            if (JavaUtils.IsJavaRuntimeValid(jre))
-                            {
-                                this.Engine.JreManager.JavaRuntime = jre;
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            TerminologyLogger.GetLogger()
-                                .ErrorFormat($"cannot resolve java exe path through user input. Caused by:{ex.Message}");
-
-                            continue;
-                        }
-                        break;
-                    }
-                }
-                else
-                {
+                    TerminologyLogger.GetLogger().Info("User refused to enter a java path.");
                     return false;
                 }
+
+                try
+                {
+                    var path = field.Value;
+                    if (!File.Exists(path))
+                    {
+                        this.Engine.UiControl.PopupNotifyDialog(
+                            TranslationManager.GetManager.Localize("JavaPathNotExistsTitle", "Path Not Exists"),
+                            TranslationManager.GetManager.Localize("JavaPathNotExists",
+                                "The java exe path you have entered is not exists."));
+                        continue;
+                    }
+                    //TODO: Use var attr = File.GetAttributes(field.Value); to auto determinte is java bin path or exe path
+
+                    var javaBinFolder = new FileInfo(field.Value).Directory;
+                    var jre = new JavaRuntimeEntity
+                    {
+                        JavaDetails =
+                            JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
+                        JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
+                        JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
+                    };
+                    if (JavaUtils.IsJavaRuntimeValid(jre))
+                    {
+                        this.Engine.JreManager.JavaRuntime = jre;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TerminologyLogger.GetLogger()
+                        .ErrorFormat($"cannot resolve java exe path through user input. Caused by:{ex.Message}");
+
+                    continue;
+                }
+                break;
             }
             return true;
         }
