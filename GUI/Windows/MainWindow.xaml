@@ -21,7 +21,7 @@
         </Border.Resources>
         <Border.Background>
             <ImageBrush Opacity="0.5"
-                        ImageSource="{Binding Path=SelectInstance.Background,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}"
+                        ImageSource="{Binding Path=SelectInstance.BackgroundLocalPath,Mode=OneWay,Converter={StaticResource ImageLocalConverter}}"
                         Stretch="UniformToFill" />
         </Border.Background>
         <DockPanel>
@@ -45,7 +45,7 @@
                                 Style="{DynamicResource TerminologyConfigIconButtonStyle}" />
                         <Button x:Name="UpdateButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyUpdateIconButtonStyle}" />
-                        <Button x:Name="CreateInstanceButton" x:FieldModifier="public"
+                        <Button x:Name="CreateInstanceButton" x:FieldModifier="public" IsEnabled="False"
                                 Style="{DynamicResource TerminologyRoundPlusIconButtonStyle}" />
                         <Button x:Name="CloseButton" x:FieldModifier="public"
                                 Style="{DynamicResource TerminologyCloseIconButtonStyle}" />
@@ -85,7 +85,7 @@
                             DockPanel.Dock="Top"
                             Name="InstanceListBox"
                             SelectionChanged="Selector_OnSelectionChanged"
-                            Style="{DynamicResource TerminologyListBoxStyle}"
+                            Style="{StaticResource TerminologyListBoxStyle}"
                             SelectedItem="{Binding SelectInstance,Mode=OneWayToSource}"
                             FontSize="16"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -93,8 +93,8 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel Height="60">
-                                        <Image Height="50" DockPanel.Dock="Left"
-                                               Source="{Binding Icon,Converter={StaticResource ImageLocalConverter}}" />
+                                        <Image Height="50" Width="50" DockPanel.Dock="Left"
+                                               Source="{Binding IconLocalPath,Converter={StaticResource ImageLocalConverter}}" />
                                         <Border Margin="5,0,0,0">
                                             <DockPanel>
                                                 <TextBlock DockPanel.Dock="Top" FontFamily="SimHei" FontSize="18"

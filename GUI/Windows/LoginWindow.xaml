@@ -33,7 +33,7 @@
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"
                             MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" />
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" />
                 </StackPanel>
 
             </DockPanel>
@@ -56,12 +56,12 @@
                        Canvas.Right="330" Canvas.Top="125" FontSize="15"
                        Style="{StaticResource TerminologyTextBlockStyle}" TextAlignment="Right" />
             <TextBox x:Name="UsernameBox" Height="25" Canvas.Left="158" TextWrapping="Wrap" Canvas.Top="75" Width="282"
-                     FontSize="15" Style="{DynamicResource TerminologyTextBoxStyle}" />
+                     FontSize="15" Style="{StaticResource TerminologyTextBoxStyle}" />
             <PasswordBox x:Name="PasswordBox" Canvas.Left="158" Canvas.Top="122" Width="282" Height="25" FontSize="15"
-                         Style="{DynamicResource TransparentPasswordBox}" />
+                         Style="{StaticResource TransparentPasswordBox}" />
             <ComboBox Name="LoginModeComboBox" x:FieldModifier="public" Canvas.Left="158" Canvas.Top="172" Width="156"
                       Height="25" SelectedIndex="1" FontSize="15" HorizontalContentAlignment="Center"
-                      Style="{DynamicResource TerminologyComboBoxStyle}"
+                      Style="{StaticResource TerminologyComboBoxStyle}"
                       SelectionChanged="LoginMode_OnSelectionChanged">
                 <ComboBoxItem Content="{Binding Path=OfflineAccountModeTranslation,Mode=OneWay}"
                               HorizontalAlignment="Stretch" Width="118" />
@@ -70,13 +70,13 @@
             </ComboBox>
             <CheckBox x:Name="IsPerservePasswordCheckBox" IsChecked="{Binding IsPerservePassword,Mode=TwoWay}"
                       x:FieldModifier="public" Content="{Binding Path=RememberAccountTranslation}" Canvas.Left="331"
-                      Canvas.Top="177" FontSize="15" Style="{DynamicResource TransparentCkeckBoxStyle}" />
+                      Canvas.Top="177" FontSize="15" Style="{StaticResource TransparentCkeckBoxStyle}" />
             <Button x:Name="LoginButton" x:FieldModifier="public"
-                    Style="{DynamicResource TerminologyGreenButtonStyle}"
+                    Style="{StaticResource TerminologyGreenButtonStyle}"
                     Content="{Binding Path=LoginButtonTranslation}" Canvas.Left="177" Canvas.Top="232" Width="119"
                     Height="28" Click="LoginButton_Click" />
             <Button x:Name="CancleButton" x:FieldModifier="public"
-                    Style="{DynamicResource TerminologyRedButtonStyle}"
+                    Style="{StaticResource TerminologyRedButtonStyle}"
                     Content="{Binding Path=CancelButtonTranslation}" Canvas.Left="321" Canvas.Top="232" Width="119"
                     Height="28" />
             <TextBlock TextWrapping="Wrap" Text="{Binding Path=LoginModeTranslation}" Canvas.Right="330"

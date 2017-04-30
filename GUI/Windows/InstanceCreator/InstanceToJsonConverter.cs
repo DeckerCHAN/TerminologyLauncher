@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using TerminologyLauncher.Logging;
 
-namespace TerminologyLauncher.GUI.Windows.InstanceCreateWindows
+namespace TerminologyLauncher.GUI.Windows.InstanceCreator
 {
     public class InstanceToJsonConverter: IValueConverter
     {

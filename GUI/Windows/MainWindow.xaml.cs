@@ -25,8 +25,8 @@ namespace TerminologyLauncher.GUI.Windows
     /// </summary>
     public sealed partial class MainWindow : INotifyPropertyChanged, IPopup
     {
-        private ObservableCollection<InstanceEntity> InstanceListValue;
-        private InstanceEntity SelectInstanceValue;
+        private ObservableCollection<LocalizedInstanceEntity> InstanceListValue;
+        private LocalizedInstanceEntity SelectInstanceValue;
         private PlayerEntity PlayerValue;
         private string CoreVersionValue;
 
@@ -53,7 +53,7 @@ namespace TerminologyLauncher.GUI.Windows
             }
         }
 
-        public InstanceEntity SelectInstance
+        public LocalizedInstanceEntity SelectInstance
         {
             get { return this.SelectInstanceValue; }
             set
@@ -63,7 +63,7 @@ namespace TerminologyLauncher.GUI.Windows
             }
         }
 
-        public ObservableCollection<InstanceEntity> InstanceList
+        public ObservableCollection<LocalizedInstanceEntity> InstanceList
         {
             get { return this.InstanceListValue; }
             set

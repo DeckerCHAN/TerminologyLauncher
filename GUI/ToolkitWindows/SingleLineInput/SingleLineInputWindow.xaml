@@ -28,7 +28,7 @@
                            Text="{Binding Title}" />
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
                             Click="CloseButton_OnClick" />
                 </StackPanel>
 
@@ -36,14 +36,14 @@
 
         </Border>
         <Canvas>
-            <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330"
+            <TextBlock Name="FieldTextBlock" FontWeight="Bold"  Canvas.Right="330"
                        Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}"
-                       Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119" />
+                       Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119" ><Run Text="{Binding FieldName}"/><Run Text=":" /></TextBlock>
             <TextBox x:Name="UserInput" Height="25" Canvas.Left="149" Canvas.Top="50" Width="282"
                      Text="{Binding InputContent,Mode=TwoWay}" TextWrapping="NoWrap" FontSize="15"
-                     Style="{DynamicResource TerminologyTextBoxStyle}" />
+                     Style="{StaticResource TerminologyTextBoxStyle}" />
             <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation,Mode=OneTime}"
-                    Style="{DynamicResource TerminologyGreenButtonStyle}" Canvas.Left="364" Canvas.Top="99"
+                    Style="{StaticResource TerminologyGreenButtonStyle}" Canvas.Left="364" Canvas.Top="99"
                     Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 
         </Canvas>

@@ -29,17 +29,17 @@
                            Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Path=ConsoleWindowTitleTranslation,Mode=OneWay}" />
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
                             Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
 
         </Border>
         <Border Padding="5">
-            <ListView Style="{DynamicResource TerminologyListViewStyle}" ItemsSource="{Binding ProcessLogs}">
+            <ListView Style="{StaticResource TerminologyListViewStyle}" ItemsSource="{Binding ProcessLogs}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding}"
+                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding}"
                                    TextWrapping="Wrap" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

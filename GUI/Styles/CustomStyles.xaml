@@ -27,7 +27,7 @@
     </Style>
 
     <Style x:Key="TerminologyTextBlockStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontFamily" Value="Microsoft YaHei" />
     </Style>
 
@@ -38,7 +38,7 @@
     </Style>
 
     <Style x:Key="TerminologyCheckBoxStyle" TargetType="{x:Type CheckBox}">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
     </Style>
 
     <Style x:Key="TerminologyTinyIconButtonStyle" TargetType="{x:Type  Button}">
@@ -121,7 +121,7 @@
     </Style>
 
     <Style TargetType="{x:Type TextBox}" x:Key="TerminologyViewOnlyTextBoxStyle">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}" />
         <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}" />
@@ -156,7 +156,7 @@
     </Style>
 
     <Style TargetType="{x:Type TextBox}" x:Key="TerminologyTextBoxStyle">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}" />
         <Setter Property="BorderBrush" Value="{StaticResource CommonBoxBorder}" />
@@ -186,7 +186,7 @@
     </Style>
 
     <Style TargetType="{x:Type PasswordBox}" x:Key="TransparentPasswordBox">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource AlmostOpaqueBackground}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}" />
@@ -238,7 +238,7 @@
     </Style>
     <Style x:Key="TerminologyTreeviewItemStyle" TargetType="TreeViewItem">
         <Setter Property="FontSize" Value="17" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontFamily" Value="Microsoft YaHei" />
     </Style>
     <!-- Combox-->

@@ -13,7 +13,7 @@ using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
 using TerminologyLauncher.GUI.Windows.ConfigWindows;
 using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
-using TerminologyLauncher.GUI.Windows.InstanceCreateWindows;
+using TerminologyLauncher.GUI.Windows.InstanceCreator;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -23,6 +23,8 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class UiControl : IPopup
     {
+        public InstanceCreateWindow InstanceCrateWindow { get; set; }
+        //This new keywork hidding base MainWindow
         public new Windows.MainWindow MainWindow { get; set; }
         public Windows.LoginWindow LoginWindow { get; set; }
         public Windows.ConsoleWindow ConsoleWindow { get; set; }
@@ -34,6 +36,7 @@ namespace TerminologyLauncher.GUI
             this.MainWindow = new Windows.MainWindow(this.Config);
             this.LoginWindow = new Windows.LoginWindow(this.Config);
             this.ConsoleWindow = new Windows.ConsoleWindow(this.Config);
+            this.InstanceCrateWindow = new InstanceCreateWindow();
         }
 
         public Storyboard FadeInStoryboard => Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500));
@@ -135,17 +138,39 @@ namespace TerminologyLauncher.GUI
                 () =>
                 {
                     result =
-                        new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs).ShowDialog();
+                        new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs)
+                            .ShowDialog();
                 });
             return result;
         }
 
-        public void StartInstanceCreateWindow(InstanceEntity instance)
+        public void ShowInstanceCreateWindow()
         {
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                new InstanceCreateWindow(instance).ShowDialog();
-            });
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeInShowWindow(this.InstanceCrateWindow, TimeSpan.FromMilliseconds(300)); });
+            }
+            catch (Exception ex)
+            {
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show instnace create window right now! Cause:{ex}");
+                this.Shutdown();
+            }
+        }
+
+        public void HideInstanceCreateWindow()
+        {
+            try
+            {
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeOutHideWindow(this.InstanceCrateWindow, TimeSpan.FromMilliseconds(300)); });
+            }
+            catch (Exception ex)
+            {
+                Logging.TerminologyLogger.GetLogger()
+                    .FatalFormat($"Cannot hide instnace create right now! Cause:{ex.Message}");
+                this.Shutdown();
+            }
         }
 
         private void UiControl_OnExit(object sender, ExitEventArgs e)

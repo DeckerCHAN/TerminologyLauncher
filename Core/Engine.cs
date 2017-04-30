@@ -43,6 +43,7 @@ namespace TerminologyLauncher.Core
         public AuthServer AuthServer { get; set; }
         public FileRepository FileRepo { get; set; }
         public InstanceManager InstanceManager { get; set; }
+        public InstanceCreator InstanceCreator { get; set; }
         public UpdateManager UpdateManager { get; set; }
         public Dictionary<string, HandlerBase> Handlers { get; set; }
         public JreManager JreManager { get; set; }
@@ -86,6 +87,7 @@ namespace TerminologyLauncher.Core
 
         public void RegisterHandlers()
         {
+            //TODO:In Future, this process may managed by an individual module. Also, may load external handler by reflection.
             TerminologyLogger.GetLogger().Debug("Engine Register events.");
 
             //Get all types who impl/extend Hadler Base
@@ -97,9 +99,14 @@ namespace TerminologyLauncher.Core
                 {
                     continue;
                 }
-                var h = (HandlerBase) Activator.CreateInstance(type, this);
-                this.Handlers.Add(h.Name, h);
-                TerminologyLogger.GetLogger().InfoFormat($"Successfuly loadded Handler: {h.Name}");
+                var handlerInstance = (HandlerBase) Activator.CreateInstance(type, this);
+                if (this.Handlers.ContainsKey(handlerInstance.Name))
+                {
+                    this.Handlers.Remove(handlerInstance.Name);
+                    TerminologyLogger.GetLogger().InfoFormat($"{handlerInstance.Name} already exists. Overloaded by new instance.");
+                }
+                this.Handlers.Add(handlerInstance.Name, handlerInstance);
+                TerminologyLogger.GetLogger().InfoFormat($"Successfuly loadded Handler: {handlerInstance.Name}");
             }
         }
 
@@ -112,6 +119,7 @@ namespace TerminologyLauncher.Core
                 this.JreManager = new JreManager(this.CoreConfig.GetConfigString("jreManagerConfig"));
                 this.InstanceManager = new InstanceManager(this.CoreConfig.GetConfigString("instanceManagerConfig"),
                     this.FileRepo, this.JreManager);
+
                 this.UpdateManager = new UpdateManager(this.CoreConfig.GetConfigString("updateManagerConfig"),
                     this.CoreVersion, this.BuildVersion);
                 TerminologyLogger.GetLogger().Info("Engine extra component initialized...");

@@ -64,19 +64,22 @@ namespace TerminologyLauncher.InstanceManagerSystem
             }
         }
 
-        public List<InstanceEntity> InstancesWithLocalImageSource
+        public List<LocalizedInstanceEntity> LocalizedInstanceList
         {
             get
             {
-                var instances = this.Instances;
-                foreach (var instanceEntity in instances)
+                var instances = new List<LocalizedInstanceEntity>();
+                foreach (var instanceEntity in this.Instances)
                 {
-                    instanceEntity.Icon = this.GetIconImage(instanceEntity.InstanceName);
-                    instanceEntity.Background = this.GetBackgroundImage(instanceEntity.InstanceName);
+                    var localInstance = (LocalizedInstanceEntity)CopyUtils.MakeCopy(instanceEntity,typeof(LocalizedInstanceEntity));
+                    localInstance.IconLocalPath = this.GetIconImage(instanceEntity.InstanceName);
+                    localInstance.BackgroundLocalPath = this.GetBackgroundImage(instanceEntity.InstanceName);
+                    instances.Add(localInstance);
                 }
                 return instances;
             }
         }
+
 
         public InstanceEntity[] InstancesArray => this.Instances.ToArray();
 
@@ -282,7 +285,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
                         )
                         {
                             //TODO:Support progress
-                            this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"), newInstanceEntity.InstanceName,
+                            this.ReceiveEntirePackage(new InternalNodeProgress("Ignore"),
+                                newInstanceEntity.InstanceName,
                                 newEntirePackageFileEntity);
                         }
                     }
@@ -393,11 +397,12 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                 if (instance.FileSystem.EntirePackageFiles != null && instance.FileSystem.EntirePackageFiles.Count != 0)
                 {
-                    var singlePackageDownloadNodeProgress = 30D/instance.FileSystem.EntirePackageFiles.Count;
+                    var singlePackageDownloadNodeProgress = 30D / instance.FileSystem.EntirePackageFiles.Count;
                     foreach (var entirePackageFile in instance.FileSystem.EntirePackageFiles)
                     {
                         this.ReceiveEntirePackage(progress.CreateNewInternalSubProgress(
-                                $"Receiving entire package {entirePackageFile.Name}", singlePackageDownloadNodeProgress),
+                                $"Receiving entire package {entirePackageFile.Name}",
+                                singlePackageDownloadNodeProgress),
                             instance.InstanceName, entirePackageFile);
                     }
                 }
@@ -410,7 +415,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                 if (instance.FileSystem.OfficialFiles != null && instance.FileSystem.OfficialFiles.Count != 0)
                 {
-                    var singleOfficialDownloadNodeProgress = 30D/instance.FileSystem.OfficialFiles.Count;
+                    var singleOfficialDownloadNodeProgress = 30D / instance.FileSystem.OfficialFiles.Count;
                     foreach (var officialFileEntity in instance.FileSystem.OfficialFiles)
                     {
                         this.ReceiveOfficialFile(
@@ -428,7 +433,7 @@ namespace TerminologyLauncher.InstanceManagerSystem
 
                 if (instance.FileSystem.CustomFiles != null && instance.FileSystem.CustomFiles.Count != 0)
                 {
-                    var singleCustomDownloadNodeProgress = 30D/instance.FileSystem.CustomFiles.Count;
+                    var singleCustomDownloadNodeProgress = 30D / instance.FileSystem.CustomFiles.Count;
                     foreach (var customFileEntity in instance.FileSystem.CustomFiles)
                     {
                         this.ReceiveCustomFile(
@@ -567,7 +572,8 @@ namespace TerminologyLauncher.InstanceManagerSystem
             return folder;
         }
 
-        private void ReceiveOfficialFile(LeafNodeProgress progress, string instanceName, OfficialFileEntity officialFile,
+        private void ReceiveOfficialFile(LeafNodeProgress progress, string instanceName,
+            OfficialFileEntity officialFile,
             FileRepository usingRepo)
         {
             //Try to find file at file repo 
@@ -584,11 +590,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var downloadLink = customFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName,
                 customFile.LocalPath);
-            TerminologyLogger.GetLogger().Info(
-                $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
+            TerminologyLogger.GetLogger()
+                .Info(
+                    $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadFile(progress, downloadLink, downloadTargetPositon, customFile.Md5);
-            TerminologyLogger.GetLogger().Info(
-                $"Successfully downloaded file:{downloadTargetPositon} from remote url:{downloadLink}.");
+            TerminologyLogger.GetLogger()
+                .Info(
+                    $"Successfully downloaded file:{downloadTargetPositon} from remote url:{downloadLink}.");
         }
 
         private void ReceiveEntirePackage(InternalNodeProgress progress, string instanceName,
@@ -597,11 +605,13 @@ namespace TerminologyLauncher.InstanceManagerSystem
             var downloadLink = entirePackageFile.DownloadLink;
             var downloadTargetPositon = Path.Combine(this.GetInstanceRootFolder(instanceName).FullName,
                 entirePackageFile.LocalPath ?? string.Empty);
-            TerminologyLogger.GetLogger().Info(
-                $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
+            TerminologyLogger.GetLogger()
+                .Info(
+                    $"Downloading file:{downloadTargetPositon} from remote url:{downloadLink}.");
             DownloadUtils.DownloadZippedFile(progress, downloadLink, downloadTargetPositon, entirePackageFile.Md5);
-            TerminologyLogger.GetLogger().Info(
-                $"Successfully downloaded file:{downloadLink} then extracted to {downloadTargetPositon}.");
+            TerminologyLogger.GetLogger()
+                .Info(
+                    $"Successfully downloaded file:{downloadLink} then extracted to {downloadTargetPositon}.");
         }
 
         private string GetIconImage(string instanceName)

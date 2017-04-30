@@ -28,7 +28,7 @@
                            Text="{Binding TitileTranslation}" />
                 <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <Button x:Name="CloseButton" x:FieldModifier="public"
-                            Style="{DynamicResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
                             Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
@@ -36,17 +36,17 @@
         <Canvas>
             <Border Canvas.Left="32" Canvas.Top="30" BorderBrush="{StaticResource CornerBorder}" BorderThickness="2">
                 <ScrollViewer Height="272" Width="623" HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto" Style="{DynamicResource TerminologyScrollViewerStyle}">
+                              VerticalScrollBarVisibility="Auto" Style="{StaticResource TerminologyScrollViewerStyle}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl ItemsSource="{Binding TextInputConfigObjects}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-                                        <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}">
+                                        <TextBlock FontSize="20" Style="{StaticResource TerminologyTextBlockStyle}">
                                             <Run Text="{Binding Path=Name,Mode=OneWay}" /><Run Text=":" />
                                         </TextBlock>
                                         <TextBox MinWidth="90" Margin="5,0,0,0" FontSize="20"
-                                                 Style="{DynamicResource TerminologyTextBoxStyle}"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
                                                  Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="NoWrap" />
                                     </StackPanel>
@@ -58,10 +58,10 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-                                        <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}">
+                                        <TextBlock FontSize="20" Style="{StaticResource TerminologyTextBlockStyle}">
                                             <Run Text="{Binding Path=Name,Mode=OneWay}" /><Run Text=":" />
                                         </TextBlock>
-                                        <ComboBox Style="{DynamicResource TerminologyComboBoxStyle}"
+                                        <ComboBox Style="{StaticResource TerminologyComboBoxStyle}"
                                                   ItemsSource="{Binding AvailableSelections}"
                                                   SelectedItem="{Binding Selection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                             <ComboBox.ItemTemplate>
@@ -79,13 +79,13 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-                                        <TextBlock FontSize="20" Style="{DynamicResource TerminologyTextBlockStyle}">
+                                        <TextBlock FontSize="20" Style="{StaticResource TerminologyTextBlockStyle}">
                                             <Run Text="{Binding Path=Name,Mode=OneWay}" /><Run Text=":" />
                                         </TextBlock>
                                         <Slider MinWidth="50" Maximum="{Binding Maxium}" Minimum="{Binding Minium}"
                                                 Value="{Binding Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBox MinWidth="90" Margin="5,0,0,0" FontSize="20"
-                                                 Style="{DynamicResource TerminologyTextBoxStyle}"
+                                                 Style="{StaticResource TerminologyTextBoxStyle}"
                                                  Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="NoWrap" />
                                     </StackPanel>
@@ -98,7 +98,7 @@
 
             </Border>
             <Button x:Name="ConfirmButton" Content="{Binding ConfirmButtionTranslation}"
-                    Style="{DynamicResource TerminologyGreenButtonStyle}" Canvas.Left="554" Canvas.Top="334"
+                    Style="{StaticResource TerminologyGreenButtonStyle}" Canvas.Left="554" Canvas.Top="334"
                     Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 
         </Canvas>

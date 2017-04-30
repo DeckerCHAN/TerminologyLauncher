@@ -41,8 +41,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,7 +61,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Windows\InstanceCreateWindows\InstanceCreateWindow.xaml">
+    <Page Include="Windows\InstanceCreator\InstanceCreateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,11 +114,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Animations\Fade.cs" />
-    <Compile Include="Windows\InstanceCreateWindows\InstanceCreateWindow.xaml.cs">
+    <Compile Include="Windows\InstanceCreator\InstanceCreateWindow.xaml.cs">
       <DependentUpon>InstanceCreateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IPopup.cs" />
-    <Compile Include="Windows\InstanceCreateWindows\InstanceToJsonConverter.cs" />
+    <Compile Include="Windows\InstanceCreator\InstanceToJsonConverter.cs" />
     <Compile Include="Windows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
