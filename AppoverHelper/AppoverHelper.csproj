@@ -48,6 +48,7 @@
     <Compile Include="Structure\AccessRight.cs" />
     <Compile Include="Structure\AccessRightDefinition.cs" />
     <Compile Include="Appover.cs" />
+    <Compile Include="Structure\Artifact.cs" />
     <Compile Include="Structure\Build.cs" />
     <Compile Include="Structure\History.cs" />
     <Compile Include="Structure\Job.cs" />
@@ -58,7 +59,12 @@
     <Compile Include="Structure\RoleAce.cs" />
     <Compile Include="Structure\SecurityDescriptor.cs" />
     <Compile Include="Utils\ContractResolver.cs" />
+    <Compile Include="Utils\DownloadUtils.cs" />
+    <Compile Include="Utils\EncodeUtils.cs" />
     <Compile Include="Utils\JsonConverter.cs" />
+    <Compile Include="Utils\Net\TerminologyWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils\SerializeSettings.cs" />
   </ItemGroup>
   <ItemGroup>
