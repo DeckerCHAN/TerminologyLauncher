@@ -54,7 +54,7 @@
     <Compile Include="Structure\Job.cs" />
     <Compile Include="Structure\NuGetFeed.cs" />
     <Compile Include="Structure\Project.cs" />
-    <Compile Include="Structure\ProjectBasicInfo.cs" />
+    <Compile Include="Structure\ProjectWithBuild.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\RoleAce.cs" />
     <Compile Include="Structure\SecurityDescriptor.cs" />

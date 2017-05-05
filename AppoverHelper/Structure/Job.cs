@@ -13,7 +13,7 @@
         public int PassedTestsCount { get; set; }
         public int FailedTestsCount { get; set; }
         public int ArtifactsCount { get; set; }
-        public bool Status { get; set; }
+        public string Status { get; set; }
         public string Started { get; set; }
         public string Finished { get; set; }
         public string Created { get; set; }
