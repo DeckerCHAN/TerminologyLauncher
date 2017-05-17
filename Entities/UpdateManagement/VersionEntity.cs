@@ -7,6 +7,6 @@ namespace TerminologyLauncher.Entities.UpdateManagement
         public string CoreVersion { get; set; }
         public int BuildNumber { get; set; }
         public string DownloadLink { get; set; }
-        public string Md5 { get; set; }
+        public long Size { get; set; }
     }
 }

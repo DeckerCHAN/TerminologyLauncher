@@ -14,6 +14,7 @@ namespace AppoverHelper
         public string Slag { get; private set; }
 
         private HashSet<Build> BuildCache { get; set; }
+        private const string APIUrlPerffix = "https://ci.appveyor.com/api";
         private const string ProjectUrlPerffix = "https://ci.appveyor.com/api/projects";
         private const string JobUrlPerffix = "https://ci.appveyor.com/api/buildjobs";
         private const int BuildAmountPreFecht = 10;
@@ -49,7 +50,12 @@ namespace AppoverHelper
             {
                 var artifactUrl = string.Format($"{JobUrlPerffix}/{job.JobId}/artifacts");
                 var content = Utils.DownloadUtils.GetWebContent(artifactUrl);
-                artifacts.UnionWith(Utils.JsonConverter.Parse<HashSet<Artifact>>(content));
+                var artifactForBuild = Utils.JsonConverter.Parse<HashSet<Artifact>>(content);
+                foreach (var artifact in artifactForBuild)
+                {
+                    artifact.DownloadLink = $"{APIUrlPerffix}/buildjobs/{job.JobId}/artifacts/{artifact.FileName}";
+                }
+                artifacts.UnionWith(artifactForBuild);
             }
             return artifacts;
         }
@@ -64,27 +70,31 @@ namespace AppoverHelper
             {
                 latestSuccessfulVersion = successfulBuilds.OrderByDescending(x => x.BuildNumber).First().Version;
             }
-            //Other wise
-            while (true)
+            else
             {
-                var fetchedHistory = this.FetchOlderBuilds();
-
-                if (fetchedHistory.Count == 0)
+                //Other wise
+                while (true)
                 {
-                    return null;
-                }
+                    var fetchedHistory = this.FetchOlderBuilds();
 
-                var statifyingCondition = fetchedHistory
-                    .Where(x => x.Status.Equals("success") && x.Branch.Equals(branch))
-                    .ToList();
+                    if (fetchedHistory.Count == 0)
+                    {
+                        return null;
+                    }
+
+                    var statifyingCondition = fetchedHistory
+                        .Where(x => x.Status.Equals("success") && x.Branch.Equals(branch))
+                        .ToList();
 
 
-                if (statifyingCondition.Any())
-                {
-                    latestSuccessfulVersion = statifyingCondition.OrderByDescending(x => x.BuildNumber).First().Version;
-                    break;
+                    if (statifyingCondition.Any())
+                    {
+                        latestSuccessfulVersion = statifyingCondition.OrderByDescending(x => x.BuildNumber).First().Version;
+                        break;
+                    }
                 }
             }
+           
 
 
             var url = string.Format($"{ProjectUrlPerffix}/{this.Account}/{this.Slag}/build/{latestSuccessfulVersion}");

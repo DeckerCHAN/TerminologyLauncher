@@ -81,7 +81,16 @@ namespace TerminologyLauncher.Utils
             DownloadFile(progress, url, path);
             if (!EncodeUtils.CheckFileMd5(path, md5))
             {
-                throw new Exception($"Md5 check for {path} refused!");
+                throw new Exception($"Md5 check for {path} falied!");
+            }
+        }
+
+        public static void DownloadFile(LeafNodeProgress progress, string url, string path, long size)
+        {
+            DownloadFile(progress, url, path);
+            if (!EncodeUtils.CheckFileSize(path, size))
+            {
+                throw new Exception($"Size check for {path} falied!");
             }
         }
 
@@ -154,6 +163,22 @@ namespace TerminologyLauncher.Utils
                 new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")}));
             DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url,
                 tempFileInfo.FullName, md5);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
+            progress.Percent = 100D;
+        }
+
+        public static void DownloadZippedFile(InternalNodeProgress progress, string url, string path, long size)
+        {
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url,
+                tempFileInfo.FullName, size);
 
             if (!Directory.Exists(path))
             {

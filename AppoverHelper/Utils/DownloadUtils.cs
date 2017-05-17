@@ -16,7 +16,7 @@ namespace AppoverHelper.Utils
             using (var client = new TerminologyWebClient())
             {
                 client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-                client.Encoding = EncodeUtils.NoneBomUTF8;
+                client.Encoding = EncodeUtils.NoneBomUtf8;
                 return client.DownloadString(url);
             }
         }

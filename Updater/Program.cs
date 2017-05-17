@@ -8,39 +8,47 @@ namespace TerminologyLauncher.Updater
     {
         static void Main(string[] args)
         {
-            if (args.Length != 3)
+            try
             {
-                Console.WriteLine("Wrong number of arguments! Exit...");
-                return;
-            }
-
-            if (!(Directory.Exists(args[0]) && Directory.Exists(args[1])))
-            {
-                Console.WriteLine("Source folder or target folder not exists! Exit...");
-            }
-            if ((Process.GetProcessesByName("TerminologyLauncher").Length +
-                 Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 0)
-            {
-                Console.WriteLine("Searching for TerminologyLauncher process and wait for close!");
-                foreach (var process in Process.GetProcessesByName("TerminologyLauncher"))
+                if (args.Length != 3)
                 {
-                    process.WaitForExit();
+                    Console.WriteLine("Wrong number of arguments! Exit...");
+                    return;
                 }
-                foreach (var process in Process.GetProcessesByName("TerminologyLauncher[DEBUG]"))
+
+                if (!(Directory.Exists(args[0]) && Directory.Exists(args[1])))
                 {
-                    process.WaitForExit();
+                    Console.WriteLine("Source folder or target folder not exists! Exit...");
                 }
+                if ((Process.GetProcessesByName("TerminologyLauncher").Length +
+                     Process.GetProcessesByName("TerminologyLauncher[DEBUG]").Length) > 0)
+                {
+                    Console.WriteLine("Searching for TerminologyLauncher process and wait for close!");
+                    foreach (var process in Process.GetProcessesByName("TerminologyLauncher"))
+                    {
+                        process.WaitForExit();
+                    }
+                    foreach (var process in Process.GetProcessesByName("TerminologyLauncher[DEBUG]"))
+                    {
+                        process.WaitForExit();
+                    }
+                }
+
+
+                var sourceFolder = new DirectoryInfo(args[0]);
+                var targetFolder = new DirectoryInfo(args[1]);
+
+                CopyAllFilesToDirectory(sourceFolder.FullName, targetFolder.FullName);
+
+                var newProcess = new Process { StartInfo = { FileName = args[2] } };
+                newProcess.Start();
+
             }
-
-
-            var sourceFolder = new DirectoryInfo(args[0]);
-            var targetFolder = new DirectoryInfo(args[1]);
-
-            CopyAllFilesToDirectory(sourceFolder.FullName, targetFolder.FullName);
-
-            var newProcess = new Process {StartInfo = {FileName = args[2]}};
-            newProcess.Start();
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+       
             Console.WriteLine("Done...Press any key to continue...");
         }
 

@@ -9,6 +9,11 @@ namespace TerminologyLauncher.Utils
     {
         public static Encoding NoneBomUTF8 => new UTF8Encoding(false);
 
+        public static long CalcuateFileSize(string filePath)
+        {
+          return  new FileInfo(filePath).Length;
+        }
+
         public static string CalculateFileMd5(string filePath)
         {
             if (!File.Exists(filePath) || File.GetAttributes(filePath).HasFlag(FileAttributes.Directory))
@@ -50,6 +55,12 @@ namespace TerminologyLauncher.Utils
         public static bool CheckFileMd5(string filePath, string md5)
         {
             return CalculateFileMd5(filePath).ToUpper().Equals(md5.ToUpper());
+        }
+
+        public static bool CheckFileSize(string filePath, long size)
+        {
+
+            return CalcuateFileSize(filePath).Equals(size);
         }
 
         public static string Base64Encode(string plainText)

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using AppoverHelper;
 using TerminologyLauncher.Configs;
 using TerminologyLauncher.Entities.UpdateManagement;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Updater.Exceptions.Update;
 using TerminologyLauncher.Utils;
+using TerminologyLauncher.Utils.Exceptions;
 using TerminologyLauncher.Utils.ProgressService;
-using TerminologyLauncher.Utils.SerializeUtils;
 
 namespace TerminologyLauncher.Updater
 {
@@ -16,11 +18,14 @@ namespace TerminologyLauncher.Updater
     {
         public VersionEntity Version { get; set; }
         public Config Config { get; set; }
+        public Appover Appover { get; set; }
 
         public UpdateManager(string configPath, string coreVersion, int buildNumber)
         {
             this.Config = new Config(new FileInfo(configPath));
             this.Version = new VersionEntity() {BuildNumber = buildNumber, CoreVersion = coreVersion};
+            this.Appover = new Appover(this.Config.GetConfigString("appover.account"),
+                this.Config.GetConfigString("appover.slag"));
         }
 
         public UpdateInfo GetupdateInfo()
@@ -82,16 +87,34 @@ namespace TerminologyLauncher.Updater
         private VersionEntity GetLatestVersion()
         {
             Logging.TerminologyLogger.GetLogger().Info("Start to check lanucher update.");
-            var update =
-                JsonConverter.Parse<UpdateEntity>(
-                    DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
-            if (update.LatestVersion == null || string.IsNullOrEmpty(update.LatestVersion.CoreVersion) ||
-                update.LatestVersion.BuildNumber.Equals(0) || string.IsNullOrEmpty(update.LatestVersion.DownloadLink) ||
-                string.IsNullOrEmpty(update.LatestVersion.Md5))
+            var version = new VersionEntity();
+            var latestArtificat = this.Appover.LatestBuildArtificats(this.Config.GetConfigString("appover.branch"))
+                ?.Where(x => x.Type.Equals("Zip"))
+                .First();
+            if (latestArtificat == null)
             {
                 throw new UpdateServerErrorException("Cannot fetch the latest version!");
             }
-            return update.LatestVersion;
+            //TODO:Replace hard coded.
+            var versionFilename = latestArtificat.FileName;
+            var template = @"TerminologyLauncher[DEBUG]/bin/TerminologyLauncher{0}({1}).zip";
+            var versions = StringUtils.ReverseStringFormat(template, versionFilename);
+
+            if (versions == null || versions.Count == 0)
+            {
+                throw new SolutionProvidedException(
+                    "Can not extract version from artifact name",
+                    "Please contact DeckerCHAN@gmail.com or create issue on https://github.com/DeckerCHAN/TerminologyLauncher/issues .");
+            }
+
+
+            version.CoreVersion = versions[0];
+            version.BuildNumber = Convert.ToInt32(versions[1]);
+            version.Size = latestArtificat.Size;
+            version.DownloadLink = latestArtificat.DownloadLink;
+
+
+            return version;
         }
 
         public string FetchLatestVersionAndStartUpdate(InternalNodeProgress progress)
@@ -103,10 +126,11 @@ namespace TerminologyLauncher.Updater
                 return TranslationManager.GetManager.Localize("NoUpdateAvailable", "No update available.");
             }
 
-            var update =
-                JsonConverter.Parse<UpdateEntity>(
-                    DownloadUtils.GetWebContent(this.Config.GetConfigString("updateCheckingUrl")));
-
+            var update = new UpdateEntity()
+            {
+                LatestVersion = this.GetLatestVersion()
+            };
+            progress.Percent = 5D;
 
             var updateTempFolder = Path.Combine(FolderUtils.SystemTempFolder.FullName,
                 $"TerminologyLauncher-{update.LatestVersion.CoreVersion}-{update.LatestVersion.BuildNumber}");
@@ -124,7 +148,7 @@ namespace TerminologyLauncher.Updater
             DownloadUtils.DownloadZippedFile(
                 progress.CreateNewInternalSubProgress("Fetching update pack", 80D), update.LatestVersion.DownloadLink,
                 updateBinaryFolder,
-                update.LatestVersion.Md5);
+                update.LatestVersion.Size);
             if (!File.Exists(updaterExecutorFile))
             {
                 throw new FileNotFoundException("Cannot find updater.exe. You may have to re-install to resolve!");

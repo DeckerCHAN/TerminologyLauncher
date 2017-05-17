@@ -70,6 +70,7 @@
     <Compile Include="SerializeUtils\ContractResolver.cs" />
     <Compile Include="SerializeUtils\JsonConverter.cs" />
     <Compile Include="SerializeUtils\SerializeSettings.cs" />
+    <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj">

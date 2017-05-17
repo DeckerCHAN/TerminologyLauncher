@@ -30,7 +30,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
                 var confirm = this.Engine.UiControl.MainWindow.PopupConfirmDialog("Update",
                     $"Do you confirm to update from {this.Engine.UpdateManager.Version.CoreVersion}-{this.Engine.UpdateManager.Version.BuildNumber} to {updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}");
-                if (!confirm.Value)
+                if (confirm != null && !confirm.Value)
                 {
                     return;
                 }

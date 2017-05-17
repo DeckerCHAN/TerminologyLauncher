@@ -2,9 +2,10 @@
 {
     public class Artifact
     {
-        public string fileName { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-        public int size { get; set; }
+        public string FileName { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public long Size { get; set; }
+        public string DownloadLink { get; set; }
     }
 }

@@ -1,3 +1,7 @@
 ﻿{
-  "updateCheckingUrl": "http://terminology.b0.upaiyun.com/Update/Update.json"
+  "appover": {
+    "account": "DeckerCHAN",
+    "slag": "terminologylauncher",
+    "branch": "develop"
+  }
 }
