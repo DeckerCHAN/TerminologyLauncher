@@ -37,7 +37,8 @@ namespace TerminologyLauncher.JreManagerSystem
         {
             get
             {
-                return this.AvailableJavaRuntimeValue ?? (this.AvailableJavaRuntimeValue = new Dictionary<string, JavaRuntimeEntity>());
+                return this.AvailableJavaRuntimeValue ??
+                       (this.AvailableJavaRuntimeValue = new Dictionary<string, JavaRuntimeEntity>());
             }
             private set { this.AvailableJavaRuntimeValue = value; }
         }
@@ -52,8 +53,8 @@ namespace TerminologyLauncher.JreManagerSystem
 
             var javaPaths = this.SearchPaths.Where(Directory.Exists)
                 .SelectMany(
-                path => Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly),
-                (path, folder) => Path.Combine(folder, "bin/java.exe")
+                    path => Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly),
+                    (path, folder) => Path.Combine(folder, "bin/java.exe")
                 ).Where(File.Exists)
                 .ToList();
 
@@ -77,8 +78,5 @@ namespace TerminologyLauncher.JreManagerSystem
                 }
             }
         }
-
-
-
     }
 }

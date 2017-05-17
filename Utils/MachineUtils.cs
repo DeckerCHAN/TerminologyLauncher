@@ -12,7 +12,8 @@ namespace TerminologyLauncher.Utils
     {
         [DllImport("psapi.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetPerformanceInfo([Out] out PerformanceInformation PerformanceInformation, [In] int Size);
+        public static extern bool GetPerformanceInfo([Out] out PerformanceInformation PerformanceInformation,
+            [In] int Size);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct PerformanceInformation
@@ -38,13 +39,12 @@ namespace TerminologyLauncher.Utils
             PerformanceInformation pi = new PerformanceInformation();
             if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
             {
-                return Convert.ToInt64((pi.PhysicalAvailable.ToInt64() * pi.PageSize.ToInt64() / 1048576));
+                return Convert.ToInt64((pi.PhysicalAvailable.ToInt64()*pi.PageSize.ToInt64()/1048576));
             }
             else
             {
                 return -1;
             }
-
         }
 
         public static long GetTotalMemoryInMiB()
@@ -52,13 +52,12 @@ namespace TerminologyLauncher.Utils
             PerformanceInformation pi = new PerformanceInformation();
             if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
             {
-                return Convert.ToInt64((pi.PhysicalTotal.ToInt64() * pi.PageSize.ToInt64() / 1048576));
+                return Convert.ToInt64((pi.PhysicalTotal.ToInt64()*pi.PageSize.ToInt64()/1048576));
             }
             else
             {
                 return -1;
             }
-
         }
 
         public static string GetCurrentLanguageName()
@@ -70,13 +69,11 @@ namespace TerminologyLauncher.Utils
         {
             try
             {
-
-
                 var result = new StringBuilder();
                 // Opens the registry key for the .NET Framework entry. 
                 using (RegistryKey ndpKey =
                     RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, "").
-                    OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\"))
+                        OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\"))
                 {
                     // As an alternative, if you know the computers you will query are running .NET Framework 4.5  
                     // or later, you can use: 
@@ -86,9 +83,8 @@ namespace TerminologyLauncher.Utils
                     {
                         if (versionKeyName.StartsWith("v"))
                         {
-
                             RegistryKey versionKey = ndpKey.OpenSubKey(versionKeyName);
-                            string name = (string)versionKey.GetValue("Version", "");
+                            string name = (string) versionKey.GetValue("Version", "");
                             string sp = versionKey.GetValue("SP", "").ToString();
                             string install = versionKey.GetValue("Install", "").ToString();
                             if (install == "") //no install info, must be later.
@@ -99,7 +95,6 @@ namespace TerminologyLauncher.Utils
                                 {
                                     result.AppendLine(versionKeyName + "  " + name + "  SP" + sp);
                                 }
-
                             }
                             if (name != "")
                             {
@@ -108,7 +103,7 @@ namespace TerminologyLauncher.Utils
                             foreach (string subKeyName in versionKey.GetSubKeyNames())
                             {
                                 RegistryKey subKey = versionKey.OpenSubKey(subKeyName);
-                                name = (string)subKey.GetValue("Version", "");
+                                name = (string) subKey.GetValue("Version", "");
                                 if (name != "")
                                     sp = subKey.GetValue("SP", "").ToString();
                                 install = subKey.GetValue("Install", "").ToString();
@@ -124,11 +119,8 @@ namespace TerminologyLauncher.Utils
                                     {
                                         result.AppendLine("  " + subKeyName + "  " + name);
                                     }
-
                                 }
-
                             }
-
                         }
                     }
                 }
@@ -137,15 +129,16 @@ namespace TerminologyLauncher.Utils
             }
             catch (Exception)
             {
-
                 return "Unknown";
             }
         }
 
         public static string GetOsVersion()
         {
-            var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
-                        select x.GetPropertyValue("Caption")).FirstOrDefault();
+            var name =
+            (from x in
+                new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
+                select x.GetPropertyValue("Caption")).FirstOrDefault();
             return name != null ? $"{name} ({Environment.OSVersion})" : "Unknown";
         }
     }

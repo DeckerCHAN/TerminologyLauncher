@@ -35,7 +35,9 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     var message = this.Engine.InstanceManager.UpdateInstance(progress, instance.InstanceName);
                     progressWindow.CrossThreadClose();
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Successful updated", message);
-                    this.Engine.UiControl.MainWindow.InstanceList = new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
+                    this.Engine.UiControl.MainWindow.InstanceList =
+                        new ObservableCollection<LocalizedInstanceEntity>(
+                            this.Engine.InstanceManager.LocalizedInstanceList);
                 }
                 catch (NoAvailableUpdateException ex)
                 {
@@ -48,7 +50,6 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         .ErrorFormat($"Update instance {instance.InstanceName} encountered an error: {ex.Message}");
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         $"Encounter an wrong state error. Detail:{ex.Message}");
-
                 }
                 catch (Exception ex)
                 {
@@ -56,15 +57,15 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                         .ErrorFormat($"Update instance {instance.InstanceName} encountered an error:\n{ex}");
                     this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot update",
                         $"Caused by an internal error, we cannot update this instance right now.Detail:{ex.Message}");
-
                 }
                 finally
                 {
                     progressWindow.CrossThreadClose();
                 }
-
             });
             progressWindow.ShowDialog();
         }
+
+        public override string Name => "UPDATE_INSTANCE";
     }
 }

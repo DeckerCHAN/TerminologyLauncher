@@ -13,7 +13,7 @@ namespace TerminologyLauncher.Auth.Logins
         public DirectoryInfo ProfileRootDirectoryInfo { get; set; }
         public PlayerEntity Player { get; set; }
 
-        protected Login(string userName, string password, DirectoryInfo profileRootDirectoryInfo,Config config)
+        protected Login(string userName, string password, DirectoryInfo profileRootDirectoryInfo, Config config)
         {
             this.UserName = userName;
             this.Password = password;

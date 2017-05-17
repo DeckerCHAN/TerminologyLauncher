@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.Entities.System.Java;
+using TerminologyLauncher.GUI;
 using TerminologyLauncher.GUI.Toolkits;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
@@ -29,110 +31,106 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
 
         public void HandleEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
-
             var window = sender as Window;
             TerminologyLogger.GetLogger().InfoFormat($"MainWindow window is going to {window.Visibility}!");
             switch (window.Visibility)
             {
                 case Visibility.Hidden:
-                    {
-
-                        break;
-                    }
+                {
+                    break;
+                }
                 case Visibility.Visible:
+                {
+                    if (this.FirstStart)
                     {
-                        if (this.FirstStart)
+                        this.FirstStart = false;
+                        this.Engine.UiControl.MainWindow.CoreVersion =
+                            $"{this.Engine.CoreVersion} (build{this.Engine.BuildVersion})";
+
+                        if (!this.CheckJavaPath())
                         {
-                            this.FirstStart = false;
-                            this.Engine.UiControl.MainWindow.CoreVersion =
-                                $"{this.Engine.CoreVersion} (build{this.Engine.BuildVersion})";
+                            this.Engine.Exit();
+                            return;
+                        }
 
-                            if (!this.CheckJavaPath())
-                            {
-                                this.Engine.Exit();
-                                return;
-                            }
+                        this.Engine.UiControl.MainWindow.InstanceList =
+                            new ObservableCollection<LocalizedInstanceEntity>(
+                                this.Engine.InstanceManager.LocalizedInstanceList);
 
-                            this.Engine.UiControl.MainWindow.InstanceList =
-                                  new ObservableCollection<InstanceEntity>(this.Engine.InstanceManager.InstancesWithLocalImageSource);
-
-                            if (this.Engine.InstanceManager.Instances.Count == 0)
-                            {
-                                var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
-                                if (addHandler != null) addHandler.HandleEvent(new object(), new EventArgs());
-                            }
-                            else
-                            {
-                                Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate();
-                                        if (!string.IsNullOrEmpty(result))
-                                        {
-                                            this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("InstanceUpdateNotifyTitle", "Check Update"), result);
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        TerminologyLogger.GetLogger()
-                                            .ErrorFormat(
-                                                $"Cause by a error, can not check instance update right now! Detail:{ex.Message}");
-                                        throw;
-                                    }
-                                });
-
-                            }
+                        if (this.Engine.InstanceManager.Instances.Count == 0)
+                        {
+                            var addHandler = this.Engine.Handlers["ADD_NEW_INSTANCE"] as AddInstanceHandler;
+                            addHandler?.HandleEvent(new object(), new EventArgs());
+                        }
+                        else
+                        {
                             Task.Run(() =>
                             {
                                 try
                                 {
-                                    var message = string.Empty;
-                                    var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
-
-                                    switch (updateInfo.UpdateType)
+                                    var result = this.Engine.InstanceManager.CheckAllInstanceCouldUpdate();
+                                    if (!string.IsNullOrEmpty(result))
                                     {
-                                        case UpdateType.Higher:
-                                            message =
-                                                $"There is higher version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}) available";
-                                            break;
-                                        case UpdateType.Lower:
-                                            message =
-                                                $"You are using the test version or pre-release version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}). DO NOT DISTRIBUTE THIS VERSION!";
-                                            break;
-                                        default:
-                                            break;
+                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(
+                                            TranslationManager.GetManager.Localize("InstanceUpdateNotifyTitle",
+                                                "Check Update"), result);
                                     }
-                                    if (!string.IsNullOrEmpty(message))
-                                    {
-                                        this.Engine.UiControl.MainWindow.PopupNotifyDialog(TranslationManager.GetManager.Localize("LanucherUpdateNotifyTitle", "Lanucher Update"), message);
-
-                                    }
-
                                 }
                                 catch (Exception ex)
                                 {
                                     TerminologyLogger.GetLogger()
                                         .ErrorFormat(
-                                            $"Cause by a error, can not check update right now! Detail:{ex.Message}");
+                                            $"Cause by a error, can not check instance update right now! Detail:{ex.Message}");
                                     throw;
                                 }
-
-
                             });
-
                         }
-                        break;
+                        Task.Run(() =>
+                        {
+                            try
+                            {
+                                var message = string.Empty;
+                                var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
+
+                                switch (updateInfo.UpdateType)
+                                {
+                                    case UpdateType.Higher:
+                                        message =
+                                            $"There is higher version({updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}) available";
+                                        break;
+                                    case UpdateType.Lower:
+                                        message =
+                                            $"You are using the test version or pre-release version({this.Engine.UpdateManager.Version.CoreVersion}-{this.Engine.UpdateManager.Version.BuildNumber}). DO NOT DISTRIBUTE THIS VERSION!";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                if (!string.IsNullOrEmpty(message))
+                                {
+                                    this.Engine.UiControl.MainWindow.PopupNotifyDialog(
+                                        TranslationManager.GetManager.Localize("LanucherUpdateNotifyTitle",
+                                            "Lanucher Update"), message);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                TerminologyLogger.GetLogger()
+                                    .ErrorFormat(
+                                        $"Cause by a error, can not check update right now! Detail:{ex.Message}");
+                                throw;
+                            }
+                        });
                     }
+                    break;
+                }
                 default:
-                    {
-                        TerminologyLogger.GetLogger().Error($"HandlerBase could not handle {window.Visibility} status.");
-                        break;
-                    }
+                {
+                    TerminologyLogger.GetLogger().Error($"HandlerBase could not handle {window.Visibility} status.");
+                    break;
+                }
             }
-
-
         }
+
         public override void HandleEvent(object sender, EventArgs e)
         {
             throw new NotSupportedException();
@@ -150,14 +148,16 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             var javaRuntimeEntitiesKP = new Dictionary<string, JavaRuntimeEntity>();
             foreach (var availableJre in this.Engine.JreManager.AvailableJavaRuntimes)
             {
-
                 javaRuntimeEntitiesKP.Add(availableJre.Key, availableJre.Value);
-
             }
             if (javaRuntimeEntitiesKP.Keys.Count != 0)
             {
                 var field = new FieldReference<string>(javaRuntimeEntitiesKP.Keys.First());
-                var result = this.Engine.UiControl.PopupSingleSelectDialog(TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java"), TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe:"), javaRuntimeEntitiesKP.Keys, field);
+                var result =
+                    this.Engine.UiControl.PopupSingleSelectDialog(
+                        TranslationManager.GetManager.Localize("JavaSelectWindowTitle", "Select a Java"),
+                        TranslationManager.GetManager.Localize("JavaSelectField", "Available Java exe"),
+                        javaRuntimeEntitiesKP.Keys, field);
                 if (result == null || result.Value == false)
                 {
                     return false;
@@ -170,52 +170,64 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
             }
 
 
-
             while (this.Engine.JreManager.JavaRuntime == null)
             {
                 TerminologyLogger.GetLogger().Warn("Java path is empty. Try to receive from user..");
 
                 var field = new FieldReference<string>(string.Empty);
-                var result = this.Engine.UiControl.PopupSingleLineInputDialog(TranslationManager.GetManager.Localize("JavaInputWindowTitle", "Input a Java exe"), TranslationManager.GetManager.Localize("JavaInputField", "Java(not javaw) exe path:"), field);
+                var result =
+                    this.Engine.UiControl.PopupSingleLineInputDialog(
+                        TranslationManager.GetManager.Localize("JavaInputWindowTitle", "Input a Java exe"),
+                        TranslationManager.GetManager.Localize("JavaInputField", "Java(not javaw) exe path:"), field);
 
                 if (result == null || result.Value == false)
                 {
-                    {
-                        try
-                        {
-                            var javaBinFolder = new DirectoryInfo(field.Value);
-                            var jre = new JavaRuntimeEntity
-                            {
-                                JavaDetails =
-                                    JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
-                                JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
-                                JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
-                            };
-                            if (JavaUtils.IsJavaRuntimeValid(jre))
-                            {
-                                this.Engine.JreManager.JavaRuntime = jre;
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            TerminologyLogger.GetLogger()
-                                .ErrorFormat($"cannot resolve java exe path through user input. Caused by:{ex.Message}");
-
-                            continue;
-                        }
-                        break;
-                    }
-                }
-                else
-                {
+                    TerminologyLogger.GetLogger().Info("User refused to enter a java path.");
                     return false;
                 }
+
+                try
+                {
+                    var path = field.Value;
+                    if (!File.Exists(path))
+                    {
+                        this.Engine.UiControl.PopupNotifyDialog(
+                            TranslationManager.GetManager.Localize("JavaPathNotExistsTitle", "Path Not Exists"),
+                            TranslationManager.GetManager.Localize("JavaPathNotExists",
+                                "The java exe path you have entered is not exists."));
+                        continue;
+                    }
+                    //TODO: Use var attr = File.GetAttributes(field.Value); to auto determinte is java bin path or exe path
+
+                    var javaBinFolder = new FileInfo(field.Value).Directory;
+                    var jre = new JavaRuntimeEntity
+                    {
+                        JavaDetails =
+                            JavaUtils.GetJavaDetails(Path.Combine(javaBinFolder.FullName, "java.exe")),
+                        JavaPath = Path.Combine(javaBinFolder.FullName, "java.exe"),
+                        JavaWPath = Path.Combine(javaBinFolder.FullName, "javaw.exe")
+                    };
+                    if (JavaUtils.IsJavaRuntimeValid(jre))
+                    {
+                        this.Engine.JreManager.JavaRuntime = jre;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TerminologyLogger.GetLogger()
+                        .ErrorFormat($"cannot resolve java exe path through user input. Caused by:{ex.Message}");
+
+                    continue;
+                }
+                break;
             }
             return true;
         }
+
+        public override string Name => "MAIN_WINDOW_VISIBILITY_CHANGED";
     }
 }

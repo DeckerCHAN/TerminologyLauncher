@@ -29,7 +29,7 @@ namespace TerminologyLauncher.UnitTest
         public void Initialize()
         {
             var fileRepo = new FileRepository("Configs/FileRepositoryConfig.json");
-            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo,new JreManager(""));
+            InstanceManager = new InstanceManager("Configs/InstanceManagerConfig.json", fileRepo, new JreManager(""));
             Assert.IsTrue(new DirectoryInfo("Instances").Exists);
         }
 
@@ -58,11 +58,9 @@ namespace TerminologyLauncher.UnitTest
 
 
             var progress = new InternalNodeProgress("");
-            progress.ProgressChanged += (i) =>
-            {
-                Console.WriteLine(progress.Percent);
-            };
-            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress("", 100D), InstanceManager.Instances[0].InstanceName, new PlayerEntity() { PlayerName = "DeckerCHAN" });
+            progress.ProgressChanged += (i) => { Console.WriteLine(progress.Percent); };
+            InstanceManager.LaunchInstance(progress.CreateNewInternalSubProgress("", 100D),
+                InstanceManager.Instances[0].InstanceName, new PlayerEntity() {PlayerName = "DeckerCHAN"});
         }
     }
 }

@@ -4,14 +4,16 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Animation;
 using TerminologyLauncher.Configs;
+using TerminologyLauncher.Entities.InstanceManagement;
 using TerminologyLauncher.GUI.Animations;
 using TerminologyLauncher.GUI.Toolkits;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
 using TerminologyLauncher.GUI.ToolkitWindows.NotifyWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput;
 using TerminologyLauncher.GUI.ToolkitWindows.SingleSelect;
+using TerminologyLauncher.GUI.Windows.ConfigWindows;
+using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.InstanceCreator;
 using TerminologyLauncher.Utils.ProgressService;
 
 namespace TerminologyLauncher.GUI
@@ -21,16 +23,20 @@ namespace TerminologyLauncher.GUI
     /// </summary>
     public partial class UiControl : IPopup
     {
-        public new MainWindow MainWindow { get; set; }
-        public LoginWindow LoginWindow { get; set; }
-        public ConsoleWindow ConsoleWindow { get; set; }
+        public InstanceCreateWindow InstanceCrateWindow { get; set; }
+        //This new keywork hidding base MainWindow
+        public new Windows.MainWindow MainWindow { get; set; }
+        public Windows.LoginWindow LoginWindow { get; set; }
+        public Windows.ConsoleWindow ConsoleWindow { get; set; }
         public Config Config { get; set; }
+
         public UiControl(string configPath)
         {
             this.Config = new Config(new FileInfo(configPath));
-            this.MainWindow = new MainWindow(this.Config);
-            this.LoginWindow = new LoginWindow(this.Config);
-            this.ConsoleWindow = new ConsoleWindow(this.Config);
+            this.MainWindow = new Windows.MainWindow(this.Config);
+            this.LoginWindow = new Windows.LoginWindow(this.Config);
+            this.ConsoleWindow = new Windows.ConsoleWindow(this.Config);
+            this.InstanceCrateWindow = new InstanceCreateWindow();
         }
 
         public Storyboard FadeInStoryboard => Fade.CreateFadeInStoryboard(TimeSpan.FromMilliseconds(500));
@@ -41,11 +47,8 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.LoginWindow.Dispatcher.Invoke(() =>
-                {
-                    Fade.FadeInShowWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300));
-                });
-
+                this.LoginWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeInShowWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
@@ -58,10 +61,8 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.LoginWindow.Dispatcher.Invoke(() =>
-                {
-                    Fade.FadeOutHideWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300));
-                });
+                this.LoginWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeOutHideWindow(this.LoginWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
@@ -74,27 +75,22 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() =>
-                {
-                    Fade.FadeInShowWindow(this.MainWindow, TimeSpan.FromMilliseconds(300));
-                });
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeInShowWindow(this.MainWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
                 Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show main window right now! Cause:{ex}");
                 this.Shutdown();
             }
-
         }
+
         public void HideMainWindow()
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() =>
-                {
-                    Fade.FadeOutHideWindow(this.MainWindow, TimeSpan.FromMilliseconds(300));
-                });
-
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeOutHideWindow(this.MainWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
@@ -108,8 +104,8 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { Fade.FadeInShowWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
-
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeInShowWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
@@ -122,8 +118,8 @@ namespace TerminologyLauncher.GUI
         {
             try
             {
-                this.MainWindow.Dispatcher.Invoke(() => { Fade.FadeOutHideWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
-
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeOutHideWindow(this.ConsoleWindow, TimeSpan.FromMilliseconds(300)); });
             }
             catch (Exception ex)
             {
@@ -132,19 +128,49 @@ namespace TerminologyLauncher.GUI
             }
         }
 
-        public bool? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs, IEnumerable<ItemSelectConfigObject> itemSelectConfigs, IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
+        //TODO: Build config window in construction!
+        public bool? StartConfigWindow(IEnumerable<TextInputConfigObject> textInputConfigs,
+            IEnumerable<ItemSelectConfigObject> itemSelectConfigs,
+            IEnumerable<RangeRestrictedSelectConfigObject> rangeRestrictedSelectConfigs)
         {
             bool? result = false;
-            this.Dispatcher.Invoke(() =>
-            {
-                result = new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs).ShowDialog();
-            });
+            this.Dispatcher.Invoke(
+                () =>
+                {
+                    result =
+                        new ConfigWindow(textInputConfigs, itemSelectConfigs, rangeRestrictedSelectConfigs)
+                            .ShowDialog();
+                });
             return result;
         }
 
-        private void App_OnStartup(object sender, StartupEventArgs e)
+        public void ShowInstanceCreateWindow()
         {
+            try
+            {
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeInShowWindow(this.InstanceCrateWindow, TimeSpan.FromMilliseconds(300)); });
+            }
+            catch (Exception ex)
+            {
+                Logging.TerminologyLogger.GetLogger().FatalFormat($"Cannot show instnace create window right now! Cause:{ex}");
+                this.Shutdown();
+            }
+        }
 
+        public void HideInstanceCreateWindow()
+        {
+            try
+            {
+                this.MainWindow.Dispatcher.Invoke(
+                    () => { Fade.FadeOutHideWindow(this.InstanceCrateWindow, TimeSpan.FromMilliseconds(300)); });
+            }
+            catch (Exception ex)
+            {
+                Logging.TerminologyLogger.GetLogger()
+                    .FatalFormat($"Cannot hide instnace create right now! Cause:{ex.Message}");
+                this.Shutdown();
+            }
         }
 
         private void UiControl_OnExit(object sender, ExitEventArgs e)
@@ -155,10 +181,7 @@ namespace TerminologyLauncher.GUI
 
         public void PopupNotifyDialog(string title, string content)
         {
-            this.Dispatcher.Invoke(() =>
-            {
-                new NotifyWindow(null, title, content).ShowDialog();
-            });
+            this.Dispatcher.Invoke(() => { new NotifyWindow(null, title, content).ShowDialog(); });
         }
 
         public bool? PopupConfirmDialog(string title, string content)
@@ -166,7 +189,8 @@ namespace TerminologyLauncher.GUI
             throw new NotImplementedException();
         }
 
-        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options, FieldReference<string> selection)
+        public bool? PopupSingleSelectDialog(string title, string fieldName, IEnumerable<string> options,
+            FieldReference<string> selection)
         {
             bool? result = false;
             this.Dispatcher.Invoke(() =>

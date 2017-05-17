@@ -5,10 +5,8 @@ namespace TerminologyLauncher.Entities.InstanceManagement
 {
     public class InstanceFileSystemEntity
     {
-        public List<EntirePackageFileEntity> EntirePackageFiles { get; set; }
-        public List<OfficialFileEntity> OfficialFiles { get; set; }
-        public List<CustomFileEntity> CustomFiles { get; set; }
-
-
+        public ICollection<EntirePackageFileEntity> EntirePackageFiles { get; set; }
+        public ICollection<OfficialFileEntity> OfficialFiles { get; set; }
+        public ICollection<CustomFileEntity> CustomFiles { get; set; }
     }
 }

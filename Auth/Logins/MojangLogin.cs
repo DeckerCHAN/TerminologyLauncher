@@ -33,22 +33,18 @@ namespace TerminologyLauncher.Auth.Logins
                 var textures = JsonConverter.Parse<TexturesInfoEntity>(decode);
                 var url = textures.Textures.SKIN.Url;
 
-                var request = (HttpWebRequest)WebRequest.Create(url);
+                var request = (HttpWebRequest) WebRequest.Create(url);
                 var orgStream = new MemoryStream();
                 request.GetResponse().GetResponseStream().CopyTo(orgStream);
                 orgStream.Seek(0, SeekOrigin.Begin);
                 var cropStream = this.SelectImage(orgStream);
                 cropStream.Seek(0, SeekOrigin.Begin);
                 return cropStream;
-
             }
             catch (Exception)
             {
-
                 return defaultImageStream;
             }
-
-
         }
 
         public override LoginResultType ExecuteLogin()
@@ -64,9 +60,12 @@ namespace TerminologyLauncher.Auth.Logins
                 var additionalInfo = this.ReceiveAdditionalInfoEntity(authResponse.SelectedProfile.Id);
 
 
-                var userDiectionary = new DirectoryInfo(Path.Combine(this.ProfileRootDirectoryInfo.FullName, authResponse.SelectedProfile.Id));
+                var userDiectionary =
+                    new DirectoryInfo(Path.Combine(this.ProfileRootDirectoryInfo.FullName,
+                        authResponse.SelectedProfile.Id));
                 FolderUtils.RecreateFolder(userDiectionary);
-                var userAvatarFileInfo = new FileInfo(Path.Combine(userDiectionary.FullName, authResponse.SelectedProfile.Name + ".png"));
+                var userAvatarFileInfo =
+                    new FileInfo(Path.Combine(userDiectionary.FullName, authResponse.SelectedProfile.Name + ".png"));
                 using (var fileStream = new FileStream(userAvatarFileInfo.FullName, FileMode.Create))
                 {
                     this.ReceiveUserAvatar(additionalInfo).CopyTo(fileStream);
@@ -82,11 +81,9 @@ namespace TerminologyLauncher.Auth.Logins
                     PlayerAvatarImagePath = userAvatarFileInfo.FullName,
                     PlayerName = authResponse.SelectedProfile.Name,
                     PlayerId = authResponse.SelectedProfile.Id
-
                 };
 
                 return LoginResultType.Success;
-
             }
             catch (WebException)
             {
@@ -96,9 +93,7 @@ namespace TerminologyLauncher.Auth.Logins
             {
                 return LoginResultType.UnknownError;
             }
-
         }
-
 
 
         private AdditionalInfoEntity ReceiveAdditionalInfoEntity(string id)
@@ -164,7 +159,7 @@ namespace TerminologyLauncher.Auth.Logins
 
             string authResponse = string.Empty;
 
-            var request = (HttpWebRequest)WebRequest.Create(this.Config.GetConfigString("authUrls.authenticate"));
+            var request = (HttpWebRequest) WebRequest.Create(this.Config.GetConfigString("authUrls.authenticate"));
             request.Method = WebRequestMethods.Http.Post;
             request.ContentType = "application/json";
             var postData = JsonConverter.ConvertToJson(sendPayload);
@@ -173,10 +168,8 @@ namespace TerminologyLauncher.Auth.Logins
             using (var requestStream = request.GetRequestStream())
             {
                 requestStream.Write(postByteArray, 0, postByteArray.Length);
-
             }
             var response = request.GetResponse();
-
 
 
             using (var responseStream = response.GetResponseStream())
@@ -190,7 +183,6 @@ namespace TerminologyLauncher.Auth.Logins
 
 
             return JsonConverter.Parse<AuthenticateResponse>(authResponse);
-
         }
 
         private bool IsValidMailAddress(string emailaddress)

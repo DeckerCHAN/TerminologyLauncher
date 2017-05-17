@@ -14,10 +14,8 @@ namespace TerminologyLauncher.UnitTest
         public void TopLevel()
         {
             var progress = new InternalNodeProgress("Main task");
-            progress.ProgressChanged += sender =>
-            {
-                Console.WriteLine($"Woring on {progress.TaskName}:{progress.Percent}");
-            };
+            progress.ProgressChanged +=
+                sender => { Console.WriteLine($"Woring on {progress.TaskName}:{progress.Percent}"); };
             Console.WriteLine(progress.Percent);
             this.MidLevel(progress.CreateNewInternalSubProgress("MidLevel", 100D));
             Console.WriteLine("All tasks finished!");
@@ -58,16 +56,15 @@ namespace TerminologyLauncher.UnitTest
             progress.Percent = 100;
         }
 
-        [TestMethod][MTAThread]
+        [TestMethod]
+        [MTAThread]
         public void DownloadText()
         {
             var progress = new InternalNodeProgress("Download text main task");
-            progress.ProgressChanged += sender =>
-            {
-                Console.WriteLine(progress.Percent);
-            };
+            progress.ProgressChanged += sender => { Console.WriteLine(progress.Percent); };
             var content =
-                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(string.Format("Downloading Text"), 100D), "http://baidu.com");
+                DownloadUtils.GetWebContent(progress.CreateNewLeafSubProgress(string.Format("Downloading Text"), 100D),
+                    "http://baidu.com");
             // Console.WriteLine(content);
         }
 
@@ -75,10 +72,7 @@ namespace TerminologyLauncher.UnitTest
         public void DownloadFileWithProgress()
         {
             var progress = new InternalNodeProgress("Download File Main Task");
-            progress.ProgressChanged += sender =>
-            {
-                Console.WriteLine(progress.Percent);
-            };
+            progress.ProgressChanged += sender => { Console.WriteLine(progress.Percent); };
             var downloadFile = new FileInfo("Test.QQ.exe");
             if (downloadFile.Exists)
             {

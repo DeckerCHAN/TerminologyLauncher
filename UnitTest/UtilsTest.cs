@@ -12,7 +12,6 @@ namespace TerminologyLauncher.UnitTest
         [TestMethod]
         public void ResourceUtilsTest()
         {
-
             var stream = ResourceUtils.ReadEmbedFileResource("TerminologyLauncher.UnitTest.Resources.default_large.png");
             Assert.IsNotNull(stream);
             var content = new StreamReader(stream).ReadToEnd();
@@ -26,6 +25,5 @@ namespace TerminologyLauncher.UnitTest
             var javaDetail = JavaUtils.GetJavaDetails(@"C:\Program Files\Java\jdk1.7.0_51\bin\java.exe");
             Assert.IsTrue(javaDetail.JavaType == JavaType.ServerX64);
         }
-
     }
 }

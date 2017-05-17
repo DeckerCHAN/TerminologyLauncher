@@ -8,8 +8,8 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         public override void HandleEvent(object sender, EventArgs e)
         {
             TerminologyLogger.GetLogger().Info("Handling close event.");
-            
-            Engine.GetEngine().Exit(); 
+
+            Engine.GetEngine().Exit();
         }
 
         public CloseHandler(Engine engine)
@@ -19,5 +19,7 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             this.Engine.UiControl.LoginWindow.CancleButton.Click += this.HandleEvent;
             this.Engine.UiControl.MainWindow.CloseButton.Click += this.HandleEvent;
         }
+
+        public override string Name => "WINDOWS_CLOSE";
     }
 }

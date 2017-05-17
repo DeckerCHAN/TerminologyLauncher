@@ -27,6 +27,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
                 this.OnPropertyChanged();
             }
         }
+
         internal ConfirmWindow(Window owner, string title, string content)
         {
             this.Owner = owner;
@@ -45,6 +46,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
             this.IsCanceled = false;
             this.OnPropertyChanged();
         }
+
         private bool IsCanceled { get; set; }
 
         public new bool? ShowDialog()
@@ -83,8 +85,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ConfirmWindow
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

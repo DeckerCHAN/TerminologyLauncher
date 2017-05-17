@@ -9,6 +9,5 @@ namespace TerminologyLauncher.Entities.Account.AdditionalInfo.Properties
         public string ProfileName { get; set; }
         public bool IsPublic { get; set; }
         public TexturesEntity Textures { get; set; }
-
     }
 }

@@ -4,12 +4,11 @@
         Title="Notice" Height="230" Width="430"
         Style="{DynamicResource TerminologyWindowStyle}"
         WindowStartupLocation="CenterScreen"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-     >
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
+                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -17,25 +16,32 @@
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#4C4EE8E8" Offset="0"/>
-                    <GradientStop Offset="1"/>
+                    <GradientStop Color="#4C4EE8E8" Offset="0" />
+                    <GradientStop Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <DockPanel Height="30"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
+            <DockPanel Height="30" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left"  Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
-                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"/>
+                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"
+                           Text="{Binding Title}" />
+                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                            MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" />
 
             </DockPanel>
 
         </Border>
         <Canvas DockPanel.Dock="Bottom">
-            <Border Canvas.Left="30" Canvas.Top="10" >
-                <ScrollViewer Width="366" Height="113" Style="{DynamicResource TerminologyScrollViewerStyle}" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                    <TextBlock  Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding ContentString}" FontSize="16" Height="auto" Width="345"  TextWrapping="Wrap" VerticalAlignment="Center"  HorizontalAlignment="Left" TextAlignment="Center"></TextBlock>
+            <Border Canvas.Left="30" Canvas.Top="10">
+                <ScrollViewer Width="366" Height="113" Style="{StaticResource TerminologyScrollViewerStyle}"
+                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding ContentString}"
+                               FontSize="16" Height="auto" Width="345" TextWrapping="Wrap" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" TextAlignment="Center" />
                 </ScrollViewer>
             </Border>
-            <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation,Mode=OneTime}" Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="285" Canvas.Top="128" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_OnClick"></Button>
+            <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation,Mode=OneTime}"
+                    Style="{StaticResource TerminologyGreenButtonStyle}" Canvas.Left="285" Canvas.Top="128"
+                    Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_OnClick" />
         </Canvas>
     </DockPanel>
 </Window>

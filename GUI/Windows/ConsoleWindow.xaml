@@ -1,0 +1,50 @@
+﻿<Window x:Class="TerminologyLauncher.GUI.Windows.ConsoleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ConsoleWindow" Height="679" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource TerminologyWindowStyle}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#4C4EE8E8" Offset="0" />
+                    <GradientStop Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown" Height="30"
+                       Background="Transparent">
+
+                <TextBlock DockPanel.Dock="Left" Margin="8,8,0,0"
+                           Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Path=ConsoleWindowTitleTranslation,Mode=OneWay}" />
+                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <Button x:Name="CloseButton" x:FieldModifier="public"
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
+                            Click="CloseButton_OnClick" />
+                </StackPanel>
+            </DockPanel>
+
+        </Border>
+        <Border Padding="5">
+            <ListView Style="{StaticResource TerminologyListViewStyle}" ItemsSource="{Binding ProcessLogs}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding}"
+                                   TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </DockPanel>
+
+</Window>

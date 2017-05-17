@@ -22,14 +22,15 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             {
                 if (this.Engine.UpdateManager.GetupdateInfo().UpdateType != UpdateType.Higher)
                 {
-                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Update", "No update available. You are using the latest version.");
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Update",
+                        "No update available. You are using the latest version.");
                     return;
                 }
 
                 var updateInfo = this.Engine.UpdateManager.GetupdateInfo();
                 var confirm = this.Engine.UiControl.MainWindow.PopupConfirmDialog("Update",
                     $"Do you confirm to update from {this.Engine.UpdateManager.Version.CoreVersion}-{this.Engine.UpdateManager.Version.BuildNumber} to {updateInfo.LatestVersion.CoreVersion}-{updateInfo.LatestVersion.BuildNumber}");
-                if (!confirm.Value)
+                if (confirm != null && !confirm.Value)
                 {
                     return;
                 }
@@ -46,9 +47,8 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     }
                     catch (Exception ex)
                     {
-
                         Logging.TerminologyLogger.GetLogger()
-                                .Error($"Cannot update because {ex}");
+                            .Error($"Cannot update because {ex}");
                         this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                             $"Caused by an internal error, we cannot update right now. Detail: {ex.Message}");
                     }
@@ -58,7 +58,6 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                     }
                 });
                 progressWindow.ShowDialog();
-
             }
             catch (Exception ex)
             {
@@ -69,11 +68,8 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
 
                 throw;
             }
-
-
-
-
-
         }
+
+        public override string Name => "UPDATE_APPLICATION";
     }
 }

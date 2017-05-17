@@ -16,7 +16,17 @@ namespace TerminologyLauncher.Utils
             {
                 throw new FileNotFoundException(string.Format("{0} is not valid java executable file."));
             }
-            var process = new Process { StartInfo = new ProcessStartInfo(javaExeFile.FullName) { Arguments = "-version", CreateNoWindow = true, UseShellExecute = false, RedirectStandardError = true } };
+            var process = new Process
+            {
+                StartInfo =
+                    new ProcessStartInfo(javaExeFile.FullName)
+                    {
+                        Arguments = "-version",
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardError = true
+                    }
+            };
             process.Start();
             process.WaitForExit();
 
@@ -26,10 +36,10 @@ namespace TerminologyLauncher.Utils
             var bit = Regex.Match(content, "(?<=Java HotSpot\\(TM\\)\\ ).*(?=\\ VM \\(build)").Value;
             if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(bit))
             {
-                throw new SolutionProvidedException("Invalid java exe!","Using valid java exe or install a new jre.");
+                throw new SolutionProvidedException("Invalid java exe!", "Using valid java exe or install a new jre.");
             }
 
-            var jDetail = new JavaDetails { JavaVersion = version };
+            var jDetail = new JavaDetails {JavaVersion = version};
 
             if (bit.EndsWith("Server"))
             {
@@ -102,9 +112,6 @@ namespace TerminologyLauncher.Utils
             {
                 return false;
             }
-
-
-
         }
     }
 }

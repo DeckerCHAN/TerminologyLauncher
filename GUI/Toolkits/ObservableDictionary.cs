@@ -36,7 +36,7 @@ namespace TerminologyLauncher.GUI.Toolkits
             this._keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>();
 
             foreach (KeyValuePair<TKey, TValue> entry in dictionary)
-                this.DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
+                this.DoAddEntry((TKey) entry.Key, (TValue) entry.Value);
         }
 
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
@@ -49,7 +49,7 @@ namespace TerminologyLauncher.GUI.Toolkits
             this._keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>(comparer);
 
             foreach (KeyValuePair<TKey, TValue> entry in dictionary)
-                this.DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
+                this.DoAddEntry((TKey) entry.Key, (TValue) entry.Value);
         }
 
         #endregion public
@@ -77,7 +77,7 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         public TValue this[TKey key]
         {
-            get { return (TValue)this._keyedEntryCollection[key].Value; }
+            get { return (TValue) this._keyedEntryCollection[key].Value; }
             set { this.DoSetEntry(key, value); }
         }
 
@@ -95,7 +95,7 @@ namespace TerminologyLauncher.GUI.Toolkits
                 {
                     this._dictionaryCache.Clear();
                     foreach (DictionaryEntry entry in this._keyedEntryCollection)
-                        this._dictionaryCache.Add((TKey)entry.Key, (TValue)entry.Value);
+                        this._dictionaryCache.Add((TKey) entry.Key, (TValue) entry.Value);
                     this._dictionaryCacheVersion = this._version;
                 }
                 return this._dictionaryCache;
@@ -143,7 +143,7 @@ namespace TerminologyLauncher.GUI.Toolkits
         public bool TryGetValue(TKey key, out TValue value)
         {
             bool result = this._keyedEntryCollection.Contains(key);
-            value = result ? (TValue)this._keyedEntryCollection[key].Value : default(TValue);
+            value = result ? (TValue) this._keyedEntryCollection[key].Value : default(TValue);
             return result;
         }
 
@@ -183,14 +183,12 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            if (this.CollectionChanged != null)
-                this.CollectionChanged(this, args);
+            this.CollectionChanged?.Invoke(this, args);
         }
 
         private void OnPropertyChanged(string name)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         private bool RemoveEntry(TKey key)
@@ -204,7 +202,7 @@ namespace TerminologyLauncher.GUI.Toolkits
             bool keyExists = this._keyedEntryCollection.Contains(key);
 
             // if identical key/value pair already exists, nothing to do
-            if (keyExists && value.Equals((TValue)this._keyedEntryCollection[key].Value))
+            if (keyExists && value.Equals((TValue) this._keyedEntryCollection[key].Value))
                 return false;
 
             // otherwise, remove the existing entry
@@ -289,7 +287,8 @@ namespace TerminologyLauncher.GUI.Toolkits
 
             // fire CollectionChanged notification
             if (index > -1)
-                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index));
+                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
+                    new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value), index));
             else
                 this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
@@ -301,7 +300,8 @@ namespace TerminologyLauncher.GUI.Toolkits
 
             // fire CollectionChanged notification
             if (index > -1)
-                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index));
+                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+                    new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value), index));
             else
                 this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
@@ -361,7 +361,7 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         TValue IDictionary<TKey, TValue>.this[TKey key]
         {
-            get { return (TValue)this._keyedEntryCollection[key].Value; }
+            get { return (TValue) this._keyedEntryCollection[key].Value; }
             set { this.DoSetEntry(key, value); }
         }
 
@@ -371,7 +371,7 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         void IDictionary.Add(object key, object value)
         {
-            this.DoAddEntry((TKey)key, (TValue)value);
+            this.DoAddEntry((TKey) key, (TValue) value);
         }
 
         void IDictionary.Clear()
@@ -381,7 +381,7 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         bool IDictionary.Contains(object key)
         {
-            return this._keyedEntryCollection.Contains((TKey)key);
+            return this._keyedEntryCollection.Contains((TKey) key);
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -395,15 +395,15 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         object IDictionary.this[object key]
         {
-            get { return this._keyedEntryCollection[(TKey)key].Value; }
-            set { this.DoSetEntry((TKey)key, (TValue)value); }
+            get { return this._keyedEntryCollection[(TKey) key].Value; }
+            set { this.DoSetEntry((TKey) key, (TValue) value); }
         }
 
         ICollection IDictionary.Keys => this.Keys;
 
         void IDictionary.Remove(object key)
         {
-            this.DoRemoveEntry((TKey)key);
+            this.DoRemoveEntry((TKey) key);
         }
 
         ICollection IDictionary.Values => this.Values;
@@ -435,7 +435,8 @@ namespace TerminologyLauncher.GUI.Toolkits
             }
             if ((index < 0) || (index > array.Length))
             {
-                throw new ArgumentOutOfRangeException("CopyTo() failed:  index parameter was outside the bounds of the supplied array");
+                throw new ArgumentOutOfRangeException(
+                    "CopyTo() failed:  index parameter was outside the bounds of the supplied array");
             }
             if ((array.Length - index) < this._keyedEntryCollection.Count)
             {
@@ -443,7 +444,7 @@ namespace TerminologyLauncher.GUI.Toolkits
             }
 
             foreach (DictionaryEntry entry in this._keyedEntryCollection)
-                array[index++] = new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value);
+                array[index++] = new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value);
         }
 
         int ICollection<KeyValuePair<TKey, TValue>>.Count => this._keyedEntryCollection.Count;
@@ -461,14 +462,14 @@ namespace TerminologyLauncher.GUI.Toolkits
 
         void ICollection.CopyTo(Array array, int index)
         {
-            ((ICollection)this._keyedEntryCollection).CopyTo(array, index);
+            ((ICollection) this._keyedEntryCollection).CopyTo(array, index);
         }
 
         int ICollection.Count => this._keyedEntryCollection.Count;
 
-        bool ICollection.IsSynchronized => ((ICollection)this._keyedEntryCollection).IsSynchronized;
+        bool ICollection.IsSynchronized => ((ICollection) this._keyedEntryCollection).IsSynchronized;
 
-        object ICollection.SyncRoot => ((ICollection)this._keyedEntryCollection).SyncRoot;
+        object ICollection.SyncRoot => ((ICollection) this._keyedEntryCollection).SyncRoot;
 
         #endregion ICollection
 
@@ -516,7 +517,7 @@ namespace TerminologyLauncher.GUI.Toolkits
                 Collection<DictionaryEntry> entries = (Collection<DictionaryEntry>)
                     this._siInfo.GetValue("entries", typeof(Collection<DictionaryEntry>));
                 foreach (DictionaryEntry entry in entries)
-                    this.AddEntry((TKey)entry.Key, (TValue)entry.Value);
+                    this.AddEntry((TKey) entry.Key, (TValue) entry.Value);
             }
         }
 
@@ -558,9 +559,13 @@ namespace TerminologyLauncher.GUI.Toolkits
 
             #region public
 
-            public KeyedDictionaryEntryCollection() : base() { }
+            public KeyedDictionaryEntryCollection() : base()
+            {
+            }
 
-            public KeyedDictionaryEntryCollection(IEqualityComparer<TIsKey> comparer) : base(comparer) { }
+            public KeyedDictionaryEntryCollection(IEqualityComparer<TIsKey> comparer) : base(comparer)
+            {
+            }
 
             #endregion public
 
@@ -572,7 +577,7 @@ namespace TerminologyLauncher.GUI.Toolkits
 
             protected override TIsKey GetKeyForItem(DictionaryEntry entry)
             {
-                return (TIsKey)entry.Key;
+                return (TIsKey) entry.Key;
             }
 
             #endregion protected
@@ -589,7 +594,8 @@ namespace TerminologyLauncher.GUI.Toolkits
         #region Enumerator
 
         [Serializable, StructLayout(LayoutKind.Sequential)]
-        public struct Enumerator<TIsKey, TIsValue> : IEnumerator<KeyValuePair<TIsKey, TIsValue>>, IDisposable, IDictionaryEnumerator, IEnumerator
+        public struct Enumerator<TIsKey, TIsValue> : IEnumerator<KeyValuePair<TIsKey, TIsValue>>, IDisposable,
+            IDictionaryEnumerator, IEnumerator
         {
             #region constructors
 
@@ -635,7 +641,10 @@ namespace TerminologyLauncher.GUI.Toolkits
                 this._index++;
                 if (this._index < this._dictionary._keyedEntryCollection.Count)
                 {
-                    this._current = new KeyValuePair<TIsKey, TIsValue>((TIsKey)this._dictionary._keyedEntryCollection[this._index].Key, (TIsValue)this._dictionary._keyedEntryCollection[this._index].Value);
+                    this._current =
+                        new KeyValuePair<TIsKey, TIsValue>(
+                            (TIsKey) this._dictionary._keyedEntryCollection[this._index].Key,
+                            (TIsValue) this._dictionary._keyedEntryCollection[this._index].Value);
                     return true;
                 }
                 this._index = -2;
@@ -705,6 +714,7 @@ namespace TerminologyLauncher.GUI.Toolkits
                     return new DictionaryEntry(this._current.Key, this._current.Value);
                 }
             }
+
             object IDictionaryEnumerator.Key
             {
                 get
@@ -713,6 +723,7 @@ namespace TerminologyLauncher.GUI.Toolkits
                     return this._current.Key;
                 }
             }
+
             object IDictionaryEnumerator.Value
             {
                 get
@@ -748,8 +759,7 @@ namespace TerminologyLauncher.GUI.Toolkits
         private int _dictionaryCacheVersion = 0;
         private int _version = 0;
 
-        [NonSerialized]
-        private SerializationInfo _siInfo = null;
+        [NonSerialized] private SerializationInfo _siInfo = null;
 
         #endregion fields
     }

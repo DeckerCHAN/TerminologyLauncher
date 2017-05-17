@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
@@ -9,13 +11,14 @@ using TerminologyLauncher.Utils;
 
 namespace TerminologyLauncher.Logging
 {
-
     public static class TerminologyLogger
     {
         private static bool _isLoaded = false;
 
         private static MemoryAppender MemoryAppender;
-        public static ILog GetLogger()
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public  static ILog GetLogger()
         {
             if (!_isLoaded)
             {
@@ -26,7 +29,9 @@ namespace TerminologyLauncher.Logging
 
                 _isLoaded = true;
             }
-            return LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);
+
+            var logger = LogManager.GetLogger(new StackTrace().GetFrame(1).GetMethod().ReflectedType);;
+            return logger;
         }
 
         public static string GetLogConent()
@@ -45,8 +50,6 @@ namespace TerminologyLauncher.Logging
                 }
                 return content.ToString();
             }
-
         }
     }
-
 }

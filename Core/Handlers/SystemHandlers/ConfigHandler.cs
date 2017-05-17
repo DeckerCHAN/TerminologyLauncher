@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TerminologyLauncher.GUI.ToolkitWindows.ConfigWindow.ConfigObjects;
+using TerminologyLauncher.GUI.Windows.ConfigWindows.ConfigObjects;
 using TerminologyLauncher.I18n;
 using TerminologyLauncher.Logging;
 using TerminologyLauncher.Utils;
@@ -19,16 +19,26 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
         {
             try
             {
-                var javaExeConfig = new TextInputConfigObject(TranslationManager.GetManager.Localize("JavaPathTranslation", "Java Path:"), "javaExePath",
-                    this.Engine.JreManager.JavaRuntime.JavaPath);
-                var jvmExtraArguments = new TextInputConfigObject(TranslationManager.GetManager.Localize("ExtraJvmArgumentTranslation", "Extra JvmArguments:"), "extraJvmArguments",
-                    this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"));
-                var memoryconfigs = new RangeRestrictedSelectConfigObject(TranslationManager.GetManager.Localize("MaxiumMemoryAllocate", "Maxium Memory Allocate:"),
-                    "maxMemorySizeMega", MachineUtils.GetTotalMemoryInMiB(), 512L,
-                    Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")));
+                var javaExeConfig =
+                    new TextInputConfigObject(
+                        TranslationManager.GetManager.Localize("JavaPathTranslation", "Java Path:"), "javaExePath",
+                        this.Engine.JreManager.JavaRuntime.JavaPath);
+                var jvmExtraArguments =
+                    new TextInputConfigObject(
+                        TranslationManager.GetManager.Localize("ExtraJvmArgumentTranslation", "Extra JvmArguments:"),
+                        "extraJvmArguments",
+                        this.Engine.InstanceManager.Config.GetConfigString("extraJvmArguments"));
+                var memoryconfigs =
+                    new RangeRestrictedSelectConfigObject(
+                        TranslationManager.GetManager.Localize("MaxiumMemoryAllocate", "Maxium Memory Allocate:"),
+                        "maxMemorySizeMega", MachineUtils.GetTotalMemoryInMiB(), 512L,
+                        Convert.ToInt64(this.Engine.InstanceManager.Config.GetConfigString("maxMemorySizeMega")));
 
 
-                var reslut = this.Engine.UiControl.StartConfigWindow(new List<TextInputConfigObject> { javaExeConfig, jvmExtraArguments }, null, new List<RangeRestrictedSelectConfigObject> { memoryconfigs });
+                var reslut =
+                    this.Engine.UiControl.StartConfigWindow(
+                        new List<TextInputConfigObject> {javaExeConfig, jvmExtraArguments}, null,
+                        new List<RangeRestrictedSelectConfigObject> {memoryconfigs});
                 if (reslut == null || !reslut.Value)
                 {
                     return;
@@ -36,12 +46,13 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
                 try
                 {
                     this.Engine.JreManager.JavaRuntime =
-                  JavaUtils.GetJavaRuntimeFromJavaExe(javaExeConfig.Value);
+                        JavaUtils.GetJavaRuntimeFromJavaExe(javaExeConfig.Value);
                     TerminologyLogger.GetLogger().InfoFormat($"Refreshed jre to {javaExeConfig.Value}");
                 }
                 catch (Exception)
                 {
-                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Jre not valid", "The java path that you inputed is not valid! Ignore to set.");
+                    this.Engine.UiControl.MainWindow.PopupNotifyDialog("Jre not valid",
+                        "The java path that you inputed is not valid! Ignore to set.");
                     TerminologyLogger.GetLogger().Error("Trying to set invalid java exe path. Ignore.");
                 }
                 this.Engine.InstanceManager.Config.SetConfigString("maxMemorySizeMega", memoryconfigs.Value.ToString());
@@ -52,12 +63,13 @@ namespace TerminologyLauncher.Core.Handlers.SystemHandlers
             }
             catch (Exception ex)
             {
-
                 TerminologyLogger.GetLogger()
-                        .Error($"Cannot update because {ex}");
+                    .Error($"Cannot update because {ex}");
                 this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
                     $"Caused by an internal error, we cannot update right now. Detail: {ex.Message}");
             }
         }
+
+        public override string Name => "CONFIG";
     }
 }

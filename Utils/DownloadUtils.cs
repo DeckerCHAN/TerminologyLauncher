@@ -12,7 +12,8 @@ namespace TerminologyLauncher.Utils
     {
         public static void DownloadFile(string url, string path)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
+            var tempFileInfo =
+                new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
             var targetFileInfo = new FileInfo(path);
             using (var client = new TerminologyWebClient())
             {
@@ -38,14 +39,12 @@ namespace TerminologyLauncher.Utils
         {
             var task = new Task(() =>
             {
-                var tempFileInfo = new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
+                var tempFileInfo =
+                    new FileInfo(Path.Combine(FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")));
                 var targetFileInfo = new FileInfo(path);
                 using (var client = new TerminologyWebClient())
                 {
-                    client.DownloadProgressChanged += (i, o) =>
-                    {
-                        progress.Percent = o.ProgressPercentage;
-                    };
+                    client.DownloadProgressChanged += (i, o) => { progress.Percent = o.ProgressPercentage; };
                     try
                     {
                         client.DownloadFileTaskAsync(url, tempFileInfo.FullName).Wait();
@@ -73,11 +72,8 @@ namespace TerminologyLauncher.Utils
             }
             catch (AggregateException ae)
             {
-
                 throw ae.InnerException;
             }
-
-
         }
 
         public static void DownloadFile(LeafNodeProgress progress, string url, string path, string md5)
@@ -85,13 +81,23 @@ namespace TerminologyLauncher.Utils
             DownloadFile(progress, url, path);
             if (!EncodeUtils.CheckFileMd5(path, md5))
             {
-                throw new Exception($"Md5 check for {path} refused!");
+                throw new Exception($"Md5 check for {path} falied!");
+            }
+        }
+
+        public static void DownloadFile(LeafNodeProgress progress, string url, string path, long size)
+        {
+            DownloadFile(progress, url, path);
+            if (!EncodeUtils.CheckFileSize(path, size))
+            {
+                throw new Exception($"Size check for {path} falied!");
             }
         }
 
         public static void DownloadAndExtractZippedFile(string url, string path, string md5)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")}));
             DownloadFile(url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
@@ -104,7 +110,8 @@ namespace TerminologyLauncher.Utils
 
         public static void DownloadAndExtractZippedFile(string url, string path)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")}));
             DownloadFile(url, tempFileInfo.FullName);
 
             if (!Directory.Exists(path))
@@ -134,10 +141,7 @@ namespace TerminologyLauncher.Utils
                 {
                     client.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                     client.Encoding = EncodeUtils.NoneBomUTF8;
-                    client.DownloadProgressChanged += (i, o) =>
-                    {
-                        progress.Percent = o.ProgressPercentage;
-                    };
+                    client.DownloadProgressChanged += (i, o) => { progress.Percent = o.ProgressPercentage; };
                     try
                     {
                         return client.DownloadStringTaskAsync(url).Result;
@@ -155,8 +159,10 @@ namespace TerminologyLauncher.Utils
 
         public static void DownloadZippedFile(InternalNodeProgress progress, string url, string path, string md5)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
-            DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url, tempFileInfo.FullName, md5);
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")}));
+            DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url,
+                tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
             {
@@ -166,9 +172,27 @@ namespace TerminologyLauncher.Utils
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
             progress.Percent = 100D;
         }
+
+        public static void DownloadZippedFile(InternalNodeProgress progress, string url, string path, long size)
+        {
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            DownloadFile(progress.CreateNewLeafSubProgress($"Downloading and unzipping zip file {url}", 90D), url,
+                tempFileInfo.FullName, size);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
+            progress.Percent = 100D;
+        }
+
         public static void DownloadZippedFile(string url, string path, string md5)
         {
-            var tempFileInfo = new FileInfo(Path.Combine(new[] { FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N") }));
+            var tempFileInfo =
+                new FileInfo(Path.Combine(new[] {FolderUtils.SystemTempFolder.FullName, Guid.NewGuid().ToString("N")}));
             DownloadFile(url, tempFileInfo.FullName, md5);
 
             if (!Directory.Exists(path))
@@ -178,6 +202,5 @@ namespace TerminologyLauncher.Utils
 
             new FastZip().ExtractZip(tempFileInfo.FullName, path, null);
         }
-
     }
 }

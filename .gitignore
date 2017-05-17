@@ -190,3 +190,5 @@ FakesAssemblies/
 #SVN files
 /.svn
 *.DotSettings
+# Files in Test Project
+Test/*.cs

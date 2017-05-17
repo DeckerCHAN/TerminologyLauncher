@@ -22,7 +22,6 @@ namespace TerminologyLauncher.Utils.ProgressService
                 var currentTask = keyValuePairs.First();
                 return currentTask.Key.TaskName;
             }
-
         }
 
         public override double Percent
@@ -33,7 +32,8 @@ namespace TerminologyLauncher.Utils.ProgressService
                 {
                     return base.Percent;
                 }
-                var sum = this.SubProgressesAndPercentage.Sum(subProgress => (subProgress.Value / 100) * subProgress.Key.Percent);
+                var sum =
+                    this.SubProgressesAndPercentage.Sum(subProgress => (subProgress.Value/100)*subProgress.Key.Percent);
                 sum = this.CheckPercentage(sum);
                 return base.Percent + sum;
             }
@@ -51,6 +51,7 @@ namespace TerminologyLauncher.Utils.ProgressService
             this.SubProgressesAndPercentage = new Dictionary<Progress, double>();
             base.Percent = 0D;
         }
+
         public InternalNodeProgress CreateNewInternalSubProgress(string taskName, double taskPercentage)
         {
             taskPercentage = this.CheckPercentage(taskPercentage);

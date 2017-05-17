@@ -26,10 +26,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow
         internal ProgressWindow(Window owner, Progress progress)
         {
             this.Progress = progress;
-            this.Progress.ProgressChanged += s =>
-            {
-                this.OnPropertyChanged("Progress");
-            };
+            this.Progress.ProgressChanged += s => { this.OnPropertyChanged("Progress"); };
             this.InitializeComponent();
             if (owner != null)
             {
@@ -53,8 +50,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.ProgressWindow
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

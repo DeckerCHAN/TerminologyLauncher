@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,6 +58,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppoverHelper\AppoverHelper.csproj">
+      <Project>{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}</Project>
+      <Name>AppoverHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Configs\Configs.csproj">
       <Project>{b56b5d15-8a5e-4833-83f1-6fc40a4b3b7c}</Project>
       <Name>Configs</Name>

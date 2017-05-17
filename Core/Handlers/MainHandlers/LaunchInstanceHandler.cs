@@ -37,42 +37,40 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                     {
                         this.Engine.UiControl.ConsoleWindow.Process = this.Engine.GameProcess;
                         this.Engine.UiControl.ShowConsoleWindow();
-
                     }
                 }
                 catch (WebException ex)
                 {
-                    var response = ((HttpWebResponse)ex.Response);
+                    var response = ((HttpWebResponse) ex.Response);
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.NotFound:
-                            {
-                                Logging.TerminologyLogger.GetLogger()
-                                    .ErrorFormat($"Cannot find file on server when donloading:{response.ResponseUri}");
-                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
-                                    $"Cannot find file on server when donloading:{response.ResponseUri}");
-                                break;
-                            }
+                        {
+                            Logging.TerminologyLogger.GetLogger()
+                                .ErrorFormat($"Cannot find file on server when donloading:{response.ResponseUri}");
+                            this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                                $"Cannot find file on server when donloading:{response.ResponseUri}");
+                            break;
+                        }
                         case HttpStatusCode.Forbidden:
-                            {
-                                Logging.TerminologyLogger.GetLogger()
-                                    .ErrorFormat(
-                                        $"You have no right to access this server when downloading: {response.ResponseUri}");
-                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                        {
+                            Logging.TerminologyLogger.GetLogger()
+                                .ErrorFormat(
                                     $"You have no right to access this server when downloading: {response.ResponseUri}");
+                            this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                                $"You have no right to access this server when downloading: {response.ResponseUri}");
 
-                                break;
-                            }
+                            break;
+                        }
                         default:
-                            {
+                        {
+                            Logging.TerminologyLogger.GetLogger()
+                                .Error($"Encounter an network error during build environment: {ex}");
+                            this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
+                                $"Encounter an network error during build environment: {ex.Message}");
 
-                                Logging.TerminologyLogger.GetLogger()
-                 .Error($"Encounter an network error during build environment: {ex}");
-                                this.Engine.UiControl.MainWindow.PopupNotifyDialog("Cannot launch",
-                                    $"Encounter an network error during build environment: {ex.Message}");
-
-                                break;
-                            }
+                            break;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -88,9 +86,8 @@ namespace TerminologyLauncher.Core.Handlers.MainHandlers
                 }
             });
             progressWindow.ShowDialog();
-
         }
 
-
+        public override string Name => "LAUNCH_AN_INSTANCE";
     }
 }

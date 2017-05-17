@@ -16,6 +16,7 @@ namespace TerminologyLauncher.Utils
             }
             return result;
         }
+
         public static Stream ReadEmbedFileResource(string link)
         {
             var currentAssembly = Assembly.GetCallingAssembly();
@@ -23,7 +24,7 @@ namespace TerminologyLauncher.Utils
             return stream;
         }
 
-        public static Stream ReadEmbedFileResource(Assembly assembly,string link)
+        public static Stream ReadEmbedFileResource(Assembly assembly, string link)
         {
             var stream = assembly.GetManifestResourceStream(link);
             return stream;
@@ -50,9 +51,6 @@ namespace TerminologyLauncher.Utils
                     fileStream.Flush();
                 }
             }
-
-
-
         }
     }
 }

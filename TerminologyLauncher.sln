@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminologyLauncher", "TerminologyLauncher\TerminologyLauncher.csproj", "{5184F7B0-EFFC-42AD-A885-6F75660CD1B7}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{D6535EAD-E180-4F61-87DC-744F1FC46080}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JreManagerSystem", "JreManagerSystem\JreManagerSystem.csproj", "{2628AC38-1E03-4FA6-B791-2E8BD8F8E723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppoverHelper", "AppoverHelper\AppoverHelper.csproj", "{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{2628AC38-1E03-4FA6-B791-2E8BD8F8E723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2628AC38-1E03-4FA6-B791-2E8BD8F8E723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2628AC38-1E03-4FA6-B791-2E8BD8F8E723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E88CECE1-35D7-4C04-AF54-40151CD8AEFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

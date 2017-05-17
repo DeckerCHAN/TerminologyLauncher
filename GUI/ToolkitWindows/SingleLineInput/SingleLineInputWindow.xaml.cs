@@ -55,6 +55,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.OnPropertyChanged();
             }
         }
+
         public void CrossThreadClose()
         {
             this.Dispatcher.Invoke(() =>
@@ -63,6 +64,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
                 this.Close();
             });
         }
+
         public string FieldName
         {
             get { return this.FieldNameValue; }
@@ -79,8 +81,7 @@ namespace TerminologyLauncher.GUI.ToolkitWindows.SingleLineInput
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)

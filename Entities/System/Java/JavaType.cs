@@ -7,6 +7,5 @@
         ServerX64 = 2,
         ClientX86 = 3,
         ClientX64 = 4
-
     }
 }

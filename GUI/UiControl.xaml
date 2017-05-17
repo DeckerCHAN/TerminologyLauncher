@@ -1,9 +1,8 @@
 ﻿<Application x:Class="TerminologyLauncher.GUI.UiControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             ShutdownMode="OnExplicitShutdown" Exit="UiControl_OnExit"
-             >
+             ShutdownMode="OnExplicitShutdown" Exit="UiControl_OnExit">
     <Application.Resources>
-        
+
     </Application.Resources>
 </Application>

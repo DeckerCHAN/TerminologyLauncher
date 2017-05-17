@@ -1,7 +1,12 @@
 # Terminology Minecraft Lanucher(BETA)
 
-A Minecraft game lanucher that just focusing on Minecraft Modpack. Bring large amount of mechanism and functions to simplify Modpack develop and distribute.
+A mod pack intergeted Minecraft lanucher.
 
+## State
+
+Master: [![Master status](https://ci.appveyor.com/api/projects/status/f7esldu0ruow1hgv?svg=true&branch=master)](https://ci.appveyor.com/project/DeckerCHAN/terminologylauncher/branch/master)
+
+Develop: [![Master status](https://ci.appveyor.com/api/projects/status/f7esldu0ruow1hgv?svg=true&branch=develop)](https://ci.appveyor.com/project/DeckerCHAN/terminologylauncher/branch/develop)
 ## Usage
 
 1. Ensure you have .NET framework 4.5 or higher. If not, you may download it through [official page](https://www.microsoft.com/en-us/download/details.aspx?id=30653).

@@ -8,7 +8,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml"/>
+                <ResourceDictionary
+                    Source="pack://application:,,,/TerminologyLauncher.GUI;component/Styles/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -16,41 +17,49 @@
         <Border DockPanel.Dock="Top" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#4C4EE8E8" Offset="0"/>
-                    <GradientStop Offset="1"/>
+                    <GradientStop Color="#4C4EE8E8" Offset="0" />
+                    <GradientStop Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown"    Height="30" Background="Transparent" >
+            <DockPanel x:Name="HeadBarPanel" MouseLeftButtonDown="HeadBarPanel_OnMouseLeftButtonDown" Height="30"
+                       Background="Transparent">
 
-                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}" Text="{Binding Title}"></TextBlock>
-                <StackPanel  Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" >
-                    <Button x:Name="CloseButton" x:FieldModifier="public"  Style="{DynamicResource TerminologyHeadCloseButtonStyle}" Margin="0,8,15,0" Click="CloseButton_OnClick" />
+                <TextBlock DockPanel.Dock="Left" Style="{StaticResource TerminologyTitleTextBlockStyle}"
+                           Text="{Binding Title}" />
+                <StackPanel Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <Button x:Name="CloseButton" x:FieldModifier="public"
+                            Style="{StaticResource TerminologyCloseIconButtonStyle}" Margin="0,8,15,0"
+                            Click="CloseButton_OnClick" />
                 </StackPanel>
             </DockPanel>
         </Border>
-        <Canvas  DockPanel.Dock="Bottom">
-            <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330" Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}" Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119"/>
-            <ComboBox Name="SelectComboBox" 
-                      x:FieldModifier="public" 
+        <Canvas DockPanel.Dock="Bottom">
+            <TextBlock Name="FieldTextBlock" FontWeight="Bold" Text="{Binding FieldName}" Canvas.Right="330"
+                       Canvas.Top="53" FontSize="15" Style="{StaticResource TerminologyTextBlockStyle}"
+                       Canvas.Left="10" TextAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="119" />
+            <ComboBox Name="SelectComboBox"
+                      x:FieldModifier="public"
                       Height="25"
-                      Canvas.Left="149" 
-                      Canvas.Top="50" 
+                      Canvas.Left="149"
+                      Canvas.Top="50"
                       SelectedIndex="0"
                       Width="282"
-                      FontSize="15" 
-                      HorizontalContentAlignment="Center" 
+                      FontSize="15"
+                      HorizontalContentAlignment="Center"
                       ItemsSource="{Binding SelectItems}"
                       SelectedItem="{Binding SelectItem,Mode=OneWayToSource}"
-                      Style="{DynamicResource TerminologyComboBoxStyle}">
+                      Style="{StaticResource TerminologyComboBoxStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <TextBlock  Style="{DynamicResource TerminologyTextBlockStyle}" Text="{Binding}" ></TextBlock>
+                            <TextBlock Style="{StaticResource TerminologyTextBlockStyle}" Text="{Binding}" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation}" Style="{DynamicResource TerminologyConfirmButtonStyle}" Canvas.Left="364" Canvas.Top="99" Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
+            <Button x:Name="ConfirmButton" Content="{Binding Path=ConfirmButtonTranslation}"
+                    Style="{StaticResource TerminologyGreenButtonStyle}" Canvas.Left="364" Canvas.Top="99"
+                    Height="30" Width="102" FontSize="16" Background="#FF77FF77" Click="ConfirmButton_Click" />
 
         </Canvas>
     </DockPanel>
